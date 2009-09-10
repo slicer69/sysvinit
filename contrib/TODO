@@ -1,0 +1,16 @@
+
+There are several things on the wishlist. See also the "wishlist" bugs filed
+against sysvinit in the debian bugs system (http://www.debian.org/Bugs/).
+
+1. A special target for kbrequest, so that extra CHILDs are
+  created (each one needs its own utmp/wtmp bookkeeping)
+2. Extend the initreq.h interface?
+3. Add GNU last long options to last
+
+4. Write all boot messages to a logfile
+   Problem: TIOCCONS ioctl redirects console output, it doesn't copy it.
+   I think this is not easily possible without kernel support.
+   I do not like the idea of booting with a pseudo tty as console and
+   a redirect process behind it writing to both the real console and a
+   logfile - too fragile.
+

@@ -1,0 +1,52 @@
+'\" -*- coding: UTF-8 -*-
+.\" Copyright (C) 1998-1999 Miquel van Smoorenburg.
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+.\"
+.TH BOOTLOGD 8 "Aug 24, 1999" "" "Linux System Administrator's Manual"
+.SH NAME
+bootlogd \- record boot messages
+.SH SYNOPSIS
+.B /sbin/bootlogd
+.RB [ \-d ]
+.RB [ \-r ]
+.RB [ \-v ]
+.RB [ " -l logfile " ]
+.RB [ " -p pidfile " ]
+.SH DESCRIPTION
+\fBBootlogd\fP runs in the background and copies all strings sent to the
+\fI/dev/console\fP device to a logfile. If the logfile is not accessible,
+the messages will be buffered in-memory until it is.
+.SH OPTIONS
+.IP \fB\-d\fP
+Do not fork and run in the background.
+.IP \fB\-r\fP
+If there is an existing logfile called \fIlogfile\fP rename it to
+\fIlogfile~\fP unless \fIlogfile~\fP already exists.
+.IP \fB\-v\fP
+Show version.
+.IP \fB\-l logfile\fP
+Log to this logfile. The default is \fI/var/log/boot.log\fP.
+.IP \fB\-p pidfile\fP
+Put process-id in this file. The default is no pidfile.
+.SH NOTES
+There is no standard way to find out the real console device if you have
+a new-style \fI/dev/console\fP device (major 5, minor 1). \fBBootlogd\fP
+might have some difficulties to do this, especially under very old
+or very new kernels.
+.SH AUTHOR
+Miquel van Smoorenburg, miquels@cistron.nl
+.SH "SEE ALSO"
+.BR dmesg (8)

@@ -1,0 +1,81 @@
+
+
+	Propaganda for version 2.58 of sysvinit & utilities
+	==================================================
+
+NOTE: If you use a standard distribution like Slackware, Debian
+or Redhat there probably is no need to upgrade. Installing sysvinit
+is only for those that upgrade their system by hand or for people
+that create Linux distributions.
+
+Sysvinit is probably the most widely used init package for Linux.
+Most distributions use it. sysvinit 2.4 is really a good package,
+and it was not the need for bugfixes but the need for more features
+that made me work on sysvinit again.
+
+Sysvinit is now a debian package. Debian source packages are not
+special in any way -- in fact you can just unpack and compile
+it on any other Linux distribution.
+
+There was a 2.50 release of sysvinit but that was not very popular-
+some of the included scripts broke with certain shells and other
+minor things like that. Unfortunately I was not able to fix this
+at the time because I was abroad for some time. Therefore the
+description below is a comparison of 2.4 and 2.58 (actually the
+same blurb as from the 2.50 announce but updated).
+
+Wrt 2.4, some of the code has been made simpler. Everything, from
+halt to reboot to single user mode is now done by shell scripts
+that are executed directly by init (from /etc/inittab), so shutdown
+does not kill processes anymore and then calls reboot - it merely
+does some wall's to the logged in users and then switches to
+runlevel 0 (halt), 1 (single user) or 6 (reboot).
+
+I have removed support for the old style scripts; the included
+example scripts are the Debian GNU/Linux distribution scripts.
+This does not mean that eg the Slackware scripts stop to work;
+you can probably drop this init into Slackware 3.0 without problems.
+
+Most people have an entry in inittab to run shutdown when CTRL-ALT-DEL
+is pressed; a feature has been added to shutdown to check if a
+authorized user is logged in on one of the consoles to see if a
+shutdown is allowed. This can be configured with an access file.
+
+Some other general changes:
+- utility "runlevel" to read the current and previous runlevel from
+  /var/run/utmp (it's also shown on the command line if you do a "ps").
+- unreckognized options are silently ignored (such as the infamous
+  "ro" - mount root file system read only).
+- if the file /etc/initscript is present it will be used to launch
+  all programs that init starts (so that you can set a generic
+  umask, ulimit eg for ALL processes - see initscript.sample).
+- A "sulogin" program added that always asks for the root
+  passsword before entering single user mode.
+- A "-b" flag to init that starts a shell at boot time before
+  _any_ other processing.
+- I moved /etc/fastboot to /fastboot - wonder what that's gonna break :)
+- I even updated the manpages!
+
+Right, now some boring stuff you already know since it's the same
+as in the 2.4 release:
+
+The sysvinit package includes
+
+* a sysv compatible /sbin/init program
+* a telinit program (er, just a link to /sbin/init) to change runlevels
+* a featureful shutdown
+* halt and reboot to assist shutdown
+* a very forgiving last utility
+* the wall & mesg programs (not installed by default)
+* manpages for everything
+
+The new sysv init can be found on:
+
+tsx-11.mit.edu:/pub/linux/sources/sbin as sysvinit-2.58-1.tar.gz
+sunsite.unc.edu:/pub/Linux/system/Daemons as sysvinit-2.58-1.tar.gz
+
+It will be moved there in a few days, in the mean time it is
+probably in the Incoming directory.
+
+Mike. (02-Jan-1996)
+

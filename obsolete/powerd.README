@@ -1,0 +1,36 @@
+There are 2 *much* better powerd's than the one that is included as
+an example with sysvinit. The powerd.c in this distribution is just ment
+as a programming example, not to be used in a real life situation.
+
+1. GENPOWERD.
+
+This is a powerd written by Tom Webster <webster@kaiwan.com>. It's a
+nice package, you can find info at http://www.kaiwan.com/~webster/genpower.html
+
+2. POWERD-2.0.
+
+This is another powerd, written by rubini@ipvvis.unipv.it (Alessandro Rubini).
+The main advantage over genpowerd is that it can signal other machines over
+the network.
+
+This LSM may be out of date. Please check if a newer version exists.
+
+Begin3
+Title:          powerd
+Version:        2.0
+Entered-date:   Sep 26 1995
+Description:    A daemon to shut down and up computers connected to ups's.
+                Network-aware: server-mode and client-mode allowed.
+Keywords:       ups, powerd, init
+Author:         Alessandro Rubini (based on Miquel van Smoorenburg's work).
+Maintained-by:  rubini@ipvvis.unipv.it (Alessandro Rubini)
+Primary-site:   sunsite.unc.edu /pub/Linux/system/UPS/powerd-2.0.tar.gz
+		25kB  powerd-2.0.tar.gz
+		1kB   powerd-2.0.lsm
+Alternate-site: 
+Original-site:  iride.unipv.it /pub/linux
+		25kB  powerd-2.0.tar.gz
+		1kB   powerd-2.0.lsm
+Platform:       Linux. Porting is foreseeable.      
+Copying-policy: GPL
+End

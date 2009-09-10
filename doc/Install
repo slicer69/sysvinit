@@ -1,0 +1,56 @@
+
+    README for the System V style init, version 2.86
+
+init, shutdown, halt, reboot, wall, last, mesg, runlevel,
+killall5, pidof, sulogin.
+
+All programs, files and scripts in this package are covered by
+the Gnu Public License, and copyrighted by me.
+
+If you are not using Debian and the debianized package,
+you will have to install the new init by hand. You should
+be able to drop the binaries into a Slackware or Redhat
+system, I think.
+
+Here is a list of preferred directories to install the progs & manpages:
+
+wall.1, last.1, mesg.1	   /usr/man/man1
+inittab.5, initscript.5	   /usr/man/man5
+init.8, halt.8, reboot.8,
+shutdown.8, powerd.8,
+killall5.8, pidof.8,
+runlevel.8, sulogin.8	   /usr/man/man8
+
+init			   /sbin/init
+inittab		   	   /etc/inittab
+initscript.sample          /etc/initscript.sample
+telinit		   	   a link (with ln(1) ) to init, either
+			   in /bin or in /sbin.
+halt			   /sbin/halt
+reboot			   a link to /sbin/halt in the same directory
+killall5		   /sbin/killall5
+pidof			   a link to /sbin/killall5 in the same directory.
+runlevel		   /sbin/runlevel
+shutdown		   /sbin/shutdown.
+wall			   /usr/bin/wall
+mesg			   /usr/bin/mesg
+last			   /usr/bin/last
+sulogin			   /sbin/sulogin
+bootlogd		   /sbin/bootlogd
+utmpdump                   don't install, it's just a debug thingy.
+
+If you already _have_ a "wall" in /bin (the SLS release had, for example)
+do _not_ install this wall. Chances are that the wall you are already
+using is linked to /bin/write. Either first _remove_ /bin/wall before
+installing the new one, or don't install the new one at all.
+
+You might want to create a file called "/etc/shutdown.allow". Read the
+manual page on shutdown to find out more about this.
+
+Running from a read-only file system (CDROM?):
+o All communication to init goes through the FIFO /dev/initctl.
+  There should be no problem using a read-only root file system
+  IF you use a Linux kernel > 1.3.66. Older kernels don't allow
+  writing to a FIFO on a read-only file system.
+  
+Miquel van Smoorenburg <miquels@cistron.nl>

@@ -1,0 +1,29 @@
+I proposed moving some stuff to a seperate file, such as the
+re-exec routines. Alexander wrote:
+
+
+According to Alexander Viro <viro@math.psu.edu>:
+> As for the code separation - I think it's nice. Actually, read_inittab()
+> with get_part() and newFamily are also pretty separatable. Another good
+> set is any(), spawn(), startup(), spawn_emerg() and start_if_needed().
+> BTW, fail_check();process_signals(); is equivalent to process_signal();
+> fail_check();. I think that swapping them (in main loop) would be a good
+> idea - then we can move fail_check() into start_if_needed(). And one more
+> - I'ld propose to move start_if_needed to the beginning of the main loop,
+> as in
+>       foo();
+>       while(1) { bar();foo();
+> #if 0
+>               baz();
+> #endif
+>       }
+> to
+>       while(1) { foo();bar();
+> #if 0
+>               baz();
+> #endif
+>       }
+>
+>
+> What do you think about it?
+

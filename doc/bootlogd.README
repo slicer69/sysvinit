@@ -1,0 +1,19 @@
+
+bootlogd: a way to capture all console output during bootup
+          in a logfile.
+
+- bootlogd opens /dev/console and finds out what the real console is
+  with an ioctl() if TIOCCONS is available
+- otherwise bootlogd tries to parse /proc/cmdline for console=
+  kernel command line arguments
+- then opens the (most probable) real console
+- allocates a pty pair
+- redirects console I/O to the pty pair
+- then goes in a loop reading from the pty, writing to the real
+  console and a logfile as soon as a r/w partition is available,
+  buffering in memory until then.
+
+As soon as bootlogd exits or gets killed, the pty is closed and the
+redirection will be automatically undone by the kernel. So that's
+pretty safe.
+

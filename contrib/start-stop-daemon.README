@@ -1,0 +1,45 @@
+Start-stop-daemon is the program that is used by the DEBIAN style init
+scripts to start and stop services. This program is part of the "dpkg"
+package by Ian Jackson. However there is also a seperate C version (the
+original is in perl) available written by Marek Michalkiewicz. I'm including
+it for your convinience.
+
+Note that the latest debian dpkg packages (4.0.18 and later) contain
+a much improved update-rc.d. This code is almost a year old.
+
+The original announcement follows:
+
+
+From: Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>
+Message-Id: <199606060324.FAA19493@i17linuxb.ists.pwr.wroc.pl>
+Subject: Fast start-stop-daemon in C
+To: debian-devel@lists.debian.org
+Date: Thu, 6 Jun 1996 05:24:18 +0200 (MET DST)
+
+Some time ago I wrote a faster C replacement for the start-stop-daemon
+perl script.  I use it for some time now (the most recent changes were
+just a nicer help screen; the code is quite stable).
+
+This makes the system boot faster (especially on low end machines),
+and important system startup scripts no longer depend on another big
+package (perl).  Maybe in the future we can get to the point where
+a minimal system will work without perl installed at all (packages
+which need it in {pre,post}{inst,rm} scripts would depend on perl).
+
+The only problem known so far to me is that I have to reinstall this
+program after every dpkg upgrade which overwrites it with that nice
+slooow perl script :-).
+
+Just compile this program and drop the binary in /usr/sbin instead
+of the original /usr/sbin/start-stop-daemon perl script (make a copy
+of it first, just in case).  See below for source code.  I placed it
+in the public domain, but if it has to be GPL-ed to be included in
+dpkg, just tell me.  Including it in dpkg would close Bug#1670.
+
+I am posting it here so that it can be tested by more people than
+just me.  Bugs are unlikely though.
+
+Have fun,
+
+Marek
+

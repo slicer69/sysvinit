@@ -1,0 +1,58 @@
+WARNING:
+
+  This version of sysvinit is really different from the 2.50 and
+  earlier version.
+
+  Shutdown now puts the system into runlevel 6 (reboot), 0 (halt)
+  or 1 (single user). This can cause unexpected results if you
+  install the binaries from this release into Slackware distributions
+  older than Slackware 3.0.
+
+SUPPORTED DISTRIBUTIONS:
+
+  The binaries from this package can be installed in:
+
+  o Debian 1.3 and later
+  o RedHat 3.x and later
+  o Slackware 3.0 (UNTESTED but it might work - no complaints yet).
+    Also read the INIT.README in the slackware/ directory.
+  o Slackware 2.x: see the slackware/ directory
+
+  Do not install any of the scripts from the debian/ directory unless
+  you know what you are doing.
+
+UNSUPPORTED DISTRIBUTIONS:
+
+  o The rest :)
+
+  If you have a non-supported system, please upgrade to the latest version
+  of your distribution that supports the Linux 2.0.x kernel (probably
+  the reason why you are installing this newer sysvinit).
+
+  You might get away by installing *just* the "init" binary, and nothing
+  else. Do _not_ replace your existing halt, reboot or shutdown programs.
+
+HOW TO NON DESTRUCTIVELY TEST THE NEW INIT:
+
+  Install *just* the init binary as /sbin/init.new. Now reboot the system,
+  and stop your bootloader so you can give arguments on the command line.
+  With LILO you can usually achieve this by keeping the SHIFT key
+  pressed during boot up. Enter the name of the kernel image (for LILO,
+  TAB shows a list) followed by the argument "init=/sbin/init.new".
+  The name "init.new" is special, do not use something like "init.test".
+
+  For example:
+
+        boot: linux init=/sbin/init.new
+
+  YOU CANNOT SHUTDOWN IN A CLEAN WAY AFTER THIS. Your best bet is to use
+  the "-n" flag to shutdown. This is because init is not running as process #1
+  if you use this method. Anyway, if this works, you can remove the old init
+  and copy the new init into place.
+
+DISCLAIMER:
+
+  If it breaks you get to keep both pieces. If you want to run the latest
+  Linux 2.0.x kernel and you can't get init to work just upgrade your entire
+  distribution to a newer version that supports the 2.0.x kernel properly.
+

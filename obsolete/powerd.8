@@ -1,0 +1,73 @@
+'\" -*- coding: UTF-8 -*-
+.\" Copyright (C) 1994 Miquel van Smoorenburg.
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+.\"
+.TH POWERD 8 "Feb 14, 1994" "" "Linux System Administrator's Manual"
+.SH NAME
+.\" powerd \(em monitor a serial line connected to an UPS.
+powerd -- monitor a serial line connected to an UPS.
+.SH SYNOPSIS
+.B /sbin/powerd
+.RB " serial-device "
+.SH DESCRIPTION
+.B Powerd
+is a daemon process that sits in the background and monitors the state
+of the DCD line of the serial device. This line is meant to be
+connected to a UPS (Uninterruptible Power Supply) so that \fBpowerd\fP knows
+about the state of the UPS. As soon as \fBpowerd\fP senses that the
+power is failing (it sees that DCD goes low) it notifies \fBinit\fP(8),
+and \fBinit\fP then executes the \fBpowerwait\fP and \fBpowerfail\fP entries.
+If \fBpowerd\fP senses that the power has been restored, it notifies \fBinit\fP
+again and \fBinit\fP will execute the \fBpowerokwait\fP entries.
+.SH ARGUMENTS
+.IP serial-device
+Some serial port that is not being used by some other device, and does not
+share an interrupt with any other serial port.
+.SH DIAGNOSTICS
+\fBPowerd\fP regularly checks the \fBDSR\fP line to see if it's high.
+\fBDSR\fP should be directly connected to \fBDTR\fP and \fBpowerd\fP
+keeps that line high, so if \fBDSR\fP is low then something is wrong
+with the connection. \fBPowerd\fP will notify you about this fact every
+two minutes. When it sees that the connection has been restored it
+will say so.
+.SH HOWTO
+It's pretty simple to connect your UPS to the Linux machine. The steps
+are easy:
+.TP 0.5i
+.B 1.
+Make sure you have an UPS with a simple relay output: it should
+close its connections (make) if the power is gone, and it should
+open its connections (break) if the power is good.
+.TP 0.5i
+.B 2.
+Buy a serial plug. Connect the DTR line to the DSR line directly.
+Connect the DTR line and the DCD line with a \fB10 kilo ohm\fP
+resistor. Now connect the relay output of the UPS to GROUND
+and the DCD line. If you don't know what pins DSR, DTR, DCD and
+GROUND are you can always ask at the store where you bought the plug.
+.TP 0.5i
+.B 3.
+You're all set.
+.SH BUGS
+Well, not a real bug but \fBpowerd\fP should be able to do a broadcast or
+something on the ethernet in case more Linux-boxes are connected to
+the same UPS and only one of them is connected to the UPS status line.
+.SH SEE ALSO
+.BR shutdown (8),
+.BR init (8),
+.BR inittab (5)
+.SH AUTHOR
+Miquel van Smoorenburg, miquels@cistron.nl

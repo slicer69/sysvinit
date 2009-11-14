@@ -3,6 +3,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Revert change from Fedora/RedHat where the now obsolete command
     INIT_CMD_CHANGECONS was introduced.  Based on feedback and patch
     from Bill Nottingham.
+  * Adjust makefile to make sure the install directories are created
+    before files are copied into them.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

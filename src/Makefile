@@ -127,6 +127,8 @@ clobber:	cleanobjs
 distclean:	clobber
 
 install:
+		$(INSTALL_EXEC) -d $(ROOT)/bin/ $(ROOT)/sbin/
+		$(INSTALL_EXEC) -d $(ROOT)/usr/bin/
 		for i in $(BIN); do \
 			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/bin/ ; \
@@ -147,7 +149,11 @@ install:
 		if [ ! -f $(ROOT)/usr/bin/lastb ]; then \
 			ln -sf last $(ROOT)/usr/bin/lastb; \
 		fi
+		$(INSTALL_EXEC) -d $(ROOT)/usr/include/
 		$(INSTALL_DATA) initreq.h $(ROOT)/usr/include/
+		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man1/
+		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man5/
+		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man8/
 		for i in $(MAN1); do \
 			$(INSTALL_DATA) ../man/$$i $(ROOT)$(MANDIR)/man1/; \
 		done

@@ -1,5 +1,6 @@
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
+  * Mention new home on Savannah in README.
   * Revert change from Fedora/RedHat where the now obsolete command
     INIT_CMD_CHANGECONS was introduced.  Based on feedback and patch
     from Bill Nottingham.

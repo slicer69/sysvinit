@@ -719,7 +719,11 @@ void console_stty(void)
 	/*
 	 *	Set pre and post processing
 	 */
-	tty.c_iflag = IGNPAR|ICRNL|IXON|IXANY;
+	tty.c_iflag = IGNPAR|ICRNL|IXON|IXANY
+#ifdef IUTF8 /* Not defined on FreeBSD */
+                      | (tty.c_iflag & IUTF8)
+#endif /* IUTF8 */
+            ;
 	tty.c_oflag = OPOST|ONLCR;
 	tty.c_lflag = ISIG|ICANON|ECHO|ECHOCTL|ECHOPRT|ECHOKE;
 

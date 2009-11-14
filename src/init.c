@@ -7,7 +7,7 @@
  *
  * Version:	@(#)init.c  2.86  30-Jul-2004  miquels@cistron.nl
  */
-#define VERSION "2.86"
+#define VERSION "2.88"
 #define DATE    "31-Jul-2004"
 /*
  *		This file is part of the sysvinit suite,

@@ -150,7 +150,7 @@ int init_setenv(char *name, char *value)
 	nl = strlen(name);
 	vl = value ? strlen(value) : 0;
 
-	if (nl + vl + 3 >= sizeof(request.i.data))
+	if (nl + vl + 3 >= (int)sizeof(request.i.data))
 		return -1;
 
 	memcpy(request.i.data, name, nl);

@@ -1254,7 +1254,7 @@ void read_inittab(void)
 	strncpy(ch->id, id, sizeof(utproto.ut_id) + 1); /* Hack for different libs. */
 	strncpy(ch->process, process, sizeof(ch->process) - 1);
 	if (rlevel[0]) {
-		for(f = 0; f < sizeof(rlevel) - 1 && rlevel[f]; f++) {
+		for(f = 0; f < (int)sizeof(rlevel) - 1 && rlevel[f]; f++) {
 			ch->rlevel[f] = rlevel[f];
 			if (ch->rlevel[f] == 's') ch->rlevel[f] = 'S';
 		}

@@ -111,11 +111,11 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			}
 
 			ret = snprintf(buf, sizeof(buf), SYS_BLK "/%s/device", d->d_name);
-			if ((ret >= sizeof(buf)) || (ret < 0))
+			if ((ret >= (int)sizeof(buf)) || (ret < 0))
 				goto empty;		/* error */
 
 			ret = readlink(buf, lnk, sizeof(lnk));
-			if (ret >= sizeof(lnk))
+			if (ret >= (int)sizeof(lnk))
 				goto empty;		/* error */
 			if (ret < 0) {
 				if (errno != ENOENT)
@@ -129,7 +129,7 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 				continue;		/* should not happen */
 
 			ret = snprintf(buf, sizeof(buf), SYS_CLASS "/%s/manage_start_stop", ptr);
-			if ((ret >= sizeof(buf)) || (ret < 0))
+			if ((ret >= (int)sizeof(buf)) || (ret < 0))
 				goto empty;		/* error */
 
 			ret = stat(buf, &st);
@@ -200,7 +200,7 @@ static int do_standby_idedisk(char *device, unsigned int flags)
 	int fd, ret;
 
 	ret = snprintf(buf, sizeof(buf), DEV_BASE "/%s", device);
-	if ((ret >= sizeof(buf)) || (ret < 0))
+	if ((ret >= (int)sizeof(buf)) || (ret < 0))
 		return -1;
 
 	if ((fd = open(buf, O_RDWR)) < 0)
@@ -271,7 +271,7 @@ static FILE *hdopen(const char* const format, const char* const name)
 	int fd, ret;
 	
 	ret = snprintf(buf, sizeof(buf), format, name);
-	if ((ret >= sizeof(buf)) || (ret < 0))
+	if ((ret >= (int)sizeof(buf)) || (ret < 0))
 		goto error;		/* error */
 
 	fd = open(buf, O_RDONLY|O_NOCTTY);
@@ -324,7 +324,7 @@ static int flush_cache_ext(const char *device)
 		goto out;		/* small disk */
 		
 	ret = snprintf(buf, sizeof(buf), DEV_BASE "/%s", device);
-	if ((ret >= sizeof(buf)) || (ret < 0))
+	if ((ret >= (int)sizeof(buf)) || (ret < 0))
 		return -1;		/* error */
 
 	if ((fd = open(buf, O_RDONLY|O_NONBLOCK)) < 0)

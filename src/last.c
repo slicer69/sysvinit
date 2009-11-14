@@ -331,7 +331,7 @@ int dns_lookup(char *result, int size, int useip, int32_t *a)
 	 *
 	 *	Ugly.
 	 */
-	if (a[0] == 0 && a[1] == 0 && a[2] == htonl (0xffff))
+	if (a[0] == 0 && a[1] == 0 && a[2] == (int32_t)htonl (0xffff))
 		mapped = 1;
 	topnibble = ntohl((unsigned int)a[0]) >> 28;
 
@@ -462,7 +462,7 @@ int list(struct utmp *p, time_t t, int what)
 		r = dns_lookup(domain, sizeof(domain), useip, p->ut_addr_v6);
 	if (r < 0) {
 		len = UT_HOSTSIZE;
-		if (len >= sizeof(domain)) len = sizeof(domain) - 1;
+		if (len >= (int)sizeof(domain)) len = sizeof(domain) - 1;
 		domain[0] = 0;
 		strncat(domain, p->ut_host, len);
 	}

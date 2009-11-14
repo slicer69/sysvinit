@@ -298,7 +298,7 @@ char *getpasswd(char *crypted)
 	if (read(0, pass, sizeof(pass) - 1) <= 0)
 		ret = NULL;
 	else {
-		for(i = 0; i < sizeof(pass) && pass[i]; i++)
+		for(i = 0; i < (int)sizeof(pass) && pass[i]; i++)
 			if (pass[i] == '\r' || pass[i] == '\n') {
 				pass[i] = 0;
 				break;

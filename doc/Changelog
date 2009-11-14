@@ -7,6 +7,7 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     before files are copied into them.
   * Fix minor bug in optimizing of argument parsing.  Based on
     report from jakemus on freshmeat.
+  * Add casts to get rid of compiler warning about signed/unsigned issues.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

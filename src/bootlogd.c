@@ -135,7 +135,7 @@ int findtty(char *res, int rlen, dev_t dev)
 		fprintf(stderr, "bootlogd: cannot find console device "
 			"%d:%d in /dev\n", major(dev), minor(dev));
 		r = -1;
-	} else if (strlen(ent->d_name) + 5 >= rlen) {
+	} else if ((int)strlen(ent->d_name) + 5 >= rlen) {
 		fprintf(stderr, "bootlogd: console device name too long\n");
 		r = -1;
 	} else
@@ -351,7 +351,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 				break;
 			case '\t':
 				line.pos += (line.pos / 8 + 1) * 8;
-				if (line.pos >= sizeof(line.buf))
+				if (line.pos >= (int)sizeof(line.buf))
 					line.pos = sizeof(line.buf) - 1;
 				break;
 			case  32 ... 127:
@@ -367,7 +367,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 		len--;
 
 		tlen = strlen(tmp);
-		if (tlen && (line.pos + tlen < sizeof(line.buf))) {
+		if (tlen && (line.pos + tlen < (int)sizeof(line.buf))) {
 			memcpy(line.buf + line.pos, tmp, tlen);
 			line.pos += tlen;
 		}
@@ -640,7 +640,7 @@ int main(int argc, char **argv)
 		else
 			todo = endptr - outptr;
 		if (fp && todo)
-			writelog(fp, outptr, todo);
+			writelog(fp, (unsigned char *)outptr, todo);
 	}
 
 	if (fp) {

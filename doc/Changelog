@@ -12,6 +12,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Change tty handling in init to make sure the UTF-8 flag is not cleared
     on boot.  Patch from Samuel Thibault.
   * Add Makefile in toplevel directory.
+  * Print usage information when shutdown is used by non-root user.
+    Patch from Mike Frysinger and Gentoo.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

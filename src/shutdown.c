@@ -469,6 +469,7 @@ int main(int argc, char **argv)
 
 	if (getuid() != 0) {
   		fprintf(stderr, "shutdown: you must be root to do that!\n");
+		usage();
   		exit(1);
 	}
 	strcpy(down_level, "1");

@@ -125,7 +125,6 @@ int sltime = 5;			/* Sleep time between TERM and KILL */
 char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
 struct utmp utproto;		/* Only used for sizeof(utproto.ut_id) */
-char *user_console = NULL;	/* User console device */
 char *console_dev;		/* Console device. */
 int pipe_fd = -1;		/* /dev/initctl */
 int did_boot = 0;		/* Did we already do BOOT* stuff? */
@@ -497,9 +496,7 @@ void console_init(void)
 	int tried_vtmaster = 0;
 	char *s;
 
-	if (user_console) {
-		console_dev = user_console;
-	} else if ((s = getenv("CONSOLE")) != NULL)
+	if ((s = getenv("CONSOLE")) != NULL)
 		console_dev = s;
 	else {
 		console_dev = CONSOLE;
@@ -2141,18 +2138,6 @@ void check_init_fifo(void)
 			break;
 		case INIT_CMD_SETENV:
 			initcmd_setenv(request.i.data, sizeof(request.i.data));
-			break;
-		case INIT_CMD_CHANGECONS:
-			if (user_console) {
-				free(user_console);
-				user_console = NULL;
-			}
-			if (!request.i.bsd.reserved[0])
-				user_console = NULL;
-			else
-				user_console = strdup(request.i.bsd.reserved);
-			console_init();
-			quit = 1;
 			break;
 		default:
 			initlog(L_VB, "got unimplemented initrequest.");

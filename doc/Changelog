@@ -1,3 +1,11 @@
+sysvinit (2.88dsf) UNRELEASED; urgency=low
+
+  * Revert change from Fedora/RedHat where the now obsolete command
+    INIT_CMD_CHANGECONS was introduced.  Based on feedback and patch
+    from Bill Nottingham.
+
+ -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
+
 sysvinit (2.87dsf) world; urgency=low
 
   * Fix typos and do minor updates in the manual pages.

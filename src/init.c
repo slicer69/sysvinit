@@ -2629,9 +2629,10 @@ int main(int argc, char **argv)
 	 */
 	isinit = (getpid() == 1);
 	for (f = 1; f < argc; f++) {
-		if (!strcmp(argv[f], "-i") || !strcmp(argv[f], "--init"))
+		if (!strcmp(argv[f], "-i") || !strcmp(argv[f], "--init")) {
 			isinit = 1;
 			break;
+		}
 	}
 	if (!isinit) exit(telinit(p, argc, argv));
 

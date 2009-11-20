@@ -8,9 +8,8 @@
 # Version:	@(#)Makefile  2.85-13  23-Mar-2004  miquels@cistron.nl
 #
 
-CC	= gcc
-CFLAGS	= -ansi -W -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE
-LDFLAGS	= -s
+CFLAGS	?= -ansi -O2 -fomit-frame-pointer
+CFLAGS	+= -W -Wall -D_GNU_SOURCE
 STATIC	=
 
 # For some known distributions we do not build all programs, otherwise we do.
@@ -49,6 +48,7 @@ BIN_COMBO	= $(BIN_OWNER):$(BIN_GROUP)
 STRIP		= strip -s -R .comment
 INSTALL_EXEC	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 755
 INSTALL_DATA	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 644
+INSTALL_DIR	= install -m 755 -d
 MANDIR		= /usr/share/man
 
 ifeq ($(WITH_SELINUX),yes)
@@ -70,50 +70,47 @@ endif
 
 all:		$(BIN) $(SBIN) $(USRBIN)
 
+#%: %.o
+#	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+#%.o: %.c
+#	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
+
+init:		LDLIBS += $(INIT_SELIBS) $(STATIC)
 init:		init.o init_utmp.o
-		$(CC) $(LDFLAGS) $(STATIC) -o $@ init.o init_utmp.o $(INIT_SELIBS)
 
 halt:		halt.o ifdown.o hddown.o utmp.o reboot.h
-		$(CC) $(LDFLAGS) -o $@ halt.o ifdown.o hddown.o utmp.o
 
 last:		last.o oldutmp.h
-		$(CC) $(LDFLAGS) -o $@ last.o
 
 mesg:		mesg.o
-		$(CC) $(LDFLAGS) -o $@ mesg.o
 
 mountpoint:	mountpoint.o
-		$(CC) $(LDFLAGS) -o $@ mountpoint.o
 
 utmpdump:	utmpdump.o
-		$(CC) $(LDFLAGS) -o $@ utmpdump.o
 
 runlevel:	runlevel.o
-		$(CC) $(LDFLAGS) -o $@ runlevel.o
 
+sulogin:	LDLIBS += $(LCRYPT) $(SULOGIN_SELIBS) $(STATIC)
 sulogin:	sulogin.o
-		$(CC) $(LDFLAGS) $(STATIC) $(SELINUX_DEF) -o $@ $^ $(LCRYPT) $(SULOGIN_SELIBS)
 
 wall:		dowall.o wall.o
-		$(CC) $(LDFLAGS) -o $@ dowall.o wall.o
 
 shutdown:	dowall.o shutdown.o utmp.o reboot.h
-		$(CC) $(LDFLAGS) -o $@ dowall.o shutdown.o utmp.o
 
+bootlogd:	LDLIBS += -lutil
 bootlogd:	bootlogd.o
-		$(CC) $(LDFLAGS) -o $@ bootlogd.o -lutil
 
+sulogin.o:	CPPFLAGS += $(SELINUX_DEF)
 sulogin.o:	sulogin.c 
-		$(CC) -c $(CFLAGS) $(SELINUX_DEF) sulogin.c
 
+init.o:		CPPFLAGS += $(SELINUX_DEF)
 init.o:		init.c init.h set.h reboot.h initreq.h
-		$(CC) -c $(CFLAGS) $(SELINUX_DEF)  init.c
 
 utmp.o:		utmp.c init.h
-		$(CC) -c $(CFLAGS) utmp.c
 
+init_utmp.o:	CPPFLAGS += -DINIT_MAIN
 init_utmp.o:	utmp.c init.h
-		$(CC) -c $(CFLAGS) -DINIT_MAIN utmp.c -o init_utmp.o
+		$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 cleanobjs:
 		rm -f *.o *.bak
@@ -127,8 +124,8 @@ clobber:	cleanobjs
 distclean:	clobber
 
 install:
-		$(INSTALL_EXEC) -d $(ROOT)/bin/ $(ROOT)/sbin/
-		$(INSTALL_EXEC) -d $(ROOT)/usr/bin/
+		$(INSTALL_DIR) $(ROOT)/bin/ $(ROOT)/sbin/
+		$(INSTALL_DIR) $(ROOT)/usr/bin/
 		for i in $(BIN); do \
 			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/bin/ ; \
@@ -149,11 +146,11 @@ install:
 		if [ ! -f $(ROOT)/usr/bin/lastb ]; then \
 			ln -sf last $(ROOT)/usr/bin/lastb; \
 		fi
-		$(INSTALL_EXEC) -d $(ROOT)/usr/include/
+		$(INSTALL_DIR) $(ROOT)/usr/include/
 		$(INSTALL_DATA) initreq.h $(ROOT)/usr/include/
-		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man1/
-		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man5/
-		$(INSTALL_EXEC) -d $(ROOT)$(MANDIR)/man8/
+		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man1/
+		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man5/
+		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man8/
 		for i in $(MAN1); do \
 			$(INSTALL_DATA) ../man/$$i $(ROOT)$(MANDIR)/man1/; \
 		done

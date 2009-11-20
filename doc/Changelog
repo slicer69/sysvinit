@@ -6,6 +6,7 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     from Bill Nottingham.
   * Adjust makefile to make sure the install directories are created
     before files are copied into them.
+  * Simplify build rules, based on patch from Mike Frysinger and Gentoo.
   * Fix minor bug in optimizing of argument parsing.  Based on
     report from jakemus on freshmeat.
   * Add casts to get rid of compiler warning about signed/unsigned issues.

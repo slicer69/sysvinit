@@ -26,11 +26,11 @@ shutdown \- bring the system down
 .\"{{{  Synopsis
 .SH SYNOPSIS
 .B /sbin/shutdown
+.RB [ \-akrhPHfFnc ]
 .RB [ \-t
 .IR sec ]
-.RB [ \-arkhncfFHP ]
 .I time
-.RI [ warning-message ]
+.RI [ "warning message" ]
 .\"}}}
 .\"{{{  Description
 .SH DESCRIPTION
@@ -56,11 +56,6 @@ entries for these runlevels in the file \fI/etc/inittab\fP.
 .IP "\fB\-a\fP
 Use \fB/etc/shutdown.allow\fP.
 .\"}}}
-.\"{{{  -t sec
-.IP "\fB\-t\fP \fIsec\fP"
-Tell \fBinit\fP(8) to wait \fIsec\fP seconds between sending processes the 
-warning and the kill signal, before changing to another runlevel.
-.\"}}}
 .\"{{{  -k
 .IP \fB\-k\fP
 Don't really shutdown; only send the warning messages to everybody.
@@ -73,20 +68,14 @@ Reboot after shutdown.
 .IP \fB\-h\fP
 Halt or power off after shutdown.
 .\"}}}
-.\"{{{  -H
-.IP \fB\-H\fP
-Modifier to the -h flag.  Halt action is to halt or drop into boot
-monitor on systems that support it.  Must be used with the -h flag.
-.\"}}}
 .\"{{{  -P
 .IP \fB\-P\fP
 Halt action is to turn off the power.
 .\"}}}
-.\"{{{  -n
-.IP \fB\-n\fP
-[DEPRECATED] Don't call \fBinit\fP(8) to do the shutdown but do it ourself.
-The use of this option is discouraged, and its results are not always what
-you'd expect.
+.\"{{{  -H
+.IP \fB\-H\fP
+Modifier to the -h flag.  Halt action is to halt or drop into boot
+monitor on systems that support it.  Must be used with the -h flag.
 .\"}}}
 .\"{{{  -f
 .IP \fB\-f\fP
@@ -96,18 +85,29 @@ Skip fsck on reboot.
 .IP \fB\-F\fP
 Force fsck on reboot.
 .\"}}}
+.\"{{{  -n
+.IP \fB\-n\fP
+[DEPRECATED] Don't call \fBinit\fP(8) to do the shutdown but do it ourself.
+The use of this option is discouraged, and its results are not always what
+you'd expect.
+.\"}}}
 .\"{{{  -c
 .IP \fB\-c\fP
 Cancel an already running shutdown. With this option it is of course
 not possible to give the \fBtime\fP argument, but you can enter a
 explanatory message on the command line that will be sent to all users.
 .\"}}}
+.\"{{{  -t sec
+.IP "\fB\-t\fP \fIsec\fP"
+Tell \fBinit\fP(8) to wait \fIsec\fP seconds between sending processes the
+warning and the kill signal, before changing to another runlevel.
+.\"}}}
 .\"{{{  time
 .IP \fItime\fP
 When to shutdown.
 .\"}}}
 .\"{{{  warning-message
-.IP \fIwarning-message\fP
+.IP "\fIwarning message\fP"
 Message to send to all users.
 .\"}}}
 .PP

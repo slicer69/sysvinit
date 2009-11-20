@@ -111,7 +111,7 @@ void stopit(int sig)
 void usage(void)
 {
 	fprintf(stderr,
-	"Usage:\t  shutdown [-akrhHPfnc] [-t secs] time [warning message]\n"
+	"Usage:\t  shutdown [-akrhPHfFnc] [-t sec] time [warning message]\n"
 	"\t\t  -a:      use /etc/shutdown.allow\n"
 	"\t\t  -k:      don't really shutdown, only warn.\n"
 	"\t\t  -r:      reboot after shutdown.\n"

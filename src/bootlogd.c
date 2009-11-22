@@ -145,7 +145,7 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 		if (!S_ISCHR(st.st_mode))
 			continue;
 		if (st.st_rdev == dev) {
-			if (strlen(ent->d_name) + strlen(startdir) + 1 >= rlen) {
+			if ( (int) (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
 				fprintf(stderr, "bootlogd: console device name too long\n");
 				closedir(dir);
 				chdir(olddir);

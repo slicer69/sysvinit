@@ -107,41 +107,60 @@ void handler(int sig)
 
 /*
  *	Scan /dev and find the device name.
- *	Side-effect: directory is changed to /dev
- *
- *	FIXME: scan subdirectories for devfs support ?
  */
-int findtty(char *res, int rlen, dev_t dev)
+static int findtty(char *res, int rlen, dev_t dev)
 {
 	DIR		*dir;
 	struct dirent	*ent;
 	struct stat	st;
-	int		r = 0;
+	int		r = -1;
+	char *olddir = getcwd(NULL, 0);
 
-	if (chdir("/dev") < 0 || (dir = opendir(".")) == NULL) {
-		perror("bootlogd: /dev");
+	if (chdir(startdir) < 0 || (dir = opendir(".")) == NULL) {
+		int msglen = strlen(startdir) + 11;
+		char *msg = malloc(msglen);
+		snprintf(msg, msglen, "bootlogd: %s", startdir);
+		perror(msg);
+		free(msg);
+		chdir(olddir);
 		return -1;
 	}
 	while ((ent = readdir(dir)) != NULL) {
 		if (lstat(ent->d_name, &st) != 0)
 			continue;
+		if (S_ISDIR(st.st_mode)
+		    && 0 != strcmp(".", ent->d_name)
+		    && 0 != strcmp("..", ent->d_name)) {
+			char *path = malloc(rlen);
+			snprintf(path, rlen, "%s/%s", startdir, ent->d_name);
+			r = findtty(res, path, rlen, dev);
+			free(path);
+			if (0 == r) { /* device found, return */
+				closedir(dir);
+				chdir(olddir);
+				return 0;
+			}
+			continue;
+		}
 		if (!S_ISCHR(st.st_mode))
 			continue;
 		if (st.st_rdev == dev) {
-			break;
+			if (strlen(ent->d_name) + strlen(startdir) + 1 >= rlen) {
+				fprintf(stderr, "bootlogd: console device name too long\n");
+				closedir(dir);
+				chdir(olddir);
+				return -1;
+			} else {
+				snprintf(res, rlen, "%s/%s", startdir, ent->d_name);
+				closedir(dir);
+				chdir(olddir);
+				return 0;
+			}
 		}
 	}
-	if (ent == NULL) {
-		fprintf(stderr, "bootlogd: cannot find console device "
-			"%d:%d in /dev\n", major(dev), minor(dev));
-		r = -1;
-	} else if ((int)strlen(ent->d_name) + 5 >= rlen) {
-		fprintf(stderr, "bootlogd: console device name too long\n");
-		r = -1;
-	} else
-		snprintf(res, rlen, "/dev/%s", ent->d_name);
 	closedir(dir);
 
+	chdir(olddir);
 	return r;
 }
 
@@ -236,12 +255,21 @@ int consolename(char *res, int rlen)
 		/*
 		 *	Old kernel, can find real device easily.
 		 */
-		return findtty(res, rlen, st.st_rdev);
+		int r = findtty(res, "/dev", rlen, st.st_rdev);
+		if (0 != r)
+			fprintf(stderr, "bootlogd: cannot find console device "
+				"%d:%d under /dev\n", major(st.st_rdev), minor(st.st_rdev));
+		return r;
 	}
 
 #ifdef TIOCGDEV
-	if (ioctl(0, TIOCGDEV, &kdev) == 0)
-		return findtty(res, rlen, (dev_t)kdev);
+	if (ioctl(0, TIOCGDEV, &kdev) == 0) {
+		int r = findtty(res, "/dev", rlen, (dev_t)kdev);
+		if (0 != r)
+			fprintf(stderr, "bootlogd: cannot find console device "
+				"%d:%d under /dev\n", major(kdev), minor(kdev));
+		return r;
+	}
 	if (errno != ENOIOCTLCMD) return -1;
 #endif
 

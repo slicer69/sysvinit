@@ -19,6 +19,9 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     Frysinger and Gentoo.
   * Fix race condition in utmp writing.  Patch from Gil Kloepfer via
     Mike Frysinger and Gentoo.
+  * Rewrite findtty() in bootlogd to recursively search /dev/ for the
+    correct device, to handle terminal devices for example in /dev/pty/.
+    Patch from Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

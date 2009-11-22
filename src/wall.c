@@ -29,13 +29,12 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <syslog.h>
+#include "init.h"
 
 
 char *Version = "@(#) wall 2.79 12-Sep-2000 miquels@cistron.nl";
 #define MAXLEN 4096
 #define MAXLINES 20
-
-extern void wall(char *, int, int);
 
 int main(int argc, char **argv)
 {
@@ -115,7 +114,7 @@ int main(int argc, char **argv)
   closelog();
 
   unsetenv("TZ");
-  wall(buf, 0, remote);
+  wall(buf, remote);
 
   /*NOTREACHED*/
   return 0;

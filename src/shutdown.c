@@ -49,6 +49,8 @@
 #include "paths.h"
 #include "reboot.h"
 #include "initreq.h"
+#include "init.h"
+
 
 char *Version = "@(#) shutdown 2.86-1 31-Jul-2004 miquels@cistron.nl";
 
@@ -71,9 +73,6 @@ char *clean_env[] = {
 	"TERM=dumb",
 	NULL,
 };
-
-/* From "wall.c" */
-extern void wall(char *, int, int);
 
 /* From "utmp.c" */
 extern void write_wtmp(char *user, char *id, int pid, int type, char *line);
@@ -206,7 +205,7 @@ void warn(int mins)
   		snprintf(buf + len, sizeof(buf) - len,
 			"\rThe system is going DOWN %s in %d minute%s!\r\n",
 				newstate, mins, mins == 1 ? "" : "s");
-	wall(buf, 1, 0);
+	wall(buf, 0);
 }
 
 /*
@@ -619,7 +618,7 @@ int main(int argc, char **argv)
 			fprintf(stderr, "shutdown: not running.\n");
 			exit(1);
 		}
-		if (message[0]) wall(message, 1, 0);
+		if (message[0]) wall(message, 0);
 		exit(0);
 	}
   

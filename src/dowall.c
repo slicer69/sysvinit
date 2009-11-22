@@ -52,7 +52,7 @@ static void handler(int arg)
 /*
  *	Print a text, escape all characters not in Latin-1.
  */
-static void feputs(char *line, FILE *fp)
+static void feputs(const char *line, FILE *fp)
 {
 	unsigned char		*p;
 
@@ -132,7 +132,7 @@ static int file_isatty(const char *fname)
 /*
  *	Wall function.
  */
-void wall(char *text, int fromshutdown, int remote)
+void wall(const char *text, int remote)
 {
 	FILE			*tp;
 	struct sigaction	sa;

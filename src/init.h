@@ -53,6 +53,9 @@ void initlog(int loglevel, char *fmt, ...);
 void set_term(int how);
 void print(char *fmt);
 
+/* from dowall.c */
+void wall(const char *text, int remote);
+
 #if DEBUG
 #  define INITDBG(level, fmt, args...) initlog(level, fmt, ##args)
 #else

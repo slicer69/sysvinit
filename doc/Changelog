@@ -17,6 +17,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     Patch from Mike Frysinger and Gentoo.
   * Sync shutdown manual page and usage information.  Patch from Mike
     Frysinger and Gentoo.
+  * Fix race condition in utmp writing.  Patch from Gil Kloepfer via
+    Mike Frysinger and Gentoo.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

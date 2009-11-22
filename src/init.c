@@ -968,6 +968,25 @@ int spawn(CHILD *ch, int *res)
   		sigprocmask(SIG_SETMASK, &omask, NULL);
 
 		/*
+		 * Update utmp/wtmp file prior to starting
+		 * any child.  This MUST be done right here in
+		 * the child process in order to prevent a race
+		 * condition that occurs when the child
+		 * process' time slice executes before the
+		 * parent (can and does happen in a uniprocessor
+		 * environment).  If the child is a getty and
+		 * the race condition happens, then init's utmp
+		 * update will happen AFTER the getty runs
+		 * and expects utmp to be updated already!
+		 *
+		 * Do NOT log if process field starts with '+'
+		 * FIXME: that's for compatibility with *very*
+		 * old getties - probably it can be taken out.
+		 */
+		if (ch->action == RESPAWN && ch->process[0] != '+')
+			write_utmp_wtmp("", ch->id, getpid(), INIT_PROCESS, "");
+
+		/*
 		 *	In sysinit, boot, bootwait or single user mode:
 		 *	for any wait-type subprocess we _force_ the console
 		 *	to be its controlling tty.
@@ -1109,15 +1128,7 @@ void startup(CHILD *ch)
 		case ONDEMAND:
 		case RESPAWN:
   			ch->flags |= RUNNING;
-  			if (spawn(ch, &(ch->pid)) < 0) break;
-			/*
-			 *	Do NOT log if process field starts with '+'
-			 *	FIXME: that's for compatibility with *very*
-			 *	old getties - probably it can be taken out.
-			 */
-  			if (ch->process[0] != '+')
-				write_utmp_wtmp("", ch->id, ch->pid,
-					INIT_PROCESS, "");
+  			(void)spawn(ch, &(ch->pid));
   			break;
 	}
 }

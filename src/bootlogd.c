@@ -375,7 +375,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 				break;
 			case '\n':
 				didnl = 1;
-				dosync = syncalot;
+				dosync = 1;
 				break;
 			case '\t':
 				line.pos += (line.pos / 8 + 1) * 8;
@@ -407,7 +407,9 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 
 	if (dosync) {
 		fflush(fp);
-		fdatasync(fileno(fp));
+		if (syncalot) {
+			fdatasync(fileno(fp));
+		}
 	}
 
 	outptr += olen;

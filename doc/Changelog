@@ -24,6 +24,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     Patch from Debian.
   * Make sure bootlogd findpty() returns an error value when it fails to
     find a usable pty.  Patch from Rob Leslie via Debian.
+  * Make sure bootlogd fflush() every line, even if asked not to flush
+    to disk using fdatasync().  Patch from Scott Gifford via Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

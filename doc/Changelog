@@ -22,6 +22,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Rewrite findtty() in bootlogd to recursively search /dev/ for the
     correct device, to handle terminal devices for example in /dev/pty/.
     Patch from Debian.
+  * Make sure bootlogd findpty() returns an error value when it fails to
+    find a usable pty.  Patch from Rob Leslie via Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

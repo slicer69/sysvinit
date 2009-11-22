@@ -198,7 +198,7 @@ int findpty(int *master, int *slave, char *name)
 		}
 		if (found) break;
 	}
-	if (found < 0) return -1;
+	if (!found) return -1;
 
 	if (name) strcpy(name, tty);
 

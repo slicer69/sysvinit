@@ -108,7 +108,7 @@ void handler(int sig)
 /*
  *	Scan /dev and find the device name.
  */
-static int findtty(char *res, int rlen, dev_t dev)
+static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 {
 	DIR		*dir;
 	struct dirent	*ent;

@@ -2624,7 +2624,9 @@ int main(int argc, char **argv)
 	char			*p;
 	int			f;
 	int			isinit;
+#ifdef WITH_SELINUX
 	int			enforce = 0;
+#endif
 
 	/* Get my own name */
 	if ((p = strrchr(argv[0], '/')) != NULL)

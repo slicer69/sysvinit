@@ -121,6 +121,8 @@ sig_atomic_t got_signals;	/* Set if we received a signal. */
 int emerg_shell = 0;		/* Start emergency shell? */
 int wrote_wtmp_reboot = 1;	/* Set when we wrote the reboot record */
 int wrote_utmp_reboot = 1;	/* Set when we wrote the reboot record */
+int wrote_wtmp_rlevel = 1;	/* Set when we wrote the runlevel record */
+int wrote_utmp_rlevel = 1;	/* Set when we wrote the runlevel record */
 int sltime = 5;			/* Sleep time between TERM and KILL */
 char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
@@ -189,6 +191,8 @@ struct {
   { "-WU",	   D_WROTE_UTMP_REBOOT},
   { "-ST",	   D_SLTIME	},
   { "-DB",	   D_DIDBOOT	},
+  { "-LW",	   D_WROTE_WTMP_RLEVEL},
+  { "-LU",	   D_WROTE_UTMP_RLEVEL},
   { "",	   	   0		}
 };
 struct {
@@ -384,6 +388,12 @@ static CHILD *get_record(FILE *f)
 				break;
 			case D_DIDBOOT:
 				fscanf(f, "%d\n", &did_boot);
+				break;
+			case D_WROTE_WTMP_RLEVEL:
+				fscanf(f, "%d\n", &wrote_wtmp_rlevel);
+				break;
+			case D_WROTE_UTMP_RLEVEL:
+				fscanf(f, "%d\n", &wrote_utmp_rlevel);
 				break;
 			default:
 				if (cmd > 0 || cmd == C_EOF) {
@@ -1004,6 +1014,14 @@ int spawn(CHILD *ch, int *res)
   				dup(f);
   				dup(f);
 			}
+
+			/*
+			 * 4 Sep 2001, Andrea Arcangeli:
+			 * Fix a race in spawn() that is used to deadlock init in a
+			 * waitpid() loop: must set the childhandler as default before forking
+			 * off the child or the chld_handler could run before the waitpid loop
+			 * has a chance to find its zombie-child.
+			 */
 			SETSIG(sa, SIGCHLD, SIG_DFL, SA_RESTART);
 			if ((pid = fork()) < 0) {
   				initlog(L_VB, "cannot fork: %s",
@@ -1729,6 +1747,8 @@ int read_level(int arg)
 	}
 
 	/* Store both the old and the new runlevel. */
+	wrote_utmp_rlevel = 0;
+	wrote_wtmp_rlevel = 0;
 	write_utmp_wtmp("runlevel", "~~", foo + 256*runlevel, RUN_LVL, "~");
 	thislevel = foo;
 	prevlevel = runlevel;
@@ -1929,6 +1949,25 @@ void re_exec(void)
 	initlog(L_CO, "Attempt to re-exec failed");
 }
 
+/*
+ *	Redo utmp/wtmp entries if required or requested
+ *	Check for written records and size of utmp
+ */
+static
+void redo_utmp_wtmp(void)
+{
+	struct stat ustat;
+	const int ret = stat(UTMP_FILE, &ustat);
+
+	if ((ret < 0) || (ustat.st_size == 0))
+		wrote_utmp_rlevel = wrote_utmp_reboot = 0;
+
+	if ((wrote_wtmp_reboot == 0) || (wrote_utmp_reboot == 0))
+		write_utmp_wtmp("reboot", "~~", 0, BOOT_TIME, "~");
+
+	if ((wrote_wtmp_rlevel == 0) || (wrote_wtmp_rlevel == 0))
+		write_utmp_wtmp("runlevel", "~~", thislevel + 256 * prevlevel, RUN_LVL, "~");
+}
 
 /*
  *	We got a change runlevel request through the
@@ -1960,6 +1999,7 @@ void fifo_new_level(int level)
 			if (oldlevel != 'S' && runlevel == 'S') console_stty();
 			if (runlevel == '6' || runlevel == '0' ||
 			    runlevel == '1') console_stty();
+			if (runlevel  > '1' && runlevel  < '6') redo_utmp_wtmp();
 			read_inittab();
 			fail_cancel();
 			setproctitle("init [%c]", runlevel);
@@ -2243,6 +2283,8 @@ void boot_transitions()
 	}
 	if (loglevel > 0) {
 		initlog(L_VB, "Entering runlevel: %c", runlevel);
+		wrote_utmp_rlevel = 0;
+		wrote_wtmp_rlevel = 0;
 		write_utmp_wtmp("runlevel", "~~", runlevel + 256 * oldlevel, RUN_LVL, "~");
 		thislevel = runlevel;
 		prevlevel = oldlevel;
@@ -2421,6 +2463,7 @@ int init_main()
   console_init();
 
   if (!reload) {
+	int fd;
 
   	/* Close whatever files are open, and reset the console. */
 	close(0);
@@ -2438,7 +2481,8 @@ int init_main()
 	 *	Initialize /var/run/utmp (only works if /var is on
 	 *	root and mounted rw)
 	 */
-  	(void) close(open(UTMP_FILE, O_WRONLY|O_CREAT|O_TRUNC, 0644));
+	if ((fd = open(UTMP_FILE, O_WRONLY|O_CREAT|O_TRUNC, 0644)) >= 0)
+		close(fd);
 
   	/*
 	 *	Say hello to the world

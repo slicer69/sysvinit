@@ -64,7 +64,7 @@ endif
 
 
 # Additional libs for GNU libc.
-ifneq ($(wildcard /usr/lib/libcrypt.a),)
+ifneq ($(wildcard /usr/lib*/libcrypt.a),)
 LCRYPT		= -lcrypt
 endif
 

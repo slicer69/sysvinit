@@ -66,6 +66,12 @@ char *line)			/* Which line is this */
 	struct timeval tv;
 	
 	/*
+	 *	Can't do much if WTMP_FILE is not present or not writable.
+	 */
+	if (access(WTMP_FILE, W_OK) < 0)
+		return;
+
+	/*
 	 *	Try to open the wtmp file. Note that we even try
 	 *	this if we have updwtmp() so we can see if the
 	 *	wtmp file is accessible.
@@ -86,6 +92,23 @@ char *line)			/* Which line is this */
 	 */
 	if (wrote_wtmp_reboot == 0 && type != BOOT_TIME)
   		write_wtmp("reboot", "~~", 0, BOOT_TIME, "~");
+
+	/*
+	 *	Note if we are going to write a runlevel record.
+	 */
+	if (type == RUN_LVL) wrote_wtmp_rlevel++;
+
+	/*
+	 *	See if we need to write a runlevel record. The reason that
+	 *	we are being so paranoid is that when we first tried to
+	 *	write the reboot record, /var was possibly not mounted
+	 *	yet. As soon as we can open WTMP we write a delayed runlevel record.
+	 */
+	if (wrote_wtmp_rlevel == 0 && type != RUN_LVL) {
+		int runlevel = thislevel;
+		int oldlevel = prevlevel;
+		write_wtmp("runlevel", "~~", runlevel + 256 * oldlevel, RUN_LVL, "~");
+	}
 #endif
 
 	/*
@@ -135,9 +158,9 @@ char *oldline)			/* Line of old utmp entry. */
 	struct timeval tv;
 
 	/*
-	 *	Can't do much if UTMP_FILE is not present.
+	 *	Can't do much if UTMP_FILE is not present or not writable.
 	 */
-	if (access(UTMP_FILE, F_OK) < 0)
+	if (access(UTMP_FILE, W_OK) < 0)
 		return;
 
 #ifdef INIT_MAIN
@@ -150,10 +173,27 @@ char *oldline)			/* Line of old utmp entry. */
 	 *	See if we need to write a reboot record. The reason that
 	 *	we are being so paranoid is that when we first tried to
 	 *	write the reboot record, /var was possibly not mounted
-	 *	yet. As soon as we can open WTMP we write a delayed boot record.
+	 *	yet. As soon as we can open UTMP we write a delayed boot record.
 	 */
 	if (wrote_utmp_reboot == 0 && type != BOOT_TIME)
   		write_utmp("reboot", "~~", 0, BOOT_TIME, "~", NULL);
+
+	/*
+	 *	Note if we are going to write a runlevel record.
+	 */
+	if (type == RUN_LVL) wrote_utmp_rlevel++;
+
+	/*
+	 *	See if we need to write a runlevel record. The reason that
+	 *	we are being so paranoid is that when we first tried to
+	 *	write the reboot record, /var was possibly not mounted
+	 *	yet. As soon as we can open UTMP we write a delayed runlevel record.
+	 */
+	if (wrote_utmp_rlevel == 0 && type != RUN_LVL) {
+		int runlevel = thislevel;
+		int oldlevel = prevlevel;
+		write_utmp("runlevel", "~~", runlevel + 256 * oldlevel, RUN_LVL, "~", NULL);
+	}
 #endif
 
 	/*

@@ -118,6 +118,10 @@ typedef struct _child_ {
 extern CHILD *family;
 extern int wrote_wtmp_reboot;
 extern int wrote_utmp_reboot;
+extern int wrote_wtmp_rlevel;
+extern int wrote_utmp_rlevel;
+extern char thislevel;
+extern char prevlevel;
 
 /* Tokens in state parser */
 #define C_VER		1
@@ -139,4 +143,6 @@ extern int wrote_utmp_reboot;
 #define D_WROTE_UTMP_REBOOT -7
 #define D_SLTIME       -8
 #define D_DIDBOOT      -9
+#define D_WROTE_WTMP_RLEVEL -16
+#define D_WROTE_UTMP_RLEVEL -17
 

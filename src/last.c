@@ -476,14 +476,14 @@ int list(struct utmp *p, time_t t, int what)
 		     strcmp(s + 1, domainname) == 0) *s = 0;
 #endif
 		if (!altlist) {
-			snprintf(final, sizeof(final),
+			len = snprintf(final, sizeof(final),
 				fulltime ?
 				"%-8.8s %-12.12s %-16.16s %-24.24s %-26.26s %-12.12s\n" :
 				"%-8.8s %-12.12s %-16.16s %-16.16s %-7.7s %-12.12s\n",
 				p->ut_name, utline,
 				domain, logintime, logouttime, length);
 		} else {
-			snprintf(final, sizeof(final), 
+			len = snprintf(final, sizeof(final), 
 				fulltime ?
 				"%-8.8s %-12.12s %-24.24s %-26.26s %-12.12s %s\n" :
 				"%-8.8s %-12.12s %-16.16s %-7.7s %-12.12s %s\n",
@@ -491,12 +491,18 @@ int list(struct utmp *p, time_t t, int what)
 				logintime, logouttime, length, domain);
 		}
 	} else
-		snprintf(final, sizeof(final),
+		len = snprintf(final, sizeof(final),
 			fulltime ?
 			"%-8.8s %-12.12s %-24.24s %-26.26s %-12.12s\n" :
 			"%-8.8s %-12.12s %-16.16s %-7.7s %-12.12s\n",
 			p->ut_name, utline,
 			logintime, logouttime, length);
+
+#if defined(__GLIBC__)
+#  if (__GLIBC__ == 2) && (__GLIBC_MINOR__ == 0)
+	final[sizeof(final)-1] = '\0';
+#  endif
+#endif
 
 	/*
 	 *	Print out "final" string safely.
@@ -507,6 +513,9 @@ int list(struct utmp *p, time_t t, int what)
 		else
 			putchar('*');
 	}
+
+	if (len < 0 || len >= sizeof(final))
+		putchar('\n');
 
 	recsdone++;
 	if (maxrecs && recsdone >= maxrecs)

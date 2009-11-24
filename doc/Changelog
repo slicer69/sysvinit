@@ -1,15 +1,6 @@
-  * Add the comment from Andrea Arcangeli about the correct
-    place of setting the default childhandler within spawn().
-  * Make sure that newline is printed out for last(1) even
-    if an utmp record entry is truncated.
-  * Check if utmp not only exists but also is writable and delay
-    writing out of the utmp runlevel record if utmp is not writable.
-  * Be able to find libcrypt also on 64 bit based architectures.
-
- -- Werner Fink <werner@suse.de>  Tue, 24 Nov 2009 11:04:48 +0100
-
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
+  [ Petter Reinholdtsen ]
   * Mention new home on Savannah in README.
   * Revert change from Fedora/RedHat where the now obsolete command
     INIT_CMD_CHANGECONS was introduced.  Based on feedback and patch
@@ -36,6 +27,15 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     find a usable pty.  Patch from Rob Leslie via Debian.
   * Make sure bootlogd fflush() every line, even if asked not to flush
     to disk using fdatasync().  Patch from Scott Gifford via Debian.
+
+  [ Werner Fink ]
+  * Add the comment from Andrea Arcangeli about the correct
+    place of setting the default childhandler within spawn().
+  * Make sure that newline is printed out for last(1) even
+    if an utmp record entry is truncated.
+  * Check if utmp not only exists but also is writable and delay
+    writing out of the utmp runlevel record if utmp is not writable.
+  * Be able to find libcrypt also on 64 bit based architectures.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

@@ -1,3 +1,13 @@
+  * Add the comment from Andrea Arcangeli about the correct
+    place of setting the default childhandler within spawn().
+  * Make sure that newline is printed out for last(1) even
+    if an utmp record entry is truncated.
+  * Check if utmp not only exists but also is writable and delay
+    writing out of the utmp runlevel record if utmp is not writable.
+  * Be able to find libcrypt also on 64 bit based architectures.
+
+ -- Werner Fink <werner@suse.de>  Tue, 24 Nov 2009 11:04:48 +0100
+
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
   * Mention new home on Savannah in README.

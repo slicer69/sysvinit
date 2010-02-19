@@ -35,7 +35,7 @@
 #define SHELL		"/bin/sh"		/* Default shell */
 #define SULOGIN		"/sbin/sulogin"		/* Sulogin */
 #define INITSCRIPT	"/etc/initscript"	/* Initscript. */
-#define PWRSTAT		"/etc/powerstatus"	/* COMPAT: SIGPWR reason (OK/BAD) */
+#define PWRSTAT		"/var/run/powerstatus"	/* COMPAT: SIGPWR reason (OK/BAD) */
 
 #if 0
 #define INITLVL		"/etc/initrunlvl"	/* COMPAT: New runlevel */

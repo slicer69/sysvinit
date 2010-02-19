@@ -1,3 +1,11 @@
+  [ Werner Fink ]
+  * Add option -w to the last command to display the full user and
+    domain names in the output.  Patch from Petr Lautrbach.
+  * Add a manual page for utmpdump as this tool is sometimes
+    very useful even if not intended for normal use.
+  * Use paths.h macros for wall
+  * Change path "/etc/powerstatus" to "/var/run/powerstatus"
+
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
   [ Petter Reinholdtsen ]

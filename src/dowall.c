@@ -36,6 +36,14 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <setjmp.h>
+#include <paths.h>
+
+#ifndef _PATH_DEV
+# define _PATH_DEV	"/dev/"
+#endif
+#ifndef HOST_NAME_MAX
+# define HOST_NAME_MAX	255
+#endif
 
 static sigjmp_buf jbuf;
 
@@ -88,9 +96,14 @@ static void getuidtty(char **userp, char **ttyp)
 		}
 
 		if ((tty = ttyname(0)) != NULL) {
-			if (strncmp(tty, "/dev/", 5) == 0)
-				tty += 5;
-			sprintf(ttynm, "(%.28s) ", tty);	
+			const size_t plen = strlen(_PATH_DEV);
+			if (strncmp(tty, _PATH_DEV, plen) == 0) {
+				tty += plen;
+				if (tty[0] == '/')
+					tty++;
+			}
+			snprintf(ttynm, sizeof(ttynm), "(%.*s) ",
+				 UT_LINESIZE, tty);
 		} else
 			ttynm[0] = 0;
 		init++;
@@ -138,9 +151,9 @@ void wall(const char *text, int remote)
 	struct sigaction	sa;
 	struct utmp		*utmp;
 	time_t			t;
-	char			term[UT_LINESIZE+6];
+	char			term[UT_LINESIZE+ strlen(_PATH_DEV) + 1];
 	char			line[81];
-	char                    hostname[256]; /* HOST_NAME_MAX+1 */
+	char			hostname[HOST_NAME_MAX+1];
 	char			*date, *p;
 	char			*user, *tty;
 	int			fd, flags;
@@ -198,11 +211,11 @@ void wall(const char *text, int remote)
 	while ((utmp = getutent()) != NULL) {
 		if(utmp->ut_type != USER_PROCESS ||
 		   utmp->ut_user[0] == 0) continue;
-		if (strncmp(utmp->ut_line, "/dev/", 5) == 0) {
+		if (strncmp(utmp->ut_line, _PATH_DEV, strlen(_PATH_DEV)) == 0) {
 			term[0] = 0;
 			strncat(term, utmp->ut_line, sizeof(term)-1);
 		} else
-			snprintf(term, sizeof(term), "/dev/%.*s",
+			snprintf(term, sizeof(term), _PATH_DEV "%.*s",
 				UT_LINESIZE, utmp->ut_line);
 		if (strstr(term, "/../")) continue;
 

@@ -29,7 +29,7 @@ last, lastb \- show listing of last logged in users
 .RB [ \-R ]
 .RB [ \-\fInum\fP ]
 .RB "[ \-\fBn\fP \fInum\fP ]"
-.RB [ \-adFiox ]
+.RB [ \-adFiowx ]
 .RB "[ \-\fBf\fP \fIfile\fP ]"
 .RB "[ \-\fBt\fP \fIYYYYMMDDHHMMSS\fP ]"
 .RI [ name... ]
@@ -40,7 +40,7 @@ last, lastb \- show listing of last logged in users
 .RB [ \-\fInum\fP ]
 .RB "[ \-\fBn\fP \fInum\fP ]"
 .RB "[ \-\fBf\fP \fIfile\fP ]"
-.RB [ \-adFiox ]
+.RB [ \-adFiowx ]
 .RI [ name... ]
 .RI [ tty... ]
 .\"}}}
@@ -95,6 +95,8 @@ This option is like \fB-d\fP in that it displays the IP number of the remote
 host, but it displays the IP number in numbers-and-dots notation.
 .IP \fB\-o\fP
 Read an old-type wtmp file (written by linux-libc5 applications).
+.IP \fB\-w\fP
+Display full user and domain names in the output.
 .IP \fB\-x\fP
 Display the system shutdown entries and run level changes.
 .\"}}}

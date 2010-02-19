@@ -26,7 +26,7 @@ ifeq ($(DISTRO),)
 BIN	+= mountpoint
 SBIN	+= sulogin bootlogd
 USRBIN	+= utmpdump wall
-MAN1	+= mountpoint.1 wall.1
+MAN1	+= utmpdump.1 mountpoint.1 wall.1
 MAN8	+= sulogin.8 bootlogd.8
 endif
 
@@ -40,6 +40,14 @@ endif
 ifeq ($(DISTRO),Owl)
 USRBIN	+= wall
 MAN1	+= wall.1
+endif
+
+ifeq ($(DISTRO),SuSE)
+BIN	+= mountpoint
+SBIN	+= sulogin
+USRBIN	+= utmpdump
+MAN1	+= utmpdump.1 mountpoint.1
+MAN8	+= sulogin.8
 endif
 
 BIN_OWNER	= root
@@ -60,8 +68,6 @@ else
   INIT_SELIBS=
   SULOGIN_SELIBS=
 endif
-
-
 
 # Additional libs for GNU libc.
 ifneq ($(wildcard /usr/lib*/libcrypt.a),)

@@ -80,6 +80,8 @@ int altlist = 0;	/* Show hostname at the end. */
 int usedns = 0;		/* Use DNS to lookup the hostname. */
 int useip = 0;		/* Print IP address in number format */
 int fulltime = 0;	/* Print full dates and times */
+int name_len = 8;	/* Default print 8 characters of name */
+int domain_len = 16;	/* Default print 16 characters of domain */
 int oldfmt = 0;		/* Use old libc5 format? */
 char **show = NULL;	/* What do they want us to show */
 char *ufile;		/* Filename of this file */
@@ -368,7 +370,7 @@ int list(struct utmp *p, time_t t, int what)
 	char		logintime[32];
 	char		logouttime[32];
 	char		length[32];
-	char		final[128];
+	char		final[512];
 	char		utline[UT_LINESIZE+1];
 	char		domain[256];
 	char		*s, **walk;
@@ -478,24 +480,24 @@ int list(struct utmp *p, time_t t, int what)
 		if (!altlist) {
 			len = snprintf(final, sizeof(final),
 				fulltime ?
-				"%-8.8s %-12.12s %-16.16s %-24.24s %-26.26s %-12.12s\n" :
-				"%-8.8s %-12.12s %-16.16s %-16.16s %-7.7s %-12.12s\n",
-				p->ut_name, utline,
-				domain, logintime, logouttime, length);
+				"%-8.*s %-12.12s %-16.*s %-24.24s %-26.26s %-12.12s\n" :
+				"%-8.*s %-12.12s %-16.*s %-16.16s %-7.7s %-12.12s\n",
+				name_len, p->ut_name, utline,
+				domain_len, domain, logintime, logouttime, length);
 		} else {
 			len = snprintf(final, sizeof(final), 
 				fulltime ?
-				"%-8.8s %-12.12s %-24.24s %-26.26s %-12.12s %s\n" :
-				"%-8.8s %-12.12s %-16.16s %-7.7s %-12.12s %s\n",
-				p->ut_name, utline,
+				"%-8.*s %-12.12s %-24.24s %-26.26s %-12.12s %s\n" :
+				"%-8.*s %-12.12s %-16.16s %-7.7s %-12.12s %s\n",
+				name_len, p->ut_name, utline,
 				logintime, logouttime, length, domain);
 		}
 	} else
 		len = snprintf(final, sizeof(final),
 			fulltime ?
-			"%-8.8s %-12.12s %-24.24s %-26.26s %-12.12s\n" :
-			"%-8.8s %-12.12s %-16.16s %-7.7s %-12.12s\n",
-			p->ut_name, utline,
+			"%-8.*s %-12.12s %-24.24s %-26.26s %-12.12s\n" :
+			"%-8.*s %-12.12s %-16.16s %-7.7s %-12.12s\n",
+			name_len, p->ut_name, utline,
 			logintime, logouttime, length);
 
 #if defined(__GLIBC__)
@@ -514,7 +516,7 @@ int list(struct utmp *p, time_t t, int what)
 			putchar('*');
 	}
 
-	if (len < 0 || len >= sizeof(final))
+	if (len < 0 || (size_t)len >= sizeof(final))
 		putchar('\n');
 
 	recsdone++;
@@ -532,7 +534,7 @@ void usage(char *s)
 {
 	fprintf(stderr, "Usage: %s [-num | -n num] [-f file] "
 			"[-t YYYYMMDDHHMMSS] "
-			"[-R] [-adioxF] [username..] [tty..]\n", s);
+			"[-R] [-adioxFw] [username..] [tty..]\n", s);
 	exit(1);
 }
 
@@ -603,7 +605,7 @@ int main(int argc, char **argv)
   progname = mybasename(argv[0]);
 
   /* Process the arguments. */
-  while((c = getopt(argc, argv, "f:n:RxadFiot:0123456789")) != EOF)
+  while((c = getopt(argc, argv, "f:n:RxadFiot:0123456789w")) != EOF)
     switch(c) {
 	case 'R':
 		showhost = 0;
@@ -643,6 +645,12 @@ int main(int argc, char **argv)
 				progname, optarg);
 			usage(progname);
 		}
+		break;
+	case 'w':
+		if (UT_NAMESIZE > name_len)
+			name_len = UT_NAMESIZE;
+		if (UT_HOSTSIZE > domain_len)
+			domain_len = UT_HOSTSIZE;
 		break;
 	case '0': case '1': case '2': case '3': case '4':
 	case '5': case '6': case '7': case '8': case '9':

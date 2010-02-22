@@ -5,6 +5,10 @@
     very useful even if not intended for normal use.
   * Use paths.h macros for wall
   * Change path "/etc/powerstatus" to "/var/run/powerstatus"
+  * Detected also removable block devices at halt/reboot to be able
+    to flush data and send them the ATA standby command.  This should
+    avoid data loss on USB sticks and other removable block devices.
+  * Flush block devices on halt/reboot if not done by the kernel.
 
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 

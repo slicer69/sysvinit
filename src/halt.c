@@ -270,6 +270,8 @@ int main(int argc, char **argv)
 
 	if (do_hddown)
 		(void)hddown();
+	else
+		(void)hdflush();
 
 	if (do_nothing) exit(0);
 

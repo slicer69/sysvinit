@@ -36,9 +36,12 @@ char *v_hddown = "@(#)hddown.c  1.02  22-Apr-2003  miquels@cistron.nl";
 
 #include <sys/ioctl.h>
 #include <linux/hdreg.h>
+#include <linux/fs.h>
 
-#define USE_SYSFS
-#ifdef USE_SYSFS
+#ifndef USE_SYSFS
+# define USE_SYSFS	1
+#endif
+#if defined(USE_SYSFS) && (USE_SYSFS == 1)
 /*
  * sysfs part	Find all disks on the system, list out IDE and unmanaged
  *		SATA disks, flush the cache of those and shut them down.
@@ -63,10 +66,13 @@ char *v_hddown = "@(#)hddown.c  1.02  22-Apr-2003  miquels@cistron.nl";
 #define MASK_EXT	0xE000		/* Bit 15 shall be zero, bit 14 shall be one, bit 13 flush cache ext */
 #define TEST_EXT	0x6000
 
-/* Maybe set in list_disks() and used in do_standby_idedisk() */
+/* Maybe set in list_disks() and used in do_standby_disk() */
 #define DISK_IS_IDE	0x00000001
 #define DISK_IS_SATA	0x00000002
 #define DISK_EXTFLUSH	0x00000004
+#define DISK_REMOVABLE	0x00000008
+#define DISK_MANAGED	0x00000010
+#define DISK_FLUSHONLY	0x00000020
 
 static char *strstrip(char *str);
 static FILE *hdopen(const char* const format, const char* const name);
@@ -80,10 +86,9 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 	struct dirent *d;
 
 	while ((d = readdir(blk))) {
-		*flags = 0;
+		(*flags) = 0;
 		if (d->d_name[1] == 'd' && (d->d_name[0] == 'h' || d->d_name[0] == 's')) {
 			char buf[NAME_MAX+1], lnk[NAME_MAX+1], *ptr;
-			struct stat st;
 			FILE *fp;
 			int ret;
 
@@ -98,9 +103,12 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			fclose(fp);
 
 			if (ret != '0')
-				continue;		/* not a hard disk */
+				(*flags) |= DISK_REMOVABLE;
 
 			if (d->d_name[0] == 'h') {
+				if ((*flags) & DISK_REMOVABLE)
+					continue;	/* not a hard disk */
+
 				(*flags) |= DISK_IS_IDE;
 				if ((ret = flush_cache_ext(d->d_name))) {
 					if (ret < 0)
@@ -128,16 +136,19 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			if (!ptr || !*ptr)
 				continue;		/* should not happen */
 
-			ret = snprintf(buf, sizeof(buf), SYS_CLASS "/%s/manage_start_stop", ptr);
-			if ((ret >= (int)sizeof(buf)) || (ret < 0))
-				goto empty;		/* error */
+			fp = hdopen(SYS_CLASS "/%s/manage_start_stop", ptr);
+			if ((long)fp <= 0) {
+				if ((long)fp < 0)
+					goto empty;	/* error */
+			} else {
+				ret = getc(fp);
+				fclose(fp);
 
-			ret = stat(buf, &st);
-			if (ret == 0)
-				continue;		/* disk found but managed by kernel */
-
-			if (errno != ENOENT)
-				goto empty;		/* error */
+				if (ret != '0') {
+					(*flags) |= DISK_MANAGED;
+					continue;
+				}
+			}
 
 			fp = hdopen(SYS_BLK "/%s/device/vendor", d->d_name);
 			if ((long)fp <= 0) {
@@ -155,16 +166,28 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			if (*ptr == '\0')
 				continue;		/* should not happen */
 
-			if (strncmp(buf, "ATA", sizeof(buf)))
-				continue;		/* no SATA but a real SCSI disk */
+			if (strncmp(buf, "ATA", sizeof(buf)) == 0) {
+				if ((*flags) & DISK_REMOVABLE)
+					continue;	/* not a hard disk */
 
-			(*flags) |= (DISK_IS_IDE|DISK_IS_SATA);
+				(*flags) |= (DISK_IS_IDE|DISK_IS_SATA);
+				if ((ret = flush_cache_ext(d->d_name))) {
+					if (ret < 0)
+						goto empty;
+					(*flags) |= DISK_EXTFLUSH;
+				}
+				break;			/* new SATA disk to shutdown, out here */
+			}
+
+			if (((*flags) & DISK_REMOVABLE) == 0)
+				continue;		/* Seems to be a real SCSI disk */
+
 			if ((ret = flush_cache_ext(d->d_name))) {
 				if (ret < 0)
 					goto empty;
 				(*flags) |= DISK_EXTFLUSH;
 			}
-			break;				/* new SATA disk to shutdown, out here */
+			break;				/* Removable disk like USB stick to shutdown */
 		}
 	}
 	if (d == (struct dirent*)0)
@@ -175,10 +198,10 @@ empty:
 }
 
 /*
- *	Put an disk in standby mode.
+ *	Put an IDE/SCSI/SATA disk in standby mode.
  *	Code stolen from hdparm.c
  */
-static int do_standby_idedisk(char *device, unsigned int flags)
+static int do_standby_disk(char *device, unsigned int flags)
 {
 #ifndef WIN_STANDBYNOW1
 #define WIN_STANDBYNOW1		0xE0
@@ -203,21 +226,25 @@ static int do_standby_idedisk(char *device, unsigned int flags)
 	if ((ret >= (int)sizeof(buf)) || (ret < 0))
 		return -1;
 
-	if ((fd = open(buf, O_RDWR)) < 0)
+	if ((fd = open(buf, O_RDWR|O_NONBLOCK)) < 0)
 		return -1;
 
 	switch (flags & DISK_EXTFLUSH) {
 	case DISK_EXTFLUSH:
-		if (ioctl(fd, HDIO_DRIVE_CMD, &flush1) == 0)
+		if ((ret = ioctl(fd, HDIO_DRIVE_CMD, &flush1)) == 0)
 			break;
 		/* Extend flush rejected, try standard flush */
 	default:
-		ioctl(fd, HDIO_DRIVE_CMD, &flush2);
+		ret = ioctl(fd, HDIO_DRIVE_CMD, &flush2) &&
+		      ioctl(fd, BLKFLSBUF);
 		break;
 	}
 
-	ret = ioctl(fd, HDIO_DRIVE_CMD, &stdby1) &&
-	      ioctl(fd, HDIO_DRIVE_CMD, &stdby2);
+	if ((flags & DISK_FLUSHONLY) == 0x0) {
+		ret = ioctl(fd, HDIO_DRIVE_CMD, &stdby1) &&
+		      ioctl(fd, HDIO_DRIVE_CMD, &stdby2);
+	}
+
 	close(fd);
 
 	if (ret)
@@ -240,7 +267,25 @@ int hddown(void)
 		return -1;
 
 	while ((disk = list_disks(blk, &flags)))
-		do_standby_idedisk(disk, flags);
+		do_standby_disk(disk, flags);
+
+	return closedir(blk);
+}
+
+/*
+ *	List all disks and cause them to flush their buffers.
+ */
+int hdflush(void)
+{
+	unsigned int flags;
+	char *disk;
+	DIR *blk;
+
+	if ((blk = opendir(SYS_BLK)) == (DIR*)0)
+		return -1;
+
+	while ((disk = list_disks(blk, &flags)))
+		do_standby_disk(disk, (flags|DISK_FLUSHONLY));
 
 	return closedir(blk);
 }
@@ -493,10 +538,21 @@ int hddown(void)
 
 	return (result1 ? result1 : result2);
 }
+
+int hdflush(void)
+{
+	return 0;
+}
+
 #endif /* ! USE_SYSFS */
 #else /* __linux__ */
 
 int hddown(void)
+{
+	return 0;
+}
+
+int hdflush(void)
 {
 	return 0;
 }

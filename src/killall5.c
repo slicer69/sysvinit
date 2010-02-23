@@ -737,7 +737,8 @@ PIDQ_HEAD *pidof(char *prog)
 			char exe [PATH_MAX+1];
 			char path[PATH_MAX+1];
 			int len;
-
+			if (!p->nfs)
+				continue;
 			snprintf(exe, sizeof(exe), "/proc/%d/exe", p->pid);
 			if ((len = readlink(exe, path, PATH_MAX)) < 0)
 				    continue;

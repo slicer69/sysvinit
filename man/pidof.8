@@ -22,11 +22,12 @@ pidof -- find the process ID of a running program.
 .B pidof
 .RB [ \-s ]
 .RB [ \-c ]
+.RB [ \-n ]
 .RB [ \-x ]
 .RB [ \-o
-.IR omitpid ]
+.IR omitpid[,omitpid..] ]
 .RB [ \-o
-.IR omitpid.. ]
+.IR omitpid[,omitpid..].. ]
 .B program
 .RB [ program.. ]
 .SH DESCRIPTION
@@ -40,13 +41,22 @@ a
 .B start-stop-daemon
 (8) program that should be used instead.
 .SH OPTIONS
-.IP -s
+.IP \-s
 Single shot - this instructs the program to only return one \fIpid\fP.
-.IP -c
+.IP \-c
 Only return process ids that are running with the same root directory.
 This option is ignored for non-root users, as they will be unable to check
 the current root directory of processes they do not own.
-.IP -x
+.IP \-n
+Avoid
+.BR stat (2)
+system function call on all binaries which are located on network
+based file systems like
+.BR NFS .
+Instead of using this option the the variable
+.B PIDOF_NETFS
+may be set and exported.
+.IP \-x
 Scripts too - this causes the program to also return process id's of
 shells running the named scripts.
 .IP "-o \fIomitpid\fP"

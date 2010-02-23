@@ -19,6 +19,10 @@
  *		- syslog() only if not a connected to controlling terminal
  *		- swapped out programs pids are caught now
  *
+ *		Werner Fink
+ *		- make omit dynamic
+ *		- provide '-n' to skip stat(2) syscall on network based FS
+ *
  *		This file is part of the sysvinit suite,
  *		Copyright (C) 1991-2004 Miquel van Smoorenburg.
  *
@@ -36,24 +40,27 @@
  *		along with this program; if not, write to the Free Software
  *		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include <sys/types.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <signal.h>
 #include <dirent.h>
-#include <syslog.h>
+#include <errno.h>
 #include <getopt.h>
+#include <mntent.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+#include <syslog.h>
 #include <sys/mman.h>
+#include <sys/param.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 char *Version = "@(#)killall5 2.86 31-Jul-2004 miquels@cistron.nl";
 
 #define STATNAMELEN	15
+#define DO_NETFS 2
 #define DO_STAT 1
 #define NO_STAT 0
 
@@ -67,8 +74,9 @@ typedef struct proc {
 	ino_t ino;		/* Inode number			  */
 	dev_t dev;		/* Device it is on		  */
 	pid_t pid;		/* Process ID.			  */
-	int sid;		/* Session ID.			  */
-	int kernel;		/* Kernel thread or zombie.	  */
+	pid_t sid;		/* Session ID.			  */
+	char kernel;		/* Kernel thread or zombie.	  */
+	char nfs;		/* Name found on network FS.	  */
 	struct proc *next;	/* Pointer to next struct. 	  */
 } PROC;
 
@@ -85,8 +93,37 @@ typedef struct {
 	PIDQ		*next;
 } PIDQ_HEAD;
 
+typedef struct _s_omit {
+	struct _s_omit *next;
+	struct _s_omit *prev;
+	pid_t pid;
+} OMIT;
+
+typedef struct _s_shadow
+{
+	struct _s_shadow *next;
+	struct _s_shadow *prev;
+	size_t nlen;
+	char * name;
+} SHADOW;
+
+typedef struct _s_nfs
+{
+	struct _s_nfs *next;	/* Pointer to next struct. */
+	struct _s_nfs *prev;	/* Pointer to previous st. */
+	SHADOW *shadow;		/* Pointer to shadows      */
+	char * name;
+	size_t nlen;
+} NFS;
+
 /* List of processes. */
 PROC *plist;
+
+/* List of processes to omit. */
+OMIT *omit;
+
+/* List of NFS mountes partitions. */
+NFS *nlist;
 
 /* Did we stop all processes ? */
 int sent_sigstop;
@@ -99,10 +136,23 @@ __attribute__ ((format (printf, 2, 3)))
 #endif
 void nsyslog(int pri, char *fmt, ...);
 
+#if !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199901L)
+# ifndef  inline
+#  define inline	__inline__
+# endif
+# ifndef  restrict
+#  define restrict	__restrict__
+# endif
+#endif
+#define alignof(type)	((sizeof(type)+(sizeof(void*)-1)) & ~(sizeof(void*)-1))
+
 /*
  *	Malloc space, barf if out of memory.
  */
-void *xmalloc(int bytes)
+#ifdef __GNUC__
+static void *xmalloc(size_t) __attribute__ ((__malloc__));
+#endif
+static void *xmalloc(size_t bytes)
 {
 	void *p;
 
@@ -112,6 +162,18 @@ void *xmalloc(int bytes)
 		exit(1);
 	}
 	return p;
+}
+
+#ifdef __GNUC__
+static inline void xmemalign(void **, size_t, size_t) __attribute__ ((__nonnull__ (1)));
+#endif
+static inline void xmemalign(void **memptr, size_t alignment, size_t size)
+{
+	if ((posix_memalign(memptr, alignment, size)) < 0) {
+		if (sent_sigstop) kill(-1, SIGCONT);
+		nsyslog(LOG_ERR, "out of memory");
+		exit(1);
+	}
 }
 
 /*
@@ -164,6 +226,212 @@ int mount_proc(void)
 	return did_mount;
 }
 
+static inline int isnetfs(const char * type)
+{
+	static const char* netfs[] = {"nfs", "nfs4", "smbfs", "cifs", "afs", "ncpfs", (char*)0};
+	int n;
+	for (n = 0; netfs[n]; n++) {
+		if (!strcasecmp(netfs[n], type))
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ *     Remember all NFS typed partitions.
+ */
+void init_nfs(void)
+{
+        struct stat st;
+        struct mntent * ent;
+	FILE * mnt;
+ 
+	nlist = (NFS*)0;
+ 
+	if (stat("/proc/version", &st) < 0)
+		return;
+	if ((mnt = setmntent("/proc/mounts", "r")) == (FILE*)0)
+		return;
+ 
+	while ((ent = getmntent(mnt))) {
+		if (isnetfs(ent->mnt_type)) {
+			size_t nlen = strlen(ent->mnt_dir);
+			NFS *restrict p;
+			xmemalign((void*)&p, sizeof(void*), alignof(NFS)+(nlen+1));
+			p->name = ((char*)p)+alignof(NFS);
+			p->nlen = nlen;
+			p->shadow = (SHADOW*)0;
+ 
+			strcpy(p->name, ent->mnt_dir);
+			if (nlist)
+				nlist->prev = p;
+			p->next = nlist;
+			p->prev = (NFS*)0;
+			nlist = p;
+		}
+	}
+	endmntent(mnt);
+ 
+	if ((mnt = setmntent("/proc/mounts", "r")) == (FILE*)0)
+		return;
+ 
+	while ((ent = getmntent(mnt))) {
+		NFS *p;
+ 
+		for (p = nlist; p; p = p->next) {
+			SHADOW * restrict s;
+			size_t nlen;
+ 
+			if (strcmp(ent->mnt_dir, p->name) == 0)
+				continue;
+			if (strncmp(ent->mnt_dir, p->name, p->nlen) != 0)
+				continue;
+ 
+			nlen = strlen(ent->mnt_dir);
+			xmemalign((void*)&s, sizeof(void*), alignof(SHADOW)+(nlen+1));
+			s->name = ((char*)s)+alignof(SHADOW);
+			s->nlen = nlen;
+ 
+			strcpy(s->name, ent->mnt_dir);
+			if (p->shadow)
+			    p->shadow->prev = s;
+			s->next = p->shadow;
+			s->prev = (SHADOW*)0;
+			p->shadow = s;
+		}
+	}
+	endmntent(mnt);
+}
+
+static void clear_shadow(SHADOW *restrict shadow)
+{
+	SHADOW *s, *n, *l;
+ 
+	n = shadow;
+	l = (SHADOW*)0;
+	for (s = shadow; n; s = n) {
+		l = s->prev;
+		n = s->next;
+		if (s == shadow) {
+			if (n) n->prev = (SHADOW*)0;
+			shadow = n;
+		} else if (l) {
+			if (n) n->prev = l;
+			l->next = n;
+		}
+		free(s);
+	}
+}
+
+static void clear_mnt(void)
+{
+	NFS *p, *n, *l;
+ 
+	n = nlist;
+	l = (NFS*)0;
+	for (p = nlist; n; p = n) {
+		l = p->prev;
+		n = p->next;
+		if (p == nlist) {
+			if (n) n->prev = (NFS*)0;
+			nlist = n;
+		} else if (l) {
+			if (n) n->prev = l;
+			l->next = n;
+		}
+		if (p->shadow)
+			clear_shadow(p->shadow);
+		free(p);
+	}
+}
+
+/*
+ *     Check if path is ia shadow off a NFS partition.
+ */
+static int shadow(SHADOW *restrict this, const char *restrict name, const size_t nlen)
+{
+	SHADOW *s;
+ 
+	if (!this)
+		goto out;
+	for (s = this; s; s = s->next) {
+		if (nlen < s->nlen)
+			continue;
+		if (name[s->nlen] != '\0' && name[s->nlen] != '/')
+			continue;
+		if (strncmp(name, s->name, s->nlen) == 0)
+			return 1;
+	}
+out:
+	return 0;
+}
+
+/*
+ *     Check path is located on a network based partition.
+ */
+int check4nfs(const char * path, char * real)
+{
+	char buf[PATH_MAX+1];
+	const char *curr;
+	int deep = MAXSYMLINKS;
+ 
+	if (!nlist) return 0;
+ 
+	curr = path;
+	do {
+		const char *prev;
+		int len;
+ 
+		if ((prev = strdupa(curr)) == NULL) {
+			nsyslog(LOG_ERR, "strdupa(): %s\n", strerror(errno));
+			return 0;
+		}
+ 
+		errno = 0;
+		if ((len = readlink(curr, buf, PATH_MAX)) < 0)
+			break;
+		buf[len] = '\0';
+ 
+		if (buf[0] != '/') {
+			const char *slash;
+ 
+			if ((slash = strrchr(prev, '/'))) {
+				size_t off = slash - prev + 1;
+ 
+				if (off + len > PATH_MAX)
+					len = PATH_MAX - off;
+ 
+				memmove(&buf[off], &buf[0], len + 1);
+				memcpy(&buf[0], prev, off);
+			}
+		}
+		curr = &buf[0];
+ 
+		if (deep-- <= 0) return 0;
+ 
+	} while (1);
+ 
+	if (real) strcpy(real, curr);
+ 
+	if (errno == EINVAL) {
+		const size_t nlen = strlen(curr);
+		NFS *p;
+		for (p = nlist; p; p = p->next) {
+			if (nlen < p->nlen)
+				continue;
+			if (curr[p->nlen] != '\0' && curr[p->nlen] != '/')
+				continue;
+			if (!strncmp(curr, p->name, p->nlen)) {
+				if (shadow(p->shadow, curr, nlen))
+					continue;
+				return 1;
+			}
+		}
+	}
+ 
+	return 0;
+}
+
 int readarg(FILE *fp, char *buf, int sz)
 {
 	int		c = 0, f = 0;
@@ -208,6 +476,7 @@ int readproc(int do_stat)
 		n = p->next;
 		if (p->argv0) free(p->argv0);
 		if (p->argv1) free(p->argv1);
+		if (p->statname) free(p->statname);
 		free(p);
 	}
 	plist = NULL;
@@ -242,6 +511,9 @@ int readproc(int do_stat)
 					nsyslog(LOG_ERR,
 					"can't get program name from /proc/%s\n",
 						path);
+					if (p->argv0) free(p->argv0);
+					if (p->argv1) free(p->argv1);
+					if (p->statname) free(p->statname);
 					free(p);
 					continue;
 				}
@@ -265,6 +537,9 @@ int readproc(int do_stat)
 				p->sid = 0;
 				nsyslog(LOG_ERR, "can't read sid from %s\n",
 					path);
+				if (p->argv0) free(p->argv0);
+				if (p->argv1) free(p->argv1);
+				if (p->statname) free(p->statname);
 				free(p);
 				continue;
 			}
@@ -273,6 +548,9 @@ int readproc(int do_stat)
 			fclose(fp);
 		} else {
 			/* Process disappeared.. */
+			if (p->argv0) free(p->argv0);
+			if (p->argv1) free(p->argv1);
+			if (p->statname) free(p->statname);
 			free(p);
 			continue;
 		}
@@ -317,15 +595,29 @@ int readproc(int do_stat)
 
 		} else {
 			/* Process disappeared.. */
+			if (p->argv0) free(p->argv0);
+			if (p->argv1) free(p->argv1);
+			if (p->statname) free(p->statname);
 			free(p);
 			continue;
 		}
 
 		/* Try to stat the executable. */
 		snprintf(path, sizeof(path), "/proc/%s/exe", d->d_name);
-		if (do_stat && stat(path, &st) == 0) {
+
+		p->nfs = 0;
+
+		switch (do_stat) {
+		case DO_NETFS:
+			if ((p->nfs = check4nfs(path, buf)))
+				break;
+		case DO_STAT:
+			if (stat(path, &st) != 0)
+				break;
 			p->dev = st.st_dev;
 			p->ino = st.st_ino;
+		default:
+			break;
 		}
 
 		/* Link it into the list. */
@@ -391,12 +683,28 @@ PIDQ_HEAD *pidof(char *prog)
 	PIDQ_HEAD	*q;
 	struct stat	st;
 	char		*s;
+	int		nfs = 0;
 	int		dostat = 0;
 	int		foundone = 0;
 	int		ok = 0;
+	char		real[PATH_MAX+1];
 
 	if (! prog)
 		return NULL;
+
+	/* Try to stat the executable. */
+	if (prog[0] == '/') {
+		memset(&real[0], 0, sizeof(real));
+
+		if (check4nfs(prog, real))
+			nfs++;
+
+		if (real[0] != '\0')
+			prog = &real[0];	/* Binary located on network FS. */
+
+		if ((nfs == 0) && (stat(prog, &st) == 0))
+			dostat++;		/* Binary located on a local FS. */
+	}
 
 	/* Get basename of program. */
 	if ((s = strrchr(prog, '/')) == NULL)
@@ -410,17 +718,34 @@ PIDQ_HEAD *pidof(char *prog)
 	q = (PIDQ_HEAD *)xmalloc(sizeof(PIDQ_HEAD));
 	q = init_pid_q(q);
 
-	/* Try to stat the executable. */
-	if (prog[0] == '/' && stat(prog, &st) == 0)
-		dostat++;
-
 	/* First try to find a match based on dev/ino pair. */
-	if (dostat) {
+	if (dostat && !nfs) {
 		for (p = plist; p; p = p->next) {
+			if (p->nfs)
+				continue;
 			if (p->dev == st.st_dev && p->ino == st.st_ino) {
 				add_pid_to_q(q, p);
 				foundone++;
 			}
+		}
+	}
+
+	/* Second try to find a match based on full path name on
+	 * network FS located binaries */
+	if (!foundone && nfs) {
+		for (p = plist; p; p = p->next) {
+			char exe [PATH_MAX+1];
+			char path[PATH_MAX+1];
+			int len;
+
+			snprintf(exe, sizeof(exe), "/proc/%d/exe", p->pid);
+			if ((len = readlink(exe, path, PATH_MAX)) < 0)
+				    continue;
+			path[len] = '\0';
+			if (strcmp(prog, path) != 0)
+				continue;
+			add_pid_to_q(q, p);
+			foundone++;
 		}
 	}
 
@@ -469,10 +794,22 @@ PIDQ_HEAD *pidof(char *prog)
 		     strchr(p->argv0, ' '))) {
 			ok |= (strcmp(p->statname, s) == 0);
 		}
+
+		/*
+		 *	if we have a `-' as the first character, process
+		 *	probably used as a login shell
+		 */
+		if (strlen(s) <= STATNAMELEN &&
+		    p->argv1 == NULL &&
+		    (p->argv0 != NULL &&
+		     p->argv0[0] == '-')) {
+			ok |= (strcmp(p->statname, s) == 0);
+		}
+
 		if (ok) add_pid_to_q(q, p);
 	}
 
-	 return q;
+	return q;
 }
 
 /* Give usage message and exit. */
@@ -506,8 +843,7 @@ void nsyslog(int pri, char *fmt, ...)
 
 #define PIDOF_SINGLE	0x01
 #define PIDOF_OMIT	0x02
-
-#define PIDOF_OMITSZ	5
+#define PIDOF_NETFS	0x04
 
 /*
  *	Pidof functionality.
@@ -516,19 +852,22 @@ int main_pidof(int argc, char **argv)
 {
 	PIDQ_HEAD	*q;
 	PROC		*p;
-	pid_t		opid[PIDOF_OMITSZ], spid;
+	char		*token, *here;
 	int		f;
 	int		first = 1;
-	int		i, oind, opt, flags = 0;
+	int		opt, flags = 0;
 	int		chroot_check = 0;
 	struct stat	st;
 	char		tmp[512];
 
-	for (oind = PIDOF_OMITSZ-1; oind > 0; oind--)
-		opid[oind] = 0;
+	omit = (OMIT*)0;
+	nlist = (NFS*)0;
 	opterr = 0;
 
-	while ((opt = getopt(argc,argv,"hco:sx")) != EOF) switch (opt) {
+	if ((token = getenv("PIDOF_NETFS")) && (strcmp(token,"no") != 0))
+		flags |= PIDOF_NETFS;
+
+	while ((opt = getopt(argc,argv,"hco:sxn")) != EOF) switch (opt) {
 		case '?':
 			nsyslog(LOG_ERR,"invalid options on command line!\n");
 			closelog();
@@ -537,22 +876,28 @@ int main_pidof(int argc, char **argv)
 			if (geteuid() == 0) chroot_check = 1;
 			break;
 		case 'o':
-			if (oind >= PIDOF_OMITSZ -1) {
-				nsyslog(LOG_ERR,"omit pid buffer size %d "
-					"exceeded!\n", PIDOF_OMITSZ);
-				closelog();
-				exit(1);
+			here = optarg;
+			while ((token = strsep(&here, ",;:"))) {
+				OMIT *restrict optr;
+				pid_t opid;
+
+				if (strcmp("%PPID", token) == 0)
+					opid = getppid();
+				else
+					opid = (pid_t)atoi(token);
+
+				if (opid < 1) {
+					nsyslog(LOG_ERR,
+						"illegal omit pid value "
+						"(%s)!\n", token);
+					continue;
+				}
+				xmemalign((void*)&optr, sizeof(void*), alignof(OMIT));
+				optr->next = omit;
+				optr->prev = (OMIT*)0;
+				optr->pid  = opid;
+				omit = optr;
 			}
-			if (strcmp("%PPID",optarg) == 0)
-				opid[oind] = getppid();
-			else if ((opid[oind] = atoi(optarg)) < 1) {
-				nsyslog(LOG_ERR,
-					"illegal omit pid value (%s)!\n",
-					optarg);
-				closelog();
-				exit(1);
-			}
-			oind++;
 			flags |= PIDOF_OMIT;
 			break;
 		case 's':
@@ -560,6 +905,9 @@ int main_pidof(int argc, char **argv)
 			break;
 		case 'x':
 			scripts_too++;
+			break;
+		case 'n':
+			flags |= PIDOF_NETFS;
 			break;
 		default:
 			/* Nothing */
@@ -578,21 +926,28 @@ int main_pidof(int argc, char **argv)
 		}
 	}
 
+	if (flags & PIDOF_NETFS)
+		init_nfs();		/* Which network based FS are online? */
+
 	/* Print out process-ID's one by one. */
-	readproc(DO_STAT);
+	readproc((flags & PIDOF_NETFS) ? DO_NETFS : DO_STAT);
+
 	for(f = 0; f < argc; f++) {
 		if ((q = pidof(argv[f])) != NULL) {
-			spid = 0;
+			pid_t spid = 0;
 			while ((p = get_next_from_pid_q(q))) {
-				if (flags & PIDOF_OMIT) {
-					for (i = 0; i < oind; i++)
-						if (opid[i] == p->pid)
+				if ((flags & PIDOF_OMIT) && omit) {
+					OMIT * optr;
+					for (optr = omit; optr; optr = optr->next) {
+						if (optr->pid == p->pid)
 							break;
+					}
+
 					/*
 					 *	On a match, continue with
 					 *	the for loop above.
 					 */
-					if (i < oind)
+					if (optr)
 						continue;
 				}
 				if (flags & PIDOF_SINGLE) {
@@ -620,22 +975,20 @@ int main_pidof(int argc, char **argv)
 	}
 	if (!first)
 		printf("\n");
+
+	clear_mnt();
+
 	closelog();
 	return(first ? 1 : 0);
 }
-
-
-
-#define KILLALL_OMITSZ	16
 
 /* Main for either killall or pidof. */
 int main(int argc, char **argv)
 {
 	PROC		*p;
 	int		pid, sid = -1;
-	pid_t		opid[KILLALL_OMITSZ];
-	int		i, oind, omit = 0;
 	int		sig = SIGKILL;
+	int		c;
 
 	/* return non-zero if no process was killed */
 	int		retval = 2;
@@ -654,30 +1007,34 @@ int main(int argc, char **argv)
 		return main_pidof(argc, argv);
 
 	/* Right, so we are "killall". */
-	for (oind = KILLALL_OMITSZ-1; oind > 0; oind--)
-		opid[oind] = 0;
+	omit = (OMIT*)0;
 
 	if (argc > 1) {
-		for (i = 1; i < argc; i++) {
-			if (argv[i][0] == '-') (argv[i])++;
-			if (argv[i][0] == 'o') {
-				if (++i >= argc) usage();
-				if (oind >= KILLALL_OMITSZ -1) {
-					nsyslog(LOG_ERR,"omit pid buffer size "
-						"%d exceeded!\n",
-						KILLALL_OMITSZ);
-					closelog();
-					exit(1);
+		for (c = 1; c < argc; c++) {
+			if (argv[c][0] == '-') (argv[c])++;
+			if (argv[c][0] == 'o') {
+				char * token, * here;
+
+				if (++c >= argc)
+					usage();
+
+				here = argv[c];
+				while ((token = strsep(&here, ",;:"))) {
+					OMIT *restrict optr;
+					pid_t opid = (pid_t)atoi(token);
+
+					if (opid < 1) {
+						nsyslog(LOG_ERR,
+							"illegal omit pid value "
+							"(%s)!\n", token);
+						continue;
+					}
+					xmemalign((void*)&optr, sizeof(void*), alignof(OMIT));
+					optr->next = omit;
+					optr->prev = (OMIT*)0;
+					optr->pid  = opid;
+					omit = optr;
 				}
-				if ((opid[oind] = atoi(argv[i])) < 1) {
-					nsyslog(LOG_ERR,
-						"illegal omit pid value "
-						"(%s)!\n", argv[i]);
-					closelog();
-					exit(1);
-				}
-				oind++;
-				omit = 1;
 			}
 			else if ((sig = atoi(argv[1])) <= 0 || sig > 31)
 				usage();
@@ -716,14 +1073,19 @@ int main(int argc, char **argv)
 	for (p = plist; p; p = p->next) {
 		if (p->pid == 1 || p->pid == pid || p->sid == sid || p->kernel)
 			continue;
+
 		if (omit) {
-			for (i = 0; i < oind; i++)
-				if (opid[i] == p->pid)
+			OMIT * optr;
+			for (optr = omit; optr; optr = optr->next) {
+				if (optr->pid == p->pid)
 					break;
+			}
+
 			/* On a match, continue with the for loop above. */
-			if (i < oind)
+			if (optr)
 				continue;
 		}
+
 		kill(p->pid, sig);
 		retval = 0;
 	}

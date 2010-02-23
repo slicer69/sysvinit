@@ -11,6 +11,8 @@
   * Flush block devices on halt/reboot if not done by the kernel.
   * Set SHELL to /bin/sh in the environmant of shutdown.
   * Retry to write out shutdown messages if interrupted.
+  * pidof/killall5 - make omit pid list a dynamic one.
+  * pidof - provide '-n' to skip stat(2) syscall on network based FS.
 
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 

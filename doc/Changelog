@@ -9,6 +9,8 @@
     to flush data and send them the ATA standby command.  This should
     avoid data loss on USB sticks and other removable block devices.
   * Flush block devices on halt/reboot if not done by the kernel.
+  * Set SHELL to /bin/sh in the environmant of shutdown.
+  * Retry to write out shutdown messages if interrupted.
 
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 

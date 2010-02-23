@@ -71,6 +71,7 @@ char *clean_env[] = {
 	"HOME=/",
 	"PATH=/bin:/usr/bin:/sbin:/usr/sbin",
 	"TERM=dumb",
+	"SHELL=/bin/sh",
 	NULL,
 };
 
@@ -166,22 +167,34 @@ int init_setenv(char *name, char *value)
 	sa.sa_handler = alrm_handler;
 	sigaction(SIGALRM, &sa, NULL);
 	got_alrm = 0;
-        alarm(3);
-        if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0 &&
-            write(fd, &request, sizeof(request)) == sizeof(request)) {
-                close(fd);
-                alarm(0);
-                return 0;
-        }
+	alarm(3);
+	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) { &&
+		ssize_t p = 0;
+		size_t s  = sizeof(request);
+		void *ptr = &request;
+		while (s > 0) {
+			p = write(fd, ptr, s);
+			if (p < 0) {
+				if (errno == EINTR || errno == EAGAIN)
+					continue;
+				break;
+			}
+			ptr += p;
+			s -= p;
+		}
+		close(fd);
+		alarm(0);
+		return 0;
+	}
                                                                                 
-        fprintf(stderr, "shutdown: ");
-        if (got_alrm) {
-                fprintf(stderr, "timeout opening/writing control channel %s\n",
-                        INIT_FIFO);
-        } else {
-                perror(INIT_FIFO);
-        }
-        return -1;
+	fprintf(stderr, "shutdown: ");
+	if (got_alrm) {
+		fprintf(stderr, "timeout opening/writing control channel %s\n",
+			INIT_FIFO);
+	} else {
+		perror(INIT_FIFO);
+	}
+	return -1;
 }
 
 

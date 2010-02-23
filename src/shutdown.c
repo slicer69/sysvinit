@@ -168,7 +168,7 @@ int init_setenv(char *name, char *value)
 	sigaction(SIGALRM, &sa, NULL);
 	got_alrm = 0;
 	alarm(3);
-	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) { &&
+	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) {
 		ssize_t p = 0;
 		size_t s  = sizeof(request);
 		void *ptr = &request;

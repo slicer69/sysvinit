@@ -66,6 +66,7 @@ char *progname;
 
 extern int ifdown(void);
 extern int hddown(void);
+extern int hdflush(void);
 extern void write_wtmp(char *user, char *id, int pid, int type, char *line);
 
 /*

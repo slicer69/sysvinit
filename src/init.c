@@ -58,12 +58,14 @@
 
 
 #ifdef __i386__
-#  if (__GLIBC__ >= 2)
+#  ifdef __GLIBC__
      /* GNU libc 2.x */
 #    define STACK_DEBUG 1
 #    if (__GLIBC__ == 2 && __GLIBC_MINOR__ == 0)
        /* Only glibc 2.0 needs this */
 #      include <sigcontext.h>
+#    elif ( __GLIBC__ > 2) && ((__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 1))
+#      include <bits/sigcontext.h>
 #    endif
 #  endif
 #endif
@@ -216,6 +218,7 @@ char *extra_env[NR_EXTRA_ENV];
  *	This only works correctly because the linux select updates
  *	the elapsed time in the struct timeval passed to select!
  */
+static
 void do_sleep(int sec)
 {
 	struct timeval tv;
@@ -231,6 +234,7 @@ void do_sleep(int sec)
 /*
  *	Non-failing allocation routines (init cannot fail).
  */
+static
 void *imalloc(size_t size)
 {
 	void	*m;
@@ -243,7 +247,7 @@ void *imalloc(size_t size)
 	return m;
 }
 
-
+static
 char *istrdup(char *s)
 {
 	char	*m;
@@ -260,6 +264,7 @@ char *istrdup(char *s)
  *	Send the state info of the previous running init to
  *	the new one, in a version-independant way.
  */
+static
 void send_state(int fd)
 {
 	FILE	*fp;
@@ -452,6 +457,7 @@ static CHILD *get_record(FILE *f)
  *	Read the complete state info from the state pipe.
  *	Returns 0 on success
  */
+static
 int receive_state(int fd)
 {
 	FILE	*f;
@@ -499,6 +505,7 @@ static int setproctitle(char *fmt, ...)
 /*
  *	Set console_dev to a working console.
  */
+static
 void console_init(void)
 {
 	int fd;
@@ -536,6 +543,7 @@ void console_init(void)
 /*
  *	Open the console with retries.
  */
+static
 int console_open(int mode)
 {
 	int f, fd = -1;
@@ -567,6 +575,7 @@ int console_open(int mode)
 /*
  *	We got a signal (HUP PWR WINCH ALRM INT)
  */
+static
 void signal_handler(int sig)
 {
 	ADDSET(got_signals, sig);
@@ -575,7 +584,12 @@ void signal_handler(int sig)
 /*
  *	SIGCHLD: one of our children has died.
  */
-void chld_handler()
+static
+# ifdef __GNUC__
+void chld_handler(int sig __attribute__((unused)))
+# else
+void chld_handler(int sig)
+# endif
 {
 	CHILD		*ch;
 	int		pid, st;
@@ -615,7 +629,12 @@ void chld_handler()
  *
  *	The SIGCONT handler
  */
-void cont_handler()
+static
+# ifdef __GNUC__
+void cont_handler(int sig __attribute__((unused)))
+# else
+void cont_handler(int sig)
+# endif
 {
 	got_cont = 1;
 }
@@ -623,6 +642,7 @@ void cont_handler()
 /*
  *	Fork and dump core in /.
  */
+static
 void coredump(void)
 {
 	static int		dumped = 0;
@@ -656,8 +676,13 @@ void coredump(void)
  *	If we have the info, print where it occured.
  *	Then sleep 30 seconds and try to continue.
  */
+static
 #if defined(STACK_DEBUG) && defined(__linux__)
+# ifdef __GNUC__
+void segv_handler(int sig __attribute__((unused)), struct sigcontext ctx)
+# else
 void segv_handler(int sig, struct sigcontext ctx)
+# endif
 {
 	char	*p = "";
 	int	saved_errno = errno;
@@ -672,7 +697,11 @@ void segv_handler(int sig, struct sigcontext ctx)
 	errno = saved_errno;
 }
 #else
-void segv_handler()
+# ifdef __GNUC__
+void segv_handler(int sig __attribute__((unused)))
+# else
+void segv_handler(int sig)
+# endif
 {
 	int	saved_errno = errno;
 
@@ -687,7 +716,12 @@ void segv_handler()
 /*
  *	The SIGSTOP & SIGTSTP handler
  */
-void stop_handler()
+static
+# ifdef __GNUC__
+void stop_handler(int sig __attribute__((unused)))
+# else
+void stop_handler(int sig)
+# endif
 {
 	int	saved_errno = errno;
 
@@ -700,6 +734,7 @@ void stop_handler()
 /*
  *	Set terminal settings to reasonable defaults
  */
+static
 void console_stty(void)
 {
 	struct termios tty;
@@ -715,28 +750,43 @@ void console_stty(void)
 	tty.c_cflag &= CBAUD|CBAUDEX|CSIZE|CSTOPB|PARENB|PARODD;
 	tty.c_cflag |= HUPCL|CLOCAL|CREAD;
 
-	tty.c_cc[VINTR]  = 3;	/* ctrl('c') */
-	tty.c_cc[VQUIT]  = 28;	/* ctrl('\\') */
-	tty.c_cc[VERASE] = 127;
-	tty.c_cc[VKILL]  = 24;	/* ctrl('x') */
-	tty.c_cc[VEOF]   = 4;	/* ctrl('d') */
-	tty.c_cc[VTIME]  = 0;
-	tty.c_cc[VMIN]   = 1;
-	tty.c_cc[VSTART] = 17;	/* ctrl('q') */
-	tty.c_cc[VSTOP]  = 19;	/* ctrl('s') */
-	tty.c_cc[VSUSP]  = 26;	/* ctrl('z') */
+	tty.c_cc[VINTR]	    = CINTR;
+	tty.c_cc[VQUIT]	    = CQUIT;
+	tty.c_cc[VERASE]    = CERASE; /* ASCII DEL (0177) */
+	tty.c_cc[VKILL]	    = CKILL;
+	tty.c_cc[VEOF]	    = CEOF;
+	tty.c_cc[VTIME]	    = 0;
+	tty.c_cc[VMIN]	    = 1;
+	tty.c_cc[VSWTC]	    = _POSIX_VDISABLE;
+	tty.c_cc[VSTART]    = CSTART;
+	tty.c_cc[VSTOP]	    = CSTOP;
+	tty.c_cc[VSUSP]	    = CSUSP;
+	tty.c_cc[VEOL]	    = _POSIX_VDISABLE;
+	tty.c_cc[VREPRINT]  = CREPRINT;
+	tty.c_cc[VDISCARD]  = CDISCARD;
+	tty.c_cc[VWERASE]   = CWERASE;
+	tty.c_cc[VLNEXT]    = CLNEXT;
+	tty.c_cc[VEOL2]	    = _POSIX_VDISABLE;
 
 	/*
 	 *	Set pre and post processing
 	 */
-	tty.c_iflag = IGNPAR|ICRNL|IXON|IXANY
+	tty.c_iflag = IGNPAR|ICRNL|IXON|IXANY;
 #ifdef IUTF8 /* Not defined on FreeBSD */
-                      | (tty.c_iflag & IUTF8)
+	tty.c_iflag |= IUTF8;
 #endif /* IUTF8 */
-            ;
 	tty.c_oflag = OPOST|ONLCR;
 	tty.c_lflag = ISIG|ICANON|ECHO|ECHOCTL|ECHOPRT|ECHOKE;
 
+#if defined(SANE_TIO) && (SANE_TIO == 1)
+	/*
+	 *	Disable flow control (-ixon), ignore break (ignbrk),
+	 *	and make nl/cr more usable (sane).
+	 */
+	tty.c_iflag |=  IGNBRK;
+	tty.c_iflag &= ~(BRKINT|INLCR|IGNCR|IXON);
+	tty.c_oflag &= ~(OCRNL|ONLRET);
+#endif
 	/*
 	 *	Now set the terminal line.
 	 *	We don't care about non-transmitted output data
@@ -808,6 +858,7 @@ char **init_buildenv(int child)
 	char		i_lvl[] = "RUNLEVEL=x";
 	char		i_prev[] = "PREVLEVEL=x";
 	char		i_cons[32];
+	char		i_shell[] = "SHELL=" SHELL;
 	char		**e;
 	int		n, i;
 
@@ -827,6 +878,7 @@ char **init_buildenv(int child)
 		snprintf(i_cons, sizeof(i_cons), "CONSOLE=%s", console_dev);
 		i_lvl[9]   = thislevel;
 		i_prev[10] = prevlevel;
+		e[n++] = istrdup(i_shell);
 		e[n++] = istrdup(i_lvl);
 		e[n++] = istrdup(i_prev);
 		e[n++] = istrdup(i_cons);
@@ -855,6 +907,7 @@ void init_freeenv(char **e)
  *	This function is too long and indents too deep.
  *
  */
+static
 int spawn(CHILD *ch, int *res)
 {
   char *args[16];		/* Argv array */
@@ -1121,6 +1174,7 @@ int spawn(CHILD *ch, int *res)
 /*
  *	Start a child running!
  */
+static
 void startup(CHILD *ch)
 {
 	/*
@@ -1155,6 +1209,7 @@ void startup(CHILD *ch)
 /*
  *	Read the inittab file.
  */
+static
 void read_inittab(void)
 {
   FILE		*fp;			/* The INITTAB file */
@@ -1535,6 +1590,7 @@ void read_inittab(void)
  *	The entries that do not belong here at all are removed
  *	from the list.
  */
+static
 void start_if_needed(void)
 {
 	CHILD *ch;		/* Pointer to child */
@@ -1580,6 +1636,7 @@ void start_if_needed(void)
 /*
  *	Ask the user on the console for a runlevel
  */
+static
 int ask_runlevel(void)
 {
 	const char	prompt[] = "\nEnter runlevel: ";
@@ -1608,6 +1665,7 @@ int ask_runlevel(void)
  *	Search the INITTAB file for the 'initdefault' field, with the default
  *	runlevel. If this fails, ask the user to supply a runlevel.
  */
+static
 int get_init_default(void)
 {
 	CHILD *ch;
@@ -1656,6 +1714,7 @@ int get_init_default(void)
  *	the "old" INITLVL and arg == 0, try to read the new
  *	runlevel from that file first.
  */
+static
 int read_level(int arg)
 {
 	CHILD		*ch;			/* Walk through list */
@@ -1724,7 +1783,14 @@ int read_level(int arg)
 		  	initlog(L_VB, "Switching to runlevel: %c", foo);
 	}
 
-	if (foo == 'Q') return runlevel;
+	if (foo == 'Q') {
+#if defined(SIGINT_ONLYONCE) && (SIGINT_ONLYONCE == 1)
+		/* Re-enable signal from keyboard */
+		struct sigaction sa;
+		SETSIG(sa, SIGINT, signal_handler, 0);
+#endif
+		return runlevel;
+	}
 
 	/* Check if this is a runlevel a, b or c */
 	if (strchr("ABC", foo)) {
@@ -1763,6 +1829,7 @@ int read_level(int arg)
  *	longer than 5 minutes, or inittab was read again due
  *	to user interaction.
  */
+static
 void fail_check(void)
 {
 	CHILD	*ch;			/* Pointer to child structure */
@@ -1795,6 +1862,7 @@ void fail_check(void)
 }
 
 /* Set all 'Fail' timers to 0 */
+static
 void fail_cancel(void)
 {
 	CHILD *ch;
@@ -1809,6 +1877,7 @@ void fail_cancel(void)
 /*
  *	Start up powerfail entries.
  */
+static
 void do_power_fail(int pwrstat)
 {
 	CHILD *ch;
@@ -1842,6 +1911,7 @@ void do_power_fail(int pwrstat)
 /*
  *	Check for state-pipe presence
  */
+static
 int check_pipe(int fd)
 {
 	struct timeval	t;
@@ -1862,6 +1932,7 @@ int check_pipe(int fd)
 /*
  *	 Make a state-pipe.
  */
+static
 int make_pipe(int fd)
 {
 	int fds[2];
@@ -1879,6 +1950,7 @@ int make_pipe(int fd)
 /*
  *	Attempt to re-exec.
  */
+static
 void re_exec(void)
 {
 	CHILD		*ch;
@@ -1973,6 +2045,7 @@ void redo_utmp_wtmp(void)
  *	We got a change runlevel request through the
  *	init.fifo. Process it.
  */
+static
 void fifo_new_level(int level)
 {
 #if CHANGE_WAIT
@@ -2002,7 +2075,7 @@ void fifo_new_level(int level)
 			if (runlevel  > '1' && runlevel  < '6') redo_utmp_wtmp();
 			read_inittab();
 			fail_cancel();
-			setproctitle("init [%c]", runlevel);
+			setproctitle("init [%c]", (int)runlevel);
 		}
 	}
 }
@@ -2013,6 +2086,7 @@ void fifo_new_level(int level)
  *	encoded as KEY=VAL\0KEY=VAL\0\0. With "=VAL" it means
  *	setenv, without it means unsetenv.
  */
+static
 void initcmd_setenv(char *data, int size)
 {
 	char		*env, *p, *e, *eq;
@@ -2070,6 +2144,7 @@ void initcmd_setenv(char *data, int size)
  *		the 2.2 kernel credential stuff to see who we're talking to.
  *	
  */
+static
 void check_init_fifo(void)
 {
   struct init_request	request;
@@ -2212,6 +2287,7 @@ void check_init_fifo(void)
  *	This function is used in the transition
  *	sysinit (-> single user) boot -> multi-user.
  */
+static
 void boot_transitions()
 {
   CHILD		*ch;
@@ -2288,7 +2364,7 @@ void boot_transitions()
 		write_utmp_wtmp("runlevel", "~~", runlevel + 256 * oldlevel, RUN_LVL, "~");
 		thislevel = runlevel;
 		prevlevel = oldlevel;
-		setproctitle("init [%c]", runlevel);
+		setproctitle("init [%c]", (int)runlevel);
 	}
   }
 }
@@ -2297,6 +2373,7 @@ void boot_transitions()
  *	Init got hit by a signal. See which signal it is,
  *	and act accordingly.
  */
+static
 void process_signals()
 {
   CHILD		*ch;
@@ -2321,6 +2398,11 @@ void process_signals()
   }
 
   if (ISMEMBER(got_signals, SIGINT)) {
+#if defined(SIGINT_ONLYONCE) && (SIGINT_ONLYONCE == 1)
+	/* Ignore any further signal from keyboard */
+	struct sigaction sa;
+	SETSIG(sa, SIGINT, SIG_IGN, SA_RESTART);
+#endif
 	INITDBG(L_VB, "got SIGINT");
 	/* Tell ctrlaltdel entry to start up */
 	for(ch = family; ch; ch = ch->next)
@@ -2383,7 +2465,7 @@ void process_signals()
 			    runlevel == '1') console_stty();
 			read_inittab();
 			fail_cancel();
-			setproctitle("init [%c]", runlevel);
+			setproctitle("init [%c]", (int)runlevel);
 			DELSET(got_signals, SIGHUP);
 		}
 	}
@@ -2402,7 +2484,8 @@ void process_signals()
 /*
  *	The main loop
  */ 
-int init_main()
+static
+void init_main(void)
 {
   CHILD			*ch;
   struct sigaction	sa;
@@ -2562,12 +2645,14 @@ int init_main()
 /*
  * Tell the user about the syntax we expect.
  */
+static
 void usage(char *s)
 {
 	fprintf(stderr, "Usage: %s {-e VAR[=VAL] | [-t SECONDS] {0|1|2|3|4|5|6|S|s|Q|q|A|a|B|b|C|c|U|u}}\n", s);
 	exit(1);
 }
 
+static
 int telinit(char *progname, int argc, char **argv)
 {
 #ifdef TELINIT_USES_INITLVL
@@ -2619,12 +2704,28 @@ int telinit(char *progname, int argc, char **argv)
 		request.sleeptime = sltime;
 	}
 
+	/* Change to the root directory. */
+	chdir("/");
+
 	/* Open the fifo and write a command. */
 	/* Make sure we don't hang on opening /dev/initctl */
 	SETSIG(sa, SIGALRM, signal_handler, 0);
 	alarm(3);
-	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0 &&
-	    write(fd, &request, sizeof(request)) == sizeof(request)) {
+	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) {
+		ssize_t p = 0;
+		size_t s  = sizeof(request);
+		void *ptr = &request;
+
+		while (s > 0) {
+			p = write(fd, ptr, s);
+			if (p < 0) {
+				if (errno == EINTR || errno == EAGAIN)
+					continue;
+				break;
+			}
+			ptr += p;
+			s -= p;
+		}
 		close(fd);
 		alarm(0);
 		return 0;
@@ -2677,6 +2778,8 @@ int main(int argc, char **argv)
   		p++;
 	else
   		p = argv[0];
+
+	/* Common umask */
 	umask(022);
 
 	/* Quick check */
@@ -2710,7 +2813,7 @@ int main(int argc, char **argv)
 		for (f = 0; f < argc; f++)
 			maxproclen += strlen(argv[f]) + 1;
 		reload = 1;
-		setproctitle("init [%c]",runlevel);
+		setproctitle("init [%c]", (int)runlevel);
 
 		init_main();
 	}
@@ -2754,7 +2857,7 @@ int main(int argc, char **argv)
 	argv0 = argv[0];
 	argv[1] = NULL;
 	setproctitle("init boot");
-	init_main(dfl_level);
+	init_main();
 
 	/*NOTREACHED*/
 	return 0;

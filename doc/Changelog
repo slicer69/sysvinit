@@ -13,6 +13,10 @@
   * Retry to write out shutdown messages if interrupted.
   * pidof/killall5 - make omit pid list a dynamic one.
   * pidof - provide '-n' to skip stat(2) syscall on network based FS.
+  * init - avoid compiler warnings
+  * init - initialize console by using the macros from ttydefaults.h
+  * init - add the possiblity to ignore further interrupts from keyboard
+  * init - add the possiblity to set sane terminal line settings
 
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 

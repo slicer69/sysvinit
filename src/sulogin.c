@@ -39,6 +39,7 @@
 #include <pwd.h>
 #include <shadow.h>
 #include <termios.h>
+#include <sys/ttydefaults.h>
 #include <errno.h>
 #include <sys/ioctl.h>
 #if defined(__GLIBC__)
@@ -60,49 +61,83 @@
 
 char *Version = "@(#)sulogin 2.85-3 23-Apr-2003 miquels@cistron.nl";
 
-int timeout = 0;
-int profile = 0;
+static int timeout;
+static int profile;
+
+static void (*saved_sigint)  = SIG_DFL;
+static void (*saved_sigtstp) = SIG_DFL;
+static void (*saved_sigquit) = SIG_DFL;
 
 #ifndef IUCLC
 #  define IUCLC	0
 #endif
 
-#if 0
+#if defined(SANE_TIO) && (SANE_TIO == 1)
 /*
  *	Fix the tty modes and set reasonable defaults.
  *	(I'm not sure if this is needed under Linux, but..)
  */
+static
 void fixtty(void)
 {
 	struct termios tty;
+	int serial;
+
+	/* Skip serial console */
+	if (ioctl (0, TIOCMGET, (char*)&serial) == 0)
+		goto out;
+	/* Expected error */
+	serial = errno = 0;
 
 	tcgetattr(0, &tty);
 
-	/*
-	 *	Set or adjust tty modes.
-	 */
-	tty.c_iflag &= ~(INLCR|IGNCR|IUCLC);
-	tty.c_iflag |= ICRNL;
-	tty.c_oflag &= ~(OCRNL|OLCUC|ONOCR|ONLRET|OFILL);
-	tty.c_oflag |= OPOST|ONLCR;
-	tty.c_cflag |= CLOCAL;
-	tty.c_lflag  = ISIG|ICANON|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;
+	/* Use defaults of <sys/ttydefaults.h> for base settings */
+	tty.c_iflag |= TTYDEF_IFLAG;
+	tty.c_oflag |= TTYDEF_OFLAG;
+	tty.c_lflag |= TTYDEF_LFLAG;
+	tty.c_cflag |= (TTYDEF_SPEED | TTYDEF_CFLAG);
 
-	/*
-	 *	Set the most important characters */
+	/* Sane setting, allow eight bit characters, no carriage return delay
+	 * the same result as `stty sane cr0 pass8'
 	 */
-	tty.c_cc[VINTR]  = 3;
-	tty.c_cc[VQUIT]  = 28;
-	tty.c_cc[VERASE] = 127;
-	tty.c_cc[VKILL]  = 24;
-	tty.c_cc[VEOF]   = 4;
-	tty.c_cc[VTIME]  = 0;
-	tty.c_cc[VMIN]   = 1;
-	tty.c_cc[VSTART] = 17;
-	tty.c_cc[VSTOP]  = 19;
-	tty.c_cc[VSUSP]  = 26;
+	tty.c_iflag |=  (BRKINT | ICRNL | IMAXBEL);
+#ifdef IUTF8 /* Not defined on FreeBSD */
+	tty.c_iflag |= IUTF8;
+#endif /* IUTF8 */
+	tty.c_iflag &= ~(IGNBRK | INLCR | IGNCR | IXOFF | IUCLC | IXANY | ISTRIP);
+	tty.c_oflag |=  (OPOST | ONLCR | NL0 | CR0 | TAB0 | BS0 | VT0 | FF0);
+	tty.c_oflag &= ~(OLCUC | OCRNL | ONOCR | ONLRET | OFILL | OFDEL |\
+			 NLDLY|CRDLY|TABDLY|BSDLY|VTDLY|FFDLY);
+	tty.c_lflag |=  (ISIG | ICANON | IEXTEN | ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE);
+	tty.c_lflag &= ~(ECHONL | NOFLSH | XCASE | TOSTOP | ECHOPRT);
+	tty.c_cflag |=  (CREAD | CS8 | B9600);
+	tty.c_cflag &= ~(PARENB);
+
+	/* VTIME and VMIN can overlap with VEOF and VEOL since they are
+	 * only used for non-canonical mode. We just set the at the
+	 * beginning, so nothing bad should happen.
+	 */
+	tty.c_cc[VTIME]    = 0;
+	tty.c_cc[VMIN]     = 1;
+	tty.c_cc[VINTR]    = CINTR;
+	tty.c_cc[VQUIT]    = CQUIT;
+	tty.c_cc[VERASE]   = CERASE; /* ASCII DEL (0177) */
+	tty.c_cc[VKILL]    = CKILL;
+	tty.c_cc[VEOF]     = CEOF;
+	tty.c_cc[VSWTC]    = _POSIX_VDISABLE;
+	tty.c_cc[VSTART]   = CSTART;
+	tty.c_cc[VSTOP]    = CSTOP;
+	tty.c_cc[VSUSP]    = CSUSP;
+	tty.c_cc[VEOL]     = _POSIX_VDISABLE;
+	tty.c_cc[VREPRINT] = CREPRINT;
+	tty.c_cc[VDISCARD] = CDISCARD;
+	tty.c_cc[VWERASE]  = CWERASE;
+	tty.c_cc[VLNEXT]   = CLNEXT;
+	tty.c_cc[VEOL2]    = _POSIX_VDISABLE;
  
 	tcsetattr(0, TCSANOW, &tty);
+out:
+	return;
 }
 #endif
 
@@ -110,7 +145,12 @@ void fixtty(void)
 /*
  *	Called at timeout.
  */
-void alrm_handler()
+static
+# ifdef __GNUC__
+void alrm_handler(int sig __attribute__((unused)))
+# else
+void alrm_handler(int sig)
+# endif
 {
 }
 
@@ -119,6 +159,7 @@ void alrm_handler()
  *	password is checked for traditional-style DES and
  *	FreeBSD-style MD5 encryption.
  */
+static
 int valid(char *pass)
 {
 	char *s;
@@ -157,6 +198,7 @@ int valid(char *pass)
 /*
  *	Set a variable if the value is not NULL.
  */
+static
 void set(char **var, char *val)
 {
 	if (val) *var = val;
@@ -165,6 +207,7 @@ void set(char **var, char *val)
 /*
  *	Get the root password entry.
  */
+static
 struct passwd *getrootpwent(int try_manually)
 {
 	static struct passwd pwd;
@@ -267,6 +310,7 @@ struct passwd *getrootpwent(int try_manually)
  *	Ask for the password. Note that there is no
  *	default timeout as we normally skip this during boot.
  */
+static
 char *getpasswd(char *crypted)
 {
 	struct sigaction sa;
@@ -275,11 +319,10 @@ char *getpasswd(char *crypted)
 	char *ret = pass;
 	int i;
 
-	if (crypted[0])
-		printf("Give root password for maintenance\n");
-	else
-		printf("Press enter for maintenance\n");
-	printf("(or type Control-D to continue): ");
+	if (crypted[0]) {
+		printf("Give root password for login: ");
+	} else
+		printf("Press enter for login: ");
 	fflush(stdout);
 
 	tcgetattr(0, &old);
@@ -314,6 +357,7 @@ char *getpasswd(char *crypted)
 /*
  *	Password was OK, execute a shell.
  */
+static
 void sushell(struct passwd *pwd)
 {
 	char shell[128];
@@ -355,9 +399,9 @@ void sushell(struct passwd *pwd)
 	 *	Try to execute a shell.
 	 */
 	setenv("SHELL", sushell, 1);
-	signal(SIGINT, SIG_DFL);
-	signal(SIGTSTP, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT,  saved_sigint);
+	signal(SIGTSTP, saved_sigtstp);
+	signal(SIGQUIT, saved_sigquit);
 #ifdef WITH_SELINUX
 	if (is_selinux_enabled > 0) {
 	  security_context_t scon=NULL;
@@ -387,6 +431,7 @@ void sushell(struct passwd *pwd)
 	perror(STATICSH);
 }
 
+static
 void usage(void)
 {
 	fprintf(stderr, "Usage: sulogin [-e] [-p] [-t timeout] [tty device]\n");
@@ -429,14 +474,19 @@ int main(int argc, char **argv)
 	/*
 	 *	See if we need to open an other tty device.
 	 */
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
+	saved_sigint  = signal(SIGINT,  SIG_IGN);
+	saved_sigtstp = signal(SIGQUIT, SIG_IGN);
+	saved_sigquit = signal(SIGTSTP, SIG_IGN);
 	if (optind < argc) tty = argv[optind];
-	if (tty) {
+
+	if (tty || (tty = getenv("CONSOLE"))) {
+
 		if ((fd = open(tty, O_RDWR)) < 0) {
 			perror(tty);
-		} else if (!isatty(fd)) {
+			fd = dup(0);
+		}
+
+		if (!isatty(fd)) {
 			fprintf(stderr, "%s: not a tty\n", tty);
 			close(fd);
 		} else {
@@ -448,7 +498,7 @@ int main(int argc, char **argv)
 			pid = getpid();
 			pgrp = getpgid(0);
 			ppgrp = getpgid(getppid());
-			ioctl(fd, TIOCGPGRP, &ttypgrp);
+			ttypgrp = tcgetpgrp(fd);
 
 			if (pgrp != ttypgrp && ppgrp != ttypgrp) {
 				if (pid != getsid(0)) {
@@ -458,18 +508,28 @@ int main(int argc, char **argv)
 				}
 
 				signal(SIGHUP, SIG_IGN);
-				ioctl(0, TIOCNOTTY, (char *)1);
+				if (ttypgrp > 0)
+					ioctl(0, TIOCNOTTY, (char *)1);
 				signal(SIGHUP, SIG_DFL);
 				close(0);
 				close(1);
 				close(2);
-				close(fd);
-				fd = open(tty, O_RDWR);
-				ioctl(0, TIOCSCTTY, (char *)1);
-				dup(fd);
-				dup(fd);
+				if (fd > 2)
+					close(fd);
+				if ((fd = open(tty, O_RDWR)) < 0) {
+					perror(tty);
+				} else {
+					ioctl(0, TIOCSCTTY, (char *)1);
+					tcsetpgrp(fd, ppgrp);
+					dup2(fd, 0);
+					dup2(fd, 1);
+					dup2(fd, 2);
+					if (fd > 2)
+						close(fd);
+				}
 			} else
-				close(fd);
+				if (fd > 2)
+					close(fd);
 		}
 	} else if (getpid() == 1) {
 		/* We are init. We hence need to set a session anyway */
@@ -477,6 +537,10 @@ int main(int argc, char **argv)
 		if (ioctl(0, TIOCSCTTY, (char *)1))
 			perror("ioctl(TIOCSCTTY)");
 	}
+
+#if defined(SANE_TIO) && (SANE_TIO == 1)
+	fixtty();
+#endif
 
 	/*
 	 *	Get the root password.
@@ -494,6 +558,9 @@ int main(int argc, char **argv)
 		if (pwd->pw_passwd[0] == 0 ||
 		    strcmp(crypt(p, pwd->pw_passwd), pwd->pw_passwd) == 0)
 			sushell(pwd);
+		saved_sigquit = signal(SIGQUIT, SIG_IGN);
+		saved_sigtstp = signal(SIGTSTP, SIG_IGN);
+		saved_sigint  = signal(SIGINT,  SIG_IGN);
 		printf("Login incorrect.\n");
 	}
 
@@ -502,4 +569,3 @@ int main(int argc, char **argv)
 	 */
 	return 0;
 }
-

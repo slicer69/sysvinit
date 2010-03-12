@@ -17,6 +17,7 @@
   * init - initialize console by using the macros from ttydefaults.h
   * init - add the possiblity to ignore further interrupts from keyboard
   * init - add the possiblity to set sane terminal line settings
+  * sulogin - add the possibility to reset the terminal io
 
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 

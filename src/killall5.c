@@ -245,14 +245,14 @@ void init_nfs(void)
         struct stat st;
         struct mntent * ent;
 	FILE * mnt;
- 
+
 	nlist = (NFS*)0;
- 
+
 	if (stat("/proc/version", &st) < 0)
 		return;
 	if ((mnt = setmntent("/proc/mounts", "r")) == (FILE*)0)
 		return;
- 
+
 	while ((ent = getmntent(mnt))) {
 		if (isnetfs(ent->mnt_type)) {
 			size_t nlen = strlen(ent->mnt_dir);
@@ -261,7 +261,7 @@ void init_nfs(void)
 			p->name = ((char*)p)+alignof(NFS);
 			p->nlen = nlen;
 			p->shadow = (SHADOW*)0;
- 
+
 			strcpy(p->name, ent->mnt_dir);
 			if (nlist)
 				nlist->prev = p;
@@ -271,27 +271,27 @@ void init_nfs(void)
 		}
 	}
 	endmntent(mnt);
- 
+
 	if ((mnt = setmntent("/proc/mounts", "r")) == (FILE*)0)
 		return;
- 
+
 	while ((ent = getmntent(mnt))) {
 		NFS *p;
- 
+
 		for (p = nlist; p; p = p->next) {
 			SHADOW * restrict s;
 			size_t nlen;
- 
+
 			if (strcmp(ent->mnt_dir, p->name) == 0)
 				continue;
 			if (strncmp(ent->mnt_dir, p->name, p->nlen) != 0)
 				continue;
- 
+
 			nlen = strlen(ent->mnt_dir);
 			xmemalign((void*)&s, sizeof(void*), alignof(SHADOW)+(nlen+1));
 			s->name = ((char*)s)+alignof(SHADOW);
 			s->nlen = nlen;
- 
+
 			strcpy(s->name, ent->mnt_dir);
 			if (p->shadow)
 			    p->shadow->prev = s;
@@ -306,7 +306,7 @@ void init_nfs(void)
 static void clear_shadow(SHADOW *restrict shadow)
 {
 	SHADOW *s, *n, *l;
- 
+
 	n = shadow;
 	l = (SHADOW*)0;
 	for (s = shadow; n; s = n) {
@@ -326,7 +326,7 @@ static void clear_shadow(SHADOW *restrict shadow)
 static void clear_mnt(void)
 {
 	NFS *p, *n, *l;
- 
+
 	n = nlist;
 	l = (NFS*)0;
 	for (p = nlist; n; p = n) {
@@ -351,7 +351,7 @@ static void clear_mnt(void)
 static int shadow(SHADOW *restrict this, const char *restrict name, const size_t nlen)
 {
 	SHADOW *s;
- 
+
 	if (!this)
 		goto out;
 	for (s = this; s; s = s->next) {
@@ -374,45 +374,45 @@ int check4nfs(const char * path, char * real)
 	char buf[PATH_MAX+1];
 	const char *curr;
 	int deep = MAXSYMLINKS;
- 
+
 	if (!nlist) return 0;
- 
+
 	curr = path;
 	do {
 		const char *prev;
 		int len;
- 
+
 		if ((prev = strdupa(curr)) == NULL) {
 			nsyslog(LOG_ERR, "strdupa(): %s\n", strerror(errno));
 			return 0;
 		}
- 
+
 		errno = 0;
 		if ((len = readlink(curr, buf, PATH_MAX)) < 0)
 			break;
 		buf[len] = '\0';
- 
+
 		if (buf[0] != '/') {
 			const char *slash;
- 
+
 			if ((slash = strrchr(prev, '/'))) {
 				size_t off = slash - prev + 1;
- 
+
 				if (off + len > PATH_MAX)
 					len = PATH_MAX - off;
- 
+
 				memmove(&buf[off], &buf[0], len + 1);
 				memcpy(&buf[0], prev, off);
 			}
 		}
 		curr = &buf[0];
- 
+
 		if (deep-- <= 0) return 0;
- 
+
 	} while (1);
- 
+
 	if (real) strcpy(real, curr);
- 
+
 	if (errno == EINVAL) {
 		const size_t nlen = strlen(curr);
 		NFS *p;
@@ -428,7 +428,7 @@ int check4nfs(const char * path, char * real)
 			}
 		}
 	}
- 
+
 	return 0;
 }
 

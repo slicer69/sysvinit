@@ -134,7 +134,7 @@ void fixtty(void)
 	tty.c_cc[VWERASE]  = CWERASE;
 	tty.c_cc[VLNEXT]   = CLNEXT;
 	tty.c_cc[VEOL2]    = _POSIX_VDISABLE;
- 
+
 	tcsetattr(0, TCSANOW, &tty);
 out:
 	return;

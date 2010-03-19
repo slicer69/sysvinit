@@ -403,7 +403,7 @@ void sushell(struct passwd *pwd)
 	signal(SIGTSTP, saved_sigtstp);
 	signal(SIGQUIT, saved_sigquit);
 #ifdef WITH_SELINUX
-	if (is_selinux_enabled > 0) {
+	if (is_selinux_enabled() > 0) {
 	  security_context_t scon=NULL;
 	  char *seuser=NULL;
 	  char *level=NULL;

@@ -95,7 +95,12 @@ void hardsleep(int secs)
 /*
  *	Break off an already running shutdown.
  */
+# ifdef __GNUC__
+void stopit(int sig __attribute__((unused)))
+# else
 void stopit(int sig)
+# endif
+
 {
 	unlink(NOLOGIN);
 	unlink(FASTBOOT);

@@ -51,7 +51,11 @@ static sigjmp_buf jbuf;
  *	Alarm handler
  */
 /*ARGSUSED*/
+# ifdef __GNUC__
+static void handler(int arg __attribute__((unused)))
+# else
 static void handler(int arg)
+# endif
 {
 	siglongjmp(jbuf, 1);
 }

@@ -54,6 +54,7 @@
 
 #ifdef WITH_SELINUX
 #include <selinux/selinux.h>
+#include <sys/mount.h>
 #endif
 
 
@@ -2839,18 +2840,23 @@ int main(int argc, char **argv)
 	}
 
 #ifdef WITH_SELINUX
-  	if (getenv("SELINUX_INIT") == NULL && !is_selinux_enabled()) {
-	  putenv("SELINUX_INIT=YES");
-	  if (selinux_init_load_policy(&enforce) == 0 ) {
-	    execv(myname, argv);
-	  } else {
-	    if (enforce > 0) {
-	      /* SELinux in enforcing mode but load_policy failed */
-	      /* At this point, we probably can't open /dev/console, so log() won't work */
-		    fprintf(stderr,"Unable to load SELinux Policy. Machine is in enforcing mode. Halting now.\n");
-	      exit(1);
+	if (getenv("SELINUX_INIT") == NULL) {
+	  const int rc = mount("proc", "/proc", "proc", 0, 0);
+	  if (is_selinux_enabled() > 0) {
+	    putenv("SELINUX_INIT=YES");
+	    if (rc == 0) umount2("/proc", MNT_DETACH);
+	    if (selinux_init_load_policy(&enforce) == 0) {
+	      execv(myname, argv);
+	    } else {
+	      if (enforce > 0) {
+		/* SELinux in enforcing mode but load_policy failed */
+		/* At this point, we probably can't open /dev/console, so log() won't work */
+		fprintf(stderr,"Unable to load SELinux Policy. Machine is in enforcing mode. Halting now.\n");
+		exit(1);
+	      }
 	    }
 	  }
+	  if (rc == 0) umount2("/proc", MNT_DETACH);
 	}
 #endif  
 	/* Start booting. */

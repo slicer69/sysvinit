@@ -454,8 +454,8 @@ int readproc(int do_stat)
 	PROC		*p, *n;
 	struct dirent	*d;
 	struct stat	st;
-	char		path[256];
-	char		buf[256];
+	char		path[PATH_MAX+1];
+	char		buf[PATH_MAX+1];
 	char		*s, *q;
 	unsigned long	startcode, endcode;
 	int		pid, f;

@@ -1,26 +1,3 @@
-  [ Werner Fink ]
-  * Add option -w to the last command to display the full user and
-    domain names in the output.  Patch from Petr Lautrbach.
-  * Add a manual page for utmpdump as this tool is sometimes
-    very useful even if not intended for normal use.
-  * Use paths.h macros for wall
-  * Change path "/etc/powerstatus" to "/var/run/powerstatus"
-  * Detected also removable block devices at halt/reboot to be able
-    to flush data and send them the ATA standby command.  This should
-    avoid data loss on USB sticks and other removable block devices.
-  * Flush block devices on halt/reboot if not done by the kernel.
-  * Set SHELL to /bin/sh in the environmant of shutdown.
-  * Retry to write out shutdown messages if interrupted.
-  * pidof/killall5 - make omit pid list a dynamic one.
-  * pidof - provide '-n' to skip stat(2) syscall on network based FS.
-  * init - avoid compiler warnings
-  * init - initialize console by using the macros from ttydefaults.h
-  * init - add the possiblity to ignore further interrupts from keyboard
-  * init - add the possiblity to set sane terminal line settings
-  * sulogin - add the possibility to reset the terminal io
-  * Fix some minor problems
-  * init - enable is_selinux_enabled() to detect selinuxfs
-
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
   [ Petter Reinholdtsen ]
@@ -59,6 +36,27 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Check if utmp not only exists but also is writable and delay
     writing out of the utmp runlevel record if utmp is not writable.
   * Be able to find libcrypt also on 64 bit based architectures.
+  * Add option -w to the last command to display the full user and
+    domain names in the output.  Patch from Petr Lautrbach.
+  * Add a manual page for utmpdump as this tool is sometimes
+    very useful even if not intended for normal use.
+  * Use paths.h macros for wall
+  * Change path "/etc/powerstatus" to "/var/run/powerstatus"
+  * Detected also removable block devices at halt/reboot to be able
+    to flush data and send them the ATA standby command.  This should
+    avoid data loss on USB sticks and other removable block devices.
+  * Flush block devices on halt/reboot if not done by the kernel.
+  * Set SHELL to /bin/sh in the environmant of shutdown.
+  * Retry to write out shutdown messages if interrupted.
+  * pidof/killall5 - make omit pid list a dynamic one.
+  * pidof - provide '-n' to skip stat(2) syscall on network based FS.
+  * init - avoid compiler warnings
+  * init - initialize console by using the macros from ttydefaults.h
+  * init - add the possiblity to ignore further interrupts from keyboard
+  * init - add the possiblity to set sane terminal line settings
+  * sulogin - add the possibility to reset the terminal io
+  * Fix some minor problems
+  * init - enable is_selinux_enabled() to detect selinuxfs
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

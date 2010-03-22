@@ -14,6 +14,9 @@ Sysvinit is Copyright (C) 1991-2004 Miquel van Smoorenburg
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
+On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
 Send patches to sysvinit-devel@nongnu.org
 
 The of the start-stop-daemon

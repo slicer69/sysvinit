@@ -32,11 +32,18 @@
  *		along with this program; if not, write to the Free Software
  *		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+#ifndef _GNU_SOURCE
+# define _GNU_SOURCE	/* otherwise `extern char **environ' is missed */
+#endif
+#ifndef ACCTON_OFF
+# define ACCTON_OFF	0
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -330,7 +337,7 @@ void fastdown()
 
 	/* First idle init. */
 	if (kill(1, SIGTSTP) < 0) {
-		fprintf(stderr, "shutdown: can't idle init.\r\n");
+		fprintf(stderr, "shutdown: can't idle init: %s.\r\n", strerror(errno));
 		exit(1);
 	}
 
@@ -357,7 +364,17 @@ void fastdown()
 	write_wtmp("shutdown", "~~", 0, RUN_LVL, "~~");
 
 	/* This is for those who have quota installed. */
+#if defined(ACCTON_OFF)
+# if (ACCTON_OFF > 1) && (_BSD_SOURCE || (_XOPEN_SOURCE && _XOPEN_SOURCE < 500))
+	/* This is an alternative way to disable accounting, saving a fork() */
+	if (acct(NULL))
+		fprintf(stderr, "shutdown: can not stop process accounting: %s.\r\n", strerror(errno));
+# elif (ACCTON_OFF > 0)
+	spawn(1, "accton", "off", NULL);
+# else
 	spawn(1, "accton", NULL);
+# endif
+#endif
 	spawn(1, "quotaoff", "-a", NULL);
 
 	sync();

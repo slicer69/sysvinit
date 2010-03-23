@@ -57,6 +57,16 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * sulogin - add the possibility to reset the terminal io
   * Fix some minor problems
   * init - enable is_selinux_enabled() to detect selinuxfs
+  * Add fix for Debian bug #536574 -- Can be enabled by -DACCTON_OFF
+  * Add helper program fstab-decode to make it easier to handle
+    /etc/mtab content. Patch by Miloslav Trmac and Fedora.
+  * Add fix for Debian bug #335023 - Make sure TERM is set on FreeBSD.
+  * Add fix for Debian bug #374038 - Make it clear that shutdown -c can
+    only cancel a waiting shutdown, not an active one.
+  * Add not to pidof manual page about the use of readlink(2). Patch by
+    Bill Nottingham and Fedora.
+  * Add changes for Debian bug #68621 - Add PAM support for programs spawned
+    by init on the console like sulogin. Based on patch by Topi Miettinen.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

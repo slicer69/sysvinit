@@ -77,15 +77,33 @@ int ifdown(void)
 				continue;
 			if (strchr(ifr[i].ifr_name, ':') != NULL)
 				continue;
-			ifr[i].ifr_flags &= ~(IFF_UP);
-			if (ioctl(fd, SIOCSIFFLAGS, &ifr[i]) < 0) {
+
+			/* Read interface flags */
+			if (ioctl(fd, SIOCGIFFLAGS, &ifr[i]) < 0) {
 				fprintf(stderr, "ifdown: shutdown ");
 				perror(ifr[i].ifr_name);
+				continue;
 			}
+			/*
+			 * Expected in <net/if.h> according to
+			 * "UNIX Network Programming".
+			 */
+#ifdef ifr_flags
+# define IRFFLAGS	ifr_flags
+#else	/* Present on kFreeBSD */
+# define IRFFLAGS	ifr_flagshigh
+#endif
+			if (ifr[i].IRFFLAGS & IFF_UP) {
+				ifr[i].IRFFLAGS &= ~(IFF_UP);
+				if (ioctl(fd, SIOCSIFFLAGS, &ifr[i]) < 0) {
+					fprintf(stderr, "ifdown: shutdown ");
+					perror(ifr[i].ifr_name);
+				}
+			}
+#undef IRFFLAGS
 		}
 	}
 	close(fd);
 
 	return 0;
 }
-

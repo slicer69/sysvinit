@@ -200,7 +200,11 @@ gettok(char *line, char *dest, int size, int eatspace)
 }
 
 void
+# ifdef __GNUC__
+undump(FILE *fp, int forever __attribute__((unused)), int oldfmt)
+#else
 undump(FILE *fp, int forever, int oldfmt)
+#endif
 {
 	struct utmp ut;
 	struct oldutmp uto;

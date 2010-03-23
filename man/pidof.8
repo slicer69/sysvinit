@@ -77,7 +77,11 @@ the program behaves according to the name under which it is called.
 When \fIpidof\fP is invoked with a full pathname to the program it
 should find the pid of, it is reasonably safe. Otherwise it is possible
 that it returns pids of running programs that happen to have the same name
-as the program you're after but are actually other programs.
+as the program you're after but are actually other programs. Note that
+that the executable name of running processes is calculated with
+.BR readlink (2),
+so symbolic links to executables will also match.
+
 .SH SEE ALSO
 .BR shutdown (8),
 .BR init (8),

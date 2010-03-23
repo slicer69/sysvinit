@@ -53,10 +53,9 @@
 #include <sys/time.h>
 
 #ifdef WITH_SELINUX
-#include <selinux/selinux.h>
-#include <sys/mount.h>
+#  include <selinux/selinux.h>
+#  include <sys/mount.h>
 #endif
-
 
 #ifdef __i386__
 #  ifdef __GLIBC__
@@ -69,6 +68,11 @@
 #      include <bits/sigcontext.h>
 #    endif
 #  endif
+#endif
+
+#ifdef USE_PAM
+#  include <security/pam_appl.h>
+#  include <security/pam_misc.h>
 #endif
 
 #include "init.h"
@@ -746,6 +750,16 @@ void console_stty(void)
 		return;
 	}
 
+#ifdef __FreeBSD_kernel__
+	/*
+	 * The kernel of FreeBSD expects userland to set TERM.  Usually, we want
+	 * "cons25".  Later, gettys might disagree on this (i.e. we're not using
+	 * syscons) but some boot scripts, like /etc/init.d/xserver-xorg, still
+	 * need a non-dumb terminal.
+	 */
+	putenv ("TERM=cons25");
+#endif
+
 	(void) tcgetattr(fd, &tty);
 
 	tty.c_cflag &= CBAUD|CBAUDEX|CSIZE|CSTOPB|PARENB|PARODD;
@@ -902,6 +916,20 @@ void init_freeenv(char **e)
 }
 
 
+#ifdef USE_PAM
+static pam_handle_t *pamh = NULL;
+static const struct pam_conv conv = { misc_conv, NULL };
+# define PAM_FAIL_CHECK(func, args...)	\
+	{ \
+		const int __ret = (func)(args); \
+		if (__ret != PAM_SUCCESS) { \
+			initlog(L_VB, "%s", pam_strerror(pamh, __ret)); \
+			pam_end(pamh, __ret); \
+			exit(1); \
+		} \
+	}
+#endif /* USE_PAM */
+
 /*
  *	Fork and execute.
  *
@@ -1030,6 +1058,14 @@ int spawn(CHILD *ch, int *res)
 		if (pipe_fd >= 0) close(pipe_fd);
 
   		sigprocmask(SIG_SETMASK, &omask, NULL);
+
+#ifdef USE_PAM
+		PAM_FAIL_CHECK(pam_start, "init", "root" , &conv, &pamh);
+		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_TTY, console_dev);
+		PAM_FAIL_CHECK(pam_acct_mgmt, pamh, PAM_SILENT);
+		PAM_FAIL_CHECK(pam_open_session, pamh, PAM_SILENT);
+		PAM_FAIL_CHECK(pam_setcred, pamh, PAM_ESTABLISH_CRED|PAM_SILENT);
+#endif
 
 		/*
 		 * Update utmp/wtmp file prior to starting

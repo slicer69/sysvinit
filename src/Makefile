@@ -8,19 +8,20 @@
 # Version:	@(#)Makefile  2.85-13  23-Mar-2004  miquels@cistron.nl
 #
 
+CPPFLAGS = -DUSE_PAM
 CFLAGS	?= -ansi -O2 -fomit-frame-pointer
-CFLAGS	+= -W -Wall -D_GNU_SOURCE
+override CFLAGS += -W -Wall -D_GNU_SOURCE
 STATIC	=
 
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
-SBIN	= init halt shutdown runlevel killall5
+SBIN	= init halt shutdown runlevel killall5 fstab-decode
 USRBIN	= last mesg
 
 MAN1	= last.1 lastb.1 mesg.1
 MAN5	= initscript.5 inittab.5
 MAN8	= halt.8 init.8 killall5.8 pidof.8 poweroff.8 reboot.8 runlevel.8
-MAN8	+= shutdown.8 telinit.8
+MAN8	+= shutdown.8 telinit.8 fstab-decode.8
 
 ifeq ($(DISTRO),)
 BIN	+= mountpoint
@@ -31,6 +32,7 @@ MAN8	+= sulogin.8 bootlogd.8
 endif
 
 ifeq ($(DISTRO),Debian)
+CPPFLAGS+= -DACCTON_OFF
 BIN	+= mountpoint
 SBIN	+= sulogin bootlogd
 MAN1	+= mountpoint.1
@@ -43,6 +45,7 @@ MAN1	+= wall.1
 endif
 
 ifeq ($(DISTRO),SuSE)
+CPPFLAGS+= -DUSE_SYSFS -DSANE_TIO -DSIGINT_ONLYONCE
 BIN	+= mountpoint
 SBIN	+= sulogin
 USRBIN	+= utmpdump
@@ -50,28 +53,39 @@ MAN1	+= utmpdump.1 mountpoint.1
 MAN8	+= sulogin.8
 endif
 
+ID		= $(shell id -u)
 BIN_OWNER	= root
 BIN_GROUP	= root
 BIN_COMBO	= $(BIN_OWNER):$(BIN_GROUP)
 STRIP		= strip -s -R .comment
-INSTALL_EXEC	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 755
-INSTALL_DATA	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 644
+ifeq ($(ID),0)
+  INSTALL_EXEC	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 755
+  INSTALL_DATA	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 644
+else
+  INSTALL_EXEC	= install -m 755
+  INSTALL_DATA	= install -m 644
+endif
 INSTALL_DIR	= install -m 755 -d
 MANDIR		= /usr/share/man
 
 ifeq ($(WITH_SELINUX),yes)
-  SELINUX_DEF=-DWITH_SELINUX
-  INIT_SELIBS=-lsepol -lselinux
-  SULOGIN_SELIBS=-lselinux	
+  SELINUX_DEF	=  -DWITH_SELINUX
+  INITLIBS	+= -lsepol -lselinux
+  SULOGINLIBS	= -lselinux	
 else
-  SELINUX_DEF=
-  INIT_SELIBS=
-  SULOGIN_SELIBS=
+  SELINUX_DEF	=
+  INITLIBS	=
+  SULOGINLIBS	=
+endif
+
+# Additional libs for GNU libc.
+ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
+  INITLIBS	+= -lpam -lpam_misc
 endif
 
 # Additional libs for GNU libc.
 ifneq ($(wildcard /usr/lib*/libcrypt.a),)
-LCRYPT		= -lcrypt
+  SULOGINLIBS	+= -lcrypt
 endif
 
 all:		$(BIN) $(SBIN) $(USRBIN)
@@ -81,7 +95,7 @@ all:		$(BIN) $(SBIN) $(USRBIN)
 #%.o: %.c
 #	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
 
-init:		LDLIBS += $(INIT_SELIBS) $(STATIC)
+init:		LDLIBS += $(INITLIBS) $(STATIC)
 init:		init.o init_utmp.o
 
 halt:		halt.o ifdown.o hddown.o utmp.o reboot.h
@@ -96,7 +110,7 @@ utmpdump:	utmpdump.o
 
 runlevel:	runlevel.o
 
-sulogin:	LDLIBS += $(LCRYPT) $(SULOGIN_SELIBS) $(STATIC)
+sulogin:	LDLIBS += $(SULOGINLIBS) $(STATIC)
 sulogin:	sulogin.o
 
 wall:		dowall.o wall.o

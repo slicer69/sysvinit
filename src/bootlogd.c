@@ -263,6 +263,9 @@ int consolename(char *res, int rlen)
 	}
 
 #ifdef TIOCGDEV
+# ifndef  ENOIOCTLCMD
+#  define ENOIOCTLCMD	515
+# endif
 	if (ioctl(0, TIOCGDEV, &kdev) == 0) {
 		int r = findtty(res, "/dev", rlen, (dev_t)kdev);
 		if (0 != r)

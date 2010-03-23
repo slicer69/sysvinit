@@ -63,7 +63,7 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Add fix for Debian bug #335023 - Make sure TERM is set on FreeBSD.
   * Add fix for Debian bug #374038 - Make it clear that shutdown -c can
     only cancel a waiting shutdown, not an active one.
-  * Add not to pidof manual page about the use of readlink(2). Patch by
+  * Add note to pidof manual page about the use of readlink(2). Patch by
     Bill Nottingham and Fedora.
   * Add changes for Debian bug #68621 - Add PAM support for programs spawned
     by init on the console like sulogin. Based on patch by Topi Miettinen.

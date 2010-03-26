@@ -7,8 +7,8 @@
  *
  * Version:	@(#)init.c  2.86  30-Jul-2004  miquels@cistron.nl
  */
-#define VERSION "2.88"
-#define DATE    "31-Jul-2004"
+#define VERSION "2.89"
+#define DATE    "26-Mar-2010"
 /*
  *		This file is part of the sysvinit suite,
  *		Copyright (C) 1991-2004 Miquel van Smoorenburg.
@@ -564,7 +564,7 @@ int console_open(int mode)
 	 */
 	for(f = 0; f < 5; f++) {
 		if ((fd = open(console_dev, m)) >= 0) break;
-		usleep(100);
+		usleep(10000);
 	}
 
 	if (fd < 0) return fd;
@@ -865,6 +865,47 @@ void initlog(int loglevel, char *s, ...)
 }
 
 
+#ifdef USE_PAM
+static pam_handle_t *pamh = NULL;
+# ifdef __GNUC__
+static int
+init_conv(int num_msg, const struct pam_message **msgm,
+	  struct pam_response **response __attribute__((unused)),
+	  void *appdata_ptr __attribute__((unused)))
+# else
+static int
+init_conv(int num_msg, const struct pam_message **msgm,
+	  struct pam_response **response, void *appdata_ptr)
+# endif
+{
+	int i;
+	for (i = 0; i < num_msg; i++) {
+		const struct pam_message *msg = msgm[i];
+		if (msg == (const struct pam_message*)0)
+			continue;
+		if (msg->msg == (char*)0)
+			continue;
+		switch (msg->msg_style) {
+		case PAM_ERROR_MSG:
+		case PAM_TEXT_INFO:
+			initlog(L_VB, "pam_message %s", msg->msg);
+		default:
+			break;
+		}
+	}
+	return 0;
+}
+static const struct pam_conv conv = { init_conv, NULL };
+# define PAM_FAIL_CHECK(func, args...)	\
+	{ \
+		if ((pam_ret = (func)(args)) != PAM_SUCCESS) { \
+			initlog(L_VB, "%s", pam_strerror(pamh, pam_ret)); \
+			goto pam_error; \
+		} \
+	}
+#endif /* USE_PAM */
+
+
 /*
  *	Build a new environment for execve().
  */
@@ -875,21 +916,38 @@ char **init_buildenv(int child)
 	char		i_cons[32];
 	char		i_shell[] = "SHELL=" SHELL;
 	char		**e;
+#ifdef USE_PAM
+	char		**pamenv = (char**)0;
+#endif
 	int		n, i;
 
 	for (n = 0; environ[n]; n++)
 		;
-	n += NR_EXTRA_ENV + 8;
+	n += NR_EXTRA_ENV;
+	if (child) {
+#ifdef USE_PAM
+		pamenv = pam_getenvlist(pamh);
+		for (i = 0; pamenv[i]; i++)
+			;
+		n += i;
+#endif
+		n += 8;
+	}
 	e = calloc(n, sizeof(char *));
 
 	for (n = 0; environ[n]; n++)
 		e[n] = istrdup(environ[n]);
 
-	for (i = 0; i < NR_EXTRA_ENV; i++)
+	for (i = 0; i < NR_EXTRA_ENV; i++) {
 		if (extra_env[i])
 			e[n++] = istrdup(extra_env[i]);
+	}
 
 	if (child) {
+#ifdef USE_PAM
+		for (i = 0; pamenv[i]; i++)
+			e[n++] = istrdup(pamenv[i]);
+#endif
 		snprintf(i_cons, sizeof(i_cons), "CONSOLE=%s", console_dev);
 		i_lvl[9]   = thislevel;
 		i_prev[10] = prevlevel;
@@ -916,20 +974,6 @@ void init_freeenv(char **e)
 }
 
 
-#ifdef USE_PAM
-static pam_handle_t *pamh = NULL;
-static const struct pam_conv conv = { misc_conv, NULL };
-# define PAM_FAIL_CHECK(func, args...)	\
-	{ \
-		const int __ret = (func)(args); \
-		if (__ret != PAM_SUCCESS) { \
-			initlog(L_VB, "%s", pam_strerror(pamh, __ret)); \
-			pam_end(pamh, __ret); \
-			exit(1); \
-		} \
-	}
-#endif /* USE_PAM */
-
 /*
  *	Fork and execute.
  *
@@ -937,11 +981,11 @@ static const struct pam_conv conv = { misc_conv, NULL };
  *
  */
 static
-int spawn(CHILD *ch, int *res)
+pid_t spawn(CHILD *ch, int *res)
 {
   char *args[16];		/* Argv array */
   char buf[136];		/* Line buffer */
-  int f, st, rc;		/* Scratch variables */
+  int f, st;			/* Scratch variables */
   char *ptr;			/* Ditto */
   time_t t;			/* System time */
   int oldAlarm;			/* Previous alarm value */
@@ -1051,40 +1095,15 @@ int spawn(CHILD *ch, int *res)
 	sigprocmask(SIG_BLOCK, &nmask, &omask);
 
 	if ((pid = fork()) == 0) {
-
+#ifdef USE_PAM
+		int pam_ret;
+#endif
 		close(0);
 		close(1);
 		close(2);
 		if (pipe_fd >= 0) close(pipe_fd);
 
   		sigprocmask(SIG_SETMASK, &omask, NULL);
-
-#ifdef USE_PAM
-		PAM_FAIL_CHECK(pam_start, "init", "root" , &conv, &pamh);
-		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_TTY, console_dev);
-		PAM_FAIL_CHECK(pam_acct_mgmt, pamh, PAM_SILENT);
-		PAM_FAIL_CHECK(pam_open_session, pamh, PAM_SILENT);
-		PAM_FAIL_CHECK(pam_setcred, pamh, PAM_ESTABLISH_CRED|PAM_SILENT);
-#endif
-
-		/*
-		 * Update utmp/wtmp file prior to starting
-		 * any child.  This MUST be done right here in
-		 * the child process in order to prevent a race
-		 * condition that occurs when the child
-		 * process' time slice executes before the
-		 * parent (can and does happen in a uniprocessor
-		 * environment).  If the child is a getty and
-		 * the race condition happens, then init's utmp
-		 * update will happen AFTER the getty runs
-		 * and expects utmp to be updated already!
-		 *
-		 * Do NOT log if process field starts with '+'
-		 * FIXME: that's for compatibility with *very*
-		 * old getties - probably it can be taken out.
-		 */
-		if (ch->action == RESPAWN && ch->process[0] != '+')
-			write_utmp_wtmp("", ch->id, getpid(), INIT_PROCESS, "");
 
 		/*
 		 *	In sysinit, boot, bootwait or single user mode:
@@ -1119,6 +1138,7 @@ int spawn(CHILD *ch, int *res)
 				exit(1);
 			}
 			if (pid > 0) {
+				pid_t rc;
 				/*
 				 *	Ignore keyboard signals etc.
 				 *	Then wait for child to exit.
@@ -1173,6 +1193,32 @@ int spawn(CHILD *ch, int *res)
 			dup(f);
 		}
 
+#ifdef USE_PAM
+		PAM_FAIL_CHECK(pam_start, "init", "root" , &conv, &pamh);
+		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_TTY, console_dev);
+		PAM_FAIL_CHECK(pam_acct_mgmt, pamh, PAM_SILENT);
+		PAM_FAIL_CHECK(pam_open_session, pamh, PAM_SILENT);
+		PAM_FAIL_CHECK(pam_setcred, pamh, PAM_ESTABLISH_CRED|PAM_SILENT);
+#endif
+		/*
+		 * Update utmp/wtmp file prior to starting
+		 * any child.  This MUST be done right here in
+		 * the child process in order to prevent a race
+		 * condition that occurs when the child
+		 * process' time slice executes before the
+		 * parent (can and does happen in a uniprocessor
+		 * environment).  If the child is a getty and
+		 * the race condition happens, then init's utmp
+		 * update will happen AFTER the getty runs
+		 * and expects utmp to be updated already!
+		 *
+		 * Do NOT log if process field starts with '+'
+		 * FIXME: that's for compatibility with *very*
+		 * old getties - probably it can be taken out.
+		 */
+		if (ch->process[0] != '+')
+			write_utmp_wtmp("", ch->id, getpid(), INIT_PROCESS, "");
+
   		/* Reset all the signals, set up environment */
   		for(f = 1; f < NSIG; f++) SETSIG(sa, f, SIG_DFL, SA_RESTART);
 		environ = init_buildenv(1);
@@ -1192,6 +1238,15 @@ int spawn(CHILD *ch, int *res)
 			execvp(args[1], args + 1);
 		}
   		initlog(L_VB, "cannot execute \"%s\"", args[1]);
+
+		if (ch->process[0] != '+')
+			write_utmp_wtmp("", ch->id, getpid(), DEAD_PROCESS, NULL);
+#ifdef USE_PAM
+		(void)pam_setcred(pamh, PAM_DELETE_CRED|PAM_SILENT);
+		pam_ret = pam_close_session(pamh, PAM_SILENT);
+	pam_error:
+		pam_end(pamh, pam_ret);
+#endif
   		exit(1);
   	}
 	*res = pid;
@@ -2527,7 +2582,6 @@ void init_main(void)
   CHILD			*ch;
   struct sigaction	sa;
   sigset_t		sgt;
-  pid_t			rc;
   int			f, st;
 
   if (!reload) {
@@ -2613,6 +2667,7 @@ void init_main(void)
 	 *	See if we have to start an emergency shell.
 	 */
 	if (emerg_shell) {
+		pid_t rc;
 		SETSIG(sa, SIGCHLD, SIG_DFL, SA_RESTART);
 		if (spawn(&ch_emerg, &f) > 0) {
 			while((rc = wait(&st)) != f)

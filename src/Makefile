@@ -80,7 +80,9 @@ endif
 
 # Additional libs for GNU libc.
 ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
-  INITLIBS	+= -lpam -lpam_misc
+  INITLIBS	+= -lpam
+  PAMDOTD	= /etc/pam.d
+  PAMINIT	= $(PAMDOTD)/init
 endif
 
 # Additional libs for GNU libc.
@@ -158,7 +160,13 @@ install:
 			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
 		done
-		# $(INSTALL_EXEC) etc/initscript.sample $(ROOT)/etc/
+ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
+		$(INSTALL_DIR) $(ROOT)$(PAMDOTD)
+		test -s $(ROOT)$(PAMINIT) || \
+		$(INSTALL_DATA) init.sample $(ROOT)$(PAMINIT)
+endif
+		# $(INSTALL_DIR) $(ROOT)/etc/
+		# $(INSTALL_EXEC) initscript.sample $(ROOT)/etc/
 		ln -sf halt $(ROOT)/sbin/reboot
 		ln -sf halt $(ROOT)/sbin/poweroff
 		ln -sf init $(ROOT)/sbin/telinit

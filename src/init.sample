@@ -1,0 +1,11 @@
+#%PAM-1.0
+#
+# The PAM configuration file for /sbin/init
+#
+#
+auth     sufficient     pam_rootok.so
+auth     include        common-auth
+account  include        common-account
+password include        common-password
+session  include        common-session
+session  requisite	pam_lastlog.so noupdate

@@ -67,6 +67,14 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     Bill Nottingham and Fedora.
   * Add changes for Debian bug #68621 - Add PAM support for programs spawned
     by init on the console like sulogin. Based on patch by Topi Miettinen.
+  * Test out PAM support, extend PAM support by providing environment
+    is specified by /etc/pam.d/init
+  * Move utmp/wtmp before the execvp() in spawn() to be sure to
+    use the correct pid even on a controlling tty
+  * Remaining problem is that the pid of the second fork() for
+    getting a controlling tty isn't that reported by spawn()
+  * Re-enable writting utmp/wtmp for boot scripts
+  * Provide a simply /etc/pam.d/init as without it will not work (sigh!)
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

@@ -347,11 +347,18 @@ char *getpasswd(char *crypted)
 	static char pass[128];
 	char *ret = pass;
 	int i;
-
-	if (crypted[0]) {
+#if defined(USE_ONELINE)
+	if (crypted[0])
 		printf("Give root password for login: ");
-	} else
+	else
 		printf("Press enter for login: ");
+#else
+	if (crypted[0])
+		printf("Give root password for maintenance\n");
+	else
+		printf("Press enter for maintenance");
+	printf("(or type Control-D to continue): ");
+#endif
 	fflush(stdout);
 
 	tcgetattr(0, &old);
@@ -545,7 +552,7 @@ int main(int argc, char **argv)
 				close(2);
 				if (fd > 2)
 					close(fd);
-				if ((fd = open(tty, O_RDWR)) < 0) {
+				if ((fd = open(tty, O_RDWR|O_NOCTTY)) < 0) {
 					perror(tty);
 				} else {
 					ioctl(0, TIOCSCTTY, (char *)1);

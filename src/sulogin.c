@@ -160,28 +160,57 @@ void alrm_handler(int sig)
  *	FreeBSD-style MD5 encryption.
  */
 static
-int valid(char *pass)
+int valid(const char *pass)
 {
-	char *s;
-	int len;
+	const char *s;
+	char id[5];
+	size_t len;
+	off_t off;
 
 	if (pass[0] == 0) return 1;
 #if CHECK_MD5
+	if (pass[0] != '$') goto check_des;
+
 	/*
-	 *	3 bytes for the signature $1$
-	 *	up to 8 bytes for the salt
-	 *	$
+	 *	up to 4 bytes for the signature e.g. $1$
+	 */
+	for(s = pass+1; *s && *s != '$'; s++)
+		;
+	if (*s++ != '$') return 0;
+	if ((off = (off_t)(s-pass)) > 4 || off < 3) return 0;
+
+	memset(id, '\0', sizeof(id));
+	strncpy(id, pass, off);
+
+	/*
+	 *	up to 16 bytes for the salt
+	 */
+	for(; *s && *s != '$'; s++)
+		;
+	if (*s++ != '$') return 0;
+	if ((off_t)(s-pass) > 16) return 0;
+	len = strlen(s);
+
+	/*
 	 *	the MD5 hash (128 bits or 16 bytes) encoded in base64 = 22 bytes
 	 */
-	if (strncmp(pass, "$1$", 3) == 0) {
-		for(s = pass + 3; *s && *s != '$'; s++)
-			;
-		if (*s++ != '$') return 0;
-		len = strlen(s);
-		if (len < 22 || len > 24) return 0;
+	if ((strcmp(id, "$1$") == 0) && (len < 22 || len > 24)) return 0;
 
-		return 1;
-	}
+	/*
+	 *	the SHA-256 hash 43 bytes
+	 */
+	if ((strcmp(id, "$5$") == 0) && (len < 42 || len > 44)) return 0;
+
+	/*
+	 *      the SHA-512 hash 86 bytes
+	 */
+	if ((strcmp(id, "$6$") == 0) && (len < 85 || len > 87)) return 0;
+
+	/*
+	 *	e.g. Blowfish hash
+	 */
+	return 1;
+check_des:
 #endif
 #if CHECK_DES
 	if (strlen(pass) != 13) return 0;

@@ -75,6 +75,7 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     getting a controlling tty isn't that reported by spawn()
   * Re-enable writting utmp/wtmp for boot scripts
   * Provide a simply /etc/pam.d/init as without it will not work (sigh!)
+  * Extend sulogin to support additional encryption algorithms
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
 

@@ -8,7 +8,7 @@
 # Version:	@(#)Makefile  2.85-13  23-Mar-2004  miquels@cistron.nl
 #
 
-CPPFLAGS = -DUSE_PAM
+CPPFLAGS =
 CFLAGS	?= -ansi -O2 -fomit-frame-pointer
 override CFLAGS += -W -Wall -D_GNU_SOURCE
 STATIC	=
@@ -76,13 +76,6 @@ else
   SELINUX_DEF	=
   INITLIBS	=
   SULOGINLIBS	=
-endif
-
-# Additional libs for GNU libc.
-ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
-  INITLIBS	+= -lpam
-  PAMDOTD	= /etc/pam.d
-  PAMINIT	= $(PAMDOTD)/init
 endif
 
 # Additional libs for GNU libc.
@@ -160,11 +153,6 @@ install:
 			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
 		done
-ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
-		$(INSTALL_DIR) $(ROOT)$(PAMDOTD)
-		test -s $(ROOT)$(PAMINIT) || \
-		$(INSTALL_DATA) init.sample $(ROOT)$(PAMINIT)
-endif
 		# $(INSTALL_DIR) $(ROOT)/etc/
 		# $(INSTALL_EXEC) initscript.sample $(ROOT)/etc/
 		ln -sf halt $(ROOT)/sbin/reboot

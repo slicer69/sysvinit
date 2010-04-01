@@ -70,11 +70,6 @@
 #  endif
 #endif
 
-#ifdef USE_PAM
-#  include <security/pam_appl.h>
-#  include <security/pam_misc.h>
-#endif
-
 #include "init.h"
 #include "initreq.h"
 #include "paths.h"
@@ -865,47 +860,6 @@ void initlog(int loglevel, char *s, ...)
 }
 
 
-#ifdef USE_PAM
-static pam_handle_t *pamh = NULL;
-# ifdef __GNUC__
-static int
-init_conv(int num_msg, const struct pam_message **msgm,
-	  struct pam_response **response __attribute__((unused)),
-	  void *appdata_ptr __attribute__((unused)))
-# else
-static int
-init_conv(int num_msg, const struct pam_message **msgm,
-	  struct pam_response **response, void *appdata_ptr)
-# endif
-{
-	int i;
-	for (i = 0; i < num_msg; i++) {
-		const struct pam_message *msg = msgm[i];
-		if (msg == (const struct pam_message*)0)
-			continue;
-		if (msg->msg == (char*)0)
-			continue;
-		switch (msg->msg_style) {
-		case PAM_ERROR_MSG:
-		case PAM_TEXT_INFO:
-			initlog(L_VB, "pam_message %s", msg->msg);
-		default:
-			break;
-		}
-	}
-	return 0;
-}
-static const struct pam_conv conv = { init_conv, NULL };
-# define PAM_FAIL_CHECK(func, args...)	\
-	{ \
-		if ((pam_ret = (func)(args)) != PAM_SUCCESS) { \
-			initlog(L_VB, "%s", pam_strerror(pamh, pam_ret)); \
-			goto pam_error; \
-		} \
-	}
-#endif /* USE_PAM */
-
-
 /*
  *	Build a new environment for execve().
  */
@@ -916,23 +870,13 @@ char **init_buildenv(int child)
 	char		i_cons[32];
 	char		i_shell[] = "SHELL=" SHELL;
 	char		**e;
-#ifdef USE_PAM
-	char		**pamenv = (char**)0;
-#endif
 	int		n, i;
 
 	for (n = 0; environ[n]; n++)
 		;
 	n += NR_EXTRA_ENV;
-	if (child) {
-#ifdef USE_PAM
-		pamenv = pam_getenvlist(pamh);
-		for (i = 0; pamenv[i]; i++)
-			;
-		n += i;
-#endif
+	if (child)
 		n += 8;
-	}
 	e = calloc(n, sizeof(char *));
 
 	for (n = 0; environ[n]; n++)
@@ -944,10 +888,6 @@ char **init_buildenv(int child)
 	}
 
 	if (child) {
-#ifdef USE_PAM
-		for (i = 0; pamenv[i]; i++)
-			e[n++] = istrdup(pamenv[i]);
-#endif
 		snprintf(i_cons, sizeof(i_cons), "CONSOLE=%s", console_dev);
 		i_lvl[9]   = thislevel;
 		i_prev[10] = prevlevel;
@@ -1095,9 +1035,7 @@ pid_t spawn(CHILD *ch, int *res)
 	sigprocmask(SIG_BLOCK, &nmask, &omask);
 
 	if ((pid = fork()) == 0) {
-#ifdef USE_PAM
-		int pam_ret;
-#endif
+
 		close(0);
 		close(1);
 		close(2);
@@ -1193,13 +1131,6 @@ pid_t spawn(CHILD *ch, int *res)
 			dup(f);
 		}
 
-#ifdef USE_PAM
-		PAM_FAIL_CHECK(pam_start, "init", "root" , &conv, &pamh);
-		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_TTY, console_dev);
-		PAM_FAIL_CHECK(pam_acct_mgmt, pamh, PAM_SILENT);
-		PAM_FAIL_CHECK(pam_open_session, pamh, PAM_SILENT);
-		PAM_FAIL_CHECK(pam_setcred, pamh, PAM_ESTABLISH_CRED|PAM_SILENT);
-#endif
 		/*
 		 * Update utmp/wtmp file prior to starting
 		 * any child.  This MUST be done right here in
@@ -1241,12 +1172,6 @@ pid_t spawn(CHILD *ch, int *res)
 
 		if (ch->process[0] != '+')
 			write_utmp_wtmp("", ch->id, getpid(), DEAD_PROCESS, NULL);
-#ifdef USE_PAM
-		(void)pam_setcred(pamh, PAM_DELETE_CRED|PAM_SILENT);
-		pam_ret = pam_close_session(pamh, PAM_SILENT);
-	pam_error:
-		pam_end(pamh, pam_ret);
-#endif
   		exit(1);
   	}
 	*res = pid;

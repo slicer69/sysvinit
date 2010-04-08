@@ -1,0 +1,220 @@
+Index: src/init.sample
+===================================================================
+--- src/init.sample	(revision 0)
++++ src/init.sample	(revision 0)
+@@ -0,0 +1,9 @@
++#%PAM-1.0
++#
++# The PAM configuration file for /sbin/init
++# Used for updating the lastlog logging file
++#
++auth	    sufficient	pam_rootok.so
++account	    include	common-account
++session	    include	common-session
++session	    requisite	pam_lastlog.so silent
+Index: src/init.c
+===================================================================
+--- src/init.c	(revision 56)
++++ src/init.c	(working copy)
+@@ -76,6 +76,10 @@
+ #include "reboot.h"
+ #include "set.h"
+ 
++#ifdef USE_PAM
++extern void notify_pam_dead_session(const char *id);
++#endif
++
+ #ifndef SIGPWR
+ #  define SIGPWR SIGUSR2
+ #endif
+@@ -1129,6 +1133,9 @@
+ 			}
+ 			dup(f);
+ 			dup(f);
++#ifdef USE_PAM
++			notify_pam_dead_session(ch->id);
++#endif
+ 		}
+ 
+ 		/*
+@@ -1548,6 +1555,9 @@
+ 		    INITDBG(L_VB, "Updating utmp for pid %d [id %s]",
+ 				ch->pid, ch->id);
+ 		    ch->flags &= ~RUNNING;
++#ifdef USE_PAM
++		    notify_pam_dead_session(ch->id);
++#endif
+ 		    if (ch->process[0] != '+')
+ 		    	write_utmp_wtmp("", ch->id, ch->pid, DEAD_PROCESS, NULL);
+ 		}
+@@ -2009,6 +2019,9 @@
+ 	    if (ch->flags & ZOMBIE) {
+ 		INITDBG(L_VB, "Child died, PID= %d", ch->pid);
+ 		ch->flags &= ~(RUNNING|ZOMBIE|WAITING);
++#ifdef USE_PAM
++		notify_pam_dead_session(ch->id);
++#endif
+ 		if (ch->process[0] != '+')
+ 			write_utmp_wtmp("", ch->id, ch->pid, DEAD_PROCESS, NULL);
+ 	    }
+@@ -2453,6 +2466,9 @@
+ 	    if (ch->flags & ZOMBIE) {
+ 		INITDBG(L_VB, "Child died, PID= %d", ch->pid);
+ 		ch->flags &= ~(RUNNING|ZOMBIE|WAITING);
++#ifdef USE_PAM
++		notify_pam_dead_session(ch->id);
++#endif
+ 		if (ch->process[0] != '+')
+ 			write_utmp_wtmp("", ch->id, ch->pid, DEAD_PROCESS, NULL);
+ 	    }
+Index: src/utmp.c
+===================================================================
+--- src/utmp.c	(revision 51)
++++ src/utmp.c	(working copy)
+@@ -34,10 +34,18 @@
+ #include <string.h>
+ #include <utmp.h>
+ 
++#if defined(USE_PAM) && defined(INIT_MAIN)
++#  include <security/pam_appl.h>
++#  include <security/pam_misc.h>
++#endif
++
+ #include "init.h"
+ #include "initreq.h"
+ #include "paths.h"
+ 
++#ifndef _PATH_DEV
++# define _PATH_DEV	"/dev/"
++#endif
+ 
+ #if defined(__GLIBC__)
+ #  if (__GLIBC__ == 2) && (__GLIBC_MINOR__ == 0) && defined(__powerpc__)
+@@ -127,9 +135,9 @@
+ 	strncpy(utmp.ut_name, user, sizeof(utmp.ut_name));
+ 	strncpy(utmp.ut_id  , id  , sizeof(utmp.ut_id  ));
+ 	strncpy(utmp.ut_line, line, sizeof(utmp.ut_line));
+-        
+-        /* Put the OS version in place of the hostname */
+-        if (uname(&uname_buf) == 0)
++	
++	/* Put the OS version in place of the hostname */
++	if (uname(&uname_buf) == 0)
+ 		strncpy(utmp.ut_host, uname_buf.release, sizeof(utmp.ut_host));
+ 
+ #if HAVE_UPDWTMP
+@@ -262,3 +270,75 @@
+ 	write_wtmp(user, id, pid, type, line && line[0] ? line : oldline);
+ }
+ 
++#if defined(USE_PAM) && defined(INIT_MAIN)
++static pam_handle_t *pamh = NULL;
++# ifdef __GNUC__
++static int
++null_conv(int num_msg, const struct pam_message **msgm,
++	  struct pam_response **response __attribute__((unused)),
++	  void *appdata_ptr __attribute__((unused)))
++# else
++static int
++null_conv(int num_msg, const struct pam_message **msgm,
++	  struct pam_response **response, void *appdata_ptr)
++# endif
++{
++	int i;
++	for (i = 0; i < num_msg; i++) {
++		const struct pam_message *msg = msgm[i];
++		if (msg == (const struct pam_message*)0)
++			continue;
++		if (msg->msg == (char*)0)
++			continue;
++		switch (msg->msg_style) {
++		case PAM_ERROR_MSG:
++		case PAM_TEXT_INFO:
++			initlog(L_VB, "pam_message %s", msg->msg);
++		default:
++			break;
++		}
++	}
++	return 0;
++}
++static const struct pam_conv conv = { null_conv, NULL };
++# define PAM_FAIL_CHECK(func, args...)  \
++	{ \
++		if ((pam_ret = (func)(args)) != PAM_SUCCESS) { \
++			initlog(L_VB, "%s", pam_strerror(pamh, pam_ret)); \
++			goto pam_error; \
++		} \
++	}
++
++void notify_pam_dead_session(const char *id)
++{
++	struct utmp *oldut, ut;
++
++	setutent();
++
++	memset(&ut, 0, sizeof(ut));
++	ut.ut_type = DEAD_PROCESS;
++	strncpy(ut.ut_id, id, sizeof(ut.ut_id));
++
++	if ((oldut = getutid(&ut)) && (oldut->ut_type == USER_PROCESS)) {
++		int pam_ret;
++		char tty[UT_LINESIZE+ strlen(_PATH_DEV) + 1];
++
++		if (strncmp(oldut->ut_line, _PATH_DEV, strlen(_PATH_DEV)))
++			snprintf(tty, sizeof(tty), _PATH_DEV "%.*s",
++				 UT_LINESIZE, oldut->ut_line);
++		else
++			snprintf(tty, sizeof(tty), "%.*s",
++				 UT_LINESIZE, oldut->ut_line);
++
++		PAM_FAIL_CHECK(pam_start, "init", oldut->ut_user, &conv, &pamh);
++		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_TTY, tty);
++		PAM_FAIL_CHECK(pam_set_item, pamh, PAM_RHOST, oldut->ut_host);
++		PAM_FAIL_CHECK(pam_close_session, pamh, PAM_SILENT);
++	pam_error:
++		pam_end(pamh, pam_ret);
++	}
++
++	endutent();
++}
++#endif /* USE_PAM && INIT_MAIN */
++
+Index: src/Makefile
+===================================================================
+--- src/Makefile	(revision 58)
++++ src/Makefile	(working copy)
+@@ -8,7 +8,7 @@
+ # Version:	@(#)Makefile  2.85-13  23-Mar-2004  miquels@cistron.nl
+ #
+ 
+-CPPFLAGS =
++CPPFLAGS = -DUSE_PAM
+ CFLAGS	?= -ansi -O2 -fomit-frame-pointer
+ override CFLAGS += -W -Wall -D_GNU_SOURCE
+ STATIC	=
+@@ -79,6 +79,13 @@
+ endif
+ 
+ # Additional libs for GNU libc.
++ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
++  INITLIBS	+= -lpam
++  PAMDOTD	= /etc/pam.d
++  PAMINIT	= $(PAMDOTD)/init
++endif
++
++# Additional libs for GNU libc.
+ ifneq ($(wildcard /usr/lib*/libcrypt.a),)
+   SULOGINLIBS	+= -lcrypt
+ endif
+@@ -153,6 +160,11 @@
+ 			$(STRIP) $$i ; \
+ 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
+ 		done
++ifneq ($(findstring -DUSE_PAM,$(CPPFLAGS)),)
++		$(INSTALL_DIR) $(ROOT)$(PAMDOTD)
++		test -s $(ROOT)$(PAMINIT) || \
++		$(INSTALL_DATA) init.sample $(ROOT)$(PAMINIT)
++endif
+ 		# $(INSTALL_DIR) $(ROOT)/etc/
+ 		# $(INSTALL_EXEC) initscript.sample $(ROOT)/etc/
+ 		ln -sf halt $(ROOT)/sbin/reboot

@@ -444,7 +444,7 @@ void sushell(struct passwd *pwd)
 	  char *seuser=NULL;
 	  char *level=NULL;
 	  if (getseuserbyname("root", &seuser, &level) == 0)
-		  if (get_default_context_with_level(seuser, level, 0, &scon) > 0) {
+		  if (get_default_context_with_level(seuser, level, 0, &scon) == 0) {
 			  if (setexeccon(scon) != 0) 
 				  fprintf(stderr, "setexeccon faile\n");
 			  freecon(scon);

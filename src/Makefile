@@ -57,7 +57,6 @@ ID		= $(shell id -u)
 BIN_OWNER	= root
 BIN_GROUP	= root
 BIN_COMBO	= $(BIN_OWNER):$(BIN_GROUP)
-STRIP		= strip -s -R .comment
 ifeq ($(ID),0)
   INSTALL_EXEC	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 755
   INSTALL_DATA	= install -o $(BIN_OWNER) -g $(BIN_GROUP) -m 644
@@ -142,15 +141,12 @@ install:
 		$(INSTALL_DIR) $(ROOT)/bin/ $(ROOT)/sbin/
 		$(INSTALL_DIR) $(ROOT)/usr/bin/
 		for i in $(BIN); do \
-			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/bin/ ; \
 		done
 		for i in $(SBIN); do \
-			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/sbin/ ; \
 		done
 		for i in $(USRBIN); do \
-			$(STRIP) $$i ; \
 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
 		done
 		# $(INSTALL_DIR) $(ROOT)/etc/

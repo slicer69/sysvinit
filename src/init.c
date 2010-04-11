@@ -55,6 +55,9 @@
 #ifdef WITH_SELINUX
 #  include <selinux/selinux.h>
 #  include <sys/mount.h>
+#  ifndef MNT_DETACH /* present in glibc 2.10, missing in 2.7 */
+#    define MNT_DETACH 2
+#  endif
 #endif
 
 #ifdef __i386__
@@ -2409,7 +2412,16 @@ void process_signals()
 		pwrstat = c;
 		close(fd);
 		unlink(PWRSTAT);
-	}
+	} else if ((fd = open(PWRSTAT_OLD, O_RDONLY)) >= 0) {
+		/* Path changed 2010-03-20.  Look for the old path for a while. */
+		initlog(L_VB, "warning: found obsolete path %s, use %s instead",
+			PWRSTAT_OLD, PWRSTAT);
+		c = 0;
+		read(fd, &c, 1);
+		pwrstat = c;
+		close(fd);
+		unlink(PWRSTAT_OLD);
+        }
 	do_power_fail(pwrstat);
 	DELSET(got_signals, SIGPWR);
   }

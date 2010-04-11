@@ -55,6 +55,9 @@
 #ifdef WITH_SELINUX
 #  include <selinux/selinux.h>
 #  include <sys/mount.h>
+#  ifndef MNT_DETACH /* present in glibc 2.10, missing in 2.7 */
+#    define MNT_DETACH 2
+#  endif
 #endif
 
 #ifdef __i386__

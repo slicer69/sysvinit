@@ -29,6 +29,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     to disk using fdatasync().  Patch from Scott Gifford via Debian.
   * Add compatibility code to handle old path "/etc/powerstatus" for a
     while.
+  * Incude definition for MNT_DETACH which is missing in older GNU libc
+    headers.
 
   [ Werner Fink ]
   * Add the comment from Andrea Arcangeli about the correct

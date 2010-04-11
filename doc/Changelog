@@ -31,6 +31,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     while.
   * Incude definition for MNT_DETACH which is missing in older GNU libc
     headers.
+  * Do not strip binaries before installing them, to make it easier to
+    get binaries with debug information installed.
 
   [ Werner Fink ]
   * Add the comment from Andrea Arcangeli about the correct

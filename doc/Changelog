@@ -27,6 +27,8 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     find a usable pty.  Patch from Rob Leslie via Debian.
   * Make sure bootlogd fflush() every line, even if asked not to flush
     to disk using fdatasync().  Patch from Scott Gifford via Debian.
+  * Add compatibility code to handle old path "/etc/powerstatus" for a
+    while.
 
   [ Werner Fink ]
   * Add the comment from Andrea Arcangeli about the correct

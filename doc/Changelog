@@ -71,10 +71,14 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
     only cancel a waiting shutdown, not an active one.
   * Add note to pidof manual page about the use of readlink(2). Patch by
     Bill Nottingham and Fedora.
-  * Add changes for Debian bug #68621 - Add PAM support for programs spawned
-    by init on the console like sulogin. Based on patch by Topi Miettinen.
-  * Test out PAM support, extend PAM support by providing environment
-    is specified by /etc/pam.d/init
+  * Add PAM patch contrib/notify-pam-dead.patch based on Debian bug
+    #68621, which will add PAM support for programs spawned by init on
+    the console like sulogin. Based on patch by Topi Miettinen.  This
+    patch is not applied by default yet while we review its
+    usefullness.  It is only helpful for session handling, as sulogin
+    do not use and will not use a PAM conv() function.  The current
+    sulogin is able to handle DES as well as MD5, SHA, and Blowfish
+    encrypted passwords due using getpwnam(3).
   * Move utmp/wtmp before the execvp() in spawn() to be sure to
     use the correct pid even on a controlling tty
   * Remaining problem is that the pid of the second fork() for
@@ -83,10 +87,6 @@ sysvinit (2.88dsf) UNRELEASED; urgency=low
   * Provide a simply /etc/pam.d/init as without it will not work (sigh!)
   * Extend sulogin to support additional encryption algorithms
   * Re-enable maintenance message of sulogin
-  * Remove PAM session start part from init as sulogin do not use
-    and will not use a PAM conv() function.  The current sulogin
-    is able to handle DES as well as MD5, SHA, and Blowfish encrypted
-    passwords due using getpwnam(3).
   * Enable the sulogin fallback password check to handle  MD5, SHA, and
     Blowfish encrypted passwords in case of getpwnam(3) fails.
   * sulogin picking the SELinux context was broken. Patch by Daniel Walsh

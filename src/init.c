@@ -770,7 +770,9 @@ void console_stty(void)
 	tty.c_cc[VEOF]	    = CEOF;
 	tty.c_cc[VTIME]	    = 0;
 	tty.c_cc[VMIN]	    = 1;
+#ifdef VSWTC /* not defined on FreeBSD */
 	tty.c_cc[VSWTC]	    = _POSIX_VDISABLE;
+#endif /* VSWTC */
 	tty.c_cc[VSTART]    = CSTART;
 	tty.c_cc[VSTOP]	    = CSTOP;
 	tty.c_cc[VSUSP]	    = CSUSP;

@@ -1,3 +1,8 @@
+  [ Werner Fink ]
+  * Correct fix for Debian bug #547073: use IUTF8 flag if defined
+    and if already set to make sure the utf-8 flag is not cleared
+    from the tty. Patch from Samuel Thibault.
+
 sysvinit (2.88dsf) UNRELEASED; urgency=low
 
   [ Petter Reinholdtsen ]

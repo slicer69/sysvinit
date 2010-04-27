@@ -101,9 +101,6 @@ void fixtty(void)
 	 * the same result as `stty sane cr0 pass8'
 	 */
 	tty.c_iflag |=  (BRKINT | ICRNL | IMAXBEL);
-#ifdef IUTF8 /* Not defined on FreeBSD */
-	tty.c_iflag |= IUTF8;
-#endif /* IUTF8 */
 	tty.c_iflag &= ~(IGNBRK | INLCR | IGNCR | IXOFF | IUCLC | IXANY | ISTRIP);
 	tty.c_oflag |=  (OPOST | ONLCR | NL0 | CR0 | TAB0 | BS0 | VT0 | FF0);
 	tty.c_oflag &= ~(OLCUC | OCRNL | ONOCR | ONLRET | OFILL | OFDEL |\

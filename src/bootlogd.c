@@ -243,12 +243,16 @@ int consolename(char *res, int rlen)
 #ifdef TIOCGDEV
 	unsigned int	kdev;
 #endif
-	struct stat	st, st2;
+	struct stat	st;
+	int		n;
+#ifdef __linux__
 	char		buf[256];
 	char		*p;
+	struct stat	st2;
 	int		didmount = 0;
-	int		n, r;
+	int		r;
 	int		fd;
+#endif
 
 	fstat(0, &st);
 	if (major(st.st_rdev) != 5 || minor(st.st_rdev) != 1) {

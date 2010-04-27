@@ -7,6 +7,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.
+  * Add #ifdef in bootlogd.c to avoid gcc warnings about unused
+    variable on non-linux platforms.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

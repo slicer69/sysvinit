@@ -4,6 +4,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Correct fix for Debian bug #547073: use IUTF8 flag if defined
     and if already set to make sure the utf-8 flag is not cleared
     from the tty. Patch from Samuel Thibault.
+  * Include limits.h in killall.c to enforce definition of PATH_MAX
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

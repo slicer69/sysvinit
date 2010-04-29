@@ -18,11 +18,11 @@ upload: $(SFTPBATCH)
 $(SFTPBATCH): $(TARBALL).sig
 	@echo progress > $@
 	@echo put $(TARBALL) >> $@
-	@echo chmod 644 $(TARBALL) >> $@
+	@echo chmod 664 $(notdir $(TARBALL)) >> $@
 	@echo put $(TARBALL).sig >> $@
-	@echo chmod 644 $(TARBALL).sig >> $@
+	@echo chmod 664 $(notdir $(TARBALL)).sig >> $@
 	@echo rm  $(PACKAGE)-latest.tar.bz2 >> $@
-	@echo symlink $(TARBALL) $(PACKAGE)-latest.tar.bz2 >> $@
+	@echo symlink $(notdir $(TARBALL)) $(PACKAGE)-latest.tar.bz2 >> $@
 	@echo quit >> $@
 
 $(TARBALL).sig: $(TARBALL)

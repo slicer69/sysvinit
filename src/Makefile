@@ -92,9 +92,9 @@ all:		$(BIN) $(SBIN) $(USRBIN)
 init:		LDLIBS += $(INITLIBS) $(STATIC)
 init:		init.o init_utmp.o
 
-halt:		halt.o ifdown.o hddown.o utmp.o reboot.h
+halt:		halt.o ifdown.o hddown.o utmp.o
 
-last:		last.o oldutmp.h
+last:		last.o
 
 mesg:		mesg.o
 
@@ -109,7 +109,7 @@ sulogin:	sulogin.o
 
 wall:		dowall.o wall.o
 
-shutdown:	dowall.o shutdown.o utmp.o reboot.h
+shutdown:	dowall.o shutdown.o utmp.o
 
 bootlogd:	LDLIBS += -lutil
 bootlogd:	bootlogd.o
@@ -118,13 +118,21 @@ sulogin.o:	CPPFLAGS += $(SELINUX_DEF)
 sulogin.o:	sulogin.c 
 
 init.o:		CPPFLAGS += $(SELINUX_DEF)
-init.o:		init.c init.h set.h reboot.h initreq.h
+init.o:		init.c init.h initreq.h paths.h reboot.h set.h
 
-utmp.o:		utmp.c init.h
+utmp.o:		
 
 init_utmp.o:	CPPFLAGS += -DINIT_MAIN
-init_utmp.o:	utmp.c init.h
+init_utmp.o:	utmp.c init.h initreq.h paths.h
 		$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+utmpdump.o:	utmpdump.c oldutmp.h
+
+shutdown.o:	shutdown.c paths.h reboot.h initreq.h init.h
+
+halt.o:		halt.c reboot.h
+
+last.o:		last.c oldutmp.h
 
 cleanobjs:
 		rm -f *.o *.bak

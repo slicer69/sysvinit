@@ -5,6 +5,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     and if already set to make sure the utf-8 flag is not cleared
     from the tty. Patch from Samuel Thibault.
   * Include limits.h in killall.c to enforce definition of PATH_MAX
+  * Fix sysvinit bug #29758 Linker invocation should not contain
+    headers. Change based on patch from Elias Pipping.
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

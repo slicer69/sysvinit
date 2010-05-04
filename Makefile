@@ -1,6 +1,7 @@
 all install clean distclean:
 	$(MAKE) -C src $@
 
+ifeq ($(MAKECMDGOALS),upload)
 PACKAGE=sysvinit
 VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
 SVLOGIN=$(shell svn info | sed -rn '/Repository Root:/{ s|.*//(.*)\@.*|\1|p }')
@@ -35,3 +36,4 @@ $(TMP)/$(PACKAGE)-$(VERSION): .svn
 	svn export . $@
 	@chmod -R a+r,u+w,og-w $@
 	@find $@ -type d | xargs -r chmod a+rx,u+w,og-w
+endif

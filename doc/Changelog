@@ -7,6 +7,10 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Include limits.h in killall.c to enforce definition of PATH_MAX
   * Fix sysvinit bug #29758 Linker invocation should not contain
     headers. Change based on patch from Elias Pipping.
+  * Add fix for Debian bug #580272: use return value 1 of
+    is_selinux_enabled() to determine if SELinux is enabled,
+    otherwise initialize SELinux and load the policy. Patch from
+    Petter Reinholdtsen.
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

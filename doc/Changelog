@@ -11,6 +11,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     is_selinux_enabled() to determine if SELinux is enabled,
     otherwise initialize SELinux and load the policy. Patch from
     Petter Reinholdtsen.
+  * Make quotes visible in example of the manual page of fstab-decode
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

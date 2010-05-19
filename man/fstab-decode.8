@@ -22,7 +22,7 @@
 fstab-decode \- run a command with fstab-encoded arguments
 
 .SH SYNOPSIS
-\fB fstab-decode\fR \fICOMMAND\fR [\fIARGUMENT\fR]...
+\fBfstab-decode\fR \fICOMMAND\fR [\fIARGUMENT\fR]...
 
 .SH DESCRIPTION
 .B fstab-decode
@@ -41,5 +41,6 @@ can't be run.
 Otherwise it exits with the status returned by \fICOMMAND\fR.
 
 .SH EXAMPLES
-
-.B fstab-decode umount $(awk '$3 == "vfat" { print $2 }' /etc/fstab)
+.nf
+.B fstab-decode umount $(awk \[aq]$3 == \[dq]vfat\[dq] { print $2 }\[aq] /etc/fstab)
+.fi

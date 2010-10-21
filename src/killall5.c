@@ -121,8 +121,8 @@ typedef struct _s_nfs
 	struct _s_nfs *next;	/* Pointer to next struct. */
 	struct _s_nfs *prev;	/* Pointer to previous st. */
 	SHADOW *shadow;		/* Pointer to shadows      */
-	char * name;
 	size_t nlen;
+	char * name;
 } NFS;
 
 /* List of processes. */
@@ -355,7 +355,7 @@ static void clear_mnt(void)
 }
 
 /*
- *     Check if path is ia shadow off a NFS partition.
+ *     Check if path is a shadow off a NFS partition.
  */
 static int shadow(SHADOW *restrict this, const char *restrict name, const size_t nlen)
 {

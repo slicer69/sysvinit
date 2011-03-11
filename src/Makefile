@@ -134,6 +134,8 @@ halt.o:		halt.c reboot.h
 
 last.o:		last.c oldutmp.h
 
+consoles.o:	consoles.c consoles.h
+
 cleanobjs:
 		rm -f *.o *.bak
 

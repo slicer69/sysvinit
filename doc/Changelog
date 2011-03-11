@@ -1,6 +1,8 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Add code to detect the system consoles with the help of the
+    new /proc/consoles files of linux kernel 2.6.38+
   * Try to make utmpdump IPv6 valid, change based on suggestion from
     Navdeep Bhatia (see local bug #32429)
   * Fix signal and alarm handling based on the patch from Florent Viard.

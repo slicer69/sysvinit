@@ -68,6 +68,8 @@ static void (*saved_sigint)  = SIG_DFL;
 static void (*saved_sigtstp) = SIG_DFL;
 static void (*saved_sigquit) = SIG_DFL;
 
+static volatile sig_atomic_t alarm_rised;
+
 #ifndef IUCLC
 #  define IUCLC	0
 #endif
@@ -149,6 +151,14 @@ void alrm_handler(int sig __attribute__((unused)))
 void alrm_handler(int sig)
 # endif
 {
+	/* Timeout expired */
+	alarm_rised++;
+
+	signal(SIGINT,  saved_sigint);
+	signal(SIGTSTP, saved_sigtstp);
+	signal(SIGQUIT, saved_sigquit);
+
+	/* Never use exit(3) or stdio(3) within a signal handler */
 }
 
 /*
@@ -508,8 +518,8 @@ int main(int argc, char **argv)
 	 *	See if we need to open an other tty device.
 	 */
 	saved_sigint  = signal(SIGINT,  SIG_IGN);
-	saved_sigtstp = signal(SIGQUIT, SIG_IGN);
-	saved_sigquit = signal(SIGTSTP, SIG_IGN);
+	saved_sigquit = signal(SIGQUIT, SIG_IGN);
+	saved_sigtstp = signal(SIGTSTP, SIG_IGN);
 	if (optind < argc) tty = argv[optind];
 
 	if (tty || (tty = getenv("CONSOLE"))) {
@@ -587,18 +597,28 @@ int main(int argc, char **argv)
 	 *	Ask for the password.
 	 */
 	while(pwd) {
+		int failed = 0;
 		if ((p = getpasswd(pwd->pw_passwd)) == NULL) break;
 		if (pwd->pw_passwd[0] == 0 ||
-		    strcmp(crypt(p, pwd->pw_passwd), pwd->pw_passwd) == 0)
+		    strcmp(crypt(p, pwd->pw_passwd), pwd->pw_passwd) == 0) {
 			sushell(pwd);
-		saved_sigquit = signal(SIGQUIT, SIG_IGN);
-		saved_sigtstp = signal(SIGTSTP, SIG_IGN);
-		saved_sigint  = signal(SIGINT,  SIG_IGN);
-		printf("Login incorrect.\n");
+			failed++;
+		}
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGTSTP, SIG_IGN);
+		signal(SIGINT,  SIG_IGN);
+		if (failed) {
+			printf("Can not execute su shell.\n");
+			break;
+		} else
+			printf("Login incorrect.\n");
 	}
 
+	if (alarm_rised)
+		printf("Timed out.\n");
+
 	/*
-	 *	User pressed Control-D.
+	 *	User may pressed Control-D.
 	 */
 	return 0;
 }

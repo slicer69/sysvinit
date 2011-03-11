@@ -318,30 +318,22 @@ int dns_lookup(char *result, int size, int useip, int32_t *a)
 	struct sockaddr_in6	sin6;
 	struct sockaddr		*sa;
 	int			salen, flags;
-	unsigned int		topnibble;
-	unsigned int		azero = 0, sitelocal = 0;
 	int			mapped = 0;
 
 	flags = useip ? NI_NUMERICHOST : 0;
 
 	/*
-	 *	IPv4 or IPv6 ? We use 2 heuristics:
-	 *	1. Current IPv6 range uses 2000-3fff or fec0-feff.
-	 *	   Outside of that is illegal and must be IPv4.
-	 *	2. If last 3 bytes are 0, must be IPv4
-	 *	3. If IPv6 in IPv4, handle as IPv4
+	 *	IPv4 or IPv6 ?
+	 *	1. If last 3 4bytes are 0, must be IPv4
+	 *	2. If IPv6 in IPv4, handle as IPv4
+	 *	3. Anything else is IPv6
 	 *
 	 *	Ugly.
 	 */
 	if (a[0] == 0 && a[1] == 0 && a[2] == (int32_t)htonl (0xffff))
 		mapped = 1;
-	topnibble = ntohl((unsigned int)a[0]) >> 28;
 
-	azero = ntohl((unsigned int)a[0]) >> 16;
-	sitelocal = (azero >= 0xfec0 && azero <= 0xfeff) ? 1 : 0;
-	
-	if (((topnibble < 2 || topnibble > 3) && (!sitelocal)) || mapped ||
-	    (a[1] == 0 && a[2] == 0 && a[3] == 0)) {
+	if (mapped || (a[1] == 0 && a[2] == 0 && a[3] == 0)) {
 		/* IPv4 */
 		sin.sin_family = AF_INET;
 		sin.sin_port = 0;

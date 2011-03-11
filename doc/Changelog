@@ -1,6 +1,10 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Fix signal and alarm handling based on the patch from Florent Viard.
+    (was local bug #32304)
+  * Add fix for Redhat bug #573346: last incorrectly displays IPv6
+    addresses (was local bug #29497)
   * Correct fix for Debian bug #547073: use IUTF8 flag if defined
     and if already set to make sure the utf-8 flag is not cleared
     from the tty. Patch from Samuel Thibault.

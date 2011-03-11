@@ -128,11 +128,21 @@ unspace(char *s, int len)
 void
 print_utline(struct utmp ut)
 {
-	char *addr_string, *time_string;
-	struct in_addr in;
+	char addr_buf[INET6_ADDRSTRLEN+1];
+	const char *addr_string, *time_string;
+	void *in_addr = &ut.ut_addr_v6;
+	size_t addr_length = INET6_ADDRSTRLEN;
+	int addr_family = AF_INET6;
 
-	in.s_addr = ut.ut_addr;
-	addr_string = inet_ntoa(in);
+	if (!ut.ut_addr_v6[1] && !ut.ut_addr_v6[2] && !ut.ut_addr_v6[3]) {
+		addr_family = AF_INET;
+		addr_length = INET_ADDRSTRLEN;
+		in_addr = &ut.ut_addr;
+	}
+	if ((addr_string = inet_ntop(addr_family, in_addr, addr_buf, addr_length)) == 0) {
+		addr_buf[0] = '\0';
+		addr_string = &addr_buf[0];
+	}
 	time_string = timetostr(ut.ut_time);
 	cleanse(ut.ut_id);
 	cleanse(ut.ut_user);

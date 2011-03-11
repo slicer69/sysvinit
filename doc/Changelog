@@ -1,6 +1,8 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Try to make utmpdump IPv6 valid, change based on suggestion from
+    Navdeep Bhatia (see local bug #32429)
   * Fix signal and alarm handling based on the patch from Florent Viard.
     (was local bug #32304)
   * Add fix for Redhat bug #573346: last incorrectly displays IPv6

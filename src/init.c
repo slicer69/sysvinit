@@ -89,6 +89,7 @@
 /* Set a signal handler. */
 #define SETSIG(sa, sig, fun, flags) \
 		do { \
+			memset(&sa, 0, sizeof(sa)); \
 			sa.sa_handler = fun; \
 			sa.sa_flags = flags; \
 			sigemptyset(&sa.sa_mask); \
@@ -809,6 +810,24 @@ void console_stty(void)
 	(void) close(fd);
 }
 
+static  ssize_t
+safe_write(int fd, const char *buffer, size_t count)
+{
+	ssize_t offset = 0;
+
+	while (count > 0) {
+		ssize_t block = write(fd, &buffer[offset], count);
+
+		if (block < 0 && errno == EINTR)
+			continue;
+		if (block <= 0)
+			return offset ? offset : block;
+		offset += block;
+		count -= block;
+	}
+	return offset;
+}
+
 /*
  *	Print to the system console
  */
@@ -817,7 +836,7 @@ void print(char *s)
 	int fd;
 
 	if ((fd = console_open(O_WRONLY|O_NOCTTY|O_NDELAY)) >= 0) {
-		write(fd, s, strlen(s));
+		safe_write(fd, s, strlen(s));
 		close(fd);
 	}
 }
@@ -1669,9 +1688,9 @@ int ask_runlevel(void)
 	if (fd < 0) return('S');
 
 	while(!strchr("0123456789S", lvl)) {
-  		write(fd, prompt, sizeof(prompt) - 1);
-		buf[0] = 0;
-  		read(fd, buf, sizeof(buf));
+		safe_write(fd, prompt, sizeof(prompt) - 1);
+		if (read(fd, buf, sizeof(buf)) <= 0)
+			buf[0] = 0;
   		if (buf[0] != 0 && (buf[1] == '\r' || buf[1] == '\n'))
 			lvl = buf[0];
 		if (islower(lvl)) lvl = toupper(lvl);
@@ -1956,12 +1975,15 @@ int make_pipe(int fd)
 {
 	int fds[2];
 
-	pipe(fds);
+	if (pipe(fds)) {
+		initlog(L_VB, "pipe: %m");
+		return -1;
+	}
 	dup2(fds[0], fd);
 	close(fds[0]);
 	fcntl(fds[1], F_SETFD, 1);
 	fcntl(fd, F_SETFD, 0);
-	write(fds[1], Signature, 8);
+	safe_write(fds[1], Signature, 8);
 
 	return fds[1];
 }
@@ -1991,7 +2013,10 @@ void re_exec(void)
 	/*
 	 *	construct a pipe fd --> STATE_PIPE and write a signature
 	 */
-	fd = make_pipe(STATE_PIPE);
+	if ((fd = make_pipe(STATE_PIPE)) < 0) {
+		sigprocmask(SIG_SETMASK, &oldset, NULL);
+		initlog(L_CO, "Attempt to re-exec failed");
+	}
 
 	/* 
 	 * It's a backup day today, so I'm pissed off.  Being a BOFH, however, 
@@ -2033,10 +2058,10 @@ void re_exec(void)
 	 *	We shouldn't be here, something failed. 
 	 *	Bitch, close the state pipe, unblock signals and return.
 	 */
+	init_freeenv(env);
 	close(fd);
 	close(STATE_PIPE);
 	sigprocmask(SIG_SETMASK, &oldset, NULL);
-	init_freeenv(env);
 	initlog(L_CO, "Attempt to re-exec failed");
 }
 
@@ -2406,8 +2431,8 @@ void process_signals()
 	/* See _what_ kind of SIGPWR this is. */
 	pwrstat = 0;
 	if ((fd = open(PWRSTAT, O_RDONLY)) >= 0) {
-		c = 0;
-		read(fd, &c, 1);
+		if (read(fd, &c, 1) != 1)
+			c = 0;
 		pwrstat = c;
 		close(fd);
 		unlink(PWRSTAT);
@@ -2415,8 +2440,8 @@ void process_signals()
 		/* Path changed 2010-03-20.  Look for the old path for a while. */
 		initlog(L_VB, "warning: found obsolete path %s, use %s instead",
 			PWRSTAT_OLD, PWRSTAT);
-		c = 0;
-		read(fd, &c, 1);
+		if (read(fd, &c, 1) != 1)
+			c = 0;
 		pwrstat = c;
 		close(fd);
 		unlink(PWRSTAT_OLD);
@@ -2533,7 +2558,7 @@ void init_main(void)
 		while((rc = wait(&st)) != f)
 			if (rc < 0 && errno == ECHILD)
 				break;
-		write(1, killmsg, sizeof(killmsg) - 1);
+		safe_write(1, killmsg, sizeof(killmsg) - 1);
 		while(1) pause();
 	}
 #endif
@@ -2808,7 +2833,7 @@ int main(int argc, char **argv)
   		p = argv[0];
 
 	/* Common umask */
-	umask(022);
+	umask(umask(077) | 022);
 
 	/* Quick check */
 	if (geteuid() != 0) {

@@ -239,7 +239,10 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	(void)chdir("/");
+	if (chdir("/")) {
+		fprintf(stderr, "%s: chdir(/): %m\n", progname);
+		exit(1);
+	}
 
 	if (!do_hard && !do_nothing) {
 		/*

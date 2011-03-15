@@ -102,14 +102,14 @@ int main(int argc, char **argv)
 
   i = 0;
   for (p = buf; *p; p++) {
-	if (*p == '\n' && i++ > MAXLINES) {
+	if (*p == '\n' && ++i >= MAXLINES) {
 		*++p = 0;
 		break;
 	}
   }
 
   openlog("wall", LOG_PID, LOG_USER);
-  syslog(LOG_INFO, "wall: user %s broadcasted %d lines (%d chars)",
+  syslog(LOG_INFO, "wall: user %s broadcasted %d lines (%zu chars)",
 	whoami, i, strlen(buf));
   closelog();
 

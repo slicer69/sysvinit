@@ -154,7 +154,7 @@ int init_setenv(char *name, char *value)
 	struct init_request	request;
 	struct sigaction	sa;
 	int			fd;
-	int			nl, vl;
+	size_t			nl, vl;
 
 	memset(&request, 0, sizeof(request));
 	request.magic = INIT_MAGIC;
@@ -286,7 +286,8 @@ int spawn(int noerr, char *prog, ...)
 	argv[i] = NULL;
 	va_end(ap);
 
-	chdir("/");
+	if (chdir("/"))
+		exit(1);
 	environ = clean_env;
 
 	execvp(argv[0], argv);
@@ -627,7 +628,8 @@ int main(int argc, char **argv)
 
 	/* Read pid of running shutdown from a file */
 	if ((fp = fopen(SDPID, "r")) != NULL) {
-		fscanf(fp, "%d", &pid);
+		if (fscanf(fp, "%d", &pid) != 1)
+			pid = 0;
 		fclose(fp);
 	}
 
@@ -692,6 +694,12 @@ int main(int argc, char **argv)
 			break;
 	}
 
+	/* Go to the root directory */
+	if (chdir("/")) {
+		fprintf(stderr, "shutdown: chdir(/): %m\n");
+		exit(1);
+	}
+
 	/* Create a new PID file. */
 	unlink(SDPID);
 	umask(022);
@@ -715,8 +723,6 @@ int main(int argc, char **argv)
 	sa.sa_handler = stopit;
 	sigaction(SIGINT, &sa, NULL);
 
-	/* Go to the root directory */
-	chdir("/");
 	if (fastboot)  close(open(FASTBOOT,  O_CREAT | O_RDWR, 0644));
 	if (forcefsck) close(open(FORCEFSCK, O_CREAT | O_RDWR, 0644));
 

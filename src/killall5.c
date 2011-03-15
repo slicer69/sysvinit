@@ -75,6 +75,7 @@ char *Version = "@(#)killall5 2.86 31-Jul-2004 miquels@cistron.nl";
 
 /* Info about a process. */
 typedef struct proc {
+	char *pathname;		/* full path to executable        */
 	char *argv0;		/* Name as found out from argv[0] */
 	char *argv0base;	/* `basename argv[1]`		  */
 	char *argv1;		/* Name as found out from argv[1] */
@@ -206,8 +207,8 @@ int mount_proc(void)
 		}
 		if (pid == 0) {
 			/* Try a few mount binaries. */
-			execv("/sbin/mount", args);
 			execv("/bin/mount", args);
+			execv("/sbin/mount", args);
 
 			/* Okay, I give up. */
 			nsyslog(LOG_ERR, "cannot execute mount");
@@ -486,6 +487,7 @@ int readproc(int do_stat)
 		if (p->argv0) free(p->argv0);
 		if (p->argv1) free(p->argv1);
 		if (p->statname) free(p->statname);
+		free(p->pathname);
 		free(p);
 	}
 	plist = NULL;
@@ -505,13 +507,21 @@ int readproc(int do_stat)
 
 		/* Read SID & statname from it. */
 		if ((fp = fopen(path, "r")) != NULL) {
-			buf[0] = 0;
-			fgets(buf, sizeof(buf), fp);
+			if (!fgets(buf, sizeof(buf), fp))
+				buf[0] = '\0';
+
+			if (buf[0] == '\0') {
+				nsyslog(LOG_ERR,
+					"can't read from %s\n", path);
+				fclose(fp);
+				free(p);
+				continue;
+			}
 
 			/* See if name starts with '(' */
 			s = buf;
-			while (*s != ' ') s++;
-			s++;
+			while (*s && *s != ' ') s++;
+			if (*s) s++;
 			if (*s == '(') {
 				/* Read program name. */
 				q = strrchr(buf, ')');
@@ -520,18 +530,20 @@ int readproc(int do_stat)
 					nsyslog(LOG_ERR,
 					"can't get program name from /proc/%s\n",
 						path);
+					fclose(fp);
 					if (p->argv0) free(p->argv0);
 					if (p->argv1) free(p->argv1);
 					if (p->statname) free(p->statname);
+					free(p->pathname);
 					free(p);
 					continue;
 				}
 				s++;
 			} else {
 				q = s;
-				while (*q != ' ') q++;
+				while (*q && *q != ' ') q++;
 			}
-			*q++ = 0;
+			if (*q) *q++ = 0;
 			while (*q == ' ') q++;
 			p->statname = (char *)xmalloc(strlen(s)+1);
 			strcpy(p->statname, s);
@@ -546,9 +558,11 @@ int readproc(int do_stat)
 				p->sid = 0;
 				nsyslog(LOG_ERR, "can't read sid from %s\n",
 					path);
+				fclose(fp);
 				if (p->argv0) free(p->argv0);
 				if (p->argv1) free(p->argv1);
 				if (p->statname) free(p->statname);
+				free(p->pathname);
 				free(p);
 				continue;
 			}
@@ -560,6 +574,7 @@ int readproc(int do_stat)
 			if (p->argv0) free(p->argv0);
 			if (p->argv1) free(p->argv1);
 			if (p->statname) free(p->statname);
+			free(p->pathname);
 			free(p);
 			continue;
 		}
@@ -607,6 +622,7 @@ int readproc(int do_stat)
 			if (p->argv0) free(p->argv0);
 			if (p->argv1) free(p->argv1);
 			if (p->statname) free(p->statname);
+			free(p->pathname);
 			free(p);
 			continue;
 		}
@@ -623,6 +639,16 @@ int readproc(int do_stat)
 		case DO_STAT:
 			if (stat(path, &st) != 0)
 				break;
+			else {
+				char buf[PATH_MAX];
+
+				f = readlink(path, buf, sizeof buf);
+				if (f > 0) {
+					p->pathname = (char *)xmalloc(f + 1);
+					memcpy(p->pathname, buf, f);
+					p->pathname[f] = '\0';
+				}
+			}
 			p->dev = st.st_dev;
 			p->ino = st.st_ino;
 		default:
@@ -761,6 +787,20 @@ PIDQ_HEAD *pidof(char *prog)
 
 	/* If we didn't find a match based on dev/ino, try the name. */
 	if (!foundone) for (p = plist; p; p = p->next) {
+		if (prog[0] == '/') {
+			if (!p->pathname)
+				continue;
+			if (strcmp(prog, p->pathname)) {
+				int len = strlen(prog);
+				if (strncmp(prog, p->pathname, len))
+					continue;
+				if (strcmp(" (deleted)", p->pathname + len))
+					continue;
+			}
+			add_pid_to_q(q, p);
+			continue;
+		}
+
 		ok = 0;
 
 		/*             matching        nonmatching

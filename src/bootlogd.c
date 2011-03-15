@@ -108,7 +108,7 @@ void handler(int sig)
 /*
  *	Scan /dev and find the device name.
  */
-static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
+static int findtty(char *res, const char *startdir, size_t rlen, dev_t dev)
 {
 	DIR		*dir;
 	struct dirent	*ent;
@@ -145,7 +145,7 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 		if (!S_ISCHR(st.st_mode))
 			continue;
 		if (st.st_rdev == dev) {
-			if ( (int) (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
+			if ( (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
 				fprintf(stderr, "bootlogd: console device name too long\n");
 				closedir(dir);
 				chdir(olddir);
@@ -208,7 +208,7 @@ int findpty(int *master, int *slave, char *name)
  *	See if a console taken from the kernel command line maps
  *	to a character device we know about, and if we can open it.
  */
-int isconsole(char *s, char *res, int rlen)
+int isconsole(char *s, char *res, size_t rlen)
 {
 	struct consdev	*c;
 	int		l, sl, i, fd;
@@ -238,7 +238,7 @@ int isconsole(char *s, char *res, int rlen)
  *	Find out the _real_ console. Assume that stdin is connected to
  *	the console device (/dev/console).
  */
-int consolename(char *res, int rlen)
+int consolename(char *res, size_t rlen)
 {
 #ifdef TIOCGDEV
 	unsigned int	kdev;

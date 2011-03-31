@@ -21,13 +21,28 @@
  * Author: Werner Fink <werner@suse.de>
  */
 
+#include <sys/types.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <termios.h>
 
+struct chardata {
+	uint8_t	erase;
+	uint8_t kill;
+	uint8_t eol;
+	uint8_t parity;
+};
 struct console {
-	char * tty;
-	int tlock;
-	struct termios ltio, otio;
+	char *tty;
+	FILE *file;
+	uint32_t flags;
+	int fd, id;
+#define	CON_SERIAL	0x0001
+#define	CON_NOTTY	0x0002
+	pid_t pid;
+	struct chardata cp;
+	struct termios tio;
 	struct console *next;
 };
 extern struct console *consoles;
-extern void detect_consoles(void);
+extern void detect_consoles(const char *console, int fallback);

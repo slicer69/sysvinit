@@ -29,11 +29,9 @@
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #ifdef __linux__
-# ifndef TIOCGDEV
 #  include <sys/vt.h>
 #  include <sys/kd.h>
 #  include <linux/serial.h>
-# endif
 #endif
 #include <fcntl.h>
 #include <dirent.h>
@@ -206,19 +204,91 @@ void consalloc(char * name)
 		consoles->next = tail;
 }
 
-void detect_consoles(const char *console, int fallback)
+void detect_consoles(const char *device, int fallback)
 {
+	int fd;
 #ifdef __linux__
 	char *attrib, *cmdline;
 	FILE *fc;
+#endif
+	if (!device || *device == '\0')
+		fd = dup(fallback);
+	else	fd = open(device, O_RDWR|O_NONBLOCK|O_NOCTTY|O_CLOEXEC);
 
+	if (fd >= 0) {
+		DIR *dir;
+		char *name;
+		struct stat st;
+#ifdef TIOCGDEV
+		unsigned int devnum;
+#endif
+
+		if (fstat(fd, &st) < 0) {
+			close(fd);
+			goto fallback;
+		}
+		comparedev = st.st_rdev;
+#ifdef __linux__
+		/*
+		 * Check if the device detection for Linux system console should be used.
+		 */
+		if (comparedev == makedev(TTYAUX_MAJOR, 0)) {	/* /dev/tty	*/
+			close(fd);
+			device = "/dev/tty";
+			goto fallback;
+		}
+		if (comparedev == makedev(TTYAUX_MAJOR, 1)) {	/* /dev/console */
+			close(fd);
+			goto console;
+		}
+		if (comparedev == makedev(TTYAUX_MAJOR, 2)) {	/* /dev/ptmx	*/
+			close(fd);
+			device = "/dev/tty";
+			goto fallback;
+		}
+		if (comparedev == makedev(TTY_MAJOR, 0)) {	/* /dev/tty0	*/
+			struct vt_stat vt;
+			if (ioctl(fd, VT_GETSTATE, &vt) < 0) {
+				close(fd);
+				goto fallback;
+			}
+			comparedev = makedev(TTY_MAJOR, (int)vt.v_active);
+		}
+#endif
+#ifdef TIOCGDEV
+		if (ioctl (fd, TIOCGDEV, &devnum) < 0) {
+			close(fd);
+			goto fallback;
+		}
+		comparedev = (dev_t)devnum;
+#endif
+		close(fd);
+		dir = opendir("/dev");
+		if (!dir)
+			goto fallback;
+		name = scandev(dir);
+		if (name)
+			consalloc(name);
+		closedir(dir);
+		if (!consoles)
+			goto fallback;
+		return;
+	}
+#ifdef __linux__
+console:
+	/*
+	 * Detection of devices used for Linux system consolei using
+	 * the /proc/consoles API with kernel 2.6.38 and higher.
+	 */
 	if ((fc = fopen("/proc/consoles", "re"))) {
 		char fbuf[16];
 		int maj, min;
 		DIR *dir;
 		dir = opendir("/dev");
-		if (!dir)
-			goto out1;
+		if (!dir) {
+			fclose(fc);
+			goto fallback;
+		}
 		while ((fscanf(fc, "%*s %*s (%[^)]) %d:%d", &fbuf[0], &maj, &min) == 3)) {
 			char * name;
 
@@ -232,18 +302,22 @@ void detect_consoles(const char *console, int fallback)
 			consalloc(name);
 		}
 		closedir(dir);
-out1:
 		fclose(fc);
 		return;
 	}
-
+	/*
+	 * Detection of devices used for Linux system console using
+	 * the sysfs /sys/class/tty/ API with kernel 2.6.37 and higher.
+	 */
 	if ((attrib = actattr("console"))) {
 		char *words = attrib, *token;
 		DIR *dir;
 
 		dir = opendir("/dev");
-		if (!dir)
-			goto out2;
+		if (!dir) {
+			free(attrib);
+			goto fallback;
+		}
 		while ((token = strsep(&words, " \t\r\n"))) {
 			char * name;
 
@@ -264,19 +338,25 @@ out1:
 			consalloc(name);
 		}
 		closedir(dir);
-out2:
 		free(attrib);
+		if (!consoles)
+			goto fallback;
 		return;
 
 	}
-
+	/*
+	 * Detection of devices used for Linux system console using
+	 * kernel parameter on the kernels command line.
+	 */
 	if ((cmdline = oneline("/proc/cmdline"))) {
 		char *words= cmdline, *token;
 		DIR *dir;
 
 		dir = opendir("/dev");
-		if (!dir)
-			goto out3;
+		if (!dir) {
+			free(cmdline);
+			goto fallback;
+		}
 		while ((token = strsep(&words, " \t\r\n"))) {
 #ifdef TIOCGDEV
 			unsigned int devnum;
@@ -285,7 +365,6 @@ out2:
 			struct stat st;
 #endif
 			char *colon, *name;
-			int fd;
 
 			if (*token != 'c')
 				continue;
@@ -335,63 +414,60 @@ out2:
 			consalloc(name);
 		}
 		closedir(dir);
-out3:
 		free(cmdline);
+		/*
+		 * Detection of the device used for Linux system console using
+		 * the ioctl TIOCGDEV if available (e.g. official 2.6.38).
+		 */
+		if (!consoles) {
+#ifdef TIOCGDEV
+			unsigned int devnum;
+			const char *name;
+
+			if (!device || *device == '\0')
+				fd = dup(fallback);
+			else	fd = open(device, O_RDWR|O_NONBLOCK|O_NOCTTY|O_CLOEXEC);
+
+			if (fd < 0)
+				goto fallback;
+
+			if (ioctl (fd, TIOCGDEV, &devnum) < 0) {
+				close(fd);
+				goto fallback;
+			}
+			comparedev = (dev_t)devnum;
+			close(fd);
+
+			if (device && *device != '\0')
+				name = device;
+			else	name = ttyname(fallback);
+
+			if (!name)
+				name = "/dev/tty1";
+
+			consalloc(strdup(name));
+			if (consoles) {
+				if (!device || *device == '\0')
+					consoles->fd = fallback;
+				return;
+			}
+#endif
+			goto fallback;
+		}
 		return;
 	}
 #endif /* __linux __ */
-	if (console && *console) {
-		int fd;
-		DIR *dir;
-		char *name;
-#ifdef TIOCGDEV
-		unsigned int devnum;
-#else
-# ifdef __linux__
-		struct vt_stat vt;
-# endif
-		struct stat st;
-#endif
-
-		if ((fd = open(console, O_RDWR|O_NONBLOCK|O_NOCTTY|O_CLOEXEC)) < 0)
-			return;
-#ifdef TIOCGDEV
-		if (ioctl (fd, TIOCGDEV, &devnum) < 0) {
-			close(fd);
-			return;
-		}
-		comparedev = (dev_t)devnum;
-#else
-		if (fstat(fd, &st) < 0) {
-			close(fd);
-			return;
-		}
-# ifdef __linux__
-		comparedev = st.st_rdev;
-		if (comparedev == makedev(TTY_MAJOR, 0)) {
-			if (ioctl(fd, VT_GETSTATE, &vt) < 0) {
-				close(fd);
-				return;
-			}
-			comparedev = makedev(TTY_MAJOR, (int)vt.v_active);
-		}
-# endif
-#endif
-		close(fd);
-		dir = opendir("/dev");
-		if (!dir)
-			return;
-		name = scandev(dir);
-		if (name)
-			consalloc(name);
-		closedir(dir);
-		return;
-	}
-
+fallback:
 	if (fallback >= 0) {
-		const char *name = ttyname(fallback);
+		const char *name;
+		
+		if (device && *device != '\0')
+			name = device;
+		else	name = ttyname(fallback);
+
 		if (!name)
-			name = "/dev/console";
+			name = "/dev/tty";
+
 		consalloc(strdup(name));
 		if (consoles)
 			consoles->fd = fallback;

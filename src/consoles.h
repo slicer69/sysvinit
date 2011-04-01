@@ -45,4 +45,4 @@ struct console {
 	struct console *next;
 };
 extern struct console *consoles;
-extern void detect_consoles(const char *console, int fallback);
+extern void detect_consoles(const char *, int);

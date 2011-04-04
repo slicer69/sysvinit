@@ -85,8 +85,8 @@ err:
 
 #ifdef __linux__
 /*
- *  Read and determine active attribute for tty,
- *  the caller has to free the result.
+ *  Read and determine active attribute for tty below
+ *  /sys/class/tty, the caller has to free the result.
  */
 static
 __attribute__((__malloc__))
@@ -109,7 +109,10 @@ err:
 	return ret;
 }
 
-/* Read and determine device attribute for tty */
+/*
+ * Read and determine device attribute for tty below
+ * /sys/class/tty.
+ */
 static
 dev_t devattr(const char *tty)
 {
@@ -136,6 +139,10 @@ err:
 }
 #endif /* __linux__ */
 
+/*
+ * Search below /dev for the characer device in
+ * the local `dev_t comparedev' variable.
+ */
 static dev_t comparedev;
 static
 #ifdef __GNUC__
@@ -166,6 +173,9 @@ char* scandev(DIR *dir)
 	return name;
 }
 
+/*
+ * Default control characters for an unknown terminal line.
+ */
 static
 struct chardata initcp = {
 	CERASE,
@@ -173,6 +183,12 @@ struct chardata initcp = {
 	CTRL('r'),
 	0
 };
+
+/*
+ * Allocate an aligned `struct console' memory area,
+ * initialize its default values, and append it to
+ * the global linked list.
+ */
 
 static int concount;		/* Counter for console IDs */
 
@@ -204,6 +220,12 @@ void consalloc(char * name)
 		consoles->next = tail;
 }
 
+/*
+ * Try to detect the real device(s) used for the system console
+ * /dev/console if but only if /dev/console is used.  On Linux
+ * this can be more than one device, e.g. a serial line as well
+ * as a virtual console as well as a simple printer.
+ */
 void detect_consoles(const char *device, int fallback)
 {
 	int fd;

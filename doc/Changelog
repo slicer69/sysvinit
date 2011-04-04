@@ -1,6 +1,10 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Sulogin: try to detect the real device(s) used for the system console
+    /dev/console if but only if /dev/console is used.  On Linux this can
+    be more than one device, e.g. a serial line as well as a virtual
+    console as well as a simple printer.
   * Fix counting message lines in wall. Patch from Petr Lautrbach.
   * Fix bad printf conversion specifier in wall. Patch from Sébastien Luttringer.
   * Add patches from Openwall project. Thanks goes to Solar Designer.

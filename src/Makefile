@@ -105,7 +105,7 @@ utmpdump:	utmpdump.o
 runlevel:	runlevel.o
 
 sulogin:	LDLIBS += $(SULOGINLIBS) $(STATIC)
-sulogin:	sulogin.o
+sulogin:	sulogin.o consoles.o
 
 wall:		dowall.o wall.o
 

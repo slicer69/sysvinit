@@ -12,6 +12,7 @@ CPPFLAGS =
 CFLAGS	?= -ansi -O2 -fomit-frame-pointer
 override CFLAGS += -W -Wall -D_GNU_SOURCE
 STATIC	=
+MANDB	:= s@^\('\\\\\"\)[^\*-]*-\*- coding: [^[:blank:]]\+ -\*-@\1@
 
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
@@ -37,11 +38,13 @@ BIN	+= mountpoint
 SBIN	+= sulogin bootlogd
 MAN1	+= mountpoint.1
 MAN8	+= sulogin.8 bootlogd.8
+MANDB	:=
 endif
 
 ifeq ($(DISTRO),Owl)
 USRBIN	+= wall
 MAN1	+= wall.1
+MANDB	:=
 endif
 
 ifeq ($(DISTRO),SuSE)
@@ -51,6 +54,7 @@ SBIN	+= sulogin
 USRBIN	+= utmpdump
 MAN1	+= utmpdump.1 mountpoint.1
 MAN8	+= sulogin.8
+MANDB	:=
 endif
 
 ID		= $(shell id -u)
@@ -173,14 +177,17 @@ install:
 		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man1/
 		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man5/
 		$(INSTALL_DIR) $(ROOT)$(MANDIR)/man8/
-		for i in $(MAN1); do \
-			$(INSTALL_DATA) ../man/$$i $(ROOT)$(MANDIR)/man1/; \
+		for man in $(MAN1); do \
+			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man1/; \
+			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man1/$$man ; \
 		done
-		for i in $(MAN5); do \
-			$(INSTALL_DATA) ../man/$$i $(ROOT)$(MANDIR)/man5/; \
+		for man in $(MAN5); do \
+			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man5/; \
+			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man5/$$man ; \
 		done
-		for i in $(MAN8); do \
-			$(INSTALL_DATA) ../man/$$i $(ROOT)$(MANDIR)/man8/; \
+		for man in $(MAN8); do \
+			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man8/; \
+			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man8/$$man ; \
 		done
 ifeq ($(ROOT),)
 		#

@@ -1,6 +1,7 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Remove man-db tag for encoding for canonical man
   * Sulogin: try to detect the real device(s) used for the system console
     /dev/console if but only if /dev/console is used.  On Linux this can
     be more than one device, e.g. a serial line as well as a virtual

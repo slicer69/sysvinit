@@ -14,6 +14,12 @@ override CFLAGS += -W -Wall -D_GNU_SOURCE
 STATIC	=
 MANDB	:= s@^\('\\\\\"\)[^\*-]*-\*- coding: [^[:blank:]]\+ -\*-@\1@
 
+#
+# Leave empty if the mountpoint(1) command from util-linux 2.20
+# and above should be used, otherwise set it to yes.
+#
+MNTPOINT=
+
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
 SBIN	= init halt shutdown runlevel killall5 fstab-decode
@@ -25,18 +31,15 @@ MAN8	= halt.8 init.8 killall5.8 pidof.8 poweroff.8 reboot.8 runlevel.8
 MAN8	+= shutdown.8 telinit.8 fstab-decode.8
 
 ifeq ($(DISTRO),)
-BIN	+= mountpoint
 SBIN	+= sulogin bootlogd
 USRBIN	+= utmpdump wall
-MAN1	+= utmpdump.1 mountpoint.1 wall.1
+MAN1	+= utmpdump.1 wall.1
 MAN8	+= sulogin.8 bootlogd.8
 endif
 
 ifeq ($(DISTRO),Debian)
 CPPFLAGS+= -DACCTON_OFF
-BIN	+= mountpoint
 SBIN	+= sulogin bootlogd
-MAN1	+= mountpoint.1
 MAN8	+= sulogin.8 bootlogd.8
 MANDB	:=
 endif
@@ -49,12 +52,16 @@ endif
 
 ifeq ($(DISTRO),SuSE)
 CPPFLAGS+= -DUSE_SYSFS -DSANE_TIO -DSIGINT_ONLYONCE -DUSE_ONELINE
-BIN	+= mountpoint
 SBIN	+= sulogin
 USRBIN	+= utmpdump
-MAN1	+= utmpdump.1 mountpoint.1
+MAN1	+= utmpdump.1
 MAN8	+= sulogin.8
 MANDB	:=
+endif
+
+ifeq ($(MNTPOINT),yes)
+BIN	+= mountpoint
+MAN1	+= mountpoint.1
 endif
 
 ID		= $(shell id -u)

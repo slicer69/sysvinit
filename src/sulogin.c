@@ -636,7 +636,7 @@ char *getpasswd(struct console *con)
 	cp->eol = *ptr = '\0';
 
 	eightbit = ((con->flags & CON_SERIAL) == 0 || (tty.c_cflag & (PARODD|PARENB)) == 0);
-	while (cp->eol == 0) {
+	while (cp->eol == '\0') {
 		if (read(fd, &c, 1) < 1) {
 			if (errno == EINTR || errno == EAGAIN) {
 				usleep(1000);
@@ -669,6 +669,9 @@ char *getpasswd(struct console *con)
 		}
 
 		switch (ascval) {
+		case 0:
+			*ptr = '\0';
+			goto quit; 
 		case CR:
 		case NL:
 			*ptr = '\0';

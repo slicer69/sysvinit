@@ -30,6 +30,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Make quotes visible in example of the manual page of fstab-decode
   * Sulogin: enforce reconnection of stdin/stdout/stderr if a device
     was specified.
+  * Sulogin: if zero is read at reading the passwd guess it's done.
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

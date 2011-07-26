@@ -841,6 +841,7 @@ int main(int argc, char **argv)
 	char *tty = NULL;
 	struct passwd *pwd;
 	int c, status = 0;
+	int reconnect = 0;
 	int opt_e = 0;
 	struct console *con;
 	pid_t pid;
@@ -854,7 +855,7 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 *	See if we have a timeout flag.
+	 * See if we have a timeout flag.
 	 */
 	opterr = 0;
 	while((c = getopt(argc, argv, "ept:")) != EOF) switch(c) {
@@ -884,7 +885,7 @@ int main(int argc, char **argv)
 	saved_sighup  = signal(SIGHUP,  SIG_IGN);
 
 	/*
-	 *	See if we need to open an other tty device.
+	 * See if we need to open an other tty device.
 	 */
 	if (optind < argc)
 		tty = argv[optind];
@@ -892,9 +893,10 @@ int main(int argc, char **argv)
 		tty = getenv("CONSOLE");
 
 	/*
-	 *	Detect possible consoles, use stdin as fallback.
+	 * Detect possible consoles, use stdin as fallback.
+	 * If an optional tty is given, reconnect it to stdin.
 	 */
-	detect_consoles(tty, 0);
+	reconnect = detect_consoles(tty, 0);
 
 	/*
 	 * Should not happen
@@ -904,6 +906,17 @@ int main(int argc, char **argv)
 			errno = ENOMEM;
 		fprintf(stderr, "sulogin: cannot open console: %m\n\r");
 		exit(1);
+	}
+
+	/*
+	 * If previous stdin was not the speified tty and therefore reconnected
+	 * to the specified tty also reconnect stdout and stderr.
+	 */
+	if (reconnect) {
+		if (isatty(1) == 0)
+			dup2(0, 1);
+		if (isatty(2) == 0)
+			dup2(0, 2);
 	}
 
 	/*
@@ -967,6 +980,7 @@ int main(int argc, char **argv)
 					break;
 				}
 				fprintf(stderr, "Login incorrect.\n\r");
+				sleep(3);
 			}
 			if (alarm_rised) {
 				tcfinal(con);

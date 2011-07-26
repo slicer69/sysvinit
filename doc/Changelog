@@ -28,6 +28,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     otherwise initialize SELinux and load the policy. Patch from
     Petter Reinholdtsen.
   * Make quotes visible in example of the manual page of fstab-decode
+  * Sulogin: enforce reconnection of stdin/stdout/stderr if a device
+    was specified.
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

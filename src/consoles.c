@@ -225,17 +225,23 @@ void consalloc(char * name)
  * /dev/console if but only if /dev/console is used.  On Linux
  * this can be more than one device, e.g. a serial line as well
  * as a virtual console as well as a simple printer.
+ *
+ * Returns 1 if stdout and stderr should be reconnected and 0
+ * otherwise.
  */
-void detect_consoles(const char *device, int fallback)
+int detect_consoles(const char *device, int fallback)
 {
-	int fd;
+	int fd, ret = 0;
 #ifdef __linux__
 	char *attrib, *cmdline;
 	FILE *fc;
 #endif
 	if (!device || *device == '\0')
 		fd = dup(fallback);
-	else	fd = open(device, O_RDWR|O_NONBLOCK|O_NOCTTY|O_CLOEXEC);
+	else {
+		fd = open(device, O_RDWR|O_NONBLOCK|O_NOCTTY|O_CLOEXEC);
+		ret = 1;
+	}
 
 	if (fd >= 0) {
 		DIR *dir;
@@ -250,6 +256,9 @@ void detect_consoles(const char *device, int fallback)
 			goto fallback;
 		}
 		comparedev = st.st_rdev;
+
+		if (ret && (fstat(fallback, &st) < 0 || comparedev != st.st_rdev))
+			dup2(fd, fallback);
 #ifdef __linux__
 		/*
 		 * Check if the device detection for Linux system console should be used.
@@ -294,7 +303,7 @@ void detect_consoles(const char *device, int fallback)
 		closedir(dir);
 		if (!consoles)
 			goto fallback;
-		return;
+		return ret;
 	}
 #ifdef __linux__
 console:
@@ -325,7 +334,7 @@ console:
 		}
 		closedir(dir);
 		fclose(fc);
-		return;
+		return ret;
 	}
 	/*
 	 * Detection of devices used for Linux system console using
@@ -363,7 +372,7 @@ console:
 		free(attrib);
 		if (!consoles)
 			goto fallback;
-		return;
+		return ret;
 
 	}
 	/*
@@ -471,12 +480,12 @@ console:
 			if (consoles) {
 				if (!device || *device == '\0')
 					consoles->fd = fallback;
-				return;
+				return ret;
 			}
 #endif
 			goto fallback;
 		}
-		return;
+		return ret;
 	}
 #endif /* __linux __ */
 fallback:
@@ -494,4 +503,5 @@ fallback:
 		if (consoles)
 			consoles->fd = fallback;
 	}
+	return ret;
 }

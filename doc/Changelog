@@ -31,6 +31,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Sulogin: enforce reconnection of stdin/stdout/stderr if a device
     was specified.
   * Sulogin: if zero is read at reading the passwd guess it's done.
+  * Sulogin: respect byte order that is do not mix chars and ints
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

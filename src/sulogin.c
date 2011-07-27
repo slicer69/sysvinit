@@ -613,9 +613,9 @@ char *getpasswd(struct console *con)
 	struct termios tty;
 	char *ret = pass;
 	unsigned char tc;
-	char ascval;
+	char c, ascval;
 	int eightbit;
-	int c, fd;
+	int fd;
 
 	if (con->flags & CON_NOTTY)
 		goto out;

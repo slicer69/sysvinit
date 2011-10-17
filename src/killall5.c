@@ -469,6 +469,7 @@ int readproc(int do_stat)
 	char		*s, *q;
 	unsigned long	startcode, endcode;
 	int		pid, f;
+	ssize_t		len;
 
 	/* Open the /proc directory. */
 	if (chdir("/proc") == -1) {
@@ -635,23 +636,22 @@ int readproc(int do_stat)
 		switch (do_stat) {
 		case DO_NETFS:
 			if ((p->nfs = check4nfs(path, buf)))
-				break;
+				goto link;
 		case DO_STAT:
 			if (stat(path, &st) != 0)
 				break;
-			else {
-				char buf[PATH_MAX];
-
-				f = readlink(path, buf, sizeof buf);
-				if (f > 0) {
-					p->pathname = (char *)xmalloc(f + 1);
-					memcpy(p->pathname, buf, f);
-					p->pathname[f] = '\0';
-				}
-			}
 			p->dev = st.st_dev;
 			p->ino = st.st_ino;
+
+			/* Fall through */
 		default:
+		link:
+			len = readlink(path, buf, PATH_MAX);
+			if (len > 0) {
+				p->pathname = (char *)xmalloc(len + 1);
+				memcpy(p->pathname, buf, len);
+				p->pathname[len] = '\0';
+			}
 			break;
 		}
 
@@ -722,6 +722,7 @@ PIDQ_HEAD *pidof(char *prog)
 	int		dostat = 0;
 	int		foundone = 0;
 	int		ok = 0;
+	const int	root = (getuid() == 0);
 	char		real[PATH_MAX+1];
 
 	if (! prog)
@@ -769,16 +770,11 @@ PIDQ_HEAD *pidof(char *prog)
 	 * network FS located binaries */
 	if (!foundone && nfs) {
 		for (p = plist; p; p = p->next) {
-			char exe [PATH_MAX+1];
-			char path[PATH_MAX+1];
-			int len;
+			if (!p->pathname)
+				continue;
 			if (!p->nfs)
 				continue;
-			snprintf(exe, sizeof(exe), "/proc/%d/exe", p->pid);
-			if ((len = readlink(exe, path, PATH_MAX)) < 0)
-				    continue;
-			path[len] = '\0';
-			if (strcmp(prog, path) != 0)
+			if (strcmp(prog, p->pathname) != 0)
 				continue;
 			add_pid_to_q(q, p);
 			foundone++;
@@ -788,19 +784,31 @@ PIDQ_HEAD *pidof(char *prog)
 	/* If we didn't find a match based on dev/ino, try the name. */
 	if (!foundone) for (p = plist; p; p = p->next) {
 		if (prog[0] == '/') {
-			if (!p->pathname)
-				continue;
+			if (!p->pathname) {
+				if (root)
+					continue;
+				goto fallback; 
+			}
 			if (strcmp(prog, p->pathname)) {
 				int len = strlen(prog);
 				if (strncmp(prog, p->pathname, len))
+				{
+					if (scripts_too)
+						goto fallback;
 					continue;
+				}
 				if (strcmp(" (deleted)", p->pathname + len))
+				{
+					if (scripts_too)
+						goto fallback;
 					continue;
+				}
 			}
 			add_pid_to_q(q, p);
 			continue;
 		}
 
+	fallback:
 		ok = 0;
 
 		/*             matching        nonmatching

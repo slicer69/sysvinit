@@ -39,6 +39,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     variable on non-linux platforms.
   * Only set the VSWTC field for termios in init if it is available,
     to get the source building on FreeBSD.
+  * Add some code to be able to detect programs even as user with
+    kernel 3.0 and above
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

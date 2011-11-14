@@ -1279,7 +1279,7 @@ void read_inittab(void)
 #endif
 
   /*
-   *	Open INITTAB and real line by line.
+   *	Open INITTAB and read line by line.
    */
   if ((fp = fopen(INITTAB, "r")) == NULL)
 	initlog(L_VB, "No inittab file found");

@@ -248,7 +248,7 @@ void *imalloc(size_t size)
 }
 
 static
-char *istrdup(char *s)
+char *istrdup(const char *s)
 {
 	char	*m;
 	int	l;
@@ -880,6 +880,27 @@ void initlog(int loglevel, char *s, ...)
 	}
 }
 
+/*
+ *	Add or replace specific environment value
+ */
+int addnewenv(const char *new, char **curr, int n)
+{
+	size_t nlen = strcspn(new, "=");
+	int i;
+	for (i = 0; i < n; i++) {
+		if (nlen != strcspn(curr[i], "="))
+			continue;
+		if (strncmp (new, curr[i], nlen) == 0)
+			break;
+	}
+	if (i >= n)
+		curr[n++] = istrdup(new);
+	else {
+		free(curr[i]);
+		curr[i] = istrdup(new);
+	}
+	return n;
+}
 
 /*
  *	Build a new environment for execve().
@@ -888,7 +909,7 @@ char **init_buildenv(int child)
 {
 	char		i_lvl[] = "RUNLEVEL=x";
 	char		i_prev[] = "PREVLEVEL=x";
-	char		i_cons[32];
+	char		i_cons[128];
 	char		i_shell[] = "SHELL=" SHELL;
 	char		**e;
 	int		n, i;
@@ -898,25 +919,30 @@ char **init_buildenv(int child)
 	n += NR_EXTRA_ENV;
 	if (child)
 		n += 8;
-	e = calloc(n, sizeof(char *));
+
+	while ((e = (char**)calloc(n, sizeof(char *))) == NULL) {
+		initlog(L_VB, "out of memory");
+		do_sleep(5);
+	}
 
 	for (n = 0; environ[n]; n++)
 		e[n] = istrdup(environ[n]);
 
 	for (i = 0; i < NR_EXTRA_ENV; i++) {
-		if (extra_env[i])
-			e[n++] = istrdup(extra_env[i]);
+		if (extra_env[i] == NULL || *extra_env[i] == '\0')
+			continue;
+		n = addnewenv(extra_env[i], e, n);
 	}
 
 	if (child) {
 		snprintf(i_cons, sizeof(i_cons), "CONSOLE=%s", console_dev);
 		i_lvl[9]   = thislevel;
 		i_prev[10] = prevlevel;
-		e[n++] = istrdup(i_shell);
-		e[n++] = istrdup(i_lvl);
-		e[n++] = istrdup(i_prev);
-		e[n++] = istrdup(i_cons);
-		e[n++] = istrdup(E_VERSION);
+		n = addnewenv(i_shell, e, n);
+		n = addnewenv(i_lvl, e, n);
+		n = addnewenv(i_prev, e, n);
+		n = addnewenv(i_cons, e, n);
+		n = addnewenv(E_VERSION, e, n);
 	}
 
 	e[n++] = NULL;
@@ -2133,22 +2159,18 @@ void fifo_new_level(int level)
 static
 void initcmd_setenv(char *data, int size)
 {
-	char		*env, *p, *e, *eq;
-	int		i, sz;
+	char		*env, *p, *e;
+	size_t		sz;
+	int		i, eq;
 
 	e = data + size;
 
 	while (*data && data < e) {
-		eq = NULL;
 		for (p = data; *p && p < e; p++)
-			if (*p == '=') eq = p;
+			;
 		if (*p) break;
 		env = data;
 		data = ++p;
-
-		sz = eq ? (eq - env) : (p - env);
-
-		/*initlog(L_SY, "init_setenv: %s, %s, %d", env, eq, sz);*/
 
 		/*
 		 *	We only allow INIT_* to be set.
@@ -2156,18 +2178,27 @@ void initcmd_setenv(char *data, int size)
 		if (strncmp(env, "INIT_", 5) != 0)
 			continue;
 
+		sz = strcspn(env, "=");
+		eq = (env[sz] == '=');
+
+		/*initlog(L_SY, "init_setenv: %s, %d, %d", env, eq, sz);*/
+
 		/* Free existing vars. */
 		for (i = 0; i < NR_EXTRA_ENV; i++) {
-			if (extra_env[i] == NULL) continue;
-			if (!strncmp(extra_env[i], env, sz) &&
-			    extra_env[i][sz] == '=') {
+			if (extra_env[i] == NULL)
+				continue;
+			if (sz != strcspn(extra_env[i], "="))
+				continue;
+			if (strncmp(extra_env[i], env, sz) == 0) {
 				free(extra_env[i]);
 				extra_env[i] = NULL;
 			}
 		}
 
+		if (eq == 0)
+			continue;
+
 		/* Set new vars if needed. */
-		if (eq == NULL) continue;
 		for (i = 0; i < NR_EXTRA_ENV; i++) {
 			if (extra_env[i] == NULL) {
 				extra_env[i] = istrdup(env);

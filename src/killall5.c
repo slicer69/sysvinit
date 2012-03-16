@@ -638,8 +638,32 @@ int readproc(int do_stat)
 			if ((p->nfs = check4nfs(path, buf)))
 				goto link;
 		case DO_STAT:
-			if (stat(path, &st) != 0)
+			if (stat(path, &st) != 0) {
+				char * ptr;
+
+				len = readlink(path, buf, PATH_MAX);
+				if (len <= 0)
+					break;
+				buf[len] = '\0';
+
+				ptr = strstr(buf, " (deleted)");
+				if (!ptr)
+					break;
+				*ptr = '\0';
+				len -= strlen(" (deleted)");
+
+				if (stat(buf, &st) != 0)
+					break;
+				p->dev = st.st_dev;
+				p->ino = st.st_ino;
+				p->pathname = (char *)xmalloc(len + 1);
+				memcpy(p->pathname, buf, len);
+				p->pathname[len] = '\0';
+
+				/* All done */
 				break;
+			}
+
 			p->dev = st.st_dev;
 			p->ino = st.st_ino;
 

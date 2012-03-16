@@ -1,6 +1,7 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Handle deleted binaries in pidof (was local bug #34992)
   * Allow init to delte extra environment variables (was local bug
     #35858)
   * Avoid that init double environment variables for its childs

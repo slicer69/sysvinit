@@ -916,7 +916,7 @@ char **init_buildenv(int child)
 
 	for (n = 0; environ[n]; n++)
 		;
-	n += NR_EXTRA_ENV;
+	n += NR_EXTRA_ENV + 1;	    /* Also room for last NULL */
 	if (child)
 		n += 8;
 

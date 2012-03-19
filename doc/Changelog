@@ -1,6 +1,8 @@
 sysvinit (2.89dsf) UNRELEASED; urgency=low
 
   [ Werner Fink ]
+  * Do not forget room for last NULL of new environment (was
+    local bug 35866)
   * Handle deleted binaries in pidof (was local bug #34992)
   * Allow init to delte extra environment variables (was local bug
     #35858)

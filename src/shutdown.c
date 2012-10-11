@@ -76,7 +76,7 @@ int got_alrm = 0;
 
 char *clean_env[] = {
 	"HOME=/",
-	"PATH=/bin:/usr/bin:/sbin:/usr/sbin",
+	"PATH=" PATH_DEFAULT,
 	"TERM=dumb",
 	"SHELL=/bin/sh",
 	NULL,

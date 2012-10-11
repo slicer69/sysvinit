@@ -508,8 +508,10 @@ int readproc(int do_stat)
 
 		/* Read SID & statname from it. */
 		if ((fp = fopen(path, "r")) != NULL) {
-			if (!fgets(buf, sizeof(buf), fp))
-				buf[0] = '\0';
+			size_t len;
+
+			len = fread(buf, sizeof(char), sizeof(buf)-1, fp);
+			buf[len] = '\0';
 
 			if (buf[0] == '\0') {
 				nsyslog(LOG_ERR,

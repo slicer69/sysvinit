@@ -961,19 +961,30 @@ int main(int argc, char **argv)
 			while (1) {
 				char *passwd = pwd->pw_passwd;
 				char *answer;
-				int failed = 0;
+				int failed = 0, doshell = 0;
 
 				doprompt(passwd, con);
 				if ((answer = getpasswd(con)) == NULL)
 					break;
 
-				if (passwd[0] == '\0' ||
-				    strcmp(crypt(answer, passwd), passwd) == 0) {
+				if (passwd[0] == '\0')
+					doshell++;
+				else {
+					char *cryptbuf;
+					cryptbuf = crypt(answer, passwd);
+					if (cryptbuf == NULL)
+						fprintf(stderr, "sulogin: crypt failed: %m\n\r");
+					else if (strcmp(cryptbuf, pwd->pw_passwd) == 0)
+						doshell++;
+				}
+
+				if (doshell) {
 					*usemask |= (1<<con->id);
 					sushell(pwd);
 					*usemask &= ~(1<<con->id);
 					failed++;
 				}
+
 				signal(SIGQUIT, SIG_IGN);
 				signal(SIGTSTP, SIG_IGN);
 				signal(SIGINT,  SIG_IGN);
@@ -987,7 +998,7 @@ int main(int argc, char **argv)
 			}
 			if (alarm_rised) {
 				tcfinal(con);
-				printf("Timed out.\n\r");
+				fprintf(stderr, "Timed out.\n\r");
 			}
 			/*
 			 *	User may pressed Control-D.

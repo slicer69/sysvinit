@@ -39,6 +39,9 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     was specified.
   * Sulogin: if zero is read at reading the passwd guess it's done.
   * Sulogin: respect byte order that is do not mix chars and ints
+  * Shutdown: use PATH_DEFAULT as suggested by Paul Arthur in local bug #36101
+  * Killall5/pidof: handle strange names of executables (local bug #36252)
+  * Sulogin: be aware the crypt(3) may fail (local bug #36313)
 
   [ Petter Reinholdtsen ]
   * Next release will be 2.89dsf.

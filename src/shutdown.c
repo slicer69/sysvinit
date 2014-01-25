@@ -213,7 +213,7 @@ int init_setenv(char *name, char *value)
 /*
  *	Tell everyone the system is going down in 'mins' minutes.
  */
-void warn(int mins)
+void issue_warn(int mins)
 {
 	char buf[MESSAGELEN + sizeof(newstate)];
 	int len;
@@ -400,14 +400,14 @@ void fastdown()
 /*
  *	Go to runlevel 0, 1 or 6.
  */
-void shutdown(char *halttype)
+void issue_shutdown(char *halttype)
 {
 	char	*args[8];
 	int	argp = 0;
 	int	do_halt = (down_level[0] == '0');
 
 	/* Warn for the last time */
-	warn(0);
+	issue_warn(0);
 	if (dontshut) {
 		hardsleep(1);
 		stopit(0);
@@ -749,20 +749,20 @@ int main(int argc, char **argv)
 		if (wt < 0) wt += 1440;
 	}
 	/* Shutdown NOW if time == 0 */
-	if (wt == 0) shutdown(halttype);
+	if (wt == 0) issue_shutdown(halttype);
 
 	/* Give warnings on regular intervals and finally shutdown. */
-	if (wt < 15 && !needwarning(wt)) warn(wt);
+	if (wt < 15 && !needwarning(wt)) issue_warn(wt);
 	while(wt) {
 		if (wt <= 5 && !didnolog) {
 			donologin(wt);
 			didnolog++;
 		}
-		if (needwarning(wt)) warn(wt);
+		if (needwarning(wt)) issue_warn(wt);
 		hardsleep(60);
 		wt--;
 	}
-	shutdown(halttype);
+	issue_shutdown(halttype);
 
 	return 0; /* Never happens */
 }

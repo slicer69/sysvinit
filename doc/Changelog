@@ -53,6 +53,9 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     kernel 3.0 and above
   * Improve message printed when signaling processes to stop.
     Patch from Matias A. Fonzo at the dragora project.
+  * Rename internal functions warn() and shutdown() in the shutdown
+    binary to avoid surprising dynamic library name resolution
+    conflict with NSS modules.  Patch from Richard Tollerton.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

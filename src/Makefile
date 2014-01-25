@@ -89,7 +89,12 @@ else
 endif
 
 # Additional libs for GNU libc.
-ifneq ($(wildcard /usr/lib*/libcrypt.a),)
+ifneq ($(wildcard /usr/lib*/libcrypt.*),)
+  SULOGINLIBS	+= -lcrypt
+endif
+
+# Additional libs for GNU libc / multiarch on Debian based systems.
+ifneq ($(wildcard /usr/lib/*/libcrypt.*),)
   SULOGINLIBS	+= -lcrypt
 endif
 

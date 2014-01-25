@@ -56,6 +56,9 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Rename internal functions warn() and shutdown() in the shutdown
     binary to avoid surprising dynamic library name resolution
     conflict with NSS modules.  Patch from Richard Tollerton.
+  * Try harder to find libcrypt.*, even if there is no static library
+    available.  Also look in /usr/lib/*/ for the library, to handle
+    Debian multiarch systems.  Based on patch from Andrew Gregory.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

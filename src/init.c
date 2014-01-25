@@ -1542,14 +1542,14 @@ void read_inittab(void)
 		case 0: /* Send TERM signal */
 			if (talk)
 				initlog(L_CO,
-					"Sending processes the TERM signal");
+					"Sending processes configured via /etc/inittab the TERM signal");
 			kill(-(ch->pid), SIGTERM);
 			foundOne = 1;
 			break;
 		case 1: /* Send KILL signal and collect status */
 			if (talk)
 				initlog(L_CO,
-					"Sending processes the KILL signal");
+					"Sending processes configured via /etc/inittab the KILL signal");
 			kill(-(ch->pid), SIGKILL);
 			break;
 	}

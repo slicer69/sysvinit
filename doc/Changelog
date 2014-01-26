@@ -59,6 +59,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Try harder to find libcrypt.*, even if there is no static library
     available.  Also look in /usr/lib/*/ for the library, to handle
     Debian multiarch systems.  Based on patch from Andrew Gregory.
+  * Adjust included headers to be compatible with the musl C
+    library.  Patch from Matias A. Fonzo and Dragora.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

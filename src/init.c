@@ -49,6 +49,7 @@
 #include <utmp.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <sys/ttydefaults.h>
 #include <sys/syslog.h>
 #include <sys/time.h>
 

@@ -1256,6 +1256,7 @@ void startup(CHILD *ch)
 		case POWEROKWAIT:
 		case CTRLALTDEL:
 			if (!(ch->flags & XECUTED)) ch->flags |= WAITING;
+			/* Fall through */
 		case KBREQUEST:
 		case BOOT:
 		case POWERFAIL:

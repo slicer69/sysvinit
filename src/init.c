@@ -466,8 +466,10 @@ int receive_state(int fd)
 
 	f = fdopen(fd, "r");
 
- 	if (get_cmd(f) != C_VER)
+ 	if (get_cmd(f) != C_VER) {
+		fclose(f);
 		return -1;
+	}
 	get_string(old_version, sizeof(old_version), f);
 	oops_error = 0;
 	for (pp = &family; (*pp = get_record(f)) != NULL; pp = &((*pp)->next))

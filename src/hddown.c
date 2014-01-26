@@ -93,8 +93,8 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			int ret;
 
 			fp = hdopen(SYS_BLK "/%s/removable", d->d_name);
-			if ((long)fp <= 0) {
-				if ((long)fp < 0)
+			if (0 == (long)fp || -1 == (long)fp) {
+				if (-1 == (long)fp)
 					goto empty;	/* error */
 				continue;		/* no entry `removable' */
 			}
@@ -137,8 +137,8 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 				continue;		/* should not happen */
 
 			fp = hdopen(SYS_CLASS "/%s/manage_start_stop", ptr);
-			if ((long)fp <= 0) {
-				if ((long)fp < 0)
+			if (0 == (long)fp || -1 == (long)fp) {
+				if (-1 == (long)fp)
 					goto empty;	/* error */
 			} else {
 				ret = getc(fp);
@@ -151,8 +151,8 @@ static char *list_disks(DIR* blk, unsigned int* flags)
 			}
 
 			fp = hdopen(SYS_BLK "/%s/device/vendor", d->d_name);
-			if ((long)fp <= 0) {
-				if ((long)fp < 0)
+			if (0 == (long)fp || -1 == (long)fp) {
+				if (-1 == (long)fp)
 					goto empty;	/* error */
 				continue;		/* no entry `device/vendor' */
 			}
@@ -306,8 +306,9 @@ static char *strstrip(char *str)
 }
 
 /*
- * Open a sysfs file without getting a controlling tty
- * and return FILE* pointer.
+ * Open a sysfs file without getting a controlling tty and return
+ * FILE* pointer.  Return 0 if the file didn't exist, or (FILE*)-1 if
+ * something else went wrong.
  */
 static FILE *hdopen(const char* const format, const char* const name)
 {
@@ -350,8 +351,8 @@ static int flush_cache_ext(const char *device)
 	FILE *fp;
 
 	fp = hdopen(SYS_BLK "/%s/size", device);
-	if ((long)fp <= 0) {
-		if ((long)fp < 0)
+	if (0 == (long)fp || -1 == (long)fp) {
+		if (-1 == (long)fp)
 			return -1;	/* error */
 		goto out;		/* no entry `size' */
 	}

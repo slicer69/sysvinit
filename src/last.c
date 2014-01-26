@@ -396,7 +396,8 @@ int list(struct utmp *p, time_t t, int what)
 	 *	Calculate times
 	 */
 	tmp = (time_t)p->ut_time;
-	strcpy(logintime, ctime(&tmp));
+	strncpy(logintime, ctime(&tmp), sizeof(logintime));
+	logintime[sizeof(logintime)-1] = 0; /* enforce null termination */
 	if (fulltime)
 		sprintf(logouttime, "- %s", ctime(&t));
 	else {

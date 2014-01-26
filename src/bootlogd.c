@@ -303,9 +303,10 @@ int consolename(char *res, size_t rlen)
 		perror("bootlogd: /proc/cmdline");
 	} else {
 		buf[0] = 0;
-		if ((n = read(fd, buf, sizeof(buf) - 1)) >= 0)
+		if ((n = read(fd, buf, sizeof(buf) - 1)) >= 0) {
 			r = 0;
-		else
+			buf[sizeof(buf)-1] = 0; /* enforce null termination */
+		} else
 			perror("bootlogd: /proc/cmdline");
 		close(fd);
 	}

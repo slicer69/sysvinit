@@ -64,6 +64,9 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Move dovoid() macro from #ifdef__GLIBC__ to #ifdef __linux__,
     to match the condutions of the place where it is used.  Thanks
     to Matias A. Fonzo for noticing.
+  * Define _XOPEN_SOURCE when building to get crypt() from <unistd.h>
+    instead of using <crypt.h> in sulogin.c, to get the source building
+    with the musl C library.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

@@ -44,9 +44,6 @@
 #include <sys/ttydefaults.h>
 #include <errno.h>
 #include <sys/ioctl.h>
-#if defined(__GLIBC__)
-#  include <crypt.h>
-#endif
 #ifdef __linux__
 #  include <sys/statfs.h>
 #  include <sys/mount.h>

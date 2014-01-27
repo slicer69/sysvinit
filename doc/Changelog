@@ -61,6 +61,9 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     Debian multiarch systems.  Based on patch from Andrew Gregory.
   * Adjust included headers to be compatible with the musl C
     library.  Patch from Matias A. Fonzo and Dragora.
+  * Move dovoid() macro from #ifdef__GLIBC__ to #ifdef __linux__,
+    to match the condutions of the place where it is used.  Thanks
+    to Matias A. Fonzo for noticing.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

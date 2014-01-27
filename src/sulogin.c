@@ -46,7 +46,6 @@
 #include <sys/ioctl.h>
 #if defined(__GLIBC__)
 #  include <crypt.h>
-#  define dovoid(f)		if ((f)){}
 #endif
 #ifdef __linux__
 #  include <sys/statfs.h>
@@ -60,6 +59,7 @@
 #  ifndef MNT_DETACH
 #    define MNT_DETACH		2
 #  endif
+#  define dovoid(f)		if ((f)){}
 #endif
 
 #define BS  CTRL('h')

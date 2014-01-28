@@ -377,13 +377,26 @@ out:
 }
 
 /*
+ *     Get the maximal number of symlinks to follow.
+ */
+static int maxsymlinks(void)
+{
+	int v = sysconf(_SC_SYMLOOP_MAX);
+#ifdef MAXSYMLINKS
+	if (v == -1)
+		return MAXSYMLINKS;
+#endif
+	return v;
+}
+
+/*
  *     Check path is located on a network based partition.
  */
 int check4nfs(const char * path, char * real)
 {
 	char buf[PATH_MAX+1];
 	const char *curr;
-	int deep = MAXSYMLINKS;
+	int deep = maxsymlinks();
 
 	if (!nlist) return 0;
 

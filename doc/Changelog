@@ -67,6 +67,10 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Define _XOPEN_SOURCE when building to get crypt() from <unistd.h>
     instead of using <crypt.h> in sulogin.c, to get the source building
     with the musl C library.
+  * Use sysconf(_SC_SYMLOOP_MAX) instead of MAXSYMLINKS.  If sysconf
+    returns an error, fall back to MAXSYMLINKS on platforms that
+    define it.  Fixes build on Hurd.  Patch from Justus Winter and
+    Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <syslog.h>
+#include <sys/types.h>
 #include "init.h"
 
 

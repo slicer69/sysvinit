@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <sys/ttydefaults.h>
 #ifdef __linux__
 #  include <sys/vt.h>
 #  include <sys/kd.h>

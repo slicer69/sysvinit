@@ -71,6 +71,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     returns an error, fall back to MAXSYMLINKS on platforms that
     define it.  Fixes build on Hurd.  Patch from Justus Winter and
     Debian.
+  * Adjust makefile to make it easier to link all binaries statically.
+    Patch from Matias A. Fonzo and Dragora.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

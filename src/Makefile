@@ -108,27 +108,38 @@ all:		$(BIN) $(SBIN) $(USRBIN)
 init:		LDLIBS += $(INITLIBS) $(STATIC)
 init:		init.o init_utmp.o
 
+halt:		LDLIBS += $(STATIC)
 halt:		halt.o ifdown.o hddown.o utmp.o
 
+last:		LDLIBS += $(STATIC)
 last:		last.o
 
+mesg:		LDLIBS += $(STATIC)
 mesg:		mesg.o
 
+mountpoint:	LDLIBS += $(STATIC)
 mountpoint:	mountpoint.o
 
+utmpdump:	LDLIBS += $(STATIC)
 utmpdump:	utmpdump.o
 
+runlevel:	LDLIBS += $(STATIC)
 runlevel:	runlevel.o
 
 sulogin:	LDLIBS += $(SULOGINLIBS) $(STATIC)
 sulogin:	sulogin.o consoles.o
 
+wall:		LDLIBS += $(STATIC)
 wall:		dowall.o wall.o
 
+shutdown:	LDLIBS += $(STATIC)
 shutdown:	dowall.o shutdown.o utmp.o
 
-bootlogd:	LDLIBS += -lutil
+bootlogd:	LDLIBS += -lutil $(STATIC)
 bootlogd:	bootlogd.o
+
+fstab-decode:	LDLIBS += $(STATIC)
+fstab-decode:	fstab-decode.o
 
 sulogin.o:	CPPFLAGS += $(SELINUX_DEF)
 sulogin.o:	sulogin.c 

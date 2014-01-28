@@ -2788,7 +2788,7 @@ int telinit(char *progname, int argc, char **argv)
 		if (!strchr("0123456789SsQqAaBbCcUu", argv[optind][0]))
 			usage(progname);
 		request.cmd = INIT_CMD_RUNLVL;
-		request.runlevel  = env ? 0 : argv[optind][0];
+		request.runlevel  = argv[optind][0];
 		request.sleeptime = sltime;
 	}
 

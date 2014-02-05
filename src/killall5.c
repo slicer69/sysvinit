@@ -377,7 +377,8 @@ out:
 }
 
 /*
- *     Get the maximal number of symlinks to follow.
+ * Get the maximal number of symlinks to follow.  Use sysconf() on
+ * Hurd where the hardcoded value MAXSYMLINKS is not available.
  */
 static int maxsymlinks(void)
 {

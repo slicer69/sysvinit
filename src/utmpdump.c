@@ -218,16 +218,16 @@ undump(FILE *fp, int forever, int oldfmt)
 {
 	struct utmp ut;
 	struct oldutmp uto;
-	char s_addr[16], s_time[29], *linestart, *line;
+	char s_addr[16], s_time[29], *linestart;
 	int count = 0;
 
-	line = linestart = malloc(1024 * sizeof *linestart);
+	linestart = malloc(1024 * sizeof *linestart);
 	s_addr[15] = 0;
 	s_time[28] = 0;
 
 	while(fgets(linestart, 1023, fp))
 	{
-		line = linestart;
+		char *line = linestart;
                 memset(&ut, '\0', sizeof(ut));
                 sscanf(line, "[%hd] [%d] [%4c] ", &ut.ut_type, &ut.ut_pid, ut.ut_id);
 
@@ -237,6 +237,7 @@ undump(FILE *fp, int forever, int oldfmt)
                 line += gettok(line, ut.ut_host, sizeof(ut.ut_host), 1);
 		line += gettok(line, s_addr, sizeof(s_addr)-1, 1);
 		line += gettok(line, s_time, sizeof(s_time)-1, 0);
+		(void)line; /* Quiet down static source analyzers */
 
                 ut.ut_addr = inet_addr(s_addr);
                 ut.ut_time = strtotime(s_time);

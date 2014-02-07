@@ -1170,15 +1170,16 @@ pid_t spawn(CHILD *ch, int *res)
 			/* Set ioctl settings to default ones */
 			console_stty();
 
-  		} else {
+  		} else { /* parent */
+			int fd;
 			setsid();
-			if ((f = console_open(O_RDWR|O_NOCTTY)) < 0) {
+			if ((fd = console_open(O_RDWR|O_NOCTTY)) < 0) {
 				initlog(L_VB, "open(%s): %s", console_dev,
 					strerror(errno));
-				f = open("/dev/null", O_RDWR);
+				fd = open("/dev/null", O_RDWR);
 			}
-			dup(f);
-			dup(f);
+			dup(fd);
+			dup(fd);
 		}
 
 		/*

@@ -81,6 +81,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     from Johannes Truschnigg and Debian.
   * Fix typo in fstab-decode(8) font escape.  Patch from Bjarni Ingi
     Gislason and Debian.
+  * Port ifdown.c to FreeBSD.  Patch from Guillem Jover and Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

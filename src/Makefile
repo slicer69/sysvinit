@@ -9,8 +9,8 @@
 #
 
 CPPFLAGS =
-CFLAGS	?= -ansi -O2 -fomit-frame-pointer
-override CFLAGS += -W -Wall -D_XOPEN_SOURCE -D_GNU_SOURCE
+CFLAGS	?= -ansi -O2 -fomit-frame-pointer -fstack-protector 
+override CFLAGS += -W -Wall -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -D_XOPEN_SOURCE -D_GNU_SOURCE
 STATIC	=
 MANDB	:= s@^\('\\\\\"\)[^\*-]*-\*- coding: [^[:blank:]]\+ -\*-@\1@
 

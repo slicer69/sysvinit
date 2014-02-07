@@ -228,12 +228,11 @@ setattr:
 static
 void tcfinal(struct console *con)
 {
-	int serial;
 	struct termios *tio = &con->tio;
 	int fd = con->fd;
 
 	/* Expected error */
-	serial = errno = 0;
+	errno = 0;
 
 	if ((con->flags & CON_SERIAL) == 0) {
 #ifdef __linux__

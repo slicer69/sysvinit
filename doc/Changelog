@@ -85,6 +85,8 @@ sysvinit (2.89) UNRELEASED; urgency=low
   * Drop dsf part from version number.  It no longer make sense to keep.
   * Remove obsolete/ directory from tarball.  None of it have been useful
     for many years.
+  * Make it possible to specify the initctl path as a compile time
+    define INIT_FIFO.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

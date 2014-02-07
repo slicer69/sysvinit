@@ -25,10 +25,12 @@
 
 #include <sys/param.h>
 
-#if defined(__FreeBSD_kernel__)
-#  define INIT_FIFO  "/etc/.initctl"
-#else
-#  define INIT_FIFO  "/dev/initctl"
+#ifndef INIT_FIFO
+#  if defined(__FreeBSD_kernel__)
+#    define INIT_FIFO  "/etc/.initctl"
+#  else
+#    define INIT_FIFO  "/dev/initctl"
+#  endif
 #endif
 
 #define INIT_MAGIC 0x03091969

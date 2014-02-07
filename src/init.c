@@ -663,7 +663,9 @@ void coredump(void)
 	rlim.rlim_cur = RLIM_INFINITY;
 	rlim.rlim_max = RLIM_INFINITY;
 	setrlimit(RLIMIT_CORE, &rlim);
-	chdir("/");
+	if (0 != chdir("/"))
+		initlog(L_VB, "unable to chdir to /: %s",
+			strerror(errno));
 
 	signal(SIGSEGV, SIG_DFL);
 	raise(SIGSEGV);
@@ -2794,7 +2796,9 @@ int telinit(char *progname, int argc, char **argv)
 	}
 
 	/* Change to the root directory. */
-	chdir("/");
+	if (0 != chdir("/"))
+		initlog(L_VB, "unable to chdir to /: %s",
+			strerror(errno));
 
 	/* Open the fifo and write a command. */
 	/* Make sure we don't hang on opening /dev/initctl */

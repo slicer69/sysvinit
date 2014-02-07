@@ -83,6 +83,8 @@ sysvinit (2.89) UNRELEASED; urgency=low
     Gislason and Debian.
   * Port ifdown.c to FreeBSD.  Patch from Guillem Jover and Debian.
   * Drop dsf part from version number.  It no longer make sense to keep.
+  * Remove obsolete/ directory from tarball.  None of it have been useful
+    for many years.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

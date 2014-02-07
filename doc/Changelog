@@ -77,6 +77,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     reduce the amount of failure that can happin in that function.
   * Adapt bootlogd TIOCCONS call to kfreebsd.  Patch from Mats Erik
     Andersson and Debian.
+  * Document length limit for the process field in the inittab.  Patch
+    from Johannes Truschnigg and Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

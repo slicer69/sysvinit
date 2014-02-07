@@ -66,7 +66,7 @@ a `+' character,
 .B init 
 will not do utmp and wtmp accounting for that process.  This is needed for 
 gettys that insist on doing their own utmp/wtmp housekeeping.  This is also 
-a historic bug.
+a historic bug. The length of this field is limited to 127 characters.
 .\"}}}
 .PP
 The \fIrunlevels\fP field may contain multiple characters for different

@@ -1365,7 +1365,7 @@ void read_inittab(void)
 	if (rlevel && strlen(rlevel) > 11)
 		strcpy(err, "rlevel field too long (max 11 characters)");
 	if (process && strlen(process) > 127)
-		strcpy(err, "process field too long");
+		strcpy(err, "process field too long (max 127 characters)");
 	if (action && strlen(action) > 32)
 		strcpy(err, "action field too long");
 	if (err[0] != 0) {

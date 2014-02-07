@@ -483,7 +483,6 @@ int main(int argc, char **argv)
 	struct stat		st;
 	struct utmp		*ut;
 	time_t			t;
-	uid_t			realuid;
 	char			*halttype;
 	char			*downusers[32];
 	char			buf[128];
@@ -499,7 +498,6 @@ int main(int argc, char **argv)
 	int			user_ok = 0;
 
 	/* We can be installed setuid root (executable for a special group) */
-	realuid = getuid();
 	setuid(geteuid());
 
 	if (getuid() != 0) {

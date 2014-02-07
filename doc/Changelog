@@ -79,6 +79,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     Andersson and Debian.
   * Document length limit for the process field in the inittab.  Patch
     from Johannes Truschnigg and Debian.
+  * Fix typo in fstab-decode(8) font escape.  Patch from Bjarni Ingi
+    Gislason and Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

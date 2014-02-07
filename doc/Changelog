@@ -75,6 +75,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     Patch from Matias A. Fonzo and Dragora.
   * Rewrite findtty() in bootlogd.c to not chance working directory, to
     reduce the amount of failure that can happin in that function.
+  * Adapt bootlogd TIOCCONS call to kfreebsd.  Patch from Mats Erik
+    Andersson and Debian.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

@@ -73,6 +73,8 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
     Debian.
   * Adjust makefile to make it easier to link all binaries statically.
     Patch from Matias A. Fonzo and Dragora.
+  * Rewrite findtty() in bootlogd.c to not chance working directory, to
+    reduce the amount of failure that can happin in that function.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

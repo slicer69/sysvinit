@@ -112,55 +112,56 @@ static int findtty(char *res, const char *startdir, size_t rlen, dev_t dev)
 {
 	DIR		*dir;
 	struct dirent	*ent;
-	struct stat	st;
 	int		r = -1;
-	char *olddir = getcwd(NULL, 0);
 
-	if (chdir(startdir) < 0 || (dir = opendir(".")) == NULL) {
+	if ((dir = opendir(startdir)) == NULL) {
 		int msglen = strlen(startdir) + 11;
 		char *msg = malloc(msglen);
 		snprintf(msg, msglen, "bootlogd: %s", startdir);
 		perror(msg);
 		free(msg);
-		chdir(olddir);
 		return -1;
 	}
 	while ((ent = readdir(dir)) != NULL) {
-		if (lstat(ent->d_name, &st) != 0)
+		struct stat st;
+		int pathlen = strlen(startdir) + strlen(ent->d_name) + 2;
+		char *path = malloc(pathlen);
+		snprintf(path, pathlen, "%s/%s", startdir, ent->d_name);
+
+		if (lstat(path, &st) != 0) {
+			free(path);
 			continue;
+		}
 		if (S_ISDIR(st.st_mode)
 		    && 0 != strcmp(".", ent->d_name)
 		    && 0 != strcmp("..", ent->d_name)) {
-			char *path = malloc(rlen);
-			snprintf(path, rlen, "%s/%s", startdir, ent->d_name);
 			r = findtty(res, path, rlen, dev);
-			free(path);
 			if (0 == r) { /* device found, return */
+				free(path);
 				closedir(dir);
-				chdir(olddir);
 				return 0;
 			}
+			free(path);
 			continue;
 		}
+		free(path);
+		path = NULL;
 		if (!S_ISCHR(st.st_mode))
 			continue;
 		if (st.st_rdev == dev) {
 			if ( (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
 				fprintf(stderr, "bootlogd: console device name too long\n");
 				closedir(dir);
-				chdir(olddir);
 				return -1;
 			} else {
 				snprintf(res, rlen, "%s/%s", startdir, ent->d_name);
 				closedir(dir);
-				chdir(olddir);
 				return 0;
 			}
 		}
 	}
 	closedir(dir);
 
-	chdir(olddir);
 	return r;
 }
 

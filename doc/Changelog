@@ -1,4 +1,4 @@
-sysvinit (2.89dsf) UNRELEASED; urgency=low
+sysvinit (2.89) UNRELEASED; urgency=low
 
   [ Werner Fink ]
   * Do not forget room for last NULL of new environment (was
@@ -82,6 +82,7 @@ sysvinit (2.89dsf) UNRELEASED; urgency=low
   * Fix typo in fstab-decode(8) font escape.  Patch from Bjarni Ingi
     Gislason and Debian.
   * Port ifdown.c to FreeBSD.  Patch from Guillem Jover and Debian.
+  * Drop dsf part from version number.  It no longer make sense to keep.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

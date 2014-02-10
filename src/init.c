@@ -1111,8 +1111,15 @@ pid_t spawn(CHILD *ch, int *res)
 			if ((ftty = console_open(O_RDWR|O_NOCTTY)) >= 0) {
 				/* Take over controlling tty by force */
 				(void)ioctl(ftty, TIOCSCTTY, 1);
-  				dup(ftty);
-  				dup(ftty);
+
+				if(dup(ftty) < 0){
+				        initlog(L_VB, "cannot duplicate console fd");
+				}
+				
+				if(dup(ftty) < 0){
+				        initlog(L_VB, "cannot duplicate console fd");
+				}
+
 			}
 
 			/*
@@ -1181,8 +1188,15 @@ pid_t spawn(CHILD *ch, int *res)
 					strerror(errno));
 				fd = open("/dev/null", O_RDWR);
 			}
-			dup(fd);
-			dup(fd);
+
+			if(dup(fd) < 0) {
+				initlog(L_VB, "cannot duplicate /dev/null fd");
+			}
+			
+			if(dup(fd) < 0) {
+				initlog(L_VB, "cannot duplicate /dev/null fd");
+			}
+
 		}
 
 		/*

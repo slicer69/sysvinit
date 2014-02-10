@@ -87,6 +87,8 @@ sysvinit (2.89) UNRELEASED; urgency=low
     for many years.
   * Make it possible to specify the initctl path as a compile time
     define INIT_FIFO.
+  * Use narrowly scoped file descriptor for handling opened TTY in
+    spawn().  Patch from Michał Kulling.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun Apr 11 11:28:55 CEST 2010
 

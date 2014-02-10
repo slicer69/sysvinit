@@ -1101,17 +1101,18 @@ pid_t spawn(CHILD *ch, int *res)
 		 *	to be its controlling tty.
 		 */
   		if (strchr("*#sS", runlevel) && ch->flags & WAITING) {
+			int ftty;	/* Handler for tty controlling */
 			/*
 			 *	We fork once extra. This is so that we can
 			 *	wait and change the process group and session
 			 *	of the console after exit of the leader.
 			 */
 			setsid();
-			if ((f = console_open(O_RDWR|O_NOCTTY)) >= 0) {
+			if ((ftty = console_open(O_RDWR|O_NOCTTY)) >= 0) {
 				/* Take over controlling tty by force */
-				(void)ioctl(f, TIOCSCTTY, 1);
-  				dup(f);
-  				dup(f);
+				(void)ioctl(ftty, TIOCSCTTY, 1);
+  				dup(ftty);
+  				dup(ftty);
 			}
 
 			/*
@@ -1145,7 +1146,7 @@ pid_t spawn(CHILD *ch, int *res)
 				 *	Small optimization. See if stealing
 				 *	controlling tty back is needed.
 				 */
-				pgrp = tcgetpgrp(f);
+				pgrp = tcgetpgrp(ftty);
 				if (pgrp != getpid())
 					exit(0);
 
@@ -1160,7 +1161,7 @@ pid_t spawn(CHILD *ch, int *res)
 				}
 				if (pid == 0) {
 					setsid();
-					(void)ioctl(f, TIOCSCTTY, 1);
+					(void)ioctl(ftty, TIOCSCTTY, 1);
 					exit(0);
 				}
 				while((rc = waitpid(pid, &st, 0)) != pid)

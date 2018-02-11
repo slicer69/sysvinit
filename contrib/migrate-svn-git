@@ -14,12 +14,18 @@ EOF
 git svn clone http://svn.savannah.nongnu.org/svn/sysvinit/sysvinit \
     --authors-file=$authorsmap \
     --no-metadata \
-    -t --tags=sysvinit/tags -T trunk \
+    --tags=tags \
+    --trunk=trunk \
+    --prefix=sysvinit/ \
     sysvinit-git
-
-
-
 rm $authorsmap
+
+(
+    cd sysvinit-git
+    for tag in `git branch -r | grep "tags/" | sed 's/ sysvinit\/tags\///'`; do
+        git tag -a -m"Converting SVN tags" $tag refs/remotes/sysvinit/tags/$tag
+    done
+)
 
 (
     cd sysvinit-git

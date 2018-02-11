@@ -68,8 +68,8 @@ is not really meant to be used directly, but more for the scripts that are
 executed when entering runlevel 1. For more information on this,
 see the manpages for \fBshutdown\fP(8) and \fBinittab\fP(5).
 .PP
-Runlevels 7-9 are also valid, though not really documented. This is
-because "traditional" Unix variants don't use them.
+Runlevels 7\(en9 are also valid, though not really documented.
+This is because "traditional" Unix variants don't use them.
 In case you're curious, runlevels \fIS\fP and \fIs\fP are in fact the same.
 Internally they are aliases for the same runlevel.
 .\"}}}
@@ -105,7 +105,7 @@ provided that these files exist.
 .SH CHANGING RUNLEVELS
 After it has spawned all of the processes specified, \fBinit\fP waits
 for one of its descendant processes to die, a powerfail signal, or until
-it is signaled by \fBtelinit\fP to change the system's runlevel.  
+it is signaled by \fBtelinit\fP to change the system's runlevel.
 When one of the above three conditions occurs, it re-examines
 the \fB/etc/inittab\fP file.  New entries can be added to this file at
 any time.  However, \fBinit\fP still waits for one of the above three
@@ -160,18 +160,19 @@ tell \fBinit\fP to re-examine the \fB/etc/inittab\fP file.
 .IP "\fBS\fP or \fBs\fP"
 tell \fBinit\fP to switch to single user mode.
 .IP "\fBU\fP or \fBu\fP"
-tell \fBinit\fP to re-execute itself (preserving the state). No re-examining of 
-\fB/etc/inittab\fP file happens. Run level should be one of
-\fBSs0123456\fP
-otherwise request would be silently ignored.
+tell \fBinit\fP to re-execute itself (preserving the state).
+No re-examining of
+\fB/etc/inittab\fP file happens.
+Run level should be one of \fBSs0123456\fP otherwise request would be
+silently ignored.
 .PP
 \fBtelinit\fP can tell \fBinit\fP how long it should wait
 between sending processes the SIGTERM and SIGKILL signals.  The default
-is 5 seconds, but this can be changed with the \fB-t\fP option.
+is 5 seconds, but this can be changed with the \fB\-t\fP option.
 .PP
-\fBtelinit -e\fP tells \fBinit\fP to change the environment
+\fBtelinit \-e\fP tells \fBinit\fP to change the environment
 for processes it spawns.
-The argument of \fB-e\fP is either of the form \fIVAR\fP=\fIVAL\fP
+The argument of \fB\-e\fP is either of the form \fIVAR\fP=\fIVAL\fP
 which sets variable \fIVAR\fP to value \fIVAL\fP,
 or of the form \fIVAR\fP
 (without an equality sign)
@@ -201,15 +202,16 @@ The system console. This is really inherited from the kernel; however
 if it is not set \fBinit\fP will set it to \fB/dev/console\fP by default.
 .SH BOOTFLAGS
 It is possible to pass a number of flags to \fBinit\fP from the
-boot monitor (eg. LILO). \fBInit\fP accepts the following flags:
+boot monitor (eg.\& LILO).
+\fBInit\fP accepts the following flags:
 .TP 0.5i
 .B -s, S, single
-Single user mode boot. In this mode \fI/etc/inittab\fP is
-examined and the bootup rc scripts are usually run before
-the single user mode shell is started.
+Single user mode boot.
+In this mode \fI/etc/inittab\fP is examined and the bootup rc scripts
+are usually run before the single user mode shell is started.
 .PP
 .TP 0.5i
-.B 1-5
+.B 1\(en5
 Runlevel to boot into.
 .PP
 .TP 0.5i
@@ -222,23 +224,25 @@ other startup scripts.
 The LILO boot loader adds the word "auto" to the command line if it
 booted the kernel with the default command line (without user intervention).
 If this is found \fBinit\fP sets the "AUTOBOOT" environment
-variable to "yes". Note that you cannot use this for any security
-measures - of course the user could specify "auto" or \-a on the
-command line manually.
+variable to "yes".
+Note that you cannot use this for any security measures - of course
+the user could specify "auto" or \-a on the command line manually.
 .PP
 .TP 0.5i
-.BI "-z " xxx
-The argument to \fB-z\fP is ignored. You can use this to expand the command
-line a bit, so that it takes some more space on the stack. \fBInit\fP
-can then manipulate the command line so that \fBps\fP(1) shows
-the current runlevel.
+.BI "\-z " xxx
+The argument to \fB\-z\fP is ignored.
+You can use this to expand the command line a bit, so that it takes
+some more space on the stack.
+\fBInit\fP can then manipulate the command line so that \fBps\fP(1)
+shows the current runlevel.
+
 .PP
 .SH INTERFACE
 Init listens on a \fIfifo\fP in /dev, \fI/dev/initctl\fP, for messages.
-\fBTelinit\fP uses this to communicate with init. The interface is not
-very well documented or finished. Those interested should study the
-\fIinitreq.h\fP file in the \fIsrc/\fP subdirectory of the \fBinit\fP
-source code tar archive.
+\fBTelinit\fP uses this to communicate with init.
+The interface is not very well documented or finished.
+Those interested should study the \fIinitreq.h\fP file in the
+\fIsrc/\fP subdirectory of the \fBinit\fP source code tar archive.
 .SH SIGNALS
 Init reacts to several signals:
 .TP 0.5i
@@ -305,7 +309,7 @@ page by Michael Haardt (u31b3hs@pool.informatik.rwth-aachen.de).
 .BR login (1),
 .BR sh (1),
 .BR runlevel (8),
-.BR shutdown(8),
+.BR shutdown (8),
 .BR kill (1),
 .BR inittab (5),
 .BR initscript (5),

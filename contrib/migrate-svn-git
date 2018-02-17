@@ -23,7 +23,12 @@ for p in sysvinit startpar insserv; do
 	for tag in `git branch -r | grep "tags/" | sed "s/ $p\/tags\///"`; do
             git tag -a -m"Converting SVN tags" $tag refs/remotes/$p/tags/$tag
 	done
-	git remote add origin ssh://git.savannah.gnu.org:/srv/git/$p.git
+        if [ "sysvinit" = "$p" ]; then
+            remote=$p.git
+        else
+            remote=sysvinit/$p.git
+        fi
+        git remote add origin ssh://git.savannah.gnu.org:/srv/git/$remote
     )
 done
 rm $authorsmap

@@ -1291,6 +1291,76 @@ void startup(CHILD *ch)
 	}
 }
 
+#ifdef __linux__
+static
+void check_kernel_console()
+{
+	FILE* fp;
+	char buf[4096];
+	if ((fp = fopen("/proc/cmdline", "r")) == 0) {    
+		return;
+	}    
+	if (fgets(buf, sizeof(buf), fp)) {    
+		char* p = buf;
+		while ((p = strstr(p, "console="))) {    
+			char* e;
+			p += strlen("console=");
+			for (e = p; *e; ++e) {
+				switch (*e) {
+					case '-' ... '9':
+					case 'A' ... 'Z':
+					case '_':
+					case 'a' ... 'z':
+						continue;
+				}
+				break;
+			}
+			if (p != e) {
+				CHILD* old;
+				int dup = 0;
+				char id[8] = {0};
+				char dev[32] = {0};
+				strncpy(dev, p, MIN(sizeof(dev), (unsigned)(e-p)));
+				if (!strncmp(dev, "tty", 3))
+					strncpy(id, dev+3, sizeof(id));
+				else
+					strncpy(id, dev, sizeof(id));
+
+				for(old = newFamily; old; old = old->next) {
+					if (!strcmp(old->id, id)) {
+						dup = 1;
+					}
+				}
+				if (!dup) {
+					CHILD* ch = imalloc(sizeof(CHILD));
+					ch->action = RESPAWN;
+					strcpy(ch->id, id);
+					strcpy(ch->rlevel, "2345");
+					sprintf(ch->process, "/sbin/agetty -L -s 115200,38400,9600 %s vt102", dev);
+					ch->next = NULL;
+					for(old = family; old; old = old->next) {
+						if (strcmp(old->id, ch->id) == 0) {
+							old->new = ch;
+							break;
+						}
+					}
+					/* add to end */
+					for(old = newFamily; old; old = old->next) {
+						if (!old->next) {
+							old->next = ch;
+							break;
+						}
+					}
+
+					initlog(L_VB, "added agetty on %s with id %s", dev, id);
+				}
+			}
+		}    
+	}    
+	fclose(fp);
+	return;
+}
+#endif
 
 /*
  *	Read the inittab file.
@@ -1502,6 +1572,10 @@ void read_inittab(void)
    *	We're done.
    */
   if (fp) fclose(fp);
+
+#ifdef __linux__
+  check_kernel_console();
+#endif
 
   /*
    *	Loop through the list of children, and see if they need to

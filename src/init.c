@@ -131,7 +131,7 @@ char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
 struct utmp utproto;		/* Only used for sizeof(utproto.ut_id) */
 char *console_dev;		/* Console device. */
-int pipe_fd = -1;		/* /dev/initctl */
+int pipe_fd = -1;		/* /run/initctl */
 int did_boot = 0;		/* Did we already do BOOT* stuff? */
 int main(int, char **);
 
@@ -2326,13 +2326,13 @@ void check_init_fifo(void)
   int			quit = 0;
 
   /*
-   *	First, try to create /dev/initctl if not present.
+   *	First, try to create /run/initctl if not present.
    */
   if (stat(INIT_FIFO, &st2) < 0 && errno == ENOENT)
 	(void)mkfifo(INIT_FIFO, 0600);
 
   /*
-   *	If /dev/initctl is open, stat the file to see if it
+   *	If /run/initctl is open, stat the file to see if it
    *	is still the _same_ inode.
    */
   if (pipe_fd >= 0) {
@@ -2346,7 +2346,7 @@ void check_init_fifo(void)
   }
 
   /*
-   *	Now finally try to open /dev/initctl
+   *	Now finally try to open /run/initctl
    */
   if (pipe_fd < 0) {
 	if ((pipe_fd = open(INIT_FIFO, O_RDWR|O_NONBLOCK)) >= 0) {
@@ -2652,7 +2652,7 @@ void process_signals()
   }
   if (ISMEMBER(got_signals, SIGUSR1)) {
 	/*
-	 *	SIGUSR1 means close and reopen /dev/initctl
+	 *	SIGUSR1 means close and reopen /run/initctl
 	 */
 	INITDBG(L_VB, "got SIGUSR1");
 	close(pipe_fd);
@@ -2890,7 +2890,7 @@ int telinit(char *progname, int argc, char **argv)
 			strerror(errno));
 
 	/* Open the fifo and write a command. */
-	/* Make sure we don't hang on opening /dev/initctl */
+	/* Make sure we don't hang on opening /run/initctl */
 	SETSIG(sa, SIGALRM, signal_handler, 0);
 	alarm(3);
 	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) {

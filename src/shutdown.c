@@ -173,7 +173,7 @@ int init_setenv(char *name, char *value)
 
         /*
 	 *	Open the fifo and write the command.
-         *	Make sure we don't hang on opening /dev/initctl
+         *	Make sure we don't hang on opening /run/initctl
 	 */
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = alrm_handler;

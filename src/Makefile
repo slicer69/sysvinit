@@ -217,8 +217,8 @@ ifeq ($(ROOT),)
 		#
 		# This part is skipped on Debian systems, the
 		# debian.preinst script takes care of it.
-		@if [ ! -p /dev/initctl ]; then \
-		 echo "Creating /dev/initctl"; \
-		 rm -f /dev/initctl; \
-		 mknod -m 600 /dev/initctl p; fi
+		@if [ ! -p /run/initctl ]; then \
+		 echo "Creating /run/initctl"; \
+		 rm -f /run/initctl; \
+		 mknod -m 600 /run/initctl p; fi
 endif

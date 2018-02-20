@@ -109,6 +109,10 @@ void handler(int sig)
 /*
  *	Scan /dev and find the device name.
  */
+/*
+This function does not appear to be called anymore. Commenting it
+out for now, can probably be removed entirely in the future.
+
 static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 {
 	DIR		*dir;
@@ -136,7 +140,7 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 			snprintf(path, rlen, "%s/%s", startdir, ent->d_name);
 			r = findtty(res, path, rlen, dev);
 			free(path);
-			if (0 == r) { /* device found, return */
+			if (0 == r) { 
 				closedir(dir);
 				chdir(olddir);
 				return 0;
@@ -164,6 +168,9 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 	chdir(olddir);
 	return r;
 }
+*/
+
+
 
 /*
  *	For some reason, openpty() in glibc sometimes doesn't
@@ -242,7 +249,7 @@ int isconsole(char *s, char *res, int rlen)
 int consolenames(struct real_cons *cons, int max_consoles)
 {
 #ifdef TIOCGDEV
-	unsigned int	kdev;
+	/* This appears to be unused.  unsigned int	kdev; */
 #endif
 	struct stat	st, st2;
 	char		buf[256];
@@ -477,7 +484,7 @@ int main(int argc, char **argv)
 	int		rotate;
 	int		dontfork;
 	int		ptm, pts;
-	int		realfd;
+	/* int		realfd;   -- this is now unused */
 	int		n, m, i;
 	int		todo;
 #ifndef __linux__	/* BSD-style ioctl needs an argument. */

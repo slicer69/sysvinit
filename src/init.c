@@ -362,6 +362,7 @@ static CHILD *get_record(FILE *f)
 	CHILD	*p;
 
 	do {
+		errno = 0;
 		switch (cmd = get_cmd(f)) {
 			case C_END:
 				get_void(f);
@@ -372,34 +373,54 @@ static CHILD *get_record(FILE *f)
 			case C_REC:
 				break;
 			case D_RUNLEVEL:
-				fscanf(f, "%c\n", &runlevel);
+				if (fscanf(f, "%c\n", &runlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_THISLEVEL:
-				fscanf(f, "%c\n", &thislevel);
+				if (fscanf(f, "%c\n", &thislevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_PREVLEVEL:
-				fscanf(f, "%c\n", &prevlevel);
+				if (fscanf(f, "%c\n", &prevlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_GOTSIGN:
-				fscanf(f, "%u\n", &got_signals);
+				if (fscanf(f, "%u\n", &got_signals) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_WTMP_REBOOT:
-				fscanf(f, "%d\n", &wrote_wtmp_reboot);
+				if (fscanf(f, "%d\n", &wrote_wtmp_reboot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_UTMP_REBOOT:
-				fscanf(f, "%d\n", &wrote_utmp_reboot);
+				if (fscanf(f, "%d\n", &wrote_utmp_reboot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_SLTIME:
-				fscanf(f, "%d\n", &sltime);
+				if (fscanf(f, "%d\n", &sltime) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_DIDBOOT:
-				fscanf(f, "%d\n", &did_boot);
+				if (fscanf(f, "%d\n", &did_boot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_WTMP_RLEVEL:
-				fscanf(f, "%d\n", &wrote_wtmp_rlevel);
+				if (fscanf(f, "%d\n", &wrote_wtmp_rlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_UTMP_RLEVEL:
-				fscanf(f, "%d\n", &wrote_utmp_rlevel);
+				if (fscanf(f, "%d\n", &wrote_utmp_rlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			default:
 				if (cmd > 0 || cmd == C_EOF) {
@@ -418,10 +439,14 @@ static CHILD *get_record(FILE *f)
 			get_void(f);
 			break;
 		case C_PID:
-			fscanf(f, "%d\n", &(p->pid));
+			if (fscanf(f, "%d\n", &(p->pid)) == EOF && errno != 0) {
+				fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+			}
 			break;
 		case C_EXS:
-			fscanf(f, "%u\n", &(p->exstat));
+			if (fscanf(f, "%u\n", &(p->exstat)) == EOF && errno != 0) {
+				fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+			}
 			break;
 		case C_LEV:
 			get_string(p->rlevel, sizeof(p->rlevel), f);

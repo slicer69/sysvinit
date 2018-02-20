@@ -68,11 +68,6 @@ int didnl = 1;
 int createlogfile = 0;
 int syncalot = 0;
 
-struct line {
-	char buf[256];
-	int pos;
-} line;
-
 /*
  *	Console devices as listed on the kernel command line and
  *	the mapping to actual devices in /dev
@@ -108,60 +103,59 @@ void handler(int sig)
 /*
  *	Scan /dev and find the device name.
  */
-static int findtty(char *res, const char *startdir, size_t rlen, dev_t dev)
+static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 {
 	DIR		*dir;
 	struct dirent	*ent;
+	struct stat	st;
 	int		r = -1;
+	char *olddir = getcwd(NULL, 0);
 
-	if ((dir = opendir(startdir)) == NULL) {
+	if (chdir(startdir) < 0 || (dir = opendir(".")) == NULL) {
 		int msglen = strlen(startdir) + 11;
 		char *msg = malloc(msglen);
 		snprintf(msg, msglen, "bootlogd: %s", startdir);
 		perror(msg);
 		free(msg);
+		chdir(olddir);
 		return -1;
 	}
 	while ((ent = readdir(dir)) != NULL) {
-		struct stat st;
-		int pathlen = strlen(startdir) + strlen(ent->d_name) + 2;
-		char *path = malloc(pathlen);
-		snprintf(path, pathlen, "%s/%s", startdir, ent->d_name);
-
-		if (lstat(path, &st) != 0) {
-			free(path);
+		if (lstat(ent->d_name, &st) != 0)
 			continue;
-		}
 		if (S_ISDIR(st.st_mode)
 		    && 0 != strcmp(".", ent->d_name)
 		    && 0 != strcmp("..", ent->d_name)) {
+			char *path = malloc(rlen);
+			snprintf(path, rlen, "%s/%s", startdir, ent->d_name);
 			r = findtty(res, path, rlen, dev);
+			free(path);
 			if (0 == r) { /* device found, return */
-				free(path);
 				closedir(dir);
+				chdir(olddir);
 				return 0;
 			}
-			free(path);
 			continue;
 		}
-		free(path);
-		path = NULL;
 		if (!S_ISCHR(st.st_mode))
 			continue;
 		if (st.st_rdev == dev) {
-			if ( (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
+			if ( (int) (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
 				fprintf(stderr, "bootlogd: console device name too long\n");
 				closedir(dir);
+				chdir(olddir);
 				return -1;
 			} else {
 				snprintf(res, rlen, "%s/%s", startdir, ent->d_name);
 				closedir(dir);
+				chdir(olddir);
 				return 0;
 			}
 		}
 	}
 	closedir(dir);
 
+	chdir(olddir);
 	return r;
 }
 
@@ -209,7 +203,7 @@ int findpty(int *master, int *slave, char *name)
  *	See if a console taken from the kernel command line maps
  *	to a character device we know about, and if we can open it.
  */
-int isconsole(char *s, char *res, size_t rlen)
+int isconsole(char *s, char *res, int rlen)
 {
 	struct consdev	*c;
 	int		l, sl, i, fd;
@@ -239,21 +233,17 @@ int isconsole(char *s, char *res, size_t rlen)
  *	Find out the _real_ console. Assume that stdin is connected to
  *	the console device (/dev/console).
  */
-int consolename(char *res, size_t rlen)
+int consolename(char *res, int rlen)
 {
 #ifdef TIOCGDEV
 	unsigned int	kdev;
 #endif
-	struct stat	st;
-	int		n;
-#ifdef __linux__
+	struct stat	st, st2;
 	char		buf[256];
 	char		*p;
-	struct stat	st2;
 	int		didmount = 0;
-	int		r;
+	int		n, r;
 	int		fd;
-#endif
 
 	fstat(0, &st);
 	if (major(st.st_rdev) != 5 || minor(st.st_rdev) != 1) {
@@ -304,10 +294,9 @@ int consolename(char *res, size_t rlen)
 		perror("bootlogd: /proc/cmdline");
 	} else {
 		buf[0] = 0;
-		if ((n = read(fd, buf, sizeof(buf) - 1)) >= 0) {
+		if ((n = read(fd, buf, sizeof(buf) - 1)) >= 0)
 			r = 0;
-			buf[sizeof(buf)-1] = 0; /* enforce null termination */
-		} else
+		else
 			perror("bootlogd: /proc/cmdline");
 		close(fd);
 	}
@@ -357,71 +346,75 @@ int consolename(char *res, size_t rlen)
  */
 void writelog(FILE *fp, unsigned char *ptr, int len)
 {
-	time_t		t;
-	char		*s;
-	char		tmp[8];
-	int		olen = len;
-	int		dosync = 0;
-	int		tlen, opos;
+	int dosync = 0;
+	int i;
+	static int first_run = 1;
+	static int inside_esc = 0;
 
-	while (len > 0) {
-		tmp[0] = 0;
-		if (didnl) {
+	for (i = 0; i < len; i++) {
+		int ignore = 0;
+
+		/* prepend date to every line */
+		if (*(ptr-1) == '\n' || first_run) {
+			time_t t;
+			char *s;
 			time(&t);
 			s = ctime(&t);
 			fprintf(fp, "%.24s: ", s);
-			didnl = 0;
+			dosync = 1;
+			first_run = 0;
 		}
-		switch (*ptr) {
-			case 27: /* ESC */
-				strcpy(tmp, "^[");
-				break;
-			case '\r':
-				line.pos = 0;
-				break;
-			case 8: /* ^H */
-				if (line.pos > 0) line.pos--;
-				break;
-			case '\n':
-				didnl = 1;
-				dosync = 1;
-				break;
-			case '\t':
-                                opos = line.pos;
-				line.pos += ( (line.pos / 8) + 1) * 8;
-				if (line.pos >= (int) sizeof(line.buf))
-					line.pos = (int) sizeof(line.buf) - 1;
-                                while (opos <= line.pos)
-                                {
-                                   memcpy(line.buf + opos, " ", 1);
-                                   opos++;
-                                }
-                                line.buf[line.pos] = '\0';
-                                printf("%s\n", line.buf);
-				break;
-			case  32 ... 127:
-			case 161 ... 255:
-				tmp[0] = *ptr;
-				tmp[1] = 0;
-				break;
-			default:
-				sprintf(tmp, "\\%03o", *ptr);
-				break;
+
+		/* remove escape sequences, but do it in a way that allows us to stop
+		 * in the middle in case the string was cut off */
+		if (inside_esc == 1) {
+			/* first '[' is special because if we encounter it again, it should be considered the final byte */
+			if (*ptr == '[') {
+				/* multi char sequence */
+				ignore = 1;
+				inside_esc = 2;
+			} else {
+				/* single char sequence */
+				if (*ptr >= 64 && *ptr <= 95) {
+					ignore = 1;
+				}
+				inside_esc = 0;
+			}
+		} else if (inside_esc == 2) {
+			switch (*ptr) {
+				case '0' ... '9': /* intermediate chars of escape sequence */
+				case ';':
+				case 32 ... 47:
+					if (inside_esc) {
+						ignore = 1;
+					}
+					break;
+				case 64 ... 126: /* final char of escape sequence */
+					if (inside_esc) {
+						ignore = 1;
+						inside_esc = 0;
+					}
+					break;
+			}
+		} else {
+			switch (*ptr) {
+				case '\r':
+					ignore = 1;
+					break;
+				case 27: /* ESC */
+					ignore = 1;
+					inside_esc = 1;
+					break;
+			}
 		}
+
+
+		if (!ignore) {
+			fwrite(ptr, sizeof(char), 1, fp);
+		}
+
 		ptr++;
-		len--;
-
-		tlen = strlen(tmp);
-		if (tlen && (line.pos + tlen < (int)sizeof(line.buf))) {
-			memcpy(line.buf + line.pos, tmp, tlen);
-			line.pos += tlen;
-		}
-		if (didnl) {
-			fprintf(fp, "%s\n", line.buf);
-			memset(&line, 0, sizeof(line));
-		}
 	}
-
 	if (dosync) {
 		fflush(fp);
 		if (syncalot) {
@@ -429,7 +422,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 		}
 	}
 
-	outptr += olen;
+	outptr += len;
 	if (outptr >= endptr)
 		outptr = ringbuf;
 
@@ -496,9 +489,6 @@ int main(int argc, char **argv)
 	int		realfd;
 	int		n, m, i;
 	int		todo;
-#ifndef __linux__	/* BSD-style ioctl needs an argument. */
-	int		on = 1;
-#endif
 
 	fp = NULL;
 	logfile = LOGFILE;
@@ -571,20 +561,15 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-#ifdef __linux__
 	(void)ioctl(0, TIOCCONS, NULL);
+#if 1
 	/* Work around bug in 2.1/2.2 kernels. Fixed in 2.2.13 and 2.3.18 */
 	if ((n = open("/dev/tty0", O_RDWR)) >= 0) {
 		(void)ioctl(n, TIOCCONS, NULL);
 		close(n);
 	}
 #endif
-#ifdef __linux__
-	if (ioctl(pts, TIOCCONS, NULL) < 0)
-#else	/* BSD usage of ioctl TIOCCONS. */
-	if (ioctl(pts, TIOCCONS, &on) < 0)
-#endif
-	{
+	if (ioctl(pts, TIOCCONS, NULL) < 0) {
 		fprintf(stderr, "bootlogd: ioctl(%s, TIOCCONS): %s\n",
 			buf, strerror(errno));
 		return 1;

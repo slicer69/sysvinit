@@ -362,7 +362,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 	char		tmp[8];
 	int		olen = len;
 	int		dosync = 0;
-	int		tlen;
+	int		tlen, opos;
 
 	while (len > 0) {
 		tmp[0] = 0;
@@ -387,9 +387,17 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 				dosync = 1;
 				break;
 			case '\t':
-				line.pos += (line.pos / 8 + 1) * 8;
-				if (line.pos >= (int)sizeof(line.buf))
-					line.pos = sizeof(line.buf) - 1;
+                                opos = line.pos;
+				line.pos += ( (line.pos / 8) + 1) * 8;
+				if (line.pos >= (int) sizeof(line.buf))
+					line.pos = (int) sizeof(line.buf) - 1;
+                                while (opos <= line.pos)
+                                {
+                                   memcpy(line.buf + opos, " ", 1);
+                                   opos++;
+                                }
+                                line.buf[line.pos] = '\0';
+                                printf("%s\n", line.buf);
 				break;
 			case  32 ... 127:
 			case 161 ... 255:
@@ -546,7 +554,7 @@ int main(int argc, char **argv)
 		strcpy(realcons, "/dev/vc/1");
 
 	if ((realfd = open_nb(realcons)) < 0) {
-		fprintf(stderr, "bootlogd: %s: %s\n", buf, strerror(errno));
+		fprintf(stderr, "bootlogd: %s: %s\n", realcons, strerror(errno));
 		return 1;
 	}
 

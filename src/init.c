@@ -753,11 +753,11 @@ void console_stty(void)
 #ifdef __FreeBSD_kernel__
 	/*
 	 * The kernel of FreeBSD expects userland to set TERM.  Usually, we want
-	 * "cons25".  Later, gettys might disagree on this (i.e. we're not using
+	 * "xterm".  Later, gettys might disagree on this (i.e. we're not using
 	 * syscons) but some boot scripts, like /etc/init.d/xserver-xorg, still
 	 * need a non-dumb terminal.
 	 */
-	putenv ("TERM=cons25");
+	putenv ("TERM=xterm");
 #endif
 
 	(void) tcgetattr(fd, &tty);

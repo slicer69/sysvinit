@@ -489,6 +489,9 @@ int main(int argc, char **argv)
 	int		realfd;
 	int		n, m, i;
 	int		todo;
+#ifndef __linux__	/* BSD-style ioctl needs an argument. */
+	int		on = 1;
+#endif
 
 	fp = NULL;
 	logfile = LOGFILE;
@@ -561,15 +564,20 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+#ifdef __linux__
 	(void)ioctl(0, TIOCCONS, NULL);
-#if 1
 	/* Work around bug in 2.1/2.2 kernels. Fixed in 2.2.13 and 2.3.18 */
 	if ((n = open("/dev/tty0", O_RDWR)) >= 0) {
 		(void)ioctl(n, TIOCCONS, NULL);
 		close(n);
 	}
 #endif
-	if (ioctl(pts, TIOCCONS, NULL) < 0) {
+#ifdef __linux__
+	if (ioctl(pts, TIOCCONS, NULL) < 0)
+#else	/* BSD usage of ioctl TIOCCONS. */
+	if (ioctl(pts, TIOCCONS, &on) < 0)
+#endif
+	{
 		fprintf(stderr, "bootlogd: ioctl(%s, TIOCCONS): %s\n",
 			buf, strerror(errno));
 		return 1;

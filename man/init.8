@@ -110,7 +110,7 @@ When one of the above three conditions occurs, it re-examines
 the \fB/etc/inittab\fP file.  New entries can be added to this file at
 any time.  However, \fBinit\fP still waits for one of the above three
 conditions to occur.  To provide for an instantaneous response, the
-\fBtelinit Q\fP or \fBq\fP command can wake up \fBinit\fP to re-examine the
+\fBtelinit Q\fP or \fBq\fP command can wake up \fBinit\fP to re-examine (reload) the
 \fB/etc/inittab\fP file.
 .PP
 If \fBinit\fP is not in single user mode and receives a powerfail

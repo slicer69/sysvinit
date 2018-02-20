@@ -1,5 +1,85 @@
 sysvinit (2.89) UNRELEASED; urgency=low
 
+  [ Jesse Smith ]
+    * Removed unused variables and findtty() function in bootlogd
+    * Add checks to return code for fscanf() called in init.c.
+      This mostly just cleans up compiler warnings.
+    * Perform error check on setuid() call as suggested in manual page.
+    * Fix typo in killall5.c
+      Move initscript sample file from "src" to "doc" directory and updated
+      Makefile to match.
+    * Allow multiple console output
+    When booting a kernel with multiple serial console support, or multuiple
+    console arguments ala "console=tty1 console=ttyS0,9600" the kernel will output
+    messages to all consoles, init however will not. It will only send output to,
+    and accept input from, the last of the consoles.
+    This patch fixes it.
+    (Patch provided by Martin Buck.)
+    * Added Patch from Debian developer Mats Erik Andersson to make
+    ioctl work on GNU/kFreeBSD. Patches bootlogd.
+    * Added Robert Millan's Debian patch to set TERM variable to xterm (instead
+    of cons25) when running on GNU/kFreeBSD.
+    * Added Robert Millan's Debian patch to use /run/initctl as the named
+    pipe for communicating. This works around a limitation on the kFreeBSD
+    branch which prevents us from using /dev/initctl for pipes.
+    * Confirmed we have applied Guillem Jover's patch to make
+    ifdown work on FreeBSD.
+    * Confirmed we have Debian patch to fix enabling SELinux.
+    (Credit to Petter Reinholdtsen)
+    * Confirmed we have Debian patch to make sure utf-8 flag is not cleared from tty.
+    (Credit to Samuel Thibault)
+    * Confirmed we have Roger Leigh's Makefile patch to allow building
+    with multiarch libcrypt.
+    * Applied Justus Winter's symlink patch to make sure killall5
+    builds and runs on Hurd.
+    * Confirmed we have Werner Fink's PATH_MAX patch for getting
+    killall5 to build on Hurd.
+    * Made sure we have Petter Reinholdtsen's patch to init.c which
+    allows init to build on GNU/kFreeBSD despite missing VSWTC.
+     * Dropping Debian patch to use /run/nologin instead of /etc/nologin in paths.h.
+    Seems every distribution uses a different location. Oracle uses /etc/nologin,
+    CentOS seems to use /var/run/nologin.
+    We will use /etc/nologin and let distros patch to suit their own preference.
+    * Updated halt.8 man page with corrections from
+    Christoph Anton Mitterer.
+    * Confirme we have applied patch from Bjarni Ingi Gislason
+    which fixes typo in fstab-decode man page.
+    * Applied Debian patch to allow init to build on GNU Hurd.
+    (Credit: Roger Leigh)
+    * Confirmed we have Debian patch from developer Johannes Truschnigg
+    which informs the user of field size limit.
+    * Applied patch from Debian to the init manual page (init.8)
+    to better address runlevels. (Author unknown)
+    * The pidof command used to discover the correct PID of
+    a process even if the wrong path was given. For example
+    pidof /wrongpath/sleep would find the PID of a command run as "sleep".
+    This bug was reported on Launchpad for Ubuntu and on Savannah.
+    https://bugs.launchpad.net/ubuntu/+source/sysvinit/+bug/1546126
+    http://savannah.nongnu.org/bugs/?47196
+    This bug appears to have been fixed in the development branch,
+    allowing these bugs to be tested/closed.
+    * Confirmed Savannah bug #37114 (mountpoint does not detect
+    mount points using --bind on same file system) still exists,
+    but fixed in Debian and Red Hat.
+    Considering this bug closed since distributions are using
+    util-linux's mountpoint program and ours is no longer
+    built/used by default.
+    Considered importing util-linux mountpoint but that would duplicate
+    effort and pull in a new dependency on libmount.
+    * Problem with pidof breaks after prelink (Savannah bug #34992)
+    fixed. Patch supplied by Dave Dykstra.
+    * Patch to automatically spawn agetty on kernel consoles
+    The feature is useful for developers and admins that occasionally need
+    to boot with e.g. console=ttyS0.
+    The built in default can be overridden via inittab for each device. An
+    entry like "S0::off:" turns off the getty on ttyS0.
+    characters in log file. Also makes parsing easier.
+    This should close Savannah bug report 36528.
+    http://savannah.nongnu.org/bugs/?36528
+    * Applied patches provided in Savannah bug report 49991. Fix tabs in
+    bootlogd and avoid printing unitialized "buf" variable when
+    consolename() fails.
+
   [ Werner Fink ]
   * Do not forget room for last NULL of new environment (was
     local bug 35866)

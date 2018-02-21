@@ -1,6 +1,8 @@
 sysvinit (2.89) UNRELEASED; urgency=low
 
   [ Jesse Smith ]
+    * Fixed Clang compiler warning regarding variable data parameters to sprintf().
+    * Updated top-level Makefile to work with git repo instead of old svn repo.
     * Removed unused variables and findtty() function in bootlogd
     * Add checks to return code for fscanf() called in init.c.
       This mostly just cleans up compiler warnings.

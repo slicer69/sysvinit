@@ -107,29 +107,28 @@ push(struct pid_list **list, int pid)
 static void
 do_help(void)
 {
-	printf("\
-start-stop-daemon for Debian Linux - small and fast C version written by\n\
-Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>, public domain.\n"
-VERSION "\n\
-\n\
-Usage:
-    start-stop-daemon -S|--start options ... -- arguments ...\n\
-    start-stop-daemon -K|--stop options ...\n\
-    start-stop-daemon -H|--help\n\
-    start-stop-daemon -V|--version\n\
-\n\
-Options (at least one of --exec|--pidfile|--user is required):
-    -x|--exec <executable>       program to start/check if it is running\n\
-    -p|--pidfile <pid-file>      pid file to check\n\
-    -u|--user <username>|<uid>   stop this user's processes\n\
-    -n|--name <process-name>     stop processes with this name\n\
-    -s|--signal <signal>         signal to send (default 15)\n\
-    -a|--startas <pathname>      program to start (default <executable>)\n\
-    -t|--test                    test mode, don't do anything\n\
-    -o|--oknodo                  exit status 0 (not 1) if nothing done\n\
-    -q|--quiet  |  -v, --verbose\n\
-\n\
-Exit status:  0 = done  1 = nothing done (=> 0 if --oknodo)  2 = trouble\n");
+printf("start-stop-daemon for Debian Linux - small and fast C version written by\n"
+"Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>, public domain. %s\n"
+"\n"
+"Usage:\n"
+"   start-stop-daemon -S|--start options ... -- arguments ...\n"
+"   start-stop-daemon -K|--stop options ...\n"
+"   start-stop-daemon -H|--help\n"
+"   start-stop-daemon -V|--version\n"
+"\n"
+"Options (at least one of --exec|--pidfile|--user is required):\n"
+"   -x|--exec <executable>       program to start/check if it is running\n"
+"   -p|--pidfile <pid-file>      pid file to check\n"
+"   -u|--user <username>|<uid>   stop this user's processes\n"
+"   -n|--name <process-name>     stop processes with this name\n"
+"   -s|--signal <signal>         signal to send (default 15)\n"
+"   -a|--startas <pathname>      program to start (default <executable>)\n"
+"   -t|--test                    test mode, don't do anything\n"
+"   -o|--oknodo                  exit status 0 (not 1) if nothing done\n"
+"   -q|--quiet  |  -v, --verbose\n"
+"\n"
+"Exit status:  0 = done  1 = nothing done (=> 0 if --oknodo)  2 = trouble\n",
+VERSION);
 }
 
 

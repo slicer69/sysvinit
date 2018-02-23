@@ -1,10 +1,12 @@
 
-contrib		Unofficial stuff
-doc		Documentation, mostly obsolete
-man		Manual pages, not obsolete
-obsolete	Really obsolete stuff ;)
+contrib		Unofficial stuff, add-on programs
+doc		Documentation
+man		Manual pages
 src		Source code
 
-The project home is on https://savannah.nongnu.org/projects/sysvinit .
+For instructions on building and installing SysV init, please
+see the "doc/Install" file.
+
+The project home is on https://savannah.nongnu.org/projects/sysvinit 
 
 Send patches to sysvinit-devel@nongnu.org .

@@ -1,19 +1,19 @@
 
 
-	Propaganda for version 2.58 of sysvinit & utilities
+	Propaganda for version 2.89 of sysvinit & utilities
 	==================================================
 
-NOTE: If you use a standard distribution like Slackware, Debian
-or Redhat there probably is no need to upgrade. Installing sysvinit
+NOTE: If you use a standard distribution like Slackware, Devuan
+or Gentoo there probably is no need to upgrade. Installing sysvinit
 is only for those that upgrade their system by hand or for people
 that create Linux distributions.
 
-Sysvinit is probably the most widely used init package for Linux.
-Most distributions use it. sysvinit 2.4 is really a good package,
-and it was not the need for bugfixes but the need for more features
+SysV init was probably the most widely used init package for Linux.
+Most distributions once used it. sysvinit 2.4 was really a good package,
+and it was not the need for bug fixes but the need for more features
 that made me work on sysvinit again.
 
-Sysvinit is now a debian package. Debian source packages are not
+SysV init is now a Debian package. Debian source packages are not
 special in any way -- in fact you can just unpack and compile
 it on any other Linux distribution.
 
@@ -61,7 +61,7 @@ as in the 2.4 release:
 
 The sysvinit package includes
 
-* a sysv compatible /sbin/init program
+* a SysV compatible /sbin/init program
 * a telinit program (er, just a link to /sbin/init) to change runlevels
 * a featureful shutdown
 * halt and reboot to assist shutdown
@@ -69,13 +69,7 @@ The sysvinit package includes
 * the wall & mesg programs (not installed by default)
 * manpages for everything
 
-The new sysv init can be found on:
+The new SysV init can be found on:
 
-tsx-11.mit.edu:/pub/linux/sources/sbin as sysvinit-2.58-1.tar.gz
-sunsite.unc.edu:/pub/Linux/system/Daemons as sysvinit-2.58-1.tar.gz
-
-It will be moved there in a few days, in the mean time it is
-probably in the Incoming directory.
-
-Mike. (02-Jan-1996)
+http://download.savannah.nongnu.org/releases/sysvinit/
 

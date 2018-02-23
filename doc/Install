@@ -1,18 +1,36 @@
 
-    README for the System V style init, version 2.86
+    README for the System V style init, version 2.89
 
 init, shutdown, halt, reboot, wall, last, mesg, runlevel,
 killall5, pidof, sulogin.
 
 All programs, files and scripts in this package are covered by
-the Gnu Public License, and copyrighted by me.
+the GNU General Public License version 2, and copyrighted by
+Miquel van Smoorenburg (1991-2004) and, Jesse Smith (2018). 
 
 If you are not using Debian and the debianized package,
-you will have to install the new init by hand. You should
-be able to drop the binaries into a Slackware or Redhat
-system, I think.
+you may have to install the new init by hand if Debian is
+using an init system other than SysV (eg systemd). You should
+be able to drop the binaries into a Slackware or Devuan system, I think.
 
-Here is a list of preferred directories to install the progs & manpages:
+The SysV init software, core programs and manual pages can be
+installed by running the following two commands from the top-level
+source directory.
+
+make
+sudo make install
+
+If sudo is not installed, the "make install" command may be run as
+the root user.
+
+Other than the GNU make utility, SysV init has few dependencies.
+SysV can be built on virtually any Linux system featuring
+the GNU C library or musl libc. A C compiler, such as the GNU Compiler
+Collection (GCC) or Clang is also required.
+
+Here is a list of preferred directories to install the progs & manpages,
+this should be done for you automatically when you run "make install"
+as the root user, or via sudo, ie "sudo make install".
 
 wall.1, last.1, mesg.1	   /usr/man/man1
 inittab.5, initscript.5	   /usr/man/man5
@@ -40,7 +58,7 @@ bootlogd		   /sbin/bootlogd
 utmpdump                   don't install, it's just a debug thingy.
 
 If you already _have_ a "wall" in /bin (the SLS release had, for example)
-do _not_ install this wall. Chances are that the wall you are already
+do _not_ install this version of wall. Chances are that the wall you are already
 using is linked to /bin/write. Either first _remove_ /bin/wall before
 installing the new one, or don't install the new one at all.
 
@@ -48,9 +66,8 @@ You might want to create a file called "/etc/shutdown.allow". Read the
 manual page on shutdown to find out more about this.
 
 Running from a read-only file system (CDROM?):
-o All communication to init goes through the FIFO /dev/initctl.
+* All communication to init goes through the FIFO /run/initctl.
   There should be no problem using a read-only root file system
   IF you use a Linux kernel > 1.3.66. Older kernels don't allow
   writing to a FIFO on a read-only file system.
-  
-Miquel van Smoorenburg <miquels@cistron.nl>
+ 

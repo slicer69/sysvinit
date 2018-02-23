@@ -3,7 +3,7 @@ all install clean distclean:
 
 PACKAGE=sysvinit
 VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
-SVLOGIN=$(shell svn info | sed -rn '/Repository Root:/{ s|.*//(.*)\@.*|\1|p }')
+GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 3 -d '/' | cut -f 1 -d '@')
 override TMP:=$(shell mktemp -d $(VERSION).XXXXXXXX)
 override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.bz2
 override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
@@ -15,7 +15,7 @@ dist: $(TARBALL)
 	rm -rf $(TMP)
 
 upload: $(SFTPBATCH)
-	echo @sftp -b $< $(SVLOGIN)@dl.sv.nongnu.org:/releases/$(PACKAGE)
+	echo @sftp -b $< $(GITLOGIN)@dl.sv.nongnu.org:/releases/$(PACKAGE)
 	rm -rf $(TMP)
 
 $(SFTPBATCH): $(TARBALL).sig

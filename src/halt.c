@@ -266,7 +266,11 @@ int main(int argc, char **argv)
 
 	if (do_sync) {
 		sync();
-		sleep(2);
+		/* Sync should be fine on its own for making sure data is written.
+                   We probably call shutdown after this anyway to clean up.
+                   -- Jesse
+                sleep(2);
+                */
 	}
 
 	if (do_ifdown)

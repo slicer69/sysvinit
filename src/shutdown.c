@@ -359,7 +359,8 @@ void fastdown()
 #endif
 
 	/* script failed or not present: do it ourself. */
-	sleep(1); /* Give init the chance to collect zombies. */
+	/* Give init the chance to collect zombies. */
+        /* sleep(1); */
 
 	/* Record the fact that we're going down */
 	write_wtmp("shutdown", "~~", 0, RUN_LVL, "~~");

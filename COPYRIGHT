@@ -1,4 +1,5 @@
 Sysvinit is Copyright (C) 1991-2004 Miquel van Smoorenburg
+    Updated Copyright (C) 2018 Jesse Smith
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,7 +20,7 @@ Public License can be found in `/usr/share/common-licenses/GPL-2'.
 
 Send patches to sysvinit-devel@nongnu.org
 
-The of the start-stop-daemon
+Regarding the start-stop-daemon located in the contrib directory:
 
  * A rewrite of the original Debian's start-stop-daemon Perl script
  * in C (faster - it is executed many times during system startup).

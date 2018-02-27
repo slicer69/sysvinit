@@ -1,10 +1,10 @@
-Start-stop-daemon is the program that is used by the DEBIAN style init
+Start-stop-daemon is the program that is used by the Debian style init
 scripts to start and stop services. This program is part of the "dpkg"
 package by Ian Jackson. However there is also a seperate C version (the
-original is in perl) available written by Marek Michalkiewicz. I'm including
+original is in Perl) available written by Marek Michalkiewicz. I am including
 it for your convinience.
 
-Note that the latest debian dpkg packages (4.0.18 and later) contain
+Note that the latest Debian dpkg packages (4.0.18 and later) contain
 a much improved update-rc.d. This code is almost a year old.
 
 The original announcement follows:

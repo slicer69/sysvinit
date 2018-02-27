@@ -1,14 +1,12 @@
 Begin3
 Title:		sysvinit and utilities
-Version:	2.86
-Entered-Date:	30JUL2004
+Version:	2.89
+Entered-Date:	24FEB2018
 Description:	This is the Linux System V init.
 		This version can be compiled with glibc 2.0.6 and up.
 Author:		miquels@cistron.nl (Miquel van Smoorenburg)
-Primary-Site:	ftp.cistron.nl /pub/people/miquels/software
-		92K sysvinit-2.86.tar.gz
-Alternate-Site:	sunsite.unc.edu /pub/Linux/system/daemons/init
-		92K sysvinit-2.86.tar.gz
+Primary-Site:	http://download.savannah.nongnu.org /releases/sysvinit/
+		103K sysvinit-2.89.tar.bz2
 Copying-Policy:	GPL
 Keywords:	init shutdown halt reboot
 End

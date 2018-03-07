@@ -48,6 +48,19 @@ The name of the command is misleading when the -x option is used,
 but the option is useful for comparing if a directory and a device
 match up, and there is no other command that can print the info easily.
 .PP
+The mountpoint command fails when a directory is binded to one of its grandparents.
+For example, if /a/b/c/d is a mount point for /a/b then mountpoint will report
+/a/b/c/d is not a valid mount point. This is because both the original directory and
+its new mount point share the same inode and device number.
+.PP
+The circular mount problem can be worked around on Linux systems by using 
+the -p flag to check the /proc/mounts file for references to the circular mount bind.
+When using the -p flag, make sure to specify the full path (ie /home/user/mp and
+not just mp). Also, mountpoint may still fail if there are spaces in
+the mount point's path, even when using the -p flag because of the way
+/proc/mounts mangles the spaces in the path name. Of course, if the
+admin is using circular mount points with spaces in the name, there
+are bigger concerns.
 .SH AUTHOR
 Miquel van Smoorenburg, miquels@cistron.nl
 .SH "SEE ALSO"

@@ -1,6 +1,11 @@
 sysvinit (2.89) UNRELEASED; urgency=low
 
   [ Jesse Smith ]
+    * Updated mountpoint command with -p flag. The -p flag causes
+      mountpoint to search for circular mount points. For example, if
+      /a/b/c/d is a mount point for /a/b then the former is a valid
+      mount point. This only works on Linux since it uses /proc/mounts.
+      Updated manual page to match. This fix closes Savannah bug #37114.
     * Removed two sleep calls when we are doing sync anyway to make sure
       data is being written. Speeds up reboot time by about two seconds.
     * Fixed Clang compiler warning regarding variable data parameters to sprintf().

@@ -35,6 +35,8 @@ mountpoint \- see if a directory is a mountpoint
 Be quiet - don't print anything.
 .IP \fB\-d\fP
 Print major/minor device number of the filesystem on stdout.
+.IP \fB\-p\fP
+Check Linux's /proc/mounts file to try to detect circular mount points.
 .IP \fB\-x\fP
 Print major/minor device number of the blockdevice on stdout.
 .SH EXIT STATUS

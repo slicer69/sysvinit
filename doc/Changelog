@@ -1,4 +1,4 @@
-sysvinit (2.89) UNRELEASED; urgency=low
+sysvinit (2.89) world; urgency=low
 
   [ Jesse Smith ]
     * Updated mountpoint command with -p flag. The -p flag causes

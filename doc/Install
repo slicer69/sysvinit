@@ -66,11 +66,7 @@ You might want to create a file called "/etc/shutdown.allow". Read the
 manual page on shutdown to find out more about this.
 
 Running from a read-only file system (CDROM?):
-<<<<<<< HEAD
 * All communication to init goes through the FIFO /run/initctl.
-=======
-o All communication to init goes through the FIFO /run/initctl.
->>>>>>> beta
   There should be no problem using a read-only root file system
   IF you use a Linux kernel > 1.3.66. Older kernels don't allow
   writing to a FIFO on a read-only file system.

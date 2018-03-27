@@ -1,6 +1,8 @@
 sysvinit (2.89) UNRELEASED; urgency=low
 
   [ Jesse Smith ]
+    * Removed two sleep calls when we are doing sync anyway to make sure
+      data is being written. Speeds up reboot time by about two seconds.
     * Fixed Clang compiler warning regarding variable data parameters to sprintf().
     * Updated top-level Makefile to work with git repo instead of old svn repo.
     * Removed unused variables and findtty() function in bootlogd
@@ -44,7 +46,7 @@ sysvinit (2.89) UNRELEASED; urgency=low
     We will use /etc/nologin and let distros patch to suit their own preference.
     * Updated halt.8 man page with corrections from
     Christoph Anton Mitterer.
-    * Confirme we have applied patch from Bjarni Ingi Gislason
+    * Confirmed we have applied patch from Bjarni Ingi Gislason
     which fixes typo in fstab-decode man page.
     * Applied Debian patch to allow init to build on GNU Hurd.
     (Credit: Roger Leigh)
@@ -70,7 +72,7 @@ sysvinit (2.89) UNRELEASED; urgency=low
     effort and pull in a new dependency on libmount.
     * Problem with pidof breaks after prelink (Savannah bug #34992)
     fixed. Patch supplied by Dave Dykstra.
-    * Patch to automatically spawn agetty on kernel consoles
+    * Patch to automatically spawn a getty on kernel consoles
     The feature is useful for developers and admins that occasionally need
     to boot with e.g. console=ttyS0.
     The built in default can be overridden via inittab for each device. An

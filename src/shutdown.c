@@ -173,7 +173,7 @@ int init_setenv(char *name, char *value)
 
         /*
 	 *	Open the fifo and write the command.
-         *	Make sure we don't hang on opening /dev/initctl
+         *	Make sure we don't hang on opening /run/initctl
 	 */
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = alrm_handler;
@@ -498,7 +498,15 @@ int main(int argc, char **argv)
 	int			user_ok = 0;
 
 	/* We can be installed setuid root (executable for a special group) */
-	setuid(geteuid());
+	/* 
+        This way is risky, do error check on setuid call.
+        setuid(geteuid());
+        */
+        errno = 0;
+        if (setuid(geteuid()) == -1) {
+            fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+            abort();
+	}
 
 	if (getuid() != 0) {
   		fprintf(stderr, "shutdown: you must be root to do that!\n");

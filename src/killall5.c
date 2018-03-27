@@ -1,5 +1,5 @@
 /*
- * kilall5.c	Kill all processes except processes that have the
+ * killall5.c	Kill all processes except processes that have the
  *		same session id, so that the shell that called us
  *		won't be killed. Typically used in shutdown scripts.
  *

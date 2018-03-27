@@ -7,6 +7,7 @@ SVLOGIN=$(shell svn info | sed -rn '/Repository Root:/{ s|.*//(.*)\@.*|\1|p }')
 override TMP:=$(shell mktemp -d $(VERSION).XXXXXXXX)
 override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.bz2
 override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
+SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
 
 dist: $(TARBALL)
 	@cp $(TARBALL) .
@@ -31,9 +32,10 @@ $(TARBALL).sig: $(TARBALL)
 	@gpg -q -ba --use-agent -o $@ $<
 
 $(TARBALL): $(TMP)/$(PACKAGE)-$(VERSION)
-	@tar --bzip2 --owner=nobody --group=nogroup -cf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
+	@tar --exclude=.git --bzip2 --owner=nobody --group=nogroup -cf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
 
-$(TMP)/$(PACKAGE)-$(VERSION): .svn
-	svn export . $@
+$(TMP)/$(PACKAGE)-$(VERSION):
+	@mkdir $(TMP)/$(PACKAGE)-$(VERSION)
+	@cp -R $(SOURCES) $(TMP)/$(PACKAGE)-$(VERSION)/ 
 	@chmod -R a+r,u+w,og-w $@
 	@find $@ -type d | xargs -r chmod a+rx,u+w,og-w

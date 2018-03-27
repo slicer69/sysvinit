@@ -11,6 +11,7 @@
 CPPFLAGS =
 CFLAGS	?= -ansi -O2 -fomit-frame-pointer -fstack-protector 
 override CFLAGS += -W -Wall -Wunreachable-code -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -D_XOPEN_SOURCE -D_GNU_SOURCE
+override CFLAGS += $(shell getconf LFS_CFLAGS)
 STATIC	=
 MANDB	:= s@^\('\\\\\"\)[^\*-]*-\*- coding: [^[:blank:]]\+ -\*-@\1@
 
@@ -187,7 +188,7 @@ install:
 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
 		done
 		# $(INSTALL_DIR) $(ROOT)/etc/
-		# $(INSTALL_EXEC) initscript.sample $(ROOT)/etc/
+		# $(INSTALL_EXEC) ../doc/initscript.sample $(ROOT)/etc/
 		ln -sf halt $(ROOT)/sbin/reboot
 		ln -sf halt $(ROOT)/sbin/poweroff
 		ln -sf init $(ROOT)/sbin/telinit
@@ -216,8 +217,8 @@ ifeq ($(ROOT),)
 		#
 		# This part is skipped on Debian systems, the
 		# debian.preinst script takes care of it.
-		@if [ ! -p /dev/initctl ]; then \
-		 echo "Creating /dev/initctl"; \
-		 rm -f /dev/initctl; \
-		 mknod -m 600 /dev/initctl p; fi
+		@if [ ! -p /run/initctl ]; then \
+		 echo "Creating /run/initctl"; \
+		 rm -f /run/initctl; \
+		 mknod -m 600 /run/initctl p; fi
 endif

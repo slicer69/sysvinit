@@ -51,7 +51,7 @@ halt, reboot, poweroff \- stop the system.
 .\"}}}
 .\"{{{  Description
 .SH DESCRIPTION
-\fBHalt\fP notes that the system is being brought down in the file
+\fBhalt\fP notes that the system is being brought down in the file
 \fI/var/log/wtmp\fP, and then either tells the kernel to halt, reboot or
 power-off the system.
 .PP
@@ -68,12 +68,12 @@ and 6, that is when the systems shutdown scripts are being run.
 .SH OPTIONS
 .IP \fB\-n\fP
 Don't sync before reboot or halt. Note that the kernel and storage
-drivers may still sync.
+drivers may still sync.  This implies \fB\-d\fP.
 .IP \fB\-w\fP
 Don't actually reboot or halt but only write the wtmp record
 (in the \fI/var/log/wtmp\fP file).
 .IP \fB\-d\fP
-Don't write the wtmp record. The \fB\-n\fP flag implies \fB\-d\fP.
+Don't write the wtmp record.
 .IP \fB\-f\fP
 Force halt or reboot, don't call \fBshutdown\fP(8).
 .IP \fB\-i\fP

@@ -131,7 +131,7 @@ char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
 struct utmp utproto;		/* Only used for sizeof(utproto.ut_id) */
 char *console_dev;		/* Console device. */
-int pipe_fd = -1;		/* /dev/initctl */
+int pipe_fd = -1;		/* /run/initctl */
 int did_boot = 0;		/* Did we already do BOOT* stuff? */
 int main(int, char **);
 
@@ -362,6 +362,7 @@ static CHILD *get_record(FILE *f)
 	CHILD	*p;
 
 	do {
+		errno = 0;
 		switch (cmd = get_cmd(f)) {
 			case C_END:
 				get_void(f);
@@ -372,34 +373,54 @@ static CHILD *get_record(FILE *f)
 			case C_REC:
 				break;
 			case D_RUNLEVEL:
-				fscanf(f, "%c\n", &runlevel);
+				if (fscanf(f, "%c\n", &runlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_THISLEVEL:
-				fscanf(f, "%c\n", &thislevel);
+				if (fscanf(f, "%c\n", &thislevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_PREVLEVEL:
-				fscanf(f, "%c\n", &prevlevel);
+				if (fscanf(f, "%c\n", &prevlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_GOTSIGN:
-				fscanf(f, "%u\n", &got_signals);
+				if (fscanf(f, "%u\n", &got_signals) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_WTMP_REBOOT:
-				fscanf(f, "%d\n", &wrote_wtmp_reboot);
+				if (fscanf(f, "%d\n", &wrote_wtmp_reboot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_UTMP_REBOOT:
-				fscanf(f, "%d\n", &wrote_utmp_reboot);
+				if (fscanf(f, "%d\n", &wrote_utmp_reboot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_SLTIME:
-				fscanf(f, "%d\n", &sltime);
+				if (fscanf(f, "%d\n", &sltime) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_DIDBOOT:
-				fscanf(f, "%d\n", &did_boot);
+				if (fscanf(f, "%d\n", &did_boot) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_WTMP_RLEVEL:
-				fscanf(f, "%d\n", &wrote_wtmp_rlevel);
+				if (fscanf(f, "%d\n", &wrote_wtmp_rlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			case D_WROTE_UTMP_RLEVEL:
-				fscanf(f, "%d\n", &wrote_utmp_rlevel);
+				if (fscanf(f, "%d\n", &wrote_utmp_rlevel) == EOF && errno != 0) {
+					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+				}
 				break;
 			default:
 				if (cmd > 0 || cmd == C_EOF) {
@@ -418,10 +439,14 @@ static CHILD *get_record(FILE *f)
 			get_void(f);
 			break;
 		case C_PID:
-			fscanf(f, "%d\n", &(p->pid));
+			if (fscanf(f, "%d\n", &(p->pid)) == EOF && errno != 0) {
+				fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+			}
 			break;
 		case C_EXS:
-			fscanf(f, "%u\n", &(p->exstat));
+			if (fscanf(f, "%u\n", &(p->exstat)) == EOF && errno != 0) {
+				fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
+			}
 			break;
 		case C_LEV:
 			get_string(p->rlevel, sizeof(p->rlevel), f);
@@ -753,11 +778,11 @@ void console_stty(void)
 #ifdef __FreeBSD_kernel__
 	/*
 	 * The kernel of FreeBSD expects userland to set TERM.  Usually, we want
-	 * "cons25".  Later, gettys might disagree on this (i.e. we're not using
+	 * "xterm".  Later, gettys might disagree on this (i.e. we're not using
 	 * syscons) but some boot scripts, like /etc/init.d/xserver-xorg, still
 	 * need a non-dumb terminal.
 	 */
-	putenv ("TERM=cons25");
+	putenv ("TERM=xterm");
 #endif
 
 	(void) tcgetattr(fd, &tty);
@@ -1291,6 +1316,76 @@ void startup(CHILD *ch)
 	}
 }
 
+#ifdef __linux__
+static
+void check_kernel_console()
+{
+	FILE* fp;
+	char buf[4096];
+	if ((fp = fopen("/proc/cmdline", "r")) == 0) {    
+		return;
+	}    
+	if (fgets(buf, sizeof(buf), fp)) {    
+		char* p = buf;
+		while ((p = strstr(p, "console="))) {    
+			char* e;
+			p += strlen("console=");
+			for (e = p; *e; ++e) {
+				switch (*e) {
+					case '-' ... '9':
+					case 'A' ... 'Z':
+					case '_':
+					case 'a' ... 'z':
+						continue;
+				}
+				break;
+			}
+			if (p != e) {
+				CHILD* old;
+				int dup = 0;
+				char id[8] = {0};
+				char dev[32] = {0};
+				strncpy(dev, p, MIN(sizeof(dev), (unsigned)(e-p)));
+				if (!strncmp(dev, "tty", 3))
+					strncpy(id, dev+3, sizeof(id));
+				else
+					strncpy(id, dev, sizeof(id));
+
+				for(old = newFamily; old; old = old->next) {
+					if (!strcmp(old->id, id)) {
+						dup = 1;
+					}
+				}
+				if (!dup) {
+					CHILD* ch = imalloc(sizeof(CHILD));
+					ch->action = RESPAWN;
+					strcpy(ch->id, id);
+					strcpy(ch->rlevel, "2345");
+					sprintf(ch->process, "/sbin/agetty -L -s 115200,38400,9600 %s vt102", dev);
+					ch->next = NULL;
+					for(old = family; old; old = old->next) {
+						if (strcmp(old->id, ch->id) == 0) {
+							old->new = ch;
+							break;
+						}
+					}
+					/* add to end */
+					for(old = newFamily; old; old = old->next) {
+						if (!old->next) {
+							old->next = ch;
+							break;
+						}
+					}
+
+					initlog(L_VB, "added agetty on %s with id %s", dev, id);
+				}
+			}
+		}    
+	}    
+	fclose(fp);
+	return;
+}
+#endif
 
 /*
  *	Read the inittab file.
@@ -1502,6 +1597,10 @@ void read_inittab(void)
    *	We're done.
    */
   if (fp) fclose(fp);
+
+#ifdef __linux__
+  check_kernel_console();
+#endif
 
   /*
    *	Loop through the list of children, and see if they need to
@@ -2252,13 +2351,13 @@ void check_init_fifo(void)
   int			quit = 0;
 
   /*
-   *	First, try to create /dev/initctl if not present.
+   *	First, try to create /run/initctl if not present.
    */
   if (stat(INIT_FIFO, &st2) < 0 && errno == ENOENT)
 	(void)mkfifo(INIT_FIFO, 0600);
 
   /*
-   *	If /dev/initctl is open, stat the file to see if it
+   *	If /run/initctl is open, stat the file to see if it
    *	is still the _same_ inode.
    */
   if (pipe_fd >= 0) {
@@ -2272,7 +2371,7 @@ void check_init_fifo(void)
   }
 
   /*
-   *	Now finally try to open /dev/initctl
+   *	Now finally try to open /run/initctl
    */
   if (pipe_fd < 0) {
 	if ((pipe_fd = open(INIT_FIFO, O_RDWR|O_NONBLOCK)) >= 0) {
@@ -2578,7 +2677,7 @@ void process_signals()
   }
   if (ISMEMBER(got_signals, SIGUSR1)) {
 	/*
-	 *	SIGUSR1 means close and reopen /dev/initctl
+	 *	SIGUSR1 means close and reopen /run/initctl
 	 */
 	INITDBG(L_VB, "got SIGUSR1");
 	close(pipe_fd);
@@ -2816,7 +2915,7 @@ int telinit(char *progname, int argc, char **argv)
 			strerror(errno));
 
 	/* Open the fifo and write a command. */
-	/* Make sure we don't hang on opening /dev/initctl */
+	/* Make sure we don't hang on opening /run/initctl */
 	SETSIG(sa, SIGALRM, signal_handler, 0);
 	alarm(3);
 	if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) {

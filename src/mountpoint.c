@@ -50,8 +50,55 @@ int dostat(char *path, struct stat *st, int do_lstat, int quiet)
 	return 0;
 }
 
+
+/*
+This function checks to see if the passed path is listed in the
+/proc/mounts file. If /proc/mounts does not exist or cannot
+be read, we return false. If the path is nout found, we return false.
+If the path is found we return true.
+*/
+int do_proc_check(char *path)
+{
+   FILE *mounts;
+   char *found = NULL, *status;
+   char *target_string;
+   char line[512];
+   int last_character;
+
+   target_string = (char *) calloc( strlen(path) + 3, sizeof(char));
+   if (! target_string)
+      return 0;
+
+   mounts = fopen("/proc/mounts", "r");
+   if (! mounts)
+   {
+      free(target_string);
+      return 0;
+   }
+
+   /* copy path so we can adjust it without harming the original */
+   sprintf(target_string, "%s", path);
+   /* trim trailing slash */
+   last_character = strlen(target_string) - 1;
+   if ( (last_character >= 1) && (target_string[last_character] == '/') )
+        target_string[last_character] = '\0';
+
+   /* Search for path name in /proc/mounts file */
+   status = fgets(line, 512, mounts);
+   while ( (status) && (! found) )
+   {
+       found = strstr(line, target_string);
+       if (! found)
+         status = fgets(line, 512, mounts);
+   }
+   fclose(mounts);
+   free(target_string);
+   return found ? 1 : 0;
+}
+
+
 void usage(void) {
-	fprintf(stderr, "Usage: mountpoint [-q] [-d] [-x] path\n");
+	fprintf(stderr, "Usage: mountpoint [-p] [-q] [-d] [-x] path\n");
 	exit(1);
 }
 
@@ -64,11 +111,15 @@ int main(int argc, char **argv)
 	int		showdev = 0;
 	int		xdev = 0;
 	int		c, r;
+        int             check_proc = 0;
 
-	while ((c = getopt(argc, argv, "dqx")) != EOF) switch(c) {
+	while ((c = getopt(argc, argv, "dpqx")) != EOF) switch(c) {
 		case 'd':
 			showdev = 1;
 			break;
+                case 'p':
+                        check_proc = 1;
+                        break;
 		case 'q':
 			quiet = 1;
 			break;
@@ -118,6 +169,13 @@ int main(int argc, char **argv)
 
 	r = (st.st_dev != st2.st_dev) ||
 	    (st.st_dev == st2.st_dev && st.st_ino == st2.st_ino);
+        /* Mount point was not found yet. If we have access
+           to /proc we can check there too. */
+        if ( (!r) && (check_proc) )
+        {
+           if ( do_proc_check(path) )
+              r = 1;
+        }
 
 	if (!quiet && !showdev)
 		printf("%s is %sa mountpoint\n", path, r ? "" : "not ");

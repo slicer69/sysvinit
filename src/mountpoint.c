@@ -167,8 +167,14 @@ int main(int argc, char **argv)
 	if (dostat(buf, &st2, 0, quiet) < 0)
 		return 1;
 
-	r = (st.st_dev != st2.st_dev) ||
-	    (st.st_dev == st2.st_dev && st.st_ino == st2.st_ino);
+	/* r = ( (st.st_dev != st2.st_dev) ||
+	    ( (st.st_dev == st2.st_dev) && (st.st_ino == st2.st_ino) ) ;
+
+            (A || (!A && B)) is the same as (A || B) so simplifying this below.
+            Thanks to David Binderman for pointing this out. -- Jesse
+        */
+        r = ( (st.st_dev != st2.st_dev) || (st.st_ino == st2.st_ino) );
+              
         /* Mount point was not found yet. If we have access
            to /proc we can check there too. */
         if ( (!r) && (check_proc) )

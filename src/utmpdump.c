@@ -219,7 +219,6 @@ undump(FILE *fp, int forever, int oldfmt)
 	struct utmp ut;
 	struct oldutmp uto;
 	char s_addr[16], s_time[29], *linestart;
-	int count = 0;
 
 	linestart = malloc(1024 * sizeof *linestart);
 	s_addr[15] = 0;
@@ -248,7 +247,6 @@ undump(FILE *fp, int forever, int oldfmt)
                 } else
                         fwrite(&ut, sizeof(ut), 1, stdout);
 
-		++count;
 	}
 
 	free(linestart);

@@ -1,3 +1,13 @@
+sysvinit (2.90) UNRELEASED; urgency=low
+
+  [ Jesse Smith ]
+    * Removed unneeded "count" variable in utmpdump.c.
+    * Fixed typo in accidental wrote_wtmp_rlevel == 0 || wrote_wtmp_rlevel 
+      comparison so the latter is wrote_utmp_rlevel.
+    * Simplified logic in mountpoint.c when testing for same device or same inode.
+      Thanks to David Binderman for pointing out the above three issues.
+      
+
 sysvinit (2.89) world; urgency=low
 
   [ Jesse Smith ]

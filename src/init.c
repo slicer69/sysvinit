@@ -2228,7 +2228,7 @@ void redo_utmp_wtmp(void)
 	if ((wrote_wtmp_reboot == 0) || (wrote_utmp_reboot == 0))
 		write_utmp_wtmp("reboot", "~~", 0, BOOT_TIME, "~");
 
-	if ((wrote_wtmp_rlevel == 0) || (wrote_wtmp_rlevel == 0))
+	if ((wrote_wtmp_rlevel == 0) || (wrote_utmp_rlevel == 0))
 		write_utmp_wtmp("runlevel", "~~", thislevel + 256 * prevlevel, RUN_LVL, "~");
 }
 

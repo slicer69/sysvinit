@@ -6,6 +6,12 @@ sysvinit (2.90) UNRELEASED; urgency=low
       comparison so the latter is wrote_utmp_rlevel.
     * Simplified logic in mountpoint.c when testing for same device or same inode.
       Thanks to David Binderman for pointing out the above three issues.
+    * When we run shutdown and then the computer is put to sleep, the
+      shutdown command recognizes time has passed and continues its
+      countdown taking the time lapse into consideration. This prevents
+      longer waits if we slept past the time we should have shutdown.
+      Accurate to the nearest minute.
+      Closes Savannah bug #36279.
       
 
 sysvinit (2.89) world; urgency=low

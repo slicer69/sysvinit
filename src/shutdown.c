@@ -59,7 +59,7 @@
 #include "init.h"
 
 
-char *Version = "@(#) shutdown 2.86-1 31-Jul-2004 miquels@cistron.nl";
+char *Version = "@(#) shutdown 2.90-1 31-Jul-2004 miquels@cistron.nl";
 
 #define MESSAGELEN	256
 
@@ -483,7 +483,7 @@ int main(int argc, char **argv)
 	struct tm		*lt;
 	struct stat		st;
 	struct utmp		*ut;
-	time_t			t;
+	time_t			t, target_time;
 	char			*halttype;
 	char			*downusers[32];
 	char			buf[128];
@@ -758,6 +758,17 @@ int main(int argc, char **argv)
 	/* Shutdown NOW if time == 0 */
 	if (wt == 0) issue_shutdown(halttype);
 
+        /* Rather than loop and reduce wt (wait time) once per minute,
+           we shall check the current time against the target time.
+           Then calculate the remaining wating time based on the difference
+           between current time and target time.
+           This avoids missing shutdown time (target time) after the
+           computer has been asleep. -- Jesse
+        */
+        /* target time, in seconds = current time + wait time */
+        time(&t);
+        target_time = t + (60 * wt); 
+
 	/* Give warnings on regular intervals and finally shutdown. */
 	if (wt < 15 && !needwarning(wt)) issue_warn(wt);
 	while(wt) {
@@ -767,7 +778,16 @@ int main(int argc, char **argv)
 		}
 		if (needwarning(wt)) issue_warn(wt);
 		hardsleep(60);
-		wt--;
+                time(&t);    /* get current time once per minute */
+                if (t >= target_time)     /* past the target */
+                  wt = 0;
+                else if ( (target_time - t) <= 60 )  /* less 1 min remains */
+                {
+                    hardsleep(target_time - t);
+                    wt = 0;
+                }
+                else                      /* more thsn 1 min remains */
+                   wt = (int) (target_time - t) / 60;
 	}
 	issue_shutdown(halttype);
 

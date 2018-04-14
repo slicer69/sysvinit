@@ -27,7 +27,7 @@ SBIN	= init halt shutdown runlevel killall5 fstab-decode
 USRBIN	= last mesg
 
 MAN1	= last.1 lastb.1 mesg.1
-MAN5	= initscript.5 inittab.5
+MAN5	= initscript.5 inittab.5 initctl.5
 MAN8	= halt.8 init.8 killall5.8 pidof.8 poweroff.8 reboot.8 runlevel.8
 MAN8	+= shutdown.8 telinit.8 fstab-decode.8
 

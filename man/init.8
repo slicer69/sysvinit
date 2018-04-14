@@ -145,8 +145,8 @@ the letter \fBF\fP.
 .PP
 Usage of \fBSIGPWR\fP and \fB/etc/powerstatus\fP is discouraged. Someone
 wanting to interact with \fBinit\fP should use the \fB/run/initctl\fP
-control channel - see the source code of the \fBsysvinit\fP package
-for more documentation about this.
+control channel - see the initctl manual page for more documentation
+about this.
 .PP
 When \fBinit\fP is requested to change the runlevel, it sends the
 warning signal \s-1\fBSIGTERM\fP\s0 to all processes that are undefined
@@ -329,6 +329,7 @@ page by Michael Haardt (u31b3hs@pool.informatik.rwth-aachen.de).
 .BR runlevel (8),
 .BR shutdown(8),
 .BR kill (1),
+.BR initctl (5),
 .BR inittab (5),
 .BR initscript (5),
 .BR utmp (5)

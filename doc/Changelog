@@ -12,6 +12,12 @@ sysvinit (2.90) UNRELEASED; urgency=low
       longer waits if we slept past the time we should have shutdown.
       Accurate to the nearest minute.
       Closes Savannah bug #36279.
+    * Added document article and manual page for the initctl (/run/initctl)
+      named pipe. Makes it easier for people to communicate with and
+      extend communication to init.
+    * Added check that named pipe is open before trying to close it
+      when something goes wrong or we receive SIGUSER1. Avoids potential
+      crash if we receive SIGUSR1 while pipe is not open.
       
 
 sysvinit (2.89) world; urgency=low

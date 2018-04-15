@@ -2165,13 +2165,10 @@ void re_exec(void)
 		initlog(L_CO, "Attempt to re-exec failed");
 	}
 
-	/* 
-	 * It's a backup day today, so I'm pissed off.  Being a BOFH, however, 
-	 * does have it's advantages...
-	 */
 	fail_cancel();
-	close(pipe_fd);
-	pipe_fd = -1;
+	if (pipe_fd >= 0) 
+          close(pipe_fd);
+   	pipe_fd = -1;
 	DELSET(got_signals, SIGCHLD);
 	DELSET(got_signals, SIGHUP);
 	DELSET(got_signals, SIGUSR1);
@@ -2680,7 +2677,8 @@ void process_signals()
 	 *	SIGUSR1 means close and reopen /run/initctl
 	 */
 	INITDBG(L_VB, "got SIGUSR1");
-	close(pipe_fd);
+	if (pipe_fd)
+           close(pipe_fd);
 	pipe_fd = -1;
 	DELSET(got_signals, SIGUSR1);
   }

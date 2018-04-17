@@ -18,6 +18,11 @@ sysvinit (2.90) UNRELEASED; urgency=low
     * Added check that named pipe is open before trying to close it
       when something goes wrong or we receive SIGUSER1. Avoids potential
       crash if we receive SIGUSR1 while pipe is not open.
+    * Added new signal handler for SIGUSR2. When init receives SIGUSR2
+      it closes (and leaves closed) the named pipe /run/initctl. This
+      can be used to make sure init does not have any files open. However,
+      it also means we cannot switch run levels or bring down the system.
+      The pipe can be re-opened by sending init the SIGUSR1 signal.
       
 
 sysvinit (2.89) world; urgency=low

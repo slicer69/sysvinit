@@ -264,6 +264,13 @@ Has the same effect as \fBtelinit q\fP.
 On receipt of this signals, init closes and re-opens its control fifo,
 \fB/run/initctl\fP. Useful for bootscripts when /dev is remounted.
 .TP 0.5i
+.B SIGUSR2
+When init receives SIGUSR2, init closes and leaves the control fifo,
+\fB/run/initctl\f\P, closed. This may be used to make sure init is not
+holding open any files. However, it also prevents init from switching
+runlevels. Which means commands like shutdown no longer work.
+The fifo can be re-opened by sending init the SIGUSR1 signal.
+.TP 0.5i
 .B SIGINT
 Normally the kernel sends this signal to init when CTRL-ALT-DEL is
 pressed. It activates the \fIctrlaltdel\fP action.

@@ -128,6 +128,18 @@ The commands passed through the /run/initctl pipe must be sent in a specific
 binary format and be of a specific length. Larger data structures or ones
 not using the proper format will be ignored. Typically, only root has the
 ability to write to the initctl pipe for security reasons.
+.PP
+The /run/initctl pipe can be closed by sending init (PID 1) the SIGUSR2
+signal. This closes the pipe and leaves it closed. This may be useful
+for making sure init is not keeping any files open. However, when the
+pipe is closed, init no longer receives signals, such as those sent by
+shutdown or telinit. In other words if we close the pipe, init cannot
+change its runlevel directly. The pipe may be re-opened by sending init (PID 1)
+the SIGUSR1 signal.
+.PP
+If the /run/initctl pipe is closed then it may still be possible to bring
+down the system using the shutdown command's -n flag, but this is not
+always clean and not recommended.
 .RE
 .SH FILES
 /run/initctl

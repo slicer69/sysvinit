@@ -1116,7 +1116,11 @@ pid_t spawn(CHILD *ch, int *res)
 		close(0);
 		close(1);
 		close(2);
-		if (pipe_fd >= 0) close(pipe_fd);
+		if (pipe_fd >= 0)
+                {
+                    close(pipe_fd);
+                    pipe_fd = -1;
+                }
 
   		sigprocmask(SIG_SETMASK, &omask, NULL);
 
@@ -2172,6 +2176,7 @@ void re_exec(void)
 	DELSET(got_signals, SIGCHLD);
 	DELSET(got_signals, SIGHUP);
 	DELSET(got_signals, SIGUSR1);
+	DELSET(got_signals, SIGUSR2);
 
 	/*
 	 *	That should be cleaned.
@@ -2368,9 +2373,10 @@ void check_init_fifo(void)
   }
 
   /*
-   *	Now finally try to open /run/initctl
+   *	Now finally try to open /run/initctl if pipe_fd is -1
+   *    if it is -2, then we leave it closed
    */
-  if (pipe_fd < 0) {
+  if (pipe_fd == -1) {
 	if ((pipe_fd = open(INIT_FIFO, O_RDWR|O_NONBLOCK)) >= 0) {
 		fstat(pipe_fd, &st);
 		if (!S_ISFIFO(st.st_mode)) {
@@ -2471,7 +2477,7 @@ void check_init_fifo(void)
   /*
    *	We come here if the pipe couldn't be opened.
    */
-  if (pipe_fd < 0) pause();
+  if (pipe_fd == -1) pause();
 
 }
 
@@ -2682,6 +2688,14 @@ void process_signals()
 	pipe_fd = -1;
 	DELSET(got_signals, SIGUSR1);
   }
+  else if (ISMEMBER(got_signals, SIGUSR2)) {
+       /* SIGUSR1 mean close the pipe and leave it closed */
+       INITDBG(L_VB, "got SIGUSR2");
+       if (pipe_fd)
+           close(pipe_fd);
+       pipe_fd = -2;
+       DELSET(got_signals, SIGUSR2);
+  }
 }
 
 /*
@@ -2740,6 +2754,7 @@ void init_main(void)
   SETSIG(sa, SIGPWR,   signal_handler, 0);
   SETSIG(sa, SIGWINCH, signal_handler, 0);
   SETSIG(sa, SIGUSR1,  signal_handler, 0);
+  SETSIG(sa, SIGUSR2,  signal_handler, 0);
   SETSIG(sa, SIGSTOP,  stop_handler, SA_RESTART);
   SETSIG(sa, SIGTSTP,  stop_handler, SA_RESTART);
   SETSIG(sa, SIGCONT,  cont_handler, SA_RESTART);

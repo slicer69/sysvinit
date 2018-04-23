@@ -308,7 +308,13 @@ void send_state(int fd)
 
 /*
  *	Read a string from a file descriptor.
- *	FIXME: why not use fgets() ?
+ *	Q: why not use fgets() ?
+ *      A: Answer: looked into this. Turns out after all the checks
+ *      required in the fgets() approach (removing newline, read errors, etc)
+ *      the function is longer and takes approximately the same amount of
+ *      time to do one big fgets and checks as it does to do a pile of getcs.
+ *      We don't benefit from switching.
+ *      - Jesse
  */
 static int get_string(char *p, int size, FILE *f)
 {
@@ -1241,7 +1247,7 @@ pid_t spawn(CHILD *ch, int *res)
 		 * and expects utmp to be updated already!
 		 *
 		 * Do NOT log if process field starts with '+'
-		 * FIXME: that's for compatibility with *very*
+		 * This is for compatibility with *very*
 		 * old getties - probably it can be taken out.
 		 */
 		if (ch->process[0] != '+')
@@ -1810,7 +1816,7 @@ void start_if_needed(void)
 		}
 
 		if (delete) {
-			/* FIXME: is this OK? */
+			/* is this OK? */
 			ch->flags &= ~(RUNNING|WAITING);
 			if (!ISPOWER(ch->action) && ch->action != KBREQUEST)
 				ch->flags &= ~XECUTED;
@@ -2335,12 +2341,6 @@ void initcmd_setenv(char *data, int size)
 /*
  *	Read from the init FIFO. Processes like telnetd and rlogind can
  *	ask us to create login processes on their behalf.
- *
- *	FIXME:	this needs to be finished. NOT that it is buggy, but we need
- *		to add the telnetd/rlogind stuff so people can start using it.
- *		Maybe move to using an AF_UNIX socket so we can use
- *		the 2.2 kernel credential stuff to see who we're talking to.
- *	
  */
 static
 void check_init_fifo(void)

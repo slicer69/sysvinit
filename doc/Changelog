@@ -1,6 +1,8 @@
 sysvinit (2.90) UNRELEASED; urgency=low
 
   [ Jesse Smith ]
+    * Updated some comments in init.c to answer questions or
+      remove old notes we no longer need.
     * Removed unneeded "count" variable in utmpdump.c.
     * Fixed typo in accidental wrote_wtmp_rlevel == 0 || wrote_wtmp_rlevel 
       comparison so the latter is wrote_utmp_rlevel.

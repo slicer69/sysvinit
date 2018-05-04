@@ -41,6 +41,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#ifdef __linux__
+#include <sys/sysmacros.h>   /* brought in my LFS patch */
+#endif
 #include <time.h>
 #include <string.h>
 #include <errno.h>

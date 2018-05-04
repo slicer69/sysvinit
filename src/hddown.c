@@ -233,6 +233,7 @@ static int do_standby_disk(char *device, unsigned int flags)
 	case DISK_EXTFLUSH:
 		if ((ret = ioctl(fd, HDIO_DRIVE_CMD, &flush1)) == 0)
 			break;
+                /* Else Fall through */
 		/* Extend flush rejected, try standard flush */
 	default:
 		ret = ioctl(fd, HDIO_DRIVE_CMD, &flush2) &&

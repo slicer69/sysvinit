@@ -25,6 +25,10 @@ sysvinit (2.90) UNRELEASED; urgency=low
       can be used to make sure init does not have any files open. However,
       it also means we cannot switch run levels or bring down the system.
       The pipe can be re-opened by sending init the SIGUSR1 signal.
+    * Added "Fall through" comments to some switch statements where multiple
+      approaches are tried in order to prevent warnings from GCC 7 (and newer).
+    * Added includes on Linux for sys/sysmacros.h as the old defines in
+      the sys/types.h file will be removed in the future.
       
 
 sysvinit (2.89) world; urgency=low

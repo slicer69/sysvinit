@@ -32,6 +32,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#ifdef __linux__
+#include <sys/sysmacros.h> 
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

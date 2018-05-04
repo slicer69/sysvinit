@@ -1318,6 +1318,7 @@ void startup(CHILD *ch)
 		case POWERFAIL:
 		case ONCE:
 			if (ch->flags & XECUTED) break;
+                        /* Fall through */
 		case ONDEMAND:
 		case RESPAWN:
   			ch->flags |= RUNNING;

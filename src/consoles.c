@@ -33,6 +33,7 @@
 #  include <sys/vt.h>
 #  include <sys/kd.h>
 #  include <linux/serial.h>
+#include <sys/sysmacros.h>  
 #endif
 #include <fcntl.h>
 #include <dirent.h>

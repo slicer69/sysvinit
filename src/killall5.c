@@ -653,6 +653,7 @@ int readproc(int do_stat)
 		case DO_NETFS:
 			if ((p->nfs = check4nfs(path, buf)))
 				goto link;
+                        /* else fall through */
 		case DO_STAT:
 			if (stat(path, &st) != 0) {
 				char * ptr;

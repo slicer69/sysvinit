@@ -1,0 +1,12 @@
+bootlogd
+fstab-decode
+halt
+init
+killall5
+last
+mesg
+runlevel
+shutdown
+sulogin
+utmpdump
+wall

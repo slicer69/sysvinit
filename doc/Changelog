@@ -27,9 +27,14 @@ sysvinit (2.90) UNRELEASED; urgency=low
       The pipe can be re-opened by sending init the SIGUSR1 signal.
     * Added "Fall through" comments to some switch statements where multiple
       approaches are tried in order to prevent warnings from GCC 7 (and newer).
+      (Thanks to Matias Fonzo for this fix.)
     * Added includes on Linux for sys/sysmacros.h as the old defines in
       the sys/types.h file will be removed in the future.
-      
+      (Thanks to Matias Fonzo for this fix.)
+    * Removed old LSM file.
+      Added .gitignore files to avoid git tracking object files.
+      Removed old start-stop-daemon from contrib directory.
+      (Patches provided by Guillem Jover.)
 
 sysvinit (2.89) world; urgency=low
 

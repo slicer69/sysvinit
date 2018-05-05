@@ -20,11 +20,3 @@ Public License can be found in `/usr/share/common-licenses/GPL-2'.
 
 Send patches to sysvinit-devel@nongnu.org
 
-Regarding the start-stop-daemon located in the contrib directory:
-
- * A rewrite of the original Debian's start-stop-daemon Perl script
- * in C (faster - it is executed many times during system startup).
- *
- * Written by Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>,
- * public domain.
-

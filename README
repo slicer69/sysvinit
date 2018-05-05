@@ -1,3 +1,24 @@
+README for SysV init
+====================
+
+SysV init is a classic initilization program (PID 1) for GNU/Linux and
+other UNIX/POSIX systems. It is designed to be small, simple and to
+stay out of the way.
+
+Init is the parent (or grandparent) of all other processes on the
+system. It kicks off the starting of other system services and
+can act as a parent process to services which no longer have an
+active parent process.
+
+SysV init uses the concept of runlevels. A runlevel is a configuration of the 
+system which allows only a selected group of processes to exist. 
+The processes spawned by init for each of these runlevels are defined in the 
+/etc/inittab file. Init can be in one of eight runlevels. The runlevel is
+changed by the administrator running the telinit command which selects
+which runlevel we want to use.
+       
+More information on init, runlevels and switching between them can be found
+in the init manual page. (See "man init".)
 
 contrib		Unofficial stuff, add-on programs
 doc		Documentation

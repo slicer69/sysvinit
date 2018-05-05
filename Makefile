@@ -2,7 +2,8 @@ all install clean distclean:
 	$(MAKE) -C src $@
 
 PACKAGE=sysvinit
-VERSION=$(shell git describe --tags --abbrev=4 HEAD 2>/dev/null | tr %_ :~)
+VERSION=$(shell git describe --tags --abbrev=0 HEAD 2>/dev/null)
+GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
 override TARBALL=$(PACKAGE)-$(VERSION).tar.xz
 override TARBALL_LATEST=$(PACKAGE)-latest.tar.xz
 override SFTPBATCH=upload-$(VERSION)-sftpbatch
@@ -11,7 +12,7 @@ dist: $(TARBALL)
 	@echo "tarball $(TARBALL) ready"
 
 upload: $(SFTPBATCH)
-	echo @sftp -b $< dl.sv.nongnu.org:/releases/$(PACKAGE)
+	echo @sftp -b $< $(GITLOGIN)@dl.sv.nongnu.org:/releases/$(PACKAGE)
 
 $(SFTPBATCH): $(TARBALL).sig
 	@echo progress > $@

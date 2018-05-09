@@ -39,6 +39,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <crypt.h>    /* added to make this compile on Fedora 28 */
 #include <fcntl.h>
 #include <signal.h>
 #include <pwd.h>

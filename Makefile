@@ -2,17 +2,21 @@ all install clean distclean:
 	$(MAKE) -C src $@
 
 PACKAGE=sysvinit
-VERSION=$(shell git describe --tags --abbrev=0 HEAD 2>/dev/null)
+VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
 GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
-override TARBALL=$(PACKAGE)-$(VERSION).tar.xz
-override TARBALL_LATEST=$(PACKAGE)-latest.tar.xz
-override SFTPBATCH=upload-$(VERSION)-sftpbatch
+override TMP:=$(shell mktemp -d $(VERSION).XXXXXXXX)
+override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.xz
+override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
+SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
 
 dist: $(TARBALL)
-	@echo "tarball $(TARBALL) ready"
+	@cp $(TARBALL) .
+	@echo "tarball $(PACKAGE)-$(VERSION).tar.bz2 ready"
+	rm -rf $(TMP)
 
 upload: $(SFTPBATCH)
 	echo @sftp -b $< $(GITLOGIN)@dl.sv.nongnu.org:/releases/$(PACKAGE)
+	rm -rf $(TMP)
 
 $(SFTPBATCH): $(TARBALL).sig
 	@echo progress > $@
@@ -20,12 +24,18 @@ $(SFTPBATCH): $(TARBALL).sig
 	@echo chmod 664 $(notdir $(TARBALL)) >> $@
 	@echo put $(TARBALL).sig >> $@
 	@echo chmod 664 $(notdir $(TARBALL)).sig >> $@
-	@echo rm  $(TARBALL_LATEST) >> $@
-	@echo symlink $(notdir $(TARBALL)) $(TARBALL_LATEST) >> $@
+	@echo rm  $(PACKAGE)-latest.tar.bz2 >> $@
+	@echo symlink $(notdir $(TARBALL)) $(PACKAGE)-latest.tar.bz2 >> $@
 	@echo quit >> $@
 
 $(TARBALL).sig: $(TARBALL)
 	@gpg -q -ba --use-agent -o $@ $<
 
-$(TARBALL): .git
-	@git archive --prefix=$(PACKAGE)-$(VERSION)/ $(VERSION) -o $(TARBALL)
+$(TARBALL): $(TMP)/$(PACKAGE)-$(VERSION)
+	@tar --exclude=.git --owner=nobody --group=nogroup -cf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
+
+$(TMP)/$(PACKAGE)-$(VERSION):
+	@mkdir $(TMP)/$(PACKAGE)-$(VERSION)
+	@cp -R $(SOURCES) $(TMP)/$(PACKAGE)-$(VERSION)/ 
+	@chmod -R a+r,u+w,og-w $@
+	@find $@ -type d | xargs -r chmod a+rx,u+w,og-w

@@ -39,7 +39,7 @@ sysvinit (2.90) UNRELEASED; urgency=low
       get some from faulty "nonstring" reports, but silencing them on
       GCC 8 results in more warnings on GCC 7 and Clang, so leaving them
       for now.
-    * Fixed compile error on Fedora 28 where crypt won't build due to
+    * Fixed compile error on Fedora 28 where crypt() will not link due to
       undocumented dependency change.
 
 

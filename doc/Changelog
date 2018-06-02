@@ -42,10 +42,12 @@ sysvinit (2.90) UNRELEASED; urgency=low
     * Fixed compile error on Fedora 28 where crypt() will not link due to
       undocumented dependency change.
     * Updated Makefile to make sure correct version number and correct
-      version of fiels are used. Makefile was pulling from master to create
+      version of files are used. Makefile was pulling from master to create
       tarballs with old version information when trying to create beta
       snapshot.
     * Updated version information in init.c
+    * Updated compiler flag from -fstack-protector to -fstack-protector-strong
+      for better protection.
 
 
 sysvinit (2.89) world; urgency=low

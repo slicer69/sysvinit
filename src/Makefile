@@ -9,7 +9,7 @@
 #
 
 CPPFLAGS =
-CFLAGS	?= -ansi -O2 -fomit-frame-pointer -fstack-protector 
+CFLAGS	?= -ansi -O2 -fomit-frame-pointer -fstack-protector-strong 
 override CFLAGS += -W -Wall -Wunreachable-code -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -D_XOPEN_SOURCE -D_GNU_SOURCE 
 override CFLAGS += $(shell getconf LFS_CFLAGS)
 STATIC	=

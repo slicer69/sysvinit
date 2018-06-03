@@ -4,7 +4,7 @@ all install clean distclean:
 PACKAGE=sysvinit
 VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
 GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
-override TMP:=$(shell mktemp -d $(VERSION).XXXXXXXX)
+override TMP:=$(shell mktemp -du $(VERSION).XXXXXXXX)
 override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.xz
 override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
 SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
@@ -35,7 +35,7 @@ $(TARBALL): $(TMP)/$(PACKAGE)-$(VERSION)
 	@tar --exclude=.git --owner=nobody --group=nogroup -cf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
 
 $(TMP)/$(PACKAGE)-$(VERSION):
-	@mkdir $(TMP)/$(PACKAGE)-$(VERSION)
+	@mkdir -p $(TMP)/$(PACKAGE)-$(VERSION)
 	@cp -R $(SOURCES) $(TMP)/$(PACKAGE)-$(VERSION)/ 
 	@chmod -R a+r,u+w,og-w $@
 	@find $@ -type d | xargs -r chmod a+rx,u+w,og-w

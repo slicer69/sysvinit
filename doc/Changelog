@@ -48,6 +48,8 @@ sysvinit (2.90) UNRELEASED; urgency=low
     * Updated version information in init.c
     * Updated compiler flag from -fstack-protector to -fstack-protector-strong
       for better protection.
+    * Cleaned up toplevel Makefile so it stops creating unnecessary temporary
+      directories.
 
 
 sysvinit (2.89) world; urgency=low

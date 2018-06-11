@@ -54,7 +54,7 @@ int dostat(char *path, struct stat *st, int do_lstat, int quiet)
 /*
 This function checks to see if the passed path is listed in the
 /proc/mounts file. If /proc/mounts does not exist or cannot
-be read, we return false. If the path is nout found, we return false.
+be read, we return false. If the path is not found, we return false.
 If the path is found we return true.
 */
 int do_proc_check(char *path)

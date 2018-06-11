@@ -50,6 +50,7 @@ sysvinit (2.90) UNRELEASED; urgency=low
       for better protection.
     * Cleaned up toplevel Makefile so it stops creating unnecessary temporary
       directories.
+    * Fixed typo in mountpoint.c. Patch provided by Radostin Stoyanov.
 
 
 sysvinit (2.89) world; urgency=low

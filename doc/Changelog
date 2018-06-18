@@ -1,4 +1,4 @@
-sysvinit (2.90) UNRELEASED; urgency=low
+sysvinit (2.90) world; urgency=low
 
   [ Jesse Smith ]
     * Updated some comments in init.c to answer questions or

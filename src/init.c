@@ -6,9 +6,9 @@
  *		  telinit [0123456SsQqAaBbCc]
  *
  * Version:	@(#)init.c  2.86  30-Jul-2004  miquels@cistron.nl
+ * Version:     init.c 2.90 18-Jun-2018 jsmith@resonatingmedia.com
  */
 #define VERSION "2.90"
-#define DATE    "26-Mar-2010"
 /*
  *		This file is part of the sysvinit suite,
  *		Copyright (C) 1991-2004 Miquel van Smoorenburg.
@@ -98,7 +98,7 @@
 		} while(0)
 
 /* Version information */
-char *Version = "@(#) init " VERSION "  " DATE "  miquels@cistron.nl";
+char *Version = "@(#) init " VERSION " miquels@cistron.nl";
 char *bootmsg = "version " VERSION " %s";
 #define E_VERSION "INIT_VERSION=sysvinit-" VERSION
 

@@ -11,7 +11,7 @@ SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
 
 dist: $(TARBALL)
 	@cp $(TARBALL) .
-	@echo "tarball $(PACKAGE)-$(VERSION).tar.bz2 ready"
+	@echo "tarball $(PACKAGE)-$(VERSION).tar.xz ready"
 	rm -rf $(TMP)
 
 upload: $(SFTPBATCH)
@@ -32,7 +32,7 @@ $(TARBALL).sig: $(TARBALL)
 	@gpg -q -ba --use-agent -o $@ $<
 
 $(TARBALL): $(TMP)/$(PACKAGE)-$(VERSION)
-	@tar --exclude=.git --owner=nobody --group=nogroup -cf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
+	@tar --exclude=.git --owner=nobody --group=nogroup -cJf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
 
 $(TMP)/$(PACKAGE)-$(VERSION):
 	@mkdir -p $(TMP)/$(PACKAGE)-$(VERSION)

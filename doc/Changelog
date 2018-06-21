@@ -1,3 +1,11 @@
+sysvinit (2.91) UNRELEASED; urgency=low
+
+  [ Jesse Smith ]
+
+    * Adjusted order of compile flags to make it easier for downstream
+      to adjust optimization level. Patch provided by Matias Fonzo.
+      Can now set optimization level in CFLAGS variable.
+
 sysvinit (2.90) world; urgency=low
 
   [ Jesse Smith ]

@@ -5,6 +5,8 @@ sysvinit (2.91) UNRELEASED; urgency=low
     * Adjusted order of compile flags to make it easier for downstream
       to adjust optimization level. Patch provided by Matias Fonzo.
       Can now set optimization level in CFLAGS variable.
+    * Added --version command line flag to display current version info.
+      Updated manual page for init.8 to match.
 
 sysvinit (2.90) world; urgency=low
 

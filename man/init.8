@@ -32,6 +32,9 @@ init, telinit \- process control initialization
 [ \fB\-z\fP \fIxxx\fP ]
 .RB [ " 0123456Ss " ]
 .br
+.B /sbin/init
+.RB [ " --version " ]
+.br
 .B /sbin/telinit
 [ \fB\-t\fP \fISECONDS\fP ]
 .RB [ " 0123456sSQqabcUu " ]
@@ -246,6 +249,12 @@ The argument to \fB-z\fP is ignored. You can use this to expand the command
 line a bit, so that it takes some more space on the stack. \fBInit\fP
 can then manipulate the command line so that \fBps\fP(1) shows
 the current runlevel.
+.PP
+.TP 0.5i
+.BI "--version "
+This argument, when used on its own, displays the current version of init
+to the console/stdout. It is a quick way to determine which init software and
+version is being used.
 .PP
 .SH INTERFACE
 Init listens on a \fIfifo\fP in /dev, \fI/run/initctl\fP, for messages.

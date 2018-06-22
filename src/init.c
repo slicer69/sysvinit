@@ -3000,6 +3000,12 @@ int main(int argc, char **argv)
 	else
   		p = argv[0];
 
+        if ( (argc == 2) && (! strcmp(argv[1], "--version") ) )
+        {
+           printf("SysV init version: %s\n\n", VERSION);
+           exit(0);
+        }
+
 	/* Common umask */
 	umask(umask(077) | 022);
 

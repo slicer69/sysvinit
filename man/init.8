@@ -254,7 +254,8 @@ the current runlevel.
 .BI "--version "
 This argument, when used on its own, displays the current version of init
 to the console/stdout. It is a quick way to determine which init software and
-version is being used.
+version is being used. After the version information is displayed, init
+immediately exits with a return code of zero. 
 .PP
 .SH INTERFACE
 Init listens on a \fIfifo\fP in /dev, \fI/run/initctl\fP, for messages.

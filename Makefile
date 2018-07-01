@@ -1,8 +1,9 @@
-all install clean distclean:
-	$(MAKE) -C src $@
-
 PACKAGE=sysvinit
 VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
+
+all install clean distclean:
+	$(MAKE) VERSION=$(VERSION) -C src $@
+
 GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
 override TMP:=$(shell mktemp -du $(VERSION).XXXXXXXX)
 override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.xz

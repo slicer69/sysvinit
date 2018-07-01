@@ -8,7 +8,13 @@
  * Version:	@(#)init.c  2.86  30-Jul-2004  miquels@cistron.nl
  * Version:     init.c 2.90 18-Jun-2018 jsmith@resonatingmedia.com
  */
-#define VERSION "2.90"
+
+/*
+Version information is not placed in the top-level Makefile by default
+*/
+#ifndef VERSION
+#define VERSION "2.91"
+#endif
 /*
  *		This file is part of the sysvinit suite,
  *		Copyright (C) 1991-2004 Miquel van Smoorenburg.

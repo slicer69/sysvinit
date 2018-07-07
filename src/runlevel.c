@@ -25,6 +25,7 @@
 #include <utmp.h>
 #include <time.h>
 #include <stdlib.h>
+#include "runlevellog.h"
 
 int main(argc, argv)
 int argc;
@@ -32,6 +33,7 @@ char **argv;
 {
   struct utmp *ut;
   char prev;
+  int status, runlevel;
 
   if (argc > 1) utmpname(argv[1]);
 
@@ -45,9 +47,15 @@ char **argv;
 		exit(0);
 	}
   }
-  
-  printf("unknown\n");
   endutent();
+  
+  status = Read_Runlevel_Log(&runlevel);
+  if (status)
+  {
+     printf("%c\n", runlevel);
+     return 0;
+  }
+  printf("Unknown.\n");
   return(1);
 }
 

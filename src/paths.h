@@ -37,6 +37,7 @@
 #define INITSCRIPT	"/etc/initscript"	/* Initscript. */
 #define PWRSTAT_OLD	"/etc/powerstatus"	/* COMPAT: SIGPWR reason (OK/BAD) */
 #define PWRSTAT		"/var/run/powerstatus"	/* COMPAT: SIGPWR reason (OK/BAD) */
+#define RUNLEVEL_LOG    "/var/run/runlevel"     /* neutral place to store run level */
 
 #if 0
 #define INITLVL		"/etc/initrunlvl"	/* COMPAT: New runlevel */

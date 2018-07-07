@@ -125,7 +125,7 @@ utmpdump:	LDLIBS += $(STATIC)
 utmpdump:	utmpdump.o
 
 runlevel:	LDLIBS += $(STATIC)
-runlevel:	runlevel.o
+runlevel:	runlevel.o runlevellog.o
 
 sulogin:	LDLIBS += $(SULOGINLIBS) $(STATIC)
 sulogin:	sulogin.o consoles.o
@@ -144,6 +144,8 @@ fstab-decode:	fstab-decode.o
 
 sulogin.o:	CPPFLAGS += $(SELINUX_DEF)
 sulogin.o:	sulogin.c 
+
+runlevellog.o:	runlevellog.h runlevellog.c paths.h
 
 init.o:		CPPFLAGS += $(SELINUX_DEF)
 init.o:		init.c init.h initreq.h paths.h reboot.h set.h

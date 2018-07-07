@@ -42,7 +42,7 @@ int Write_Runlevel_Log(int new_runlevel)
    if (status < 1)
       return FALSE;
    return TRUE;
-}   // end of writing to log function
+}
 
 
 /*
@@ -60,12 +60,11 @@ int Read_Runlevel_Log(int *runlevel)
    if (! log_file)
      return FALSE;
 
-   status = fscanf(log_file, "%c", runlevel);
+   status = fscanf(log_file, "%c", (char *) runlevel);
    fclose(log_file);
-   if (status == EOF)
+   if (status < 1)
       return FALSE;
    return TRUE;
 
-}   // end of reading from log function
-
+}
 

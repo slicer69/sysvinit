@@ -52,10 +52,10 @@ char **argv;
   status = Read_Runlevel_Log(&runlevel);
   if (status)
   {
-     printf("%c\n", runlevel);
+     printf("N %c\n", runlevel);
      return 0;
   }
-  printf("Unknown.\n");
+  printf("unknown\n");
   return(1);
 }
 

@@ -9,7 +9,13 @@ sysvinit (2.91) UNRELEASED; urgency=low
       Updated manual page for init.8 to match.
     * Version information is now fetched and defined by the Makefile.
       No more need to update the version manually in the init.c source.
-
+    * The init process now writes the current runlevel to /var/run/runlevel.
+      This information can be read by the "runlevel" command as well as "halt"
+      and "reboot". Having the information logged in /var/run/runlevel as
+      well as the utmp file means systems without utmp (like those running
+      the musl C library) can still check the current runlevel. This is
+      useful when running halt/reboot as these programs want to check the
+      runlevel.
 
 sysvinit (2.90) world; urgency=low
 

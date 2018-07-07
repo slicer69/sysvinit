@@ -95,7 +95,8 @@ never be called directly. From release 2.74 on \fBhalt\fP and \fBreboot\fP
 invoke \fBshutdown\fP(8) if the system is not in runlevel 0 or 6. This
 means that if \fBhalt\fP or \fBreboot\fP cannot find out the current
 runlevel (for example, when \fI/var/run/utmp\fP hasn't been initialized
-correctly) \fBshutdown\fP will be called, which might not be what you want.
+correctly and /var/run/runlevel does not exist) \fBshutdown\fP will be called, 
+which might not be what you want.
 Use the \fB-f\fP flag if you want to do a hard \fBhalt\fP or \fBreboot\fP.
 .PP
 The \fB-h\fP flag puts all hard disks in standby mode just before halt

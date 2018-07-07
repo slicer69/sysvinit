@@ -80,6 +80,7 @@ Version information is not placed in the top-level Makefile by default
 #include "initreq.h"
 #include "paths.h"
 #include "reboot.h"
+#include "runlevellog.h"
 #include "set.h"
 
 #ifndef SIGPWR
@@ -1905,6 +1906,7 @@ int get_init_default(void)
 	/*
 	 *	Log the fact that we have a runlevel now.
 	 */
+        Write_Runlevel_Log(lvl);
 	return lvl;
 }
 
@@ -2020,6 +2022,7 @@ int read_level(int arg)
 	write_utmp_wtmp("runlevel", "~~", foo + 256*runlevel, RUN_LVL, "~");
 	thislevel = foo;
 	prevlevel = runlevel;
+        Write_Runlevel_Log(runlevel);
 	return foo;
 }
 
@@ -2284,6 +2287,7 @@ void fifo_new_level(int level)
 			setproctitle("init [%c]", (int)runlevel);
 		}
 	}
+        Write_Runlevel_Log(runlevel);
 }
 
 
@@ -2572,6 +2576,7 @@ void boot_transitions()
 		prevlevel = oldlevel;
 		setproctitle("init [%c]", (int)runlevel);
 	}
+        Write_Runlevel_Log(runlevel);
   }
 }
 
@@ -2683,6 +2688,7 @@ void process_signals()
 			setproctitle("init [%c]", (int)runlevel);
 			DELSET(got_signals, SIGHUP);
 		}
+                Write_Runlevel_Log(runlevel);
 	}
   }
   if (ISMEMBER(got_signals, SIGUSR1)) {

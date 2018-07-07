@@ -34,7 +34,9 @@ runlevel, the letter \fBN\fP will be printed instead.
 .PP
 If no
 .I utmp
-file exists, or if no runlevel record can be found,
+file exists, and if no runlevel record can be found in the
+.I /var/run/runlevel
+file,
 .B runlevel
 prints the word \fBunknown\fP and exits with an error.
 .PP

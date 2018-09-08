@@ -10,7 +10,7 @@ override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.xz
 override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
 SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
 
-dist: $(TARBALL)
+dist: clean $(TARBALL).sig 
 	@cp $(TARBALL) .
 	@echo "tarball $(PACKAGE)-$(VERSION).tar.xz ready"
 	rm -rf $(TMP)

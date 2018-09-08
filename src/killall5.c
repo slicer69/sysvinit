@@ -919,6 +919,21 @@ void usage(void)
 	exit(1);
 }
 
+
+void pidof_usage(void)
+{
+   printf("pidof usage: [options] <program-name>\n\n");
+   printf(" -c         Return PIDs with the same root directory\n");
+   printf(" -h         Display this help text\n");
+   printf(" -n         Avoid using stat system function on network shares\n");
+   printf(" -o <pid>   Omit results with a given PID\n");
+   printf(" -q         Quiet mode. Do not display output\n");
+   printf(" -s         Only return one PID\n");
+   printf(" -x         Return PIDs of shells running scritps with a matchign name\n");
+   printf("\n");
+}
+
+
 /* write to syslog file if not open terminal */
 #ifdef __GNUC__
 __attribute__ ((format (printf, 2, 3)))
@@ -943,6 +958,7 @@ void nsyslog(int pri, char *fmt, ...)
 #define PIDOF_SINGLE	0x01
 #define PIDOF_OMIT	0x02
 #define PIDOF_NETFS	0x04
+#define PIDOF_QUIET     0x08
 
 /*
  *	Pidof functionality.
@@ -966,7 +982,7 @@ int main_pidof(int argc, char **argv)
 	if ((token = getenv("PIDOF_NETFS")) && (strcmp(token,"no") != 0))
 		flags |= PIDOF_NETFS;
 
-	while ((opt = getopt(argc,argv,"hco:sxn")) != EOF) switch (opt) {
+	while ((opt = getopt(argc,argv,"qhco:sxn")) != EOF) switch (opt) {
 		case '?':
 			nsyslog(LOG_ERR,"invalid options on command line!\n");
 			closelog();
@@ -974,6 +990,9 @@ int main_pidof(int argc, char **argv)
 		case 'c':
 			if (geteuid() == 0) chroot_check = 1;
 			break;
+                case 'h':
+                        pidof_usage();
+                        exit(0);
 		case 'o':
 			here = optarg;
 			while ((token = strsep(&here, ",;:"))) {
@@ -999,6 +1018,9 @@ int main_pidof(int argc, char **argv)
 			}
 			flags |= PIDOF_OMIT;
 			break;
+                case 'q':
+                        flags |= PIDOF_QUIET;
+                        break; 
 		case 's':
 			flags |= PIDOF_SINGLE;
 			break;
@@ -1065,15 +1087,21 @@ int main_pidof(int argc, char **argv)
 						continue;
 					}
 				}
-				if (!first)
-					printf(" ");
-				printf("%d", p->pid);
+
+				if ( ~flags & PIDOF_QUIET ) {
+					if (!first)
+						printf(" ");
+					printf("%d", p->pid);
+				}
 				first = 0;
 			}
 		}
 	}
 	if (!first)
+        {
+            if ( ~flags & PIDOF_QUIET ) 
 		printf("\n");
+        }
 
 	clear_mnt();
 

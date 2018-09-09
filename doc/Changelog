@@ -16,6 +16,12 @@ sysvinit (2.91) UNRELEASED; urgency=low
       the musl C library) can still check the current runlevel. This is
       useful when running halt/reboot as these programs want to check the
       runlevel.
+    * Added patch from Walter Harms which allows pidof to run without
+      displaying output. In this mode pidof simply returns true or false
+      without displaying PID values.
+      Updated manual page with new -q (quiet) mode.
+      Added -h flag for pidof, which was recognized before, but not used.
+      The -h flag now displays brief usage information for pidof.
 
 sysvinit (2.90) world; urgency=low
 

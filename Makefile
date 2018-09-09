@@ -2,6 +2,7 @@ PACKAGE=sysvinit
 VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changelog)
 
 all install clean distclean:
+	@rm -f $(PACKAGE)-$(VERSION).tar.xz $(PACKAGE)-$(VERSION).tar.xz.sig
 	$(MAKE) VERSION=$(VERSION) -C src $@
 
 GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
@@ -10,8 +11,9 @@ override TARBALL:=$(TMP)/$(PACKAGE)-$(VERSION).tar.xz
 override SFTPBATCH:=$(TMP)/$(VERSION)-sftpbatch
 SOURCES=contrib  COPYING  COPYRIGHT  doc  Makefile  man  README  src
 
-dist: clean $(TARBALL)
+dist: $(TARBALL).sig
 	@cp $(TARBALL) .
+	@cp $(TARBALL).sig .
 	@echo "tarball $(PACKAGE)-$(VERSION).tar.xz ready"
 	rm -rf $(TMP)
 
@@ -35,7 +37,7 @@ $(TARBALL).sig: $(TARBALL)
 $(TARBALL): $(TMP)/$(PACKAGE)-$(VERSION)
 	@tar --exclude=.git --owner=nobody --group=nogroup -cJf $@ -C $(TMP) $(PACKAGE)-$(VERSION)
 
-$(TMP)/$(PACKAGE)-$(VERSION):
+$(TMP)/$(PACKAGE)-$(VERSION): distclean
 	@mkdir -p $(TMP)/$(PACKAGE)-$(VERSION)
 	@cp -R $(SOURCES) $(TMP)/$(PACKAGE)-$(VERSION)/ 
 	@chmod -R a+r,u+w,og-w $@

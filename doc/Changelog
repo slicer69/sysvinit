@@ -22,6 +22,10 @@ sysvinit (2.91) UNRELEASED; urgency=low
       Updated manual page with new -q (quiet) mode.
       Added -h flag for pidof, which was recognized before, but not used.
       The -h flag now displays brief usage information for pidof.
+    * Added check for kernel parameter init.autocon=1. If this exists, then
+      init will try to open its own console. If not, then any console=
+      parameters will be ignored. This avoids conflicts with native kernel
+      created consoles.
 
 sysvinit (2.90) world; urgency=low
 

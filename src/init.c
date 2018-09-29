@@ -1345,6 +1345,8 @@ void check_kernel_console()
 	}    
 	if (fgets(buf, sizeof(buf), fp)) {    
 		char* p = buf;
+           if ( strstr(p, "init.autocon=1") )
+           {
 		while ((p = strstr(p, "console="))) {    
 			char* e;
 			p += strlen("console=");
@@ -1398,7 +1400,8 @@ void check_kernel_console()
 					initlog(L_VB, "added agetty on %s with id %s", dev, id);
 				}
 			}
-		}    
+		}
+            } 
 	}    
 	fclose(fp);
 	return;

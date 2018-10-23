@@ -33,6 +33,7 @@
 #define INITPID	   1			/* pid of first process */
 #define PIPE_FD    10			/* Fileno of initfifo. */
 #define STATE_PIPE 11			/* used to pass state through exec */
+#define WAIT_BETWEEN_SIGNALS 3        /* default time to wait between TERM and KILL */
 
 /* Failsafe configuration */
 #define MAXSPAWN   10			/* Max times respawned in.. */

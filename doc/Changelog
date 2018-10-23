@@ -1,4 +1,17 @@
-sysvinit (2.91) UNRELEASED; urgency=low
+sysvinit (2.92) unreleased; urgency=low
+
+  [ Jesse Smith ]
+
+    * The shutdown and init commands were using different default delays between
+      sending processes SIGTERM and SIGKILL - they were 3 and 5 seconds, respectively.
+      Unified these on 3 seconds, using a new defined value in init.h.
+      Updated shutdown manual page to reflect the change and better explain
+      how -t and -n flags work.
+      Updated the init manual page with the new default value.
+      The updated documentation resolves Debian bug #375274.
+
+
+sysvinit (2.91) world; urgency=low
 
   [ Jesse Smith ]
 

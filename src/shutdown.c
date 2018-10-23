@@ -348,7 +348,7 @@ void fastdown()
 	/* Kill all processes. */
 	fprintf(stderr, "shutdown: sending all processes the TERM signal...\r\n");
 	kill(-1, SIGTERM);
-	sleep(sltime ? atoi(sltime) : 3);
+	sleep(sltime ? atoi(sltime) : WAIT_BETWEEN_SIGNALS);
 	fprintf(stderr, "shutdown: sending all processes the KILL signal.\r\n");
 	(void) kill(-1, SIGKILL);
 

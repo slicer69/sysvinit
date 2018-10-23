@@ -133,7 +133,7 @@ int wrote_wtmp_reboot = 1;	/* Set when we wrote the reboot record */
 int wrote_utmp_reboot = 1;	/* Set when we wrote the reboot record */
 int wrote_wtmp_rlevel = 1;	/* Set when we wrote the runlevel record */
 int wrote_utmp_rlevel = 1;	/* Set when we wrote the runlevel record */
-int sltime = 5;			/* Sleep time between TERM and KILL */
+int sltime = WAIT_BETWEEN_SIGNALS;    /* Sleep time between TERM and KILL */
 char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
 struct utmp utproto;		/* Only used for sizeof(utproto.ut_id) */

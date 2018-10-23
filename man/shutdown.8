@@ -100,8 +100,14 @@ will be sent to all users.
 .\"}}}
 .\"{{{  -t sec
 .IP "\fB\-t\fP \fIsec\fP"
-Tell \fBinit\fP(8) to wait \fIsec\fP seconds between sending processes the
-warning and the kill signal, before changing to another runlevel.
+Tell \fBinit\fP(8) to wait \fIsec\fP seconds between sending all processes the
+warning (SIGTERM) and the kill signal (SIGKILL), before changing to another runlevel.
+The default time, if no value is specified, between these two signals is 
+three seconds. Warning: when shutdown calls init to perform the shutdown (the 
+default behaviour), init checks to see if all processes have terminated 
+and will stop waiting early once its children have all terminated. 
+When shutdown is called with the -n flag, it waits the full time specified 
+(or three seconds) even if all other processes have terminated.
 .\"}}}
 .\"{{{  time
 .IP \fItime\fP

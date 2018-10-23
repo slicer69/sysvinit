@@ -13,6 +13,10 @@ sysvinit (2.92) unreleased; urgency=low
       Closes Debian bug #614893.
       Patch provided by Andreas Fackler.
     * Removed unused Version variable from wall.c.
+    * Updated halt/reboot manual page to acknowledge the -i
+      flag may not properly shut down network interfaces if the interface
+      does not have an IP address.
+      Addresses Debian bug #361935.
 
 
 sysvinit (2.91) world; urgency=low

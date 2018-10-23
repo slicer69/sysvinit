@@ -78,6 +78,8 @@ Don't write the wtmp record.
 Force halt or reboot, don't call \fBshutdown\fP(8).
 .IP \fB\-i\fP
 Shut down all network interfaces just before halt or reboot.
+Warning: This may not work on interfaces which do not have an IP address
+and should ideally be handled by a network manager service.
 .IP \fB\-h\fP
 Put all hard drives on the system in stand-by mode just before halt or power-off.
 .IP \fB\-p\fP

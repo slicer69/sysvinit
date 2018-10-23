@@ -33,7 +33,6 @@
 #include "init.h"
 
 
-char *Version = "@(#) wall 2.79 12-Sep-2000 miquels@cistron.nl";
 #define MAXLEN 4096
 #define MAXLINES 20
 

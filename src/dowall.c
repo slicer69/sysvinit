@@ -197,11 +197,11 @@ void wall(const char *text, int remote)
 	
 	if (remote) {
 		snprintf(line, sizeof(line),
-			"\007\r\nRemote broadcast message (%s):\r\n\r\n",
+			"\r\nRemote broadcast message (%s):\r\n\r\n",
 			date);
 	} else {
 		snprintf(line, sizeof(line),
-			"\007\r\nBroadcast message from %s@%s %s(%s):\r\n\r\n",
+			"\r\nBroadcast message from %s@%s %s(%s):\r\n\r\n",
 			user, hostname, tty, date);
 	}
 

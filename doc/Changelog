@@ -9,6 +9,10 @@ sysvinit (2.92) unreleased; urgency=low
       how -t and -n flags work.
       Updated the init manual page with the new default value.
       The updated documentation resolves Debian bug #375274.
+    * Remove PC speaker beep from shutdown process in dowall.c.
+      Closes Debian bug #614893.
+      Patch provided by Andreas Fackler.
+    * Removed unused Version variable from wall.c.
 
 
 sysvinit (2.91) world; urgency=low

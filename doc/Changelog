@@ -17,6 +17,10 @@ sysvinit (2.92) unreleased; urgency=low
       flag may not properly shut down network interfaces if the interface
       does not have an IP address.
       Addresses Debian bug #361935.
+    * Applied patch from Daniel Povey which should allow killall5/pidof to
+      avoid locking up if it encounters stopped or zombie processes 
+      due to broken NFS mount points.
+      This should allow Debian bug #719273 to be closed.
 
 
 sysvinit (2.91) world; urgency=low

@@ -484,6 +484,7 @@ int readproc(int do_stat)
 	unsigned long	startcode, endcode;
 	int		pid, f;
 	ssize_t		len;
+        char            process_status[11];
 
 	/* Open the /proc directory. */
 	if (chdir("/proc") == -1) {
@@ -567,11 +568,20 @@ int readproc(int do_stat)
 
 			/* Get session, startcode, endcode. */
 			startcode = endcode = 0;
+                        /*
 			if (sscanf(q, 	"%*c %*d %*d %d %*d %*d %*u %*u "
 					"%*u %*u %*u %*u %*u %*d %*d "
 					"%*d %*d %*d %*d %*u %*u %*d "
 					"%*u %lu %lu",
 					&p->sid, &startcode, &endcode) != 3) {
+                        */
+                        if (sscanf(q,   "%10s %*d %*d %d %*d %*d %*u %*u "
+                                        "%*u %*u %*u %*u %*u %*d %*d "
+                                        "%*d %*d %*d %*d %*u %*u %*d "
+                                        "%*u %lu %lu",
+                                        process_status, 
+                                        &p->sid, &startcode, &endcode) != 4) {
+
 				p->sid = 0;
 				nsyslog(LOG_ERR, "can't read sid from %s\n",
 					path);
@@ -586,6 +596,18 @@ int readproc(int do_stat)
 			if (startcode == 0 && endcode == 0)
 				p->kernel = 1;
 			fclose(fp);
+                        if ( (strchr(process_status, 'D') != NULL) ||
+                             (strchr(process_status, 'Z') != NULL) ){
+                           /* Ignore zombie processes or processes in
+                              disk sleep, as attempts
+                              to access the stats of these will
+                              sometimes fail. */
+                              if (p->argv0) free(p->argv0);
+                              if (p->argv1) free(p->argv1);
+                              if (p->statname) free(p->statname);
+                             free(p);
+                             continue;
+                        }
 		} else {
 			/* Process disappeared.. */
 			if (p->argv0) free(p->argv0);

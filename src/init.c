@@ -2224,7 +2224,7 @@ void re_exec(void)
 
 	/*
 	 *	We shouldn't be here, something failed. 
-	 *	Bitch, close the state pipe, unblock signals and return.
+	 *	Close the state pipe, unblock signals and return.
 	 */
 	init_freeenv(env);
 	close(fd);

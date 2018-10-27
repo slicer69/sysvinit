@@ -153,7 +153,7 @@ about this.
 .PP
 When \fBinit\fP is requested to change the runlevel, it sends the
 warning signal \s-1\fBSIGTERM\fP\s0 to all processes that are undefined
-in the new runlevel.  It then waits 5 seconds before forcibly
+in the new runlevel.  It then waits 3 seconds before forcibly
 terminating these processes via the \s-1\fBSIGKILL\fP\s0 signal.
 Note that \fBinit\fP assumes that all these processes (and their
 descendants) remain in the same process group which \fBinit\fP
@@ -178,7 +178,7 @@ tell \fBinit\fP to re-examine the \fB/etc/inittab\fP file.
 tell \fBinit\fP to switch to single user mode.
 .IP "\fBU\fP or \fBu\fP"
 tell \fBinit\fP to re-execute itself (preserving the state). No re-examining of 
-\fB/etc/inittab\fP file happens. Run level should be one of
+\fB/etc/inittab\fP file happens. Runlevel should be one of
 \fBSs0123456\fP
 otherwise request would be silently ignored.
 .PP

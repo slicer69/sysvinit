@@ -21,6 +21,9 @@ sysvinit (2.92) unreleased; urgency=low
       avoid locking up if it encounters stopped or zombie processes 
       due to broken NFS mount points.
       This should allow Debian bug #719273 to be closed.
+    * Applied patch from Regid Ichira to clarify shutdown command
+      line options. Updated manual page for shutdown.
+      Closes Debian bug #630661.
 
 
 sysvinit (2.91) world; urgency=low

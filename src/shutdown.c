@@ -529,7 +529,7 @@ int main(int argc, char **argv)
 				halttype = "HALT";
 				break;
 			case 'P':
-				halttype = "POWERDOWN";
+				halttype = "POWEROFF";
 				break;
 			case 'a': /* Access control. */
 				useacl = 1;

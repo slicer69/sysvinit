@@ -24,6 +24,10 @@ sysvinit (2.92) unreleased; urgency=low
     * Applied patch from Regid Ichira to clarify shutdown command
       line options. Updated manual page for shutdown.
       Closes Debian bug #630661.
+    * shutdown command was setting environment variable INIT_HALT to 
+      "POWERDOWN", this should have been "POWERDOWN" as specified in the
+      manual page. Fixed code to match manual page and init scripts.
+      
 
 
 sysvinit (2.91) world; urgency=low

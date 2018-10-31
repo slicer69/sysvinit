@@ -77,6 +77,7 @@ int maxrecs = 0;	/* Maximum number of records to list. */
 int recsdone = 0;	/* Number of records listed */
 int showhost = 1;	/* Show hostname too? */
 int altlist = 0;	/* Show hostname at the end. */
+int allow_long_username = 0;  /* Show usernames longer than 8 characters */
 int usedns = 0;		/* Use DNS to lookup the hostname. */
 int useip = 0;		/* Print IP address in number format */
 int fulltime = 0;	/* Print full dates and times */
@@ -470,28 +471,69 @@ int list(struct utmp *p, time_t t, int what)
 		if (!usedns && (s = strchr(p->ut_host, '.')) != NULL &&
 		     strcmp(s + 1, domainname) == 0) *s = 0;
 #endif
+#define str(s) # s
+#define xstr(s) str(s)
 		if (!altlist) {
+                    if (allow_long_username)  
+                    {
+                       len = snprintf(final, sizeof(final),
+		oldfmt ? "%-" xstr(OLD_NAMESIZE) "." xstr(OLD_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-16.16s %-7.7s %-12.12s\n"
+                : "%-" xstr(UT_NAMESIZE) "." xstr(UT_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-16.16s %-7.7s %-12.12s\n",
+ 				p->ut_name, utline,
+ 				domain, logintime, logouttime, length);
+                    }
+                    else  /* show short username */
+                    {
 			len = snprintf(final, sizeof(final),
 				fulltime ?
-				"%-8.*s %-12.12s %-16.*s %-24.24s %-26.26s %-12.12s\n" :
+			     "%-8.*s %-12.12s %-16.*s %-24.24s %-26.26s %-12.12s\n" :
 				"%-8.*s %-12.12s %-16.*s %-16.16s %-7.7s %-12.12s\n",
 				name_len, p->ut_name, utline,
 				domain_len, domain, logintime, logouttime, length);
+                    }   /* show short username */
 		} else {
+                     if (allow_long_username)
+                     {
+                         len = snprintf(final, sizeof(final), 
+		oldfmt ? "%-" xstr(OLD_NAMESIZE) "." xstr(OLD_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-7.7s %-16.16s %s\n"
+	        : "%-" xstr(UT_NAMESIZE) "." xstr(UT_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-7.7s %-16.16s %s\n",
+ 				p->ut_name, utline,
+ 				logintime, logouttime, length, domain);
+                     }
+                     else   /* show short username */
+                     {
 			len = snprintf(final, sizeof(final), 
 				fulltime ?
 				"%-8.*s %-12.12s %-24.24s %-26.26s %-12.12s %s\n" :
 				"%-8.*s %-12.12s %-16.16s %-7.7s %-12.12s %s\n",
 				name_len, p->ut_name, utline,
 				logintime, logouttime, length, domain);
+                     }   /* done showing short username */
 		}
 	} else
+             if (allow_long_username)
+             {
+                  len = snprintf(final, sizeof(final),
+  		oldfmt ? "%-" xstr(OLD_NAMESIZE) "." xstr(OLD_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-7.7s %-12.12s\n"
+		   : "%-" xstr(UT_NAMESIZE) "." xstr(UT_NAMESIZE) "s %-12.12s "
+		"%-16.16s %-7.7s %-12.12s\n",
+ 			p->ut_name, utline,
+ 			logintime, logouttime, length);
+             }
+             else    /* show short username */
+             {
 		len = snprintf(final, sizeof(final),
 			fulltime ?
 			"%-8.*s %-12.12s %-24.24s %-26.26s %-12.12s\n" :
 			"%-8.*s %-12.12s %-16.16s %-7.7s %-12.12s\n",
 			name_len, p->ut_name, utline,
 			logintime, logouttime, length);
+             }   /* end of showing short username */
 
 #if defined(__GLIBC__)
 #  if (__GLIBC__ == 2) && (__GLIBC_MINOR__ == 0)
@@ -598,7 +640,7 @@ int main(int argc, char **argv)
   progname = mybasename(argv[0]);
 
   /* Process the arguments. */
-  while((c = getopt(argc, argv, "f:n:RxadFiot:0123456789w")) != EOF)
+  while((c = getopt(argc, argv, "f:n:RxadFliot:0123456789w")) != EOF)
     switch(c) {
 	case 'R':
 		showhost = 0;
@@ -632,6 +674,9 @@ int main(int argc, char **argv)
 	case 'F':
 		fulltime++;
 		break;
+        case 'l':
+                allow_long_username = 1;
+                break;
 	case 't':
 		if ((until = parsetm(optarg)) == (time_t)-1) {
 			fprintf(stderr, "%s: Invalid time value \"%s\"\n",

@@ -27,7 +27,9 @@ sysvinit (2.92) unreleased; urgency=low
     * shutdown command was setting environment variable INIT_HALT to 
       "POWERDOWN", this should have been "POWERDOWN" as specified in the
       manual page. Fixed code to match manual page and init scripts.
-      
+      Closes Debian bugs #717531 and ##590895
+    * Added -l flag to "last" command. When used it allows "last" to
+      display usernames longer than 8 characters long.
 
 
 sysvinit (2.91) world; urgency=low

@@ -30,6 +30,10 @@ sysvinit (2.92) unreleased; urgency=low
       Closes Debian bugs #717531 and ##590895
     * Added -l flag to "last" command. When used it allows "last" to
       display usernames longer than 8 characters long.
+    * Added -q and -Q flags to shutdown command to make the "system is going down"
+      message appear less often. The -q flag causes messages to only appear at the
+      10 minute, 5 minute and x-hour intervals.
+      The -Q flag maintains complete silence up until the final "now" warning.
 
 
 sysvinit (2.91) world; urgency=low

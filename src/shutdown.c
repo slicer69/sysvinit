@@ -62,9 +62,12 @@
 #include "init.h"
 
 
-char *Version = "@(#) shutdown 2.90-1 31-Jul-2004 miquels@cistron.nl";
-
 #define MESSAGELEN	256
+
+/* Whether we should warn system is shutting down */
+#define QUIET_FULL 2
+#define QUIET_PARTIAL 1
+#define QUIET_NONE 0
 
 int dontshut = 0;	/* Don't shutdown, only warn	*/
 char down_level[2];	/* What runlevel to go to.	*/
@@ -139,6 +142,8 @@ void usage(void)
 	"\t\t  -F:      Force fsck on reboot.\n"
 	"\t\t  -n:      do not go through \"init\" but go down real fast.\n"
 	"\t\t  -c:      cancel a running shutdown.\n"
+        "\t\t  -q:      quiet mode - display fewer shutdown warnings.\n"
+        "\t\t  -Q:      full quiet mode - display only final shutdown warning.\n"
 	"\t\t  -t secs: delay between warning and kill signal.\n"
 	"\t\t  ** the \"time\" argument is mandatory! (try \"now\") **\n");
 	exit(1);
@@ -459,10 +464,23 @@ void issue_shutdown(char *halttype)
 /*
  *	returns if a warning is to be sent for wt
  */
-static int needwarning(int wt)
+static int needwarning(int wt, int quiet_mode)
 {
 	int ret;
 
+        if (quiet_mode == QUIET_FULL) return FALSE;
+        else if (quiet_mode == QUIET_PARTIAL)
+        {
+            if (wt == 10)
+               return TRUE;
+            else if (wt == 5)
+               return TRUE;
+            else if ( (wt % 60) == 0)
+               return TRUE;
+            else
+               return FALSE;
+        }
+        /* no silence setting, print lots of warnings */
 	if (wt < 10)
 		ret = 1;
 	else if (wt < 60)
@@ -502,6 +520,7 @@ int main(int argc, char **argv)
 	int			useacl = 0;
 	int			pid = 0;
 	int			user_ok = 0;
+        int quiet_level = QUIET_NONE;   /* Whether to display shutdown warning */
 
 	/* We can be installed setuid root (executable for a special group) */
 	/* 
@@ -523,7 +542,7 @@ int main(int argc, char **argv)
 	halttype = NULL;
 
 	/* Process the options. */
-	while((c = getopt(argc, argv, "HPacqkrhnfFyt:g:i:")) != EOF) {
+	while((c = getopt(argc, argv, "HPacqQkrhnfFyt:g:i:")) != EOF) {
   		switch(c) {
 			case 'H':
 				halttype = "HALT";
@@ -558,6 +577,12 @@ int main(int argc, char **argv)
 			case 't': /* Delay between TERM and KILL */
 				sltime = optarg;
 				break;
+                        case 'q': /* put into somewhat quiet mode */
+                                quiet_level = QUIET_PARTIAL;
+                                break;
+                        case 'Q': /* put into full quiet mode */
+                                quiet_level = QUIET_FULL;
+                                break;
 			case 'y': /* Ignored for sysV compatibility */
 				break;
 			case 'g': /* sysv style to specify time. */
@@ -775,13 +800,13 @@ int main(int argc, char **argv)
         target_time = t + (60 * wt); 
 
 	/* Give warnings on regular intervals and finally shutdown. */
-	if (wt < 15 && !needwarning(wt)) issue_warn(wt);
+	if (wt < 15 && !needwarning(wt, quiet_level)) issue_warn(wt);
 	while(wt) {
 		if (wt <= 5 && !didnolog) {
 			donologin(wt);
 			didnolog++;
 		}
-		if (needwarning(wt)) issue_warn(wt);
+		if (needwarning(wt, quiet_level)) issue_warn(wt);
 		hardsleep(60);
                 time(&t);    /* get current time once per minute */
                 if (t >= target_time)     /* past the target */
@@ -791,7 +816,7 @@ int main(int argc, char **argv)
                     hardsleep(target_time - t);
                     wt = 0;
                 }
-                else                      /* more thsn 1 min remains */
+                else                      /* more than 1 min remains */
                    wt = (int) (target_time - t) / 60;
 	}
 	issue_shutdown(halttype);

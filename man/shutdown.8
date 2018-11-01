@@ -98,6 +98,20 @@ Cancel a waiting shutdown. ("shutdown now" is no longer waiting.) With
 this option it is of course not possible to give the time argument, but
 you can enter explanatory message arguments on the command line that
 will be sent to all users.
+.\"{{{  -q
+.IP \fB\-q
+Reduce the number of warnings shutdown displays. Usually shutdown displays
+warnings every 15 minutes and then every minute in the last 10 minutes of the
+countdown until \fItime\fP is reached. When \-q is specified 
+shutdown only warns at 60 minute intervals, at the 10 minute mark,
+at the 5 minue mark, and when the shutdown process actually happens.
+.\"{{{  -Q
+.IP \fB\-Q
+Silence warnings prior to shutting down. Usually shutdown displays
+warnings every 15 minutes and then every minute in the last 10 minutes of the
+countdown until \fItime\fP is reached. When \-Q is specified 
+shutdown only warns when the shutdown process actually happens. All
+other warning intervals are suppressed.
 .\"}}}
 .\"{{{  -t sec
 .IP "\fB\-t\fP \fIsec\fP"

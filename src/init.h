@@ -22,6 +22,13 @@
  *
  */
 
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 /* Standard configuration */
 #define CHANGE_WAIT 0			/* Change runlevel while
 					   waiting for a process to exit? */

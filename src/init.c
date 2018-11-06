@@ -832,7 +832,7 @@ void console_stty(void)
 #endif /* IUTF8 */
 		;
 	tty.c_oflag = OPOST|ONLCR;
-	tty.c_lflag = ISIG|ICANON|ECHO|ECHOCTL|ECHOPRT|ECHOKE;
+	tty.c_lflag = ISIG|ICANON|ECHO|ECHOCTL|ECHOE|ECHOKE;
 
 #if defined(SANE_TIO) && (SANE_TIO == 1)
 	/*

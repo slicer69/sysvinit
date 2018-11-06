@@ -34,6 +34,12 @@ sysvinit (2.92) unreleased; urgency=low
       message appear less often. The -q flag causes messages to only appear at the
       10 minute, 5 minute and x-hour intervals.
       The -Q flag maintains complete silence up until the final "now" warning.
+    * Mention GRUB as a potential boot loader in init page since LILO is
+      rarely used anymore, outside of Slackware.
+    * Swapped out ECHOPRT for ECHOE in stty settings when init brings up
+      emergency console. Should make backspace-erasing characters work
+      more naturally.
+      Closes Debian bug #402847.
 
 
 sysvinit (2.91) world; urgency=low

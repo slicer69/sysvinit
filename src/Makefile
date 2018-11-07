@@ -177,7 +177,7 @@ clobber:	cleanobjs
 
 distclean:	clobber
 
-install:
+install:	all
 		$(INSTALL_DIR) $(ROOT)/bin/ $(ROOT)/sbin/
 		$(INSTALL_DIR) $(ROOT)/usr/bin/
 		for i in $(BIN); do \

@@ -27,7 +27,7 @@ sysvinit (2.92) unreleased; urgency=low
     * shutdown command was setting environment variable INIT_HALT to 
       "POWERDOWN", this should have been "POWEROFF" as specified in the
       manual page. Fixed code to match manual page and init scripts.
-      Closes Debian bugs #717531 and ##590895
+      Closes Debian bugs #717531 and #590895
     * Added -l flag to "last" command. When used it allows "last" to
       display usernames longer than 8 characters long.
     * Added -q and -Q flags to shutdown command to make the "system is going down"
@@ -40,6 +40,8 @@ sysvinit (2.92) unreleased; urgency=low
       emergency console. Should make backspace-erasing characters work
       more naturally.
       Closes Debian bug #402847.
+    * Updated src/Makefile to make sure we build all the software before
+      attempting to install.
 
 
 sysvinit (2.91) world; urgency=low

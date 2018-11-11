@@ -945,13 +945,14 @@ void usage(void)
 void pidof_usage(void)
 {
    printf("pidof usage: [options] <program-name>\n\n");
-   printf(" -c         Return PIDs with the same root directory\n");
-   printf(" -h         Display this help text\n");
-   printf(" -n         Avoid using stat system function on network shares\n");
-   printf(" -o <pid>   Omit results with a given PID\n");
-   printf(" -q         Quiet mode. Do not display output\n");
-   printf(" -s         Only return one PID\n");
-   printf(" -x         Return PIDs of shells running scritps with a matchign name\n");
+   printf(" -c           Return PIDs with the same root directory\n");
+   printf(" -h           Display this help text\n");
+   printf(" -f <format>  Display PIDs in a given printf-style format\n");
+   printf(" -n           Avoid using stat system function on network shares\n");
+   printf(" -o <pid>     Omit results with a given PID\n");
+   printf(" -q           Quiet mode. Do not display output\n");
+   printf(" -s           Only return one PID\n");
+   printf(" -x           Return PIDs of shells running scritps with a matchign name\n");
    printf("\n");
 }
 
@@ -996,6 +997,7 @@ int main_pidof(int argc, char **argv)
 	int		chroot_check = 0;
 	struct stat	st;
 	char		tmp[512];
+        char            *format = NULL;
 
 	omit = (OMIT*)0;
 	nlist = (NFS*)0;
@@ -1004,7 +1006,7 @@ int main_pidof(int argc, char **argv)
 	if ((token = getenv("PIDOF_NETFS")) && (strcmp(token,"no") != 0))
 		flags |= PIDOF_NETFS;
 
-	while ((opt = getopt(argc,argv,"qhco:sxn")) != EOF) switch (opt) {
+	while ((opt = getopt(argc,argv,"qhcof:sxn")) != EOF) switch (opt) {
 		case '?':
 			nsyslog(LOG_ERR,"invalid options on command line!\n");
 			closelog();
@@ -1015,6 +1017,9 @@ int main_pidof(int argc, char **argv)
                 case 'h':
                         pidof_usage();
                         exit(0);
+                case 'f':
+                        format = optarg;
+                        break;
 		case 'o':
 			here = optarg;
 			while ((token = strsep(&here, ",;:"))) {
@@ -1111,9 +1116,14 @@ int main_pidof(int argc, char **argv)
 				}
 
 				if ( ~flags & PIDOF_QUIET ) {
-					if (!first)
+                                    if (format)
+                                       printf(format, p->pid);
+                                    else
+                                    {
+					if (! first)
 						printf(" ");
 					printf("%d", p->pid);
+                                    }
 				}
 				first = 0;
 			}

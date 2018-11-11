@@ -42,7 +42,12 @@ sysvinit (2.92) unreleased; urgency=low
       Closes Debian bug #402847.
     * Updated src/Makefile to make sure we build all the software before
       attempting to install.
-
+    * Removed typos from pidof manual page and killall5 page.
+      Closes Debian bugs #815839, #905245 and #890478
+    * Added -f <format> option to pidof program to allow printf
+      style formating.
+      Closes Debian bug #571590
+      Thanks to Philipp Marek for the patch.
 
 sysvinit (2.91) world; urgency=low
 

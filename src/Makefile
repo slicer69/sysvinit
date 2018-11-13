@@ -137,7 +137,7 @@ shutdown:	LDLIBS += $(STATIC)
 shutdown:	dowall.o shutdown.o utmp.o
 
 bootlogd:	LDLIBS += -lutil $(STATIC)
-bootlogd:	bootlogd.o
+bootlogd:	bootlogd.o bootlogd.h
 
 fstab-decode:	LDLIBS += $(STATIC)
 fstab-decode:	fstab-decode.o

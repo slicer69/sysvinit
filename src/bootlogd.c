@@ -53,10 +53,8 @@
 #ifdef __linux__
 #include <sys/mount.h>
 #endif
+#include "bootlogd.h"
 
-char *Version = "@(#) bootlogd 2.86 03-Jun-2004 miquels@cistron.nl";
-
-#define LOGFILE	"/var/log/boot"
 #define MAX_CONSOLES 16
 
 char ringbuf[32768];
@@ -508,7 +506,7 @@ int main(int argc, char **argv)
 			rotate = 1;
 			break;
 		case 'v':
-			printf("%s\n", Version);
+			printf("bootlogd - %s\n", VERSION);
 			exit(0);
 			break;
 		case 'p':

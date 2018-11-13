@@ -1,0 +1,58 @@
+'\" -*- coding: UTF-8 -*-
+.\" Copyright (C) 1998-2004 Miquel van Smoorenburg.
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+.\"
+.\"{{{}}}
+.\"{{{  Title
+.TH READBOOTLOG 1 "NOV 12, 2018" "" "Linux System Administrator's Manual"
+.\"}}}
+.\"{{{  Name
+.SH NAME
+readbootlog \- show contents of the boot log, stripping away control characters
+.\"}}}
+.\"{{{  Synopsis
+.SH SYNOPSIS
+.B readbootlog
+.RB [ \-h ]
+.RB "[ \-\fBf\fP \fIfile\fP ]"
+.br
+.\"}}}
+.\"{{{  Description
+.SH DESCRIPTION
+.B readbootlog
+is a tool for reading the boot log (by default /var/log/boot). The program
+strips away control characters and non-human readable contents from the log
+file. Output is dumped to the terminal where it can be piped or redirected
+to a file.
+.\"}}}
+.\"{{{  Options
+.SH OPTIONS
+.IP "\fB\-f\fP \fIfile\fP"
+Tells \fBreadbootlog\fP to use a specific file instead of \fB/var/log/boot\fP.
+.IP \fB\-h\fP
+Displays a brief help message.
+.\"{{{  Files
+.SH FILES
+/var/log/boot
+.\"}}}
+.\"{{{  Author
+.SH AUTHOR
+Jesse Smith <jsmith@resonatingmedia.com>
+.\"}}}
+.\"{{{  See also
+.SH "SEE ALSO"
+.BR bootlogd (8)
+.\"}}}

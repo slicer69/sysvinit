@@ -24,9 +24,9 @@ MNTPOINT=
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
 SBIN	= init halt shutdown runlevel killall5 fstab-decode
-USRBIN	= last mesg
+USRBIN	= last mesg readbootlog
 
-MAN1	= last.1 lastb.1 mesg.1
+MAN1	= last.1 lastb.1 mesg.1 readbootlog.1
 MAN5	= initscript.5 inittab.5 initctl.5
 MAN8	= halt.8 init.8 killall5.8 pidof.8 poweroff.8 reboot.8 runlevel.8
 MAN8	+= shutdown.8 telinit.8 fstab-decode.8
@@ -138,6 +138,9 @@ shutdown:	dowall.o shutdown.o utmp.o
 
 bootlogd:	LDLIBS += -lutil $(STATIC)
 bootlogd:	bootlogd.o bootlogd.h
+
+readbootlog:	LDLIBS += $(STATIC)
+readbootlog:	readbootlog.o bootlogd.h
 
 fstab-decode:	LDLIBS += $(STATIC)
 fstab-decode:	fstab-decode.o

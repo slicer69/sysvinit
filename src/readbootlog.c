@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "bootlogd.h"
 
 #ifndef MAX_LINE
@@ -8,7 +10,13 @@
 
 void print_usage()
 {
-
+   printf("readbootlog reads the system's boot log, stripping away\n");
+   printf("control characters to make the log human readable.\n\n");
+   printf("Usage for readbootlog: readbootlog [-h] [-f logfile]\n");
+   printf("\t\t-h             display this help message\n");
+   printf("\t\t-f <logfile>   display a specific boot log file\n");
+   printf("\t\t               default is to use %s\n", LOGFILE);
+   printf("\n");
 }
 
 /*
@@ -75,6 +83,24 @@ int main(int argc, char *argv[])
   char line[MAX_LINE];
   char output[MAX_LINE];
   char *status;
+  int c;
+
+  /* check provided options */
+  while ( (c = getopt(argc, argv, "hf:") ) != EOF)
+  {
+      switch (c)
+      {
+         case 'h':
+               print_usage();
+               exit(0);
+         case 'f':
+              log_filename = optarg;
+              break;      
+         default:
+              print_usage();
+              exit(1);
+      }
+  }   /* done processing arguments */
 
   log_file = fopen(log_filename, "r");
   if (log_file)

@@ -48,6 +48,12 @@ sysvinit (2.92) unreleased; urgency=low
       style formating.
       Closes Debian bug #571590
       Thanks to Philipp Marek for the patch.
+    * Added new tool (readbootlog) which will read the /var/log/boot file
+      produced by bootlogd. The output is displayed cleaned up so there
+      are no control characters. This avoids the need to use sed or related
+      tools to try to clean up the contents of the log.
+    * Added manual page for readbootlog program.
+
 
 sysvinit (2.91) world; urgency=low
 

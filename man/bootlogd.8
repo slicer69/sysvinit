@@ -55,6 +55,11 @@ Show version.
 Log to this logfile. The default is \fI/var/log/boot\fP.
 .IP "\fB\-p\fP \fIpidfile\fP"
 Put process-id in this file. The default is no pidfile.
+.SH NOTES
+bootlogd saves log data which includes control characters. The log is
+technically a text file, but not very easy for humans to read. To address
+this the readbootlog(1) command can be used to display the boot log
+without the control characters.
 .SH BUGS
 Bootlogd works by redirecting the console output from the console device.
 (Consequently \fBbootlogd\fP requires PTY support in the kernel configuration.)
@@ -69,4 +74,4 @@ If that syntax is ever changed by the kernel, or a console type is used that
 .SH AUTHOR
 Miquel van Smoorenburg, miquels@cistron.nl
 .SH "SEE ALSO"
-.BR dmesg (8),  fdatasync (3).
+.BR dmesg (8),  fdatasync (3),  readbootlog(1).

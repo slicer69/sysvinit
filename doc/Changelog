@@ -52,7 +52,8 @@ sysvinit (2.92) unreleased; urgency=low
       produced by bootlogd. The output is displayed cleaned up so there
       are no control characters. This avoids the need to use sed or related
       tools to try to clean up the contents of the log.
-    * Added manual page for readbootlog program.
+    * Added manual page for readbootlog program. Updated bootlogd page
+      to reference it. Closes Debian bug #725123.
 
 
 sysvinit (2.91) world; urgency=low

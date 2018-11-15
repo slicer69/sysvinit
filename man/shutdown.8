@@ -193,11 +193,10 @@ argument is ignored.
 .SH HALT OR POWEROFF
 The \fB-H\fP option just sets the \fIinit\fP environment variable
 \fIINIT_HALT\fP to \fIHALT\fP, and the \fB-P\fP option just sets
-that variable to \fIPOWEROFF\fP. The shutdown script that calls
-\fBhalt\fP(8) as the last thing in the shutdown sequence should
-check these environment variables and call \fBhalt\fP(8) with
+that variable to \fIPOWEROFF\fP. The script (usually /etc/init.d/halt) that calls
+the \fBhalt\fP(8) program as the last thing in the shutting down sequence should
+check this environment variable and call the \fBhalt\fP(8) program with
 the right options for these options to actually have any effect.
-Debian 3.1 (sarge) supports this.
 .SH FILES
 .nf
 /fastboot

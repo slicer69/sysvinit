@@ -54,6 +54,10 @@ sysvinit (2.92) unreleased; urgency=low
       tools to try to clean up the contents of the log.
     * Added manual page for readbootlog program. Updated bootlogd page
       to reference it. Closes Debian bug #725123.
+    * Updated the shutdown manual page to try to make it more clear
+      where we are talking about an initscript called halt or the halt
+      program. Likewise whether we are talking about the shutdown process
+      or the specific shutdown program.
 
 
 sysvinit (2.91) world; urgency=low

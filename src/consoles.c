@@ -159,7 +159,7 @@ char* scandev(DIR *dir)
 	fd = dirfd(dir);
 	rewinddir(dir);
 	while ((dent = readdir(dir))) {
-		char path[PATH_MAX];
+		char *path;
 		struct stat st;
 		if (fstatat(fd, dent->d_name, &st, 0) < 0)
 			continue;
@@ -167,9 +167,10 @@ char* scandev(DIR *dir)
 			continue;
 		if (comparedev != st.st_rdev)
 			continue;
-		if ((size_t)snprintf(path, sizeof(path), "/dev/%s", dent->d_name) >= sizeof(path))
+		if (asprintf(&path, "/dev/%s", dent->d_name) < 0)
 			continue;
 		name = realpath(path, NULL);
+		free(path);
 		break;
 	}
 	return name;

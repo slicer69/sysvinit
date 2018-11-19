@@ -58,6 +58,9 @@ sysvinit (2.92) unreleased; urgency=low
       where we are talking about an initscript called halt or the halt
       program. Likewise whether we are talking about the shutdown process
       or the specific shutdown program.
+      Should address Debian bug #374039.
+    * Added patch from Samuel Thibault to make project compile
+      on Hurd branch of Debian.
 
 
 sysvinit (2.91) world; urgency=low

@@ -1,4 +1,13 @@
-sysvinit (2.92) unreleased; urgency=low
+sysvinit (2.93) released; urgency=low
+
+  [ Jesse Smith ]
+
+    * Fixed error where pidof would not omit checking PIDs passed
+      to it when the -o flag was used.
+      Fixes Debian bug #913394.
+
+
+sysvinit (2.92) released; urgency=low
 
   [ Jesse Smith ]
 

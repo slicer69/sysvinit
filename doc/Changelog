@@ -5,6 +5,15 @@ sysvinit (2.93) released; urgency=low
     * Fixed error where pidof would not omit checking PIDs passed
       to it when the -o flag was used.
       Fixes Debian bug #913394.
+    * When the halt command is called with the -p flag (or as poweroff)
+      the command now passes the "-h -P" flags to shutdown. This
+      in turn sets the INIT_HALT environment variable to POWEROFF.
+      Assuming this value is checked by initscripts during the
+      shutting down procedure, it should cause the system to
+      be powered off.
+      If halt is called without -p then the value of INIT_HALT
+      is not set and the default action (often set in /etc/defaut/halt)
+      is taken.
 
 
 sysvinit (2.92) released; urgency=low

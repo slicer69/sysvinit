@@ -54,13 +54,20 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <stdarg.h>
+#ifdef __FreeBSD__
+#include <utmpx.h>
+#else
 #include <utmp.h>
+#endif
 #include <syslog.h>
 #include "paths.h"
 #include "reboot.h"
 #include "initreq.h"
 #include "init.h"
 
+#ifdef __FreeBSD__
+extern char **environ;
+#endif
 
 #define MESSAGELEN	256
 

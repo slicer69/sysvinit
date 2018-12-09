@@ -154,3 +154,12 @@ extern char prevlevel;
 #define D_WROTE_WTMP_RLEVEL -16
 #define D_WROTE_UTMP_RLEVEL -17
 
+#ifdef __FreeBSD__
+#define UTMP_FILE "/var/run/utmp"
+#define RUN_LVL 1
+struct utmp
+{
+   char ut_id[4];
+};
+#endif
+

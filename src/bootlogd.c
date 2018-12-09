@@ -47,7 +47,15 @@
 #include <getopt.h>
 #include <dirent.h>
 #include <fcntl.h>
+#ifdef __linux__
 #include <pty.h>
+#endif
+
+#ifdef __FreeBSD__
+#include <termios.h>
+#include <libutil.h>
+#endif
+
 #include <ctype.h>
 #ifdef __linux__
 #include <sys/mount.h>

@@ -52,7 +52,11 @@ Version information is not placed in the top-level Makefile by default
 #include <string.h>
 #include <signal.h>
 #include <termios.h>
+#ifdef __FreeBSD__
+#include <utmpx.h>
+#else
 #include <utmp.h>
+#endif
 #include <ctype.h>
 #include <stdarg.h>
 #include <sys/ttydefaults.h>
@@ -61,6 +65,9 @@ Version information is not placed in the top-level Makefile by default
 
 #ifdef WITH_SELINUX
 #  include <selinux/selinux.h>
+#endif
+#ifdef __FreeBSD__
+extern char **environ;
 #endif
 
 #ifdef __i386__
@@ -521,8 +528,12 @@ int receive_state(int fd)
  *	Set the process title.
  */
 #ifdef __GNUC__
+#ifndef __FreeBSD__
 __attribute__ ((format (printf, 1, 2)))
 #endif
+#endif
+/* This function already exists on FreeBSD. No need to delcare it. */
+#ifndef __FreeBSD__
 static int setproctitle(char *fmt, ...)
 {
 	va_list ap;
@@ -542,6 +553,7 @@ static int setproctitle(char *fmt, ...)
 
 	return len;
 }
+#endif
 
 /*
  *	Set console_dev to a working console.
@@ -2160,9 +2172,11 @@ int make_pipe(int fd)
 
 /*
  *	Attempt to re-exec.
+ *      Renaming to my_re_exec since re_exec is now a common function name
+ *      which conflicts.
  */
 static
-void re_exec(void)
+void my_re_exec(void)
 {
 	CHILD		*ch;
 	sigset_t	mask, oldset;
@@ -2279,7 +2293,7 @@ void fifo_new_level(int level)
 		runlevel = read_level(level);
 		if (runlevel == 'U') {
 			runlevel = oldlevel;
-			re_exec();
+			my_re_exec();
 		} else {
 			if (oldlevel != 'S' && runlevel == 'S') console_stty();
 			if (runlevel == '6' || runlevel == '0' ||
@@ -2681,7 +2695,7 @@ void process_signals()
 #endif
 		if (runlevel == 'U') {
 			runlevel = oldlevel;
-			re_exec();
+			my_re_exec();
 		} else {
 			if (oldlevel != 'S' && runlevel == 'S') console_stty();
 			if (runlevel == '6' || runlevel == '0' ||

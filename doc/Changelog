@@ -11,6 +11,9 @@ sysvinit (2.94) unreleased; urgency=low
       If halt is called without -p then the value of INIT_HALT
       is not set and the default action (often set in /etc/defaut/halt)
       is taken.
+    * Removed unnecessary malloc.h includes. Memory allocation
+      and freeing is now handled in stdlib.h
+
 
 sysvinit (2.93) released; urgency=low
 

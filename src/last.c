@@ -34,7 +34,6 @@
 #include <ctype.h>
 #include <utmp.h>
 #include <errno.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>

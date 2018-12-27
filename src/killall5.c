@@ -58,8 +58,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-char *Version = "@(#)killall5 2.86 31-Jul-2004 miquels@cistron.nl";
-
 #ifndef PATH_MAX
 #  ifdef MAXPATHLEN
 #    define PATH_MAX MAXPATHLEN

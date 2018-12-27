@@ -13,11 +13,12 @@
 Version information is not placed in the top-level Makefile by default
 */
 #ifndef VERSION
-#define VERSION "2.91"
+#define VERSION "2.94"
 #endif
 /*
  *		This file is part of the sysvinit suite,
  *		Copyright (C) 1991-2004 Miquel van Smoorenburg.
+ *		Copyright (C) 2017-2019 Jesse Smith
  *
  *		This program is free software; you can redistribute it and/or modify
  *		it under the terms of the GNU General Public License as published by
@@ -140,7 +141,7 @@ int wrote_wtmp_reboot = 1;	/* Set when we wrote the reboot record */
 int wrote_utmp_reboot = 1;	/* Set when we wrote the reboot record */
 int wrote_wtmp_rlevel = 1;	/* Set when we wrote the runlevel record */
 int wrote_utmp_rlevel = 1;	/* Set when we wrote the runlevel record */
-int sltime = WAIT_BETWEEN_SIGNALS;    /* Sleep time between TERM and KILL */
+int sleep_time = WAIT_BETWEEN_SIGNALS;    /* Sleep time between TERM and KILL */
 char *argv0;			/* First arguments; show up in ps listing */
 int maxproclen;			/* Maximal length of argv[0] with \0 */
 struct utmp utproto;		/* Only used for sizeof(utproto.ut_id) */
@@ -151,7 +152,7 @@ int main(int, char **);
 
 /*	Used by re-exec part */
 int reload = 0;			/* Should we do initialization stuff? */
-char *myname="/sbin/init";	/* What should we exec */
+char *myname=INIT;		/* What should we exec */
 int oops_error;			/* Used by some of the re-exec code. */
 const char *Signature = "12567362";	/* Signature for re-exec fd */
 
@@ -295,7 +296,7 @@ void send_state(int fd)
 	fprintf(fp, "-SI%u\n", got_signals);
 	fprintf(fp, "-WR%d\n", wrote_wtmp_reboot);
 	fprintf(fp, "-WU%d\n", wrote_utmp_reboot);
-	fprintf(fp, "-ST%d\n", sltime);
+	fprintf(fp, "-ST%d\n", sleep_time);
 	fprintf(fp, "-DB%d\n", did_boot);
 
 	for (p = family; p; p = p->next) {
@@ -423,7 +424,7 @@ static CHILD *get_record(FILE *f)
 				}
 				break;
 			case D_SLTIME:
-				if (fscanf(f, "%d\n", &sltime) == EOF && errno != 0) {
+				if (fscanf(f, "%d\n", &sleep_time) == EOF && errno != 0) {
 					fprintf(stderr, "%s (%d): %s\n", __FILE__, __LINE__, strerror(errno));
 				}
 				break;
@@ -1717,7 +1718,7 @@ void read_inittab(void)
 	/*
 	 *	Yup, but check every second if we still have children.
 	 */
-	for(f = 0; f < sltime; f++) {
+	for(f = 0; f < sleep_time; f++) {
 		for(ch = family; ch; ch = ch->next) {
 			if (!(ch->flags & KILLME)) continue;
 			if ((ch->flags & RUNNING) && !(ch->flags & ZOMBIE))
@@ -1971,7 +1972,7 @@ int read_level(int arg)
 		foo = arg;
 		ok = 1;
 	}
-	if (ok == 2) sltime = st;
+	if (ok == 2) sleep_time = st;
 
 #endif /* INITLVL */
 
@@ -2474,22 +2475,22 @@ void check_init_fifo(void)
 	}
 	switch(request.cmd) {
 		case INIT_CMD_RUNLVL:
-			sltime = request.sleeptime;
+			sleep_time = request.sleeptime;
 			fifo_new_level(request.runlevel);
 			quit = 1;
 			break;
 		case INIT_CMD_POWERFAIL:
-			sltime = request.sleeptime;
+			sleep_time = request.sleeptime;
 			do_power_fail('F');
 			quit = 1;
 			break;
 		case INIT_CMD_POWERFAILNOW:
-			sltime = request.sleeptime;
+			sleep_time = request.sleeptime;
 			do_power_fail('L');
 			quit = 1;
 			break;
 		case INIT_CMD_POWEROK:
-			sltime = request.sleeptime;
+			sleep_time = request.sleeptime;
 			do_power_fail('O');
 			quit = 1;
 			break;
@@ -2916,7 +2917,7 @@ int telinit(char *progname, int argc, char **argv)
 
 	while ((f = getopt(argc, argv, "t:e:")) != EOF) switch(f) {
 		case 't':
-			sltime = atoi(optarg);
+			sleep_time = atoi(optarg);
 			break;
 		case 'e':
 			if (env == NULL)
@@ -2949,7 +2950,7 @@ int telinit(char *progname, int argc, char **argv)
 			usage(progname);
 		request.cmd = INIT_CMD_RUNLVL;
 		request.runlevel  = argv[optind][0];
-		request.sleeptime = sltime;
+		request.sleeptime = sleep_time;
 	}
 
 	/* Change to the root directory. */
@@ -2991,7 +2992,7 @@ int telinit(char *progname, int argc, char **argv)
 				progname, INITLVL);
 			exit(1);
 		}
-		fprintf(fp, "%s %d", argv[optind], sltime);
+		fprintf(fp, "%s %d", argv[optind], sleep_time);
 		fclose(fp);
 
 		/* And tell init about the pending runlevel change. */

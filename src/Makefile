@@ -23,7 +23,7 @@ MNTPOINT=
 
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
-SBIN	= init halt shutdown runlevel killall5 fstab-decode
+SBIN	= init halt shutdown runlevel killall5 fstab-decode 
 USRBIN	= last mesg readbootlog
 
 MAN1	= last.1 lastb.1 mesg.1 readbootlog.1
@@ -151,7 +151,7 @@ sulogin.o:	sulogin.c
 runlevellog.o:	runlevellog.h runlevellog.c paths.h
 
 init.o:		CPPFLAGS += $(SELINUX_DEF)
-init.o:		init.c init.h initreq.h paths.h reboot.h runlevellog.h runlevellog.c set.h paths.h
+init.o:		init.c init.h initreq.h paths.h reboot.h runlevellog.h runlevellog.c set.h 
 
 utmp.o:		
 

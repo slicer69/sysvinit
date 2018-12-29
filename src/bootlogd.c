@@ -63,6 +63,7 @@
 #include "bootlogd.h"
 
 #define MAX_CONSOLES 16
+#define KERNEL_COMMAND_LENGTH 4096
 
 char ringbuf[32768];
 char *endptr = ringbuf + sizeof(ringbuf);
@@ -257,7 +258,7 @@ int consolenames(struct real_cons *cons, int max_consoles)
 	/* This appears to be unused.  unsigned int	kdev; */
 #endif
 	struct stat	st, st2;
-	char		buf[256];
+	char		buf[KERNEL_COMMAND_LENGTH];
 	char		*p;
 	int		didmount = 0;
 	int		n;
@@ -286,16 +287,13 @@ int consolenames(struct real_cons *cons, int max_consoles)
 		perror("bootlogd: /proc/cmdline");
 	} else {
 		buf[0] = 0;
-		if ((n = read(fd, buf, sizeof(buf) - 1)) < 0)
+		if ((n = read(fd, buf, KERNEL_COMMAND_LENGTH - 1)) < 0)
 			perror("bootlogd: /proc/cmdline");
 		close(fd);
 	}
 	if (didmount) umount("/proc");
                 
-
 	if (n < 0) return 0;
-
-
 
 	/*
 	 *	OK, so find console= in /proc/cmdline.

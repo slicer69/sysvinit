@@ -15,6 +15,10 @@ sysvinit (2.94) unreleased; urgency=low
       and freeing is now handled in stdlib.h
     * Added defines for FreeBSD to make some components compile
       on FreeBSD 11.
+    * Increased the size of the kernel command line buffer in bootlogd
+      from 256 characters to 4096. This size is defined in KERNEL_COMMAND_LENGTH
+      for easy modification downstream.
+
 
 sysvinit (2.93) released; urgency=low
 

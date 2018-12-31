@@ -18,6 +18,9 @@ sysvinit (2.94) unreleased; urgency=low
     * Increased the size of the kernel command line buffer in bootlogd
       from 256 characters to 4096. This size is defined in KERNEL_COMMAND_LENGTH
       for easy modification downstream.
+    * Added logsave.c and logsave.8 manual page from e2fsprogs to make
+      sure logsave is available to initscripts.
+    * Updated src/Makefile to make sure bootlogd compiles with Clang.
 
 
 sysvinit (2.93) released; urgency=low

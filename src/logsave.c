@@ -13,6 +13,9 @@
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE 600 /* for inclusion of sa_handler in Solaris */
 #endif
+#ifndef HAVE_SIGNAL_H
+#define HAVE_SIGNAL_H
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +26,9 @@
 #include <fcntl.h>
 #include <time.h>
 #include <errno.h>
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
+#endif
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
 #else
@@ -188,7 +193,7 @@ static int run_program(char **argv)
 	if (pid == 0) {
 		dup2(fds[1],1);		/* fds[1] replaces stdout */
 		dup2(fds[1],2);  	/* fds[1] replaces stderr */
-		close(fds[0]);	/* don't need this here */
+		close(fds[0]);		/* don't need this here */
 		close(fds[1]);
 
 		execvp(argv[0], argv);

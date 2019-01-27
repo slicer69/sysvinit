@@ -282,7 +282,7 @@ int main(int argc, char **argv)
 	outfn = argv[optind];
 	optind++;
 	argv += optind;
-	argc -= optind;
+	/* argc -= optind;  - this is not used */
 
 	outfd = open(outfn, openflags, 0644);
 	do_stdin = !strcmp(argv[0], "-");

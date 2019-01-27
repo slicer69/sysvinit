@@ -21,6 +21,17 @@ sysvinit (2.94) unreleased; urgency=low
     * Added logsave.c and logsave.8 manual page from e2fsprogs to make
       sure logsave is available to initscripts.
     * Updated src/Makefile to make sure bootlogd compiles with Clang.
+    * Use defined constants for password length in sulogin. Makes
+      it easier to update/patch later.
+    * Minor code fixes across multiple source files to avoid buffer
+      overflows, or uninitialized strings.
+    * Changed the way the "when" variable is used internally in shutdown.c.
+      It starts as a NULL pointer, then might get set as a pointer to optarg,
+      then it might get set to point to an argv parameter, then it might have
+      a string value copied into it, over-writing the original data. We should
+      not risk over-writing internal variables which might get used for something
+      else (it's rude and security risk). Set up "when" as its own buffer
+      that has data from optargs and/or argv copied into it.
 
 
 sysvinit (2.93) released; urgency=low

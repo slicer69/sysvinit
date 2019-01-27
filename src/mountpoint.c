@@ -32,6 +32,10 @@
 #include <getopt.h>
 #include <stdio.h>
 
+#ifndef PATH_MAX
+#define PATH_MAX 2048
+#endif
+
 int dostat(char *path, struct stat *st, int do_lstat, int quiet)
 {
 	int		n;
@@ -105,7 +109,7 @@ void usage(void) {
 int main(int argc, char **argv)
 {
 	struct stat	st, st2;
-	char		buf[256];
+	char		buf[PATH_MAX + 1];
 	char		*path;
 	int		quiet = 0;
 	int		showdev = 0;
@@ -163,7 +167,7 @@ int main(int argc, char **argv)
 
 	memset(buf, 0, sizeof(buf));
 	strncpy(buf, path, sizeof(buf) - 4);
-	strcat(buf, "/..");
+	strncat(buf, "/..", 3);
 	if (dostat(buf, &st2, 0, quiet) < 0)
 		return 1;
 

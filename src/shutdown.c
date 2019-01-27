@@ -70,6 +70,8 @@ extern char **environ;
 #endif
 
 #define MESSAGELEN	256
+#define STATELEN        64
+#define WHEN_SIZE       64
 
 /* Whether we should warn system is shutting down */
 #define QUIET_FULL 2
@@ -83,7 +85,7 @@ int fastboot = 0;	/* Do a 'fast' reboot		*/
 int forcefsck = 0;	/* Force fsck on reboot		*/
 char message[MESSAGELEN];	/* Warning message	*/
 char *sltime = 0;	/* Sleep time			*/
-char newstate[64];	/* What are we gonna do		*/
+char newstate[STATELEN];	/* What are we gonna do		*/
 int doself = 0;		/* Don't use init		*/
 int got_alrm = 0;
 
@@ -232,11 +234,11 @@ int init_setenv(char *name, char *value)
  */
 void issue_warn(int mins)
 {
-	char buf[MESSAGELEN + sizeof(newstate)];
+	char buf[MESSAGELEN + sizeof(newstate) + 1];
 	int len;
 
 	buf[0] = 0;
-	strncat(buf, message, sizeof(buf) - 1);
+	strncpy(buf, message, MESSAGELEN);
 	len = strlen(buf);
 
 	if (mins == 0)
@@ -519,7 +521,7 @@ int main(int argc, char **argv)
 	char			buf[128];
 	char			term[UT_LINESIZE + 6];
 	char			*sp;
-	char			*when = NULL;
+	char			when[WHEN_SIZE];
 	int			c, i, wt;
 	int			hours, mins;
 	int			didnolog = 0;
@@ -547,6 +549,7 @@ int main(int argc, char **argv)
 	}
 	strcpy(down_level, "1");
 	halttype = NULL;
+        memset(when, '\0', WHEN_SIZE);
 
 	/* Process the options. */
 	while((c = getopt(argc, argv, "HPacqQkrhnfFyt:g:i:")) != EOF) {
@@ -593,7 +596,7 @@ int main(int argc, char **argv)
 			case 'y': /* Ignored for sysV compatibility */
 				break;
 			case 'g': /* sysv style to specify time. */
-				when = optarg;
+				strncpy(when, optarg, WHEN_SIZE - 1);
 				break;
 			case 'i': /* Level to go to. */
 				if (!strchr("0156aAbBcCsS", optarg[0])) {
@@ -679,7 +682,7 @@ int main(int argc, char **argv)
 
 	/* Read remaining words, skip time if needed. */
 	message[0] = 0;
-	for(c = optind + (!cancel && !when); c < argc; c++) {
+	for(c = optind + (!cancel && !when[0]); c < argc; c++) {
 		if (strlen(message) + strlen(argv[c]) + 4 > MESSAGELEN)
 			break;
   		strcat(message, argv[c]);
@@ -704,9 +707,9 @@ int main(int argc, char **argv)
 	}
   
 	/* Check syntax. */
-	if (when == NULL) {
+	if (when[0] == '\0') {
 		if (optind == argc) usage();
-		when = argv[optind++];
+                strncpy(when, argv[optind++], WHEN_SIZE - 1);
 	}
 
 	/* See if we are already running. */
@@ -725,16 +728,16 @@ int main(int argc, char **argv)
 	/* Tell users what we're gonna do. */
 	switch(down_level[0]) {
 		case '0':
-			strcpy(newstate, "for system halt");
+			strncpy(newstate, "for system halt", STATELEN);
 			break;
 		case '6':
-			strcpy(newstate, "for reboot");
+			strncpy(newstate, "for reboot", STATELEN);
 			break;
 		case '1':
-			strcpy(newstate, "to maintenance mode");
+			strncpy(newstate, "to maintenance mode", STATELEN);
 			break;
 		default:
-			sprintf(newstate, "to runlevel %s", down_level);
+			snprintf(newstate, STATELEN, "to runlevel %s", down_level);
 			break;
 	}
 
@@ -772,10 +775,11 @@ int main(int argc, char **argv)
 
 	/* Alias now and take care of old '+mins' notation. */
 	if (!strcmp(when, "now")) strcpy(when, "0");
-	if (when[0] == '+') when++;
 
+        sp = when;
+	if (when[0] == '+') sp++;
 	/* Decode shutdown time. */
-	for (sp = when; *sp; sp++) {
+	for ( ; *sp; sp++) {
 		if (*sp != ':' && (*sp < '0' || *sp > '9'))
 			usage();
 	}

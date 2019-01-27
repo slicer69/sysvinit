@@ -34,12 +34,13 @@
 
 
 #define MAXLEN 4096
+#define LINE_SIZE 80
 #define MAXLINES 20
 
 int main(int argc, char **argv)
 {
   char buf[MAXLEN];
-  char line[83];
+  char line[LINE_SIZE + 3];   /* leave room for \r\n\0 */
   int i, f, ch;
   int len = 0;
   int remote = 0;
@@ -81,7 +82,7 @@ int main(int argc, char **argv)
   if ((argc - optind) > 0) {
 	for(f = optind; f < argc; f++) {
 		len += strlen(argv[f]) + 1;
-		if (len >= MAXLEN-2) break;
+		if (len >= MAXLEN-4) break;
 		strcat(buf, argv[f]);
 		if (f < argc-1) strcat(buf, " ");
 	}

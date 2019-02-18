@@ -32,6 +32,7 @@ sysvinit (2.94) unreleased; urgency=low
       not risk over-writing internal variables which might get used for something
       else (it's rude and security risk). Set up "when" as its own buffer
       that has data from optargs and/or argv copied into it.
+    * Fixed typo in init.8 manual page.
 
 
 sysvinit (2.93) released; urgency=low

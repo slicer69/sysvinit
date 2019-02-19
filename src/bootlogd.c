@@ -24,12 +24,6 @@
  *		along with this program; if not, write to the Free Software
  *		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
- *				*NOTE* *NOTE* *NOTE*
- *			This is a PROOF OF CONCEPT IMPLEMENTATION
- *
- *		I have bigger plans for Debian, but for now
- *		this has to do ;)
- *
  */
 
 #include <sys/types.h>
@@ -40,7 +34,6 @@
 #include <time.h>
 #include <stdio.h>
 #include <errno.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -48,7 +41,15 @@
 #include <getopt.h>
 #include <dirent.h>
 #include <fcntl.h>
+#ifdef __linux__
 #include <pty.h>
+#endif
+
+#ifdef __FreeBSD__
+#include <termios.h>
+#include <libutil.h>
+#endif
+
 #include <ctype.h>
 #ifdef __linux__
 #include <sys/mount.h>
@@ -56,6 +57,7 @@
 #include "bootlogd.h"
 
 #define MAX_CONSOLES 16
+#define KERNEL_COMMAND_LENGTH 4096
 
 char ringbuf[32768];
 char *endptr = ringbuf + sizeof(ringbuf);
@@ -250,7 +252,7 @@ int consolenames(struct real_cons *cons, int max_consoles)
 	/* This appears to be unused.  unsigned int	kdev; */
 #endif
 	struct stat	st, st2;
-	char		buf[256];
+	char		buf[KERNEL_COMMAND_LENGTH];
 	char		*p;
 	int		didmount = 0;
 	int		n;
@@ -279,16 +281,13 @@ int consolenames(struct real_cons *cons, int max_consoles)
 		perror("bootlogd: /proc/cmdline");
 	} else {
 		buf[0] = 0;
-		if ((n = read(fd, buf, sizeof(buf) - 1)) < 0)
+		if ((n = read(fd, buf, KERNEL_COMMAND_LENGTH - 1)) < 0)
 			perror("bootlogd: /proc/cmdline");
 		close(fd);
 	}
 	if (didmount) umount("/proc");
                 
-
 	if (n < 0) return 0;
-
-
 
 	/*
 	 *	OK, so find console= in /proc/cmdline.

@@ -32,7 +32,11 @@
 #include <time.h>
 #include <fcntl.h>
 #include <string.h>
+#ifdef __FreeBSD__
+#include <utmpx.h>
+#else
 #include <utmp.h>
+#endif
 
 #include "init.h"
 #include "initreq.h"

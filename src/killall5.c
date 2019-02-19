@@ -58,8 +58,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-char *Version = "@(#)killall5 2.86 31-Jul-2004 miquels@cistron.nl";
-
 #ifndef PATH_MAX
 #  ifdef MAXPATHLEN
 #    define PATH_MAX MAXPATHLEN
@@ -435,7 +433,11 @@ int check4nfs(const char * path, char * real)
 
 	} while (1);
 
-	if (real) strcpy(real, curr);
+	if (real)     /* real is defined elsewhere as being PATH_MAX + 1 */
+        {
+           memset(real, '\0', PATH_MAX + 1);
+           strncpy(real, curr, PATH_MAX);
+        }
 
 	if (errno == EINVAL) {
 		const size_t nlen = strlen(curr);

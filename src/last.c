@@ -34,7 +34,6 @@
 #include <ctype.h>
 #include <utmp.h>
 #include <errno.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -47,6 +46,10 @@
 
 #ifndef SHUTDOWN_TIME
 #  define SHUTDOWN_TIME 254
+#endif
+
+#ifndef PATH_MAX
+#define PATH_MAX 2048
 #endif
 
 char *Version = "@(#) last 2.85 31-Apr-2004 miquels";
@@ -254,10 +257,11 @@ int uread(FILE *fp, struct utmp *u, int *quit)
 #define BTMP_FILE getbtmp()
 char *getbtmp()
 {
-	static char btmp[128];
+	static char btmp[PATH_MAX + 5];  /* max path + btmp + null terminator */
 	char *p;
 
-	strcpy(btmp, WTMP_FILE);
+        memset(btmp, '\0', PATH_MAX + 5);
+	strncpy(btmp, WTMP_FILE, PATH_MAX);
 	if ((p = strrchr(btmp, '/')) == NULL)
 		p = btmp;
 	else
@@ -842,7 +846,7 @@ int main(int argc, char **argv)
 	switch (ut.ut_type) {
 		case SHUTDOWN_TIME:
 			if (extended) {
-				strcpy(ut.ut_line, "system down");
+				strncpy(ut.ut_line, "system down", OLD_LINESIZE - 1);
 				quit = list(&ut, lastboot, R_NORMAL);
 			}
 			lastdown = lastrch = ut.ut_time;
@@ -851,14 +855,14 @@ int main(int argc, char **argv)
 		case OLD_TIME:
 		case NEW_TIME:
 			if (extended) {
-				strcpy(ut.ut_line,
+				strncpy(ut.ut_line,
 				ut.ut_type == NEW_TIME ? "new time" :
-					"old time");
+					"old time", OLD_LINESIZE - 1);
 				quit = list(&ut, lastdown, R_TIMECHANGE);
 			}
 			break;
 		case BOOT_TIME:
-			strcpy(ut.ut_line, "system boot");
+			strncpy(ut.ut_line, "system boot", OLD_LINESIZE - 1);
 			quit = list(&ut, lastdown, R_REBOOT);
 			lastboot = ut.ut_time;
 			down = 1;

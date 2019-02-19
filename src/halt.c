@@ -155,13 +155,15 @@ int get_runlevel(void)
 /*
  *	Switch to another runlevel.
  */
-void do_shutdown(char *fl, char *tm)
+void do_shutdown(char *fl, int should_poweroff, char *tm)
 {
-	char *args[8];
+	char *args[9];
 	int i = 0;
 
 	args[i++] = "shutdown";
 	args[i++] = fl;
+        if ( (! strcmp(fl, "-h") ) && (should_poweroff) )
+           args[i++] = "-P";
 	if (tm) {
 		args[i++] = "-t";
 		args[i++] = tm;
@@ -259,7 +261,7 @@ int main(int argc, char **argv)
 		 */
 		c = get_runlevel();
 		if (c != '0' && c != '6')
-			do_shutdown(do_reboot ? "-r" : "-h", tm);
+			do_shutdown(do_reboot ? "-r" : "-h", do_poweroff, tm);
 	}
 
 	/*

@@ -1,3 +1,40 @@
+sysvinit (2.94) unreleased; urgency=low
+
+  [ Jesse Smith ]
+
+    * When the halt command is called with the -p flag (or as poweroff)
+      the command now passes the "-h -P" flags to shutdown. This
+      in turn sets the INIT_HALT environment variable to POWEROFF.
+      Assuming this value is checked by initscripts during the
+      shutting down procedure, it should cause the system to
+      be powered off.
+      If halt is called without -p then the value of INIT_HALT
+      is not set and the default action (often set in /etc/defaut/halt)
+      is taken.
+    * Removed unnecessary malloc.h includes. Memory allocation
+      and freeing is now handled in stdlib.h
+    * Added defines for FreeBSD to make some components compile
+      on FreeBSD 11.
+    * Increased the size of the kernel command line buffer in bootlogd
+      from 256 characters to 4096. This size is defined in KERNEL_COMMAND_LENGTH
+      for easy modification downstream.
+    * Added logsave.c and logsave.8 manual page from e2fsprogs to make
+      sure logsave is available to initscripts.
+    * Updated src/Makefile to make sure bootlogd compiles with Clang.
+    * Use defined constants for password length in sulogin. Makes
+      it easier to update/patch later.
+    * Minor code fixes across multiple source files to avoid buffer
+      overflows, or uninitialized strings.
+    * Changed the way the "when" variable is used internally in shutdown.c.
+      It starts as a NULL pointer, then might get set as a pointer to optarg,
+      then it might get set to point to an argv parameter, then it might have
+      a string value copied into it, over-writing the original data. We should
+      not risk over-writing internal variables which might get used for something
+      else (it's rude and security risk). Set up "when" as its own buffer
+      that has data from optargs and/or argv copied into it.
+    * Fixed typo in init.8 manual page.
+
+
 sysvinit (2.93) released; urgency=low
 
   [ Jesse Smith ]
@@ -5,6 +42,10 @@ sysvinit (2.93) released; urgency=low
     * Fixed typo in pidof which would prevent the -o (omit PID)
       flag from working.
       Fixes Debian bug ##913394.
+    * Fixed error where pidof would not omit checking PIDs passed
+      to it when the -o flag was used.
+      Fixes Debian bug #913394.
+
 
 sysvinit (2.92) released; urgency=low
 

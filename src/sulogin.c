@@ -72,6 +72,8 @@
 #  include <selinux/get_context_list.h>
 #endif
 
+#define PASSWORD_LENGTH 256
+
 #include "consoles.h"
 #define CONMAX		16
 
@@ -418,8 +420,8 @@ struct passwd *getrootpwent(int try_manually)
 	struct passwd *pw;
 	struct spwd *spw;
 	FILE *fp;
-	static char line[256];
-	static char sline[256];
+	static char line[PASSWORD_LENGTH];
+	static char sline[PASSWORD_LENGTH];
 	char *p;
 
 	/*
@@ -453,7 +455,7 @@ struct passwd *getrootpwent(int try_manually)
 	/*
 	 *	Find root in the password file.
 	 */
-	while((p = fgets(line, 256, fp)) != NULL) {
+	while((p = fgets(line, PASSWORD_LENGTH, fp)) != NULL) {
 		if (strncmp(line, "root:", 5) != 0)
 			continue;
 		p += 5;
@@ -487,7 +489,7 @@ struct passwd *getrootpwent(int try_manually)
 		fprintf(stderr, "sulogin: %s: root password garbled\n\r", F_PASSWD);
 		return &pwd;
 	}
-	while((p = fgets(sline, 256, fp)) != NULL) {
+	while((p = fgets(sline, PASSWORD_LENGTH, fp)) != NULL) {
 		if (strncmp(sline, "root:", 5) != 0)
 			continue;
 		p += 5;

@@ -276,7 +276,7 @@ On receipt of this signals, init closes and re-opens its control fifo,
 .TP 0.5i
 .B SIGUSR2
 When init receives SIGUSR2, init closes and leaves the control fifo,
-\fB/run/initctl\f\P, closed. This may be used to make sure init is not
+\fB/run/initctl\fP, closed. This may be used to make sure init is not
 holding open any files. However, it also prevents init from switching
 runlevels. Which means commands like shutdown no longer work.
 The fifo can be re-opened by sending init the SIGUSR1 signal.

@@ -23,13 +23,13 @@ MNTPOINT=
 
 # For some known distributions we do not build all programs, otherwise we do.
 BIN	=
-SBIN	= init halt shutdown runlevel killall5 fstab-decode
+SBIN	= init halt shutdown runlevel killall5 fstab-decode logsave
 USRBIN	= last mesg readbootlog
 
 MAN1	= last.1 lastb.1 mesg.1 readbootlog.1
 MAN5	= initscript.5 inittab.5 initctl.5
 MAN8	= halt.8 init.8 killall5.8 pidof.8 poweroff.8 reboot.8 runlevel.8
-MAN8	+= shutdown.8 telinit.8 fstab-decode.8
+MAN8	+= shutdown.8 telinit.8 fstab-decode.8 logsave.8
 
 ifeq ($(DISTRO),)
 SBIN	+= sulogin bootlogd
@@ -115,6 +115,9 @@ halt:		halt.o ifdown.o hddown.o utmp.o runlevellog.o
 last:		LDLIBS += $(STATIC)
 last:		last.o
 
+logsave:	LDLIBS += $(STATIC)
+logsave:	logsave.o
+
 mesg:		LDLIBS += $(STATIC)
 mesg:		mesg.o
 
@@ -137,10 +140,10 @@ shutdown:	LDLIBS += $(STATIC)
 shutdown:	dowall.o shutdown.o utmp.o
 
 bootlogd:	LDLIBS += -lutil $(STATIC)
-bootlogd:	bootlogd.o bootlogd.h
+bootlogd:	bootlogd.o
 
 readbootlog:	LDLIBS += $(STATIC)
-readbootlog:	readbootlog.o bootlogd.h
+readbootlog:	readbootlog.o 
 
 fstab-decode:	LDLIBS += $(STATIC)
 fstab-decode:	fstab-decode.o
@@ -151,7 +154,7 @@ sulogin.o:	sulogin.c
 runlevellog.o:	runlevellog.h runlevellog.c paths.h
 
 init.o:		CPPFLAGS += $(SELINUX_DEF)
-init.o:		init.c init.h initreq.h paths.h reboot.h runlevellog.h runlevellog.c set.h paths.h
+init.o:		init.c init.h initreq.h paths.h reboot.h runlevellog.h runlevellog.c set.h 
 
 utmp.o:		
 
@@ -159,6 +162,10 @@ init_utmp.o:	CPPFLAGS += -DINIT_MAIN
 init_utmp.o:	utmp.c init.h initreq.h paths.h
 		$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
+bootlogd.o:	bootlogd.c bootlogd.h
+
+readbootlog.o:	readbootlog.c
+ 
 utmpdump.o:	utmpdump.c oldutmp.h
 
 shutdown.o:	shutdown.c paths.h reboot.h initreq.h init.h
@@ -166,6 +173,8 @@ shutdown.o:	shutdown.c paths.h reboot.h initreq.h init.h
 halt.o:		halt.c reboot.h paths.h runlevellog.c runlevellog.h
 
 last.o:		last.c oldutmp.h
+
+logsave.o:	logsave.c
 
 consoles.o:	consoles.c consoles.h
 

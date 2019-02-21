@@ -27,12 +27,25 @@ fstab-decode \- run a command with fstab-encoded arguments
 
 .SH DESCRIPTION
 .B fstab-decode
-decodes escapes in the specified \fIARGUMENT\fRs
+decodes escapes (such as newline characters) in the specified \fIARGUMENT\fRs
 and uses them to run \fICOMMAND\fR.
 The argument escaping uses the same rules as path escaping in
 \fB/etc/fstab\fR,
 .B /etc/mtab
 and \fB/proc/mtab\fR.
+
+In essence fstab-decode can be used anytime we want to pass multiple
+parameters to a command as a list of command line argments. It turns output
+like this:
+
+.nf
+/root
+/mnt/remote-disk
+/home
+
+Into one long list of parameters, "/root /mnt/remote-disk /home". This
+can be useful when trying to work with multiple filesystems at once. For
+instance, we can use it to unmount multiple NFS shares.
 
 .SH EXIT STATUS
 .B fstab-decode
@@ -43,5 +56,11 @@ Otherwise it exits with the status returned by \fICOMMAND\fR.
 
 .SH EXAMPLES
 .nf
+The following example reads fstab, finds all instances of VFAT filesystems and
+prints their mount points (argument 2 in the fstab file). fstab-decode then runs 
+the specified program, umount, and passes it the list of VFAT mountpoints. 
+This unmounts all VFAT partitions.
+
+
 .B fstab-decode umount $(awk \[aq]$3 == \[dq]vfat\[dq] { print $2 }\[aq] /etc/fstab)
 .fi

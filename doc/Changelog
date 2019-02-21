@@ -33,6 +33,7 @@ sysvinit (2.94) unreleased; urgency=low
       else (it's rude and security risk). Set up "when" as its own buffer
       that has data from optargs and/or argv copied into it.
     * Fixed typo in init.8 manual page.
+    * Updated text of fstab-decode to explain what the utility does.
 
 
 sysvinit (2.93) released; urgency=low

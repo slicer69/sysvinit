@@ -27,8 +27,8 @@ fstab-decode \- run a command with fstab-encoded arguments
 
 .SH DESCRIPTION
 .B fstab-decode
-decodes escapes (such as newline characters) in the specified \fIARGUMENT\fRs
-and uses them to run \fICOMMAND\fR.
+decodes escapes (such as newline characters and other whitespace) 
+in the specified \fIARGUMENT\fRs and uses them to run \fICOMMAND\fR.
 The argument escaping uses the same rules as path escaping in
 \fB/etc/fstab\fR,
 .B /etc/mtab
@@ -45,7 +45,9 @@ like this:
 
 Into one long list of parameters, "/root /mnt/remote-disk /home". This
 can be useful when trying to work with multiple filesystems at once. For
-instance, we can use it to unmount multiple NFS shares.
+instance, we can use it to unmount multiple NFS shares. This program also
+removes whitespace and other characters which might cause programs such
+as mount or umount to fail.
 
 .SH EXIT STATUS
 .B fstab-decode

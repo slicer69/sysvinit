@@ -116,7 +116,6 @@ if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) /* open pipe for writing */
 .fi
 
 .sp
-.RE
 .SH NOTES
 Usually the /run/initctl pipe would only be used by low-level programs to
 request a power-related shutdown or change the runlevel, like telinit
@@ -140,7 +139,6 @@ the SIGUSR1 signal.
 If the /run/initctl pipe is closed then it may still be possible to bring
 down the system using the shutdown command's -n flag, but this is not
 always clean and not recommended.
-.RE
 .SH FILES
 /run/initctl
 /sbin/init

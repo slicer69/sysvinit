@@ -1,4 +1,12 @@
-sysvinit (2.94) unreleased; urgency=low
+sysvinit (2.95) unreleased; urgency=low
+
+  [ Jesse Smith ]
+
+    * Fixed various typos and control codes in manual pages.
+      Patch provided by Bjarni Ingi Gislason.
+
+
+sysvinit (2.94) released; urgency=low
 
   [ Jesse Smith ]
 

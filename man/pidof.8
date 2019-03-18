@@ -69,8 +69,10 @@ Tells \fIpidof\fP to omit processes with that process id. The special
 pid \fB%PPID\fP can be used to name the parent process of the \fIpidof\fP
 program, in other words the calling shell or shell script.
 .IP "-f \fIformat\fP"
-Tells \fIpidof\fP to format the process ids in the given \fIprintf\fP style.
+Tells \fIpidof\fP to format the process IDs in the given \fIprintf\fP style string.
 For example \fB" -p%d"\fP is useful for \fIstrace\fP.
+The "%d" symbol is used as a place holder for the PID to be printed. A "\\n" can
+be used to cause a newline to be printed. For example \fB" %d\\n"\fP.
 .SH "EXIT STATUS"
 .TP
 .B 0

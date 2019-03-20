@@ -4,11 +4,11 @@ sysvinit (2.95) unreleased; urgency=low
 
     * Fixed various typos and control codes in manual pages.
       Patch provided by Bjarni Ingi Gislason.
-    * Patched pidof so that the -f flag does not print memory information
-      from the stack when passed a specially crafted format string.
-      Also prevent segfault when "%s" is used in a format string.
-      Special characters for the format string can be found in the man
-      page for pidof.
+    * Dropped "-f" format flag for pidof command as it
+      could be used to print information from memory or crash
+      pidof. Replaced flag with "-d" which allows for a custom
+      separator to be used between listed PIDs.
+      Patch supplied by KatolaZ.
 
 
 sysvinit (2.94) released; urgency=low

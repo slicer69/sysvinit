@@ -948,8 +948,8 @@ void pidof_usage(void)
 {
    printf("pidof usage: [options] <program-name>\n\n");
    printf(" -c           Return PIDs with the same root directory\n");
+   printf(" -d <sep>     Use the provided character as output separator\n");
    printf(" -h           Display this help text\n");
-   printf(" -f <format>  Display PIDs in a given printf-style format\n");
    printf(" -n           Avoid using stat system function on network shares\n");
    printf(" -o <pid>     Omit results with a given PID\n");
    printf(" -q           Quiet mode. Do not display output\n");
@@ -985,66 +985,6 @@ void nsyslog(int pri, char *fmt, ...)
 #define PIDOF_NETFS	0x04
 #define PIDOF_QUIET     0x08
 
-
-/* Replace elements (from) of the original string
-   with new elements (to).
-   Returns the new string on success or NULL on failure.
-   Free the returnedstring after use.
-*/
-char *Replace_String(char *from, char *to, char *original)
-{
-    int from_length, to_length;
-    int source_length, destination_length;
-    int replace_count = 0;
-    char *replace_position;
-    char *destination_string;
-    char *source_position, *destination_position;
-
-    if ( (! from) || (! to) || (! original) )
-       return NULL;
-
-    from_length = strlen(from);
-    to_length = strlen(to);
-    source_length = strlen(original);
-    replace_position = strstr(original, from);
-    /* There is nothing to replace, return original string */
-    if (! replace_position)
-        return strdup(original);
-    /* count number of times we need to perform replacement */
-    while (replace_position)
-    {
-        replace_count++;
-        replace_position++;
-        replace_position = strstr(replace_position, from);
-    }
-    /* calculate length and allocate the new string */
-    destination_length = source_length + ( (to_length - from_length) * replace_count);
-    destination_string = calloc(destination_length, sizeof(char));
-    if (! destination_string)
-       return NULL;
-
-    /* Copy source string up to the part we need to replace. Then jump over the replaced bit */
-    source_position = original;
-    destination_position = destination_string;
-    replace_position = strstr(original, from);
-    while (replace_position)
-    {
-        for ( ; source_position < replace_position; source_position++)
-        {
-            destination_position[0] = source_position[0];
-            destination_position++;
-        }
-        strcat(destination_position, to);
-        source_position += from_length;
-        destination_position += to_length;
-        replace_position = strstr(source_position, from);
-    }
-    /* Replaced all the items, now copy the tail end of the original string */
-    strcat(destination_position, source_position);
-    return destination_string;
-}
-
-
 /*
  *	Pidof functionality.
  */
@@ -1059,7 +999,7 @@ int main_pidof(int argc, char **argv)
 	int		chroot_check = 0;
 	struct stat	st;
 	char		tmp[512];
-        char            *format = NULL;
+        char            sep = ' ';
 
 	omit = (OMIT*)0;
 	nlist = (NFS*)0;
@@ -1068,7 +1008,7 @@ int main_pidof(int argc, char **argv)
 	if ((token = getenv("PIDOF_NETFS")) && (strcmp(token,"no") != 0))
 		flags |= PIDOF_NETFS;
 
-	while ((opt = getopt(argc,argv,"qhco:f:sxn")) != EOF) switch (opt) {
+	while ((opt = getopt(argc,argv,"qhco:d:sxn")) != EOF) switch (opt) {
 		case '?':
 			nsyslog(LOG_ERR,"invalid options on command line!\n");
 			closelog();
@@ -1079,8 +1019,8 @@ int main_pidof(int argc, char **argv)
                 case 'h':
                         pidof_usage();
                         exit(0);
-                case 'f':
-                        format = optarg;
+                case 'd':
+                        sep = optarg[0];
                         break;
 		case 'o':
 			here = optarg;
@@ -1178,29 +1118,9 @@ int main_pidof(int argc, char **argv)
 				}
 
 				if ( ~flags & PIDOF_QUIET ) {
-                                    if (format)
-                                    {
-                                      char *show_string, *final_string;
-                                      char my_pid[32];
-                                      snprintf(my_pid, 32, "%d", p->pid);
-                                      show_string = Replace_String("%d", my_pid, format);
-                                      final_string = Replace_String("\\n", "\n", show_string);
-                                      if (show_string) free(show_string);
-                                      if (final_string) 
-                                      {
-                                         printf("%s", final_string);
-                                         free(final_string);
-                                      }
-                                      else
-                                         fprintf(stderr, "Cannot handle format provided by -f\n");
-                                      /* printf(format, p->pid); */
-                                    }
-                                    else
-                                    {
 					if (! first)
-						printf(" ");
+						printf("%c", sep);
 					printf("%d", p->pid);
-                                    }
 				}
 				first = 0;
 			}

@@ -66,7 +66,8 @@ Reboot after shutdown.
 .\"}}}
 .\"{{{  -h
 .IP \fB\-h\fP
-Halt or power off after shutdown.
+Halt or power off after shutdown. Usually used with the -P or -H flags,
+depending on whether we want to poweroff or simply stop the operating system.
 .\"}}}
 .\"{{{  -P
 .IP \fB\-P\fP
@@ -77,6 +78,10 @@ Must be used with the -h flag.
 .IP \fB\-H\fP
 Modifier to the -h flag.  Halt action is to halt or drop into boot
 monitor on systems that support it.  Must be used with the -h flag.
+Halting is often used to run through the shutdown process and leave
+output on the screen for debugging purposes. Or when the user wants the OS to
+stop, but leave the power on. To power off at the end of the shutdown sequence
+use the -P modifier instead.
 .\"}}}
 .\"{{{  -f
 .IP \fB\-f\fP

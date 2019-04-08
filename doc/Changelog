@@ -9,6 +9,8 @@ sysvinit (2.95) unreleased; urgency=low
       pidof. Replaced flag with "-d" which allows for a custom
       separator to be used between listed PIDs.
       Patch supplied by KatolaZ.
+    * Updated manual page to describe -h and its modifiers (-H and -P)
+      in more detail. Should close Debian bug #374039.
 
 
 sysvinit (2.94) released; urgency=low

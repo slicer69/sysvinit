@@ -227,20 +227,23 @@ struct {
 #define NR_EXTRA_ENV	16
 char *extra_env[NR_EXTRA_ENV];
 
+#define MINI_SLEEP 10      /* ten milliseconds */
+#define SHORT_SLEEP 5000   /* five seconds */
+#define LONG_SLEEP 30000   /* 30 seconds sleep to deal with memory issues*/
 
 /*
- *	Sleep a number of seconds.
+ *	Sleep a number of milliseconds.
  *
- *	This only works correctly because the linux select updates
+ *	This only works correctly because Linux select updates
  *	the elapsed time in the struct timeval passed to select!
  */
 static
-void do_sleep(int sec)
+void do_msleep(int msec)
 {
 	struct timeval tv;
 
-	tv.tv_sec = sec;
-	tv.tv_usec = 0;
+	tv.tv_sec = msec / 1000;
+	tv.tv_usec = (msec % 1000) * 1000;
 
 	while(select(0, NULL, NULL, NULL, &tv) < 0 && errno == EINTR)
 		;
@@ -257,7 +260,7 @@ void *imalloc(size_t size)
 
 	while ((m = malloc(size)) == NULL) {
 		initlog(L_VB, "out of memory");
-		do_sleep(5);
+		do_msleep(SHORT_SLEEP);
 	}
 	memset(m, 0, size);
 	return m;
@@ -723,7 +726,7 @@ void coredump(void)
 	sigdelset(&mask, SIGSEGV);
 	sigprocmask(SIG_SETMASK, &mask, NULL);
 
-	do_sleep(5);
+	do_msleep(SHORT_SLEEP);
 	exit(0);
 }
 
@@ -743,13 +746,13 @@ void segv_handler(int sig, struct sigcontext ctx)
 	char	*p = "";
 	int	saved_errno = errno;
 
-	if ((void *)ctx.eip >= (void *)do_sleep &&
+	if ((void *)ctx.eip >= (void *)do_msleep &&
 	    (void *)ctx.eip < (void *)main)
 		p = " (code)";
 	initlog(L_VB, "PANIC: segmentation violation at %p%s! "
 		  "sleeping for 30 seconds.", (void *)ctx.eip, p);
 	coredump();
-	do_sleep(30);
+	do_msleep(LONG_SLEEP);
 	errno = saved_errno;
 }
 #else
@@ -764,7 +767,7 @@ void segv_handler(int sig)
 	initlog(L_VB,
 		"PANIC: segmentation violation! sleeping for 30 seconds.");
 	coredump();
-	do_sleep(30);
+	do_msleep(LONG_SLEEP);
 	errno = saved_errno;
 }
 #endif
@@ -978,7 +981,7 @@ char **init_buildenv(int child)
 
 	while ((e = (char**)calloc(n, sizeof(char *))) == NULL) {
 		initlog(L_VB, "out of memory");
-		do_sleep(5);
+		do_msleep(SHORT_SLEEP);
 	}
 
 	for (n = 0; environ[n]; n++)
@@ -1304,7 +1307,7 @@ pid_t spawn(CHILD *ch, int *res)
 
 	if (pid == -1) {
 		initlog(L_VB, "cannot fork, retry..");
-		do_sleep(5);
+		do_msleep(SHORT_SLEEP);
 		continue;
 	}
 	return(pid);
@@ -1712,13 +1715,14 @@ void read_inittab(void)
 	
     }
     /*
-     *	See if we have to wait 5 seconds
+     *	See if we have to wait sleep_time seconds
      */
     if (foundOne && round == 0) {
 	/*
-	 *	Yup, but check every second if we still have children.
+	 *	Yup, but check every 10 milliseconds if we still have children.
+         *      The f < 100 * sleep_time refers to sleep time in 10 millisecond chunks.
 	 */
-	for(f = 0; f < sleep_time; f++) {
+	for(f = 0; f < 100 * sleep_time; f++) {
 		for(ch = family; ch; ch = ch->next) {
 			if (!(ch->flags & KILLME)) continue;
 			if ((ch->flags & RUNNING) && !(ch->flags & ZOMBIE))
@@ -1732,7 +1736,7 @@ void read_inittab(void)
 			foundOne = 0; /* Skip the sleep below. */
 			break;
 		}
-		do_sleep(1);
+		do_msleep(MINI_SLEEP);
 	}
     }
   }
@@ -1740,7 +1744,7 @@ void read_inittab(void)
   /*
    *	Now give all processes the chance to die and collect exit statuses.
    */
-  if (foundOne) do_sleep(1);
+  if (foundOne) do_msleep(MINI_SLEEP);
   for(ch = family; ch; ch = ch->next)
 	if (ch->flags & KILLME) {
 		if (!(ch->flags & ZOMBIE))

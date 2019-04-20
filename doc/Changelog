@@ -11,6 +11,12 @@ sysvinit (2.95) unreleased; urgency=low
       Patch supplied by KatolaZ.
     * Updated manual page to describe -h and its modifiers (-H and -P)
       in more detail. Should close Debian bug #374039.
+    * Use millisecond delays in init so that shutdown
+      can happen without a near-full-second delay after
+      all processes have terminated. Replaced do_sleep()
+      with do_msleep(), provided by Serge Belyshev.
+    * Replaced hardwired sleep constants in init.c with
+      defined constants for easy updating in the future.
 
 
 sysvinit (2.94) released; urgency=low

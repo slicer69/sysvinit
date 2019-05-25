@@ -17,6 +17,8 @@ sysvinit (2.95) unreleased; urgency=low
       with do_msleep(), provided by Serge Belyshev.
     * Replaced hardwired sleep constants in init.c with
       defined constants for easy updating in the future.
+    * Accepted patch from Luc Gommans which explains why zombie and
+      deep sleep processes (Z and D) may be hidden from pidof.
 
 
 sysvinit (2.94) released; urgency=low

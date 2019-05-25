@@ -89,6 +89,9 @@ as the program you're after but are actually other programs. Note
 that the executable name of running processes is calculated with
 .BR readlink (2),
 so symbolic links to executables will also match.
+.PP
+Zombie processes or processes in disk sleep (states Z and D, respectively)
+are ignored, as attempts to access the stats of these will sometimes fail.
 
 .SH SEE ALSO
 .BR shutdown (8),

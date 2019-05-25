@@ -954,7 +954,7 @@ void pidof_usage(void)
    printf(" -o <pid>     Omit results with a given PID\n");
    printf(" -q           Quiet mode. Do not display output\n");
    printf(" -s           Only return one PID\n");
-   printf(" -x           Return PIDs of shells running scritps with a matchign name\n");
+   printf(" -x           Return PIDs of shells running scripts with a matching name\n");
    printf("\n");
 }
 

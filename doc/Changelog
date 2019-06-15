@@ -1,4 +1,4 @@
-sysvinit (2.95) unreleased; urgency=low
+sysvinit (2.95) released; urgency=low
 
   [ Jesse Smith ]
 
@@ -19,7 +19,9 @@ sysvinit (2.95) unreleased; urgency=low
       defined constants for easy updating in the future.
     * Accepted patch from Luc Gommans which explains why zombie and
       deep sleep processes (Z and D) may be hidden from pidof.
-
+    * Removed link instruction against sepol library from src/Makefile.
+      This has no change to the resulting binary, just makes the
+      Makefile cleaner.
 
 sysvinit (2.94) released; urgency=low
 

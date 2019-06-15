@@ -81,7 +81,7 @@ MANDIR		= /usr/share/man
 
 ifeq ($(WITH_SELINUX),yes)
   SELINUX_DEF	=  -DWITH_SELINUX
-  INITLIBS	+= -lsepol -lselinux
+  INITLIBS	+= -lselinux
   SULOGINLIBS	= -lselinux	
 else
   SELINUX_DEF	=

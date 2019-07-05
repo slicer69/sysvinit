@@ -6,6 +6,7 @@ sysvinit (2.96) released; urgency=low
       try to find processes in uninterruptable (D) or zombie (Z) states.
       This can cause pidof to hang, but produces a more complete process
       list.
+      Closes Savannah bug #56534
 
 
 sysvinit (2.95) released; urgency=low

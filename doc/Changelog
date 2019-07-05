@@ -1,3 +1,13 @@
+sysvinit (2.96) released; urgency=low
+
+  [ Jesse Smith ]
+
+    * Added -z command line paramter to pidof which tells pidof to
+      try to find processes in uninterruptable (D) or zombie (Z) states.
+      This can cause pidof to hang, but produces a more complete process
+      list.
+
+
 sysvinit (2.95) released; urgency=low
 
   [ Jesse Smith ]

@@ -135,8 +135,16 @@ NFS *nlist;
 
 /* Did we stop all processes ? */
 int sent_sigstop;
-
 int scripts_too = 0;
+
+/* Should pidof try to list processes in I/O wait (D) and zombie (Z) states? */
+#ifndef FALSE
+#define FALSE 0
+#endif
+#ifndef TRUE
+#define TRUE 1
+#endif
+int list_dz_processes = FALSE;
 
 char *progname;	/* the name of the running program */
 #ifdef __GNUC__
@@ -598,8 +606,9 @@ int readproc(int do_stat)
 			if (startcode == 0 && endcode == 0)
 				p->kernel = 1;
 			fclose(fp);
-                        if ( (strchr(process_status, 'D') != NULL) ||
-                             (strchr(process_status, 'Z') != NULL) ){
+                        if ( (! list_dz_processes) &&
+                             ( (strchr(process_status, 'D') != NULL) ||
+                               (strchr(process_status, 'Z') != NULL) ) ){
                            /* Ignore zombie processes or processes in
                               disk sleep, as attempts
                               to access the stats of these will
@@ -955,6 +964,7 @@ void pidof_usage(void)
    printf(" -q           Quiet mode. Do not display output\n");
    printf(" -s           Only return one PID\n");
    printf(" -x           Return PIDs of shells running scripts with a matching name\n");
+   printf(" -z           List zombie and I/O waiting processes. May cause pidof to hang.\n");
    printf("\n");
 }
 
@@ -1008,7 +1018,7 @@ int main_pidof(int argc, char **argv)
 	if ((token = getenv("PIDOF_NETFS")) && (strcmp(token,"no") != 0))
 		flags |= PIDOF_NETFS;
 
-	while ((opt = getopt(argc,argv,"qhco:d:sxn")) != EOF) switch (opt) {
+	while ((opt = getopt(argc,argv,"qhco:d:sxzn")) != EOF) switch (opt) {
 		case '?':
 			nsyslog(LOG_ERR,"invalid options on command line!\n");
 			closelog();
@@ -1056,6 +1066,9 @@ int main_pidof(int argc, char **argv)
 		case 'x':
 			scripts_too++;
 			break;
+                case 'z':
+                        list_dz_processes = TRUE;
+                        break;
 		case 'n':
 			flags |= PIDOF_NETFS;
 			break;

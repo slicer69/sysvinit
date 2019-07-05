@@ -24,6 +24,7 @@ pidof -- find the process ID of a running program.
 .RB [ \-c ]
 .RB [ \-n ]
 .RB [ \-x ]
+.RB [ \-z ]
 .RB [ \-o
 .IR omitpid[,omitpid...] ]
 .RB [ \-o
@@ -64,6 +65,10 @@ a status of true or false to indicate whether a matching PID was found.
 .IP \-x
 Scripts too - this causes the program to also return process id's of
 shells running the named scripts.
+.IP \-z
+Try to detect processes which are stuck in uninterruptible (D) or zombie (Z)
+status. Usually these processes are skipped as trying to deal with them can cause
+pidof to hang. 
 .IP "-d \fIsep\fP"
 Tells \fIpidof\fP to use \fIsep\fP as an output separator if more than one PID
 is shown. The default separator is a space.
@@ -92,6 +97,8 @@ so symbolic links to executables will also match.
 .PP
 Zombie processes or processes in disk sleep (states Z and D, respectively)
 are ignored, as attempts to access the stats of these will sometimes fail.
+The \-z flag (see above) tells pidof to try to detect these sleeping and zombie
+processes, at the risk of failing or hanging.
 
 .SH SEE ALSO
 .BR shutdown (8),

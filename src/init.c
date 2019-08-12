@@ -2433,7 +2433,8 @@ void check_init_fifo(void)
   }
 
   /* Wait for data to appear, _if_ the pipe was opened. */
-  if (pipe_fd >= 0) while(!quit) {
+  if (pipe_fd >= 0) { 
+     while(!quit) {
 
 	/* Do select, return on EINTR. */
 	FD_ZERO(&fds);
@@ -2504,9 +2505,9 @@ void check_init_fifo(void)
 		default:
 			initlog(L_VB, "got unimplemented initrequest.");
 			break;
-	}
-  }
-
+	}   /* end of switch */
+    }       /* end of while loop not quitting */
+  }         /* end of if the pipe is open */
   /*
    *	We come here if the pipe couldn't be opened.
    */

@@ -340,7 +340,7 @@ dontuse:
 /*
  *	Write data and make sure it's on disk.
  */
-void writelog(FILE *fp, unsigned char *ptr, int len)
+void writelog(FILE *fp, unsigned char *ptr, int len, int print_escape_characters)
 {
 	int dosync = 0;
 	int i;
@@ -363,7 +363,9 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 
 		/* remove escape sequences, but do it in a way that allows us to stop
 		 * in the middle in case the string was cut off */
-		if (inside_esc == 1) {
+                if (! print_escape_characters)
+                {
+                    if (inside_esc == 1) {
 			/* first '[' is special because if we encounter it again, it should be considered the final byte */
 			if (*ptr == '[') {
 				/* multi char sequence */
@@ -376,7 +378,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 				}
 				inside_esc = 0;
 			}
-		} else if (inside_esc == 2) {
+                    } else if (inside_esc == 2) {
 			switch (*ptr) {
 				case '0' ... '9': /* intermediate chars of escape sequence */
 				case ';':
@@ -391,8 +393,8 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 						inside_esc = 0;
 					}
 					break;
-			}
-		} else {
+                        }
+		     } else {
 			switch (*ptr) {
 				case '\r':
 					ignore = 1;
@@ -402,8 +404,8 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
 					inside_esc = 1;
 					break;
 			}
-		}
-
+		     }
+                }     /* end of if we should filter escape characters */
 
 		if (!ignore) {
 			fwrite(ptr, sizeof(char), 1, fp);
@@ -430,7 +432,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
  */
 void usage(void)
 {
-	fprintf(stderr, "Usage: bootlogd [-v] [-r] [-d] [-s] [-c] [-p pidfile] [-l logfile]\n");
+	fprintf(stderr, "Usage: bootlogd [-v] [-r] [-d] [-e] [-s] [-c] [-p pidfile] [-l logfile]\n");
 	exit(1);
 }
 
@@ -490,14 +492,14 @@ int main(int argc, char **argv)
 	int		considx;
 	struct real_cons cons[MAX_CONSOLES];
 	int		num_consoles, consoles_left;
-
+        int             print_escape_sequence = 0;
 	fp = NULL;
 	logfile = LOGFILE;
 	pidfile = NULL;
 	rotate = 0;
 	dontfork = 0;
 
-	while ((i = getopt(argc, argv, "cdsl:p:rv")) != EOF) switch(i) {
+	while ((i = getopt(argc, argv, "cdesl:p:rv")) != EOF) switch(i) {
 		case 'l':
 			logfile = optarg;
 			break;
@@ -517,6 +519,9 @@ int main(int argc, char **argv)
 		case 'd':
 			dontfork = 1;
 			break;
+                case 'e':
+                        print_escape_sequence = 1;
+                        break;
 		case 's':
 			syncalot = 1;
 			break;
@@ -678,8 +683,8 @@ int main(int argc, char **argv)
 						 */
 						if (--consoles_left <= 0) got_signal = 1;
 						break;
- 					}
-				}
+ 					}   /* end of while */
+				}     /* end of going through all consoles */
 
 				/*
 				 *	Increment buffer position. Handle
@@ -693,8 +698,8 @@ int main(int argc, char **argv)
 					inptr = ringbuf;
 				if (outptr >= endptr)
 					outptr = ringbuf;
-			}
-		}
+			}       /* end of got data from read */
+		}      /* end of checking select for new data */
 
 		/*
 		 *	Perhaps we need to open the logfile.
@@ -714,8 +719,8 @@ int main(int argc, char **argv)
 		else
 			todo = endptr - outptr;
 		if (fp && todo)
-			writelog(fp, (unsigned char *)outptr, todo);
-	}
+			writelog(fp, (unsigned char *)outptr, todo, print_escape_sequence);
+	}    /* end of while waiting for signal */
 
 	if (fp) {
 		if (!didnl) fputc('\n', fp);

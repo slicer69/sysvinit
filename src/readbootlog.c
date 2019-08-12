@@ -58,6 +58,20 @@ int Clean_Line(char *source_line, char *output_line)
               }
           }   
        }    /* done found character to scrub */
+       else if ( (a_letter == '?') && (source_line[source_index + 1] == '?') &&
+                 (source_line[source_index + 2] == '7') )
+       {
+           source_index += 3;
+           output_line[target_index] = ' '; 
+           target_index++;
+       }
+       else if ( (a_letter == '8') && (source_line[source_index + 1] == '?') &&
+                 (source_line[source_index + 2] == '?') )
+       {
+           source_index += 3;
+           output_line[target_index] = ']';
+           target_index++;
+       }
        else
        {
             output_line[target_index] = a_letter;

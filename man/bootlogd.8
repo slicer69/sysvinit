@@ -22,6 +22,7 @@ bootlogd \- record boot messages
 .B /sbin/bootlogd
 .RB [ \-c ]
 .RB [ \-d ]
+.RB [ \-e ]
 .RB [ \-r ]
 .RB [ \-s ]
 .RB [ \-v ]
@@ -34,6 +35,10 @@ the messages will be kept in memory until it is.
 .SH OPTIONS
 .IP \fB\-d\fP
 Do not fork and run in the background.
+.IP \fB\-e\fP
+Print escape characters to the boot log file. This turns off filtering of
+escape characters and allows tools like GNU Less to see and use colour control
+characters (show the log in colour).
 .IP \fB\-c\fP
 Attempt to write to the logfile even if it does not yet exist.
 Without this option,

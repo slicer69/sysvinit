@@ -1,4 +1,4 @@
-sysvinit (2.96) unreleased; urgency=low
+sysvinit (2.96) released; urgency=low
 
   [ Jesse Smith ]
 
@@ -12,7 +12,7 @@ sysvinit (2.96) unreleased; urgency=low
 
     * Cleaned up some output from readbootlog.
 
-    * Added -e flg to bootlogd. When -e is used, data saved
+    * Added -e flag to bootlogd. When -e is used, data saved
       to the boot log file does not have escape characters
       removed. This means colour and cursor movement codes
       stay in the log file. The may then look nicer when
@@ -20,6 +20,9 @@ sysvinit (2.96) unreleased; urgency=low
       out of alignment when viewed with other, plain-text tools.
       When -e is not used, escape characters are removed/filtered.
       Closes Debian bug #672361.
+
+    * Make sure src/Makefile cleans up all executable files
+      when parent Makefile calls "make clean".
 
 
 sysvinit (2.95) released; urgency=low

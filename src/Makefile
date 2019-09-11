@@ -181,8 +181,7 @@ consoles.o:	consoles.c consoles.h
 cleanobjs:
 		rm -f *.o *.bak
 
-clean:		cleanobjs
-		@echo Type \"make clobber\" to really clean up.
+clean:		cleanobjs clobber
 
 clobber:	cleanobjs
 		rm -f $(BIN) $(SBIN) $(USRBIN)

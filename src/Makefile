@@ -90,13 +90,15 @@ else
 endif
 
 # Additional libs for GNU libc.
-ifneq ($(wildcard /usr/lib*/libcrypt.*),)
+ifneq ($(wildcard $(ROOT)/usr/lib*/libcrypt.*),)
   SULOGINLIBS	+= -lcrypt
 endif
 
 # Additional libs for GNU libc / multiarch on Debian based systems.
-ifneq ($(wildcard /usr/lib/*/libcrypt.*),)
+ifneq ($(wildcard $(ROOT)/usr/lib/*/libcrypt.*),)
+ifneq ($(findstring -lcrypt, $(SULOGINLIBS)), -lcrypt)
   SULOGINLIBS	+= -lcrypt
+endif
 endif
 
 all:		$(BIN) $(SBIN) $(USRBIN)

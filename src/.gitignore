@@ -4,7 +4,9 @@ halt
 init
 killall5
 last
+logsave
 mesg
+readbootlog
 runlevel
 shutdown
 sulogin

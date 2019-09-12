@@ -1,3 +1,10 @@
+sysvinit (2.97) unreleased; urgency=low
+
+    * Check $(ROOT) filesystem for libcrypt instead of a hardcoded path to /usr.
+      Added logsave and readbootlog to list of files git ignores.
+      - Patches provided by Petr Ovtchenkov.
+
+
 sysvinit (2.96) released; urgency=low
 
   [ Jesse Smith ]

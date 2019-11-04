@@ -513,7 +513,7 @@ int readproc(int do_stat)
 		if (p->argv0) free(p->argv0);
 		if (p->argv1) free(p->argv1);
 		if (p->statname) free(p->statname);
-		free(p->pathname);
+		if (p->pathname) free(p->pathname);
 		free(p);
 	}
 	plist = NULL;
@@ -562,7 +562,7 @@ int readproc(int do_stat)
 					if (p->argv0) free(p->argv0);
 					if (p->argv1) free(p->argv1);
 					if (p->statname) free(p->statname);
-					free(p->pathname);
+					if (p->pathname) free(p->pathname);
 					free(p);
 					continue;
 				}
@@ -578,19 +578,12 @@ int readproc(int do_stat)
 
 			/* Get session, startcode, endcode. */
 			startcode = endcode = 0;
-                        /*
-			if (sscanf(q, 	"%*c %*d %*d %d %*d %*d %*u %*u "
+			if (sscanf(q,   "%10s %*d %*d %d %*d %*d %*u %*u "
 					"%*u %*u %*u %*u %*u %*d %*d "
 					"%*d %*d %*d %*d %*u %*u %*d "
 					"%*u %lu %lu",
-					&p->sid, &startcode, &endcode) != 3) {
-                        */
-                        if (sscanf(q,   "%10s %*d %*d %d %*d %*d %*u %*u "
-                                        "%*u %*u %*u %*u %*u %*d %*d "
-                                        "%*d %*d %*d %*d %*u %*u %*d "
-                                        "%*u %lu %lu",
-                                        process_status, 
-                                        &p->sid, &startcode, &endcode) != 4) {
+					process_status, 
+					&p->sid, &startcode, &endcode) != 4) {
 
 				p->sid = 0;
 				nsyslog(LOG_ERR, "can't read sid from %s\n",
@@ -624,7 +617,7 @@ int readproc(int do_stat)
 			if (p->argv0) free(p->argv0);
 			if (p->argv1) free(p->argv1);
 			if (p->statname) free(p->statname);
-			free(p->pathname);
+			if (p->pathname) free(p->pathname);
 			free(p);
 			continue;
 		}
@@ -672,7 +665,7 @@ int readproc(int do_stat)
 			if (p->argv0) free(p->argv0);
 			if (p->argv1) free(p->argv1);
 			if (p->statname) free(p->statname);
-			free(p->pathname);
+			if (p->pathname) free(p->pathname);
 			free(p);
 			continue;
 		}

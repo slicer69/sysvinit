@@ -4,6 +4,8 @@ sysvinit (2.97) unreleased; urgency=low
       Added logsave and readbootlog to list of files git ignores.
       - Patches provided by Petr Ovtchenkov.
 
+    * Code clean-up and making sure we avoid freeing unused memory.
+      Patch provided by David Hoyer.
 
 sysvinit (2.96) released; urgency=low
 

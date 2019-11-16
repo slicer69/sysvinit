@@ -7,6 +7,9 @@ sysvinit (2.97) unreleased; urgency=low
     * Code clean-up and making sure we avoid freeing unused memory.
       Patch provided by David Hoyer.
 
+    * Added shell script from Trek which converts systemd unit files
+      into init.d style scripts.
+
 sysvinit (2.96) released; urgency=low
 
   [ Jesse Smith ]

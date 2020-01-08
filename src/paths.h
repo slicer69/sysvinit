@@ -27,6 +27,7 @@
 #define SECURETTY	"/etc/securetty"	/* List of root terminals */
 #define SDALLOW		"/etc/shutdown.allow"	/* Users allowed to shutdown */
 #define INITTAB		"/etc/inittab"		/* Location of inittab */
+#define INITTABD	"/etc/inittab.d"	/* Location of inittab.d directory */
 #define INIT		"/sbin/init"		/* Location of init itself. */
 #define NOLOGIN		"/etc/nologin"		/* Stop user logging in. */
 #define FASTBOOT	"/fastboot"		/* Enable fast boot. */

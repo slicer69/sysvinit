@@ -10,6 +10,10 @@ sysvinit (2.97) unreleased; urgency=low
     * Added shell script from Trek which converts systemd unit files
       into init.d style scripts.
 
+    * Added patch from Didier Gaudin which allows init to load configuration
+      data from files stored in /etc/inittab.d/
+
+
 sysvinit (2.96) released; urgency=low
 
   [ Jesse Smith ]

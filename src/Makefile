@@ -203,6 +203,7 @@ install:	all
 			$(INSTALL_EXEC) $$i $(ROOT)/usr/bin/ ; \
 		done
 		# $(INSTALL_DIR) $(ROOT)/etc/
+		$(INSTALL_DIR) $(ROOT)/etc/inittab.d
 		# $(INSTALL_EXEC) ../doc/initscript.sample $(ROOT)/etc/
 		ln -sf halt $(ROOT)/sbin/reboot
 		ln -sf halt $(ROOT)/sbin/poweroff

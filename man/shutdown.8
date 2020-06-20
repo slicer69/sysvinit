@@ -142,7 +142,9 @@ The \fItime\fP argument can have different formats.  First, it can be an
 absolute time in the format \fIhh:mm\fP, in which \fIhh\fP is the hour
 (1 or 2 digits) and \fImm\fP is the minute of the hour (in two digits).
 Second, it can be in the format \fB+\fP\fIm\fP, in which \fIm\fP is the
-number of minutes to wait.  The word \fBnow\fP is an alias for \fB+0\fP.
+number of minutes to wait.  Third, it can be in the format \fB+\fP\fIhh:mm\fP,
+in which \fIhh:mm\fP is the number of hours and minutes to wait.
+The word \fBnow\fP is an alias for \fB+0\fP.
 .PP
 If shutdown is called with a delay, it will create the advisory file
 .I /etc/nologin

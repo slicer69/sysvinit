@@ -13,6 +13,10 @@ sysvinit (2.97) unreleased; urgency=low
     * Added patch from Didier Gaudin which allows init to load configuration
       data from files stored in /etc/inittab.d/
 
+    * Added patch from William Shipley which allows shutdown time to be specified
+      in the format +hh:mm. This is in addition to the existing formats such as
+      hh:mm, +m, and "now".
+
 
 sysvinit (2.96) released; urgency=low
 

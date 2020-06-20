@@ -163,7 +163,7 @@ void wall(const char *text, int remote)
 	struct utmp		*utmp;
 	time_t			t;
 	char			term[UT_LINESIZE+ strlen(_PATH_DEV) + 1];
-	char			line[81];
+	char			line[256];
 	char			hostname[HOST_NAME_MAX+1];
 	char			*date, *p;
 	char			*user, *tty;

@@ -788,13 +788,21 @@ int main(int argc, char **argv)
 		wt = atoi(when);
 		if (wt == 0 && when[0] != '0') usage();
 	} else {
-		/* Time in hh:mm format. */
 		if (sscanf(when, "%d:%2d", &hours, &mins) != 2) usage();
-		if (hours > 23 || mins > 59) usage();
-		time(&t);
-		lt = localtime(&t);
-		wt = (60*hours + mins) - (60*lt->tm_hour + lt->tm_min);
-		if (wt < 0) wt += 1440;
+		/* Time in hh:mm format. */
+		if (when[0] == '+') {
+			/* Hours and minutes from now */
+			if (hours > 99999 || mins > 59) usage();
+			wt = (60*hours + mins);
+			if (wt < 0) usage();
+		} else {
+			/* Time of day */
+			if (hours > 23 || mins > 59) usage();
+			time(&t);
+			lt = localtime(&t);
+			wt = (60*hours + mins) - (60*lt->tm_hour + lt->tm_min);
+			if (wt < 0) wt += 1440;
+		}
 	}
 	/* Shutdown NOW if time == 0 */
 	if (wt == 0) issue_shutdown(halttype);

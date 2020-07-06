@@ -17,6 +17,8 @@ sysvinit (2.97) unreleased; urgency=low
       in the format +hh:mm. This is in addition to the existing formats such as
       hh:mm, +m, and "now".
 
+    * Fixed typos in manual pages. Submitted by Helge Kreutzmann.
+
 
 sysvinit (2.96) released; urgency=low
 

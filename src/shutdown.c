@@ -777,16 +777,18 @@ int main(int argc, char **argv)
 	if (!strcmp(when, "now")) strcpy(when, "0");
 
         sp = when;
-	if (when[0] == '+') sp++;
-	/* Decode shutdown time. */
+	/* Validate time argument. */
 	for ( ; *sp; sp++) {
-		if (*sp != ':' && (*sp < '0' || *sp > '9'))
+		if (*sp != '+' && *sp != ':' && (*sp < '0' || *sp > '9'))
 			usage();
 	}
+	sp = when;
+	/* Decode shutdown time. */
+	if (when[0] == '+') sp++;
 	if (strchr(when, ':') == NULL) {
 		/* Time in minutes. */
-		wt = atoi(when);
-		if (wt == 0 && when[0] != '0') usage();
+		wt = atoi(sp);
+		if (wt == 0 && sp[0] != '0') usage();
 	} else {
 		if (sscanf(when, "%d:%2d", &hours, &mins) != 2) usage();
 		/* Time in hh:mm format. */

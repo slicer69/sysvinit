@@ -1,4 +1,10 @@
-sysvinit (2.97) unreleased; urgency=low
+sysvinit (2.98) unreleased; urgency=low
+
+    * Fixed time parsing in shutdown when there is a + in front of a 0 time offset.
+      Commands with a postiive time offset (+1) would work but +0 fails.
+      This has been corrected by Arkadiusz Miskiewicz.
+
+sysvinit (2.97) released; urgency=low
 
     * Check $(ROOT) filesystem for libcrypt instead of a hardcoded path to /usr.
       Added logsave and readbootlog to list of files git ignores.

@@ -58,7 +58,7 @@ char *v_ifdown = "@(#)ifdown.c  1.11  02-Jun-1998  miquels@cistron.nl";
  *	First, we find all shaper devices and down them. Then we
  *	down all real interfaces. This is because the comment in the
  *	shaper driver says "if you down the shaper device before the
- *	attached inerface your computer will follow".
+ *	attached interface your computer will follow".
  */
 int ifdown(void)
 {

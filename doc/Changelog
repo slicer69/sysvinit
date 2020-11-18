@@ -1,7 +1,7 @@
 sysvinit (2.98) released; urgency=low
 
     * Fixed time parsing in shutdown when there is a + in front of a 0 time offset.
-      Commands with a postiive time offset (+1) would work but +0 fails.
+      Commands with a positive time offset (+1) would work but +0 fails.
       This has been corrected by Arkadiusz Miskiewicz.
 
 sysvinit (2.97) released; urgency=low
@@ -30,8 +30,8 @@ sysvinit (2.96) released; urgency=low
 
   [ Jesse Smith ]
 
-    * Added -z command line paramter to pidof which tells pidof to
-      try to find processes in uninterruptable (D) or zombie (Z) states.
+    * Added -z command line parameter to pidof which tells pidof to
+      try to find processes in uninterruptible (D) or zombie (Z) states.
       This can cause pidof to hang, but produces a more complete process
       list.
       Closes Savannah bug #56534
@@ -89,7 +89,7 @@ sysvinit (2.94) released; urgency=low
       shutting down procedure, it should cause the system to
       be powered off.
       If halt is called without -p then the value of INIT_HALT
-      is not set and the default action (often set in /etc/defaut/halt)
+      is not set and the default action (often set in /etc/default/halt)
       is taken.
     * Removed unnecessary malloc.h includes. Memory allocation
       and freeing is now handled in stdlib.h
@@ -175,7 +175,7 @@ sysvinit (2.92) released; urgency=low
     * Removed typos from pidof manual page and killall5 page.
       Closes Debian bugs #815839, #905245 and #890478
     * Added -f <format> option to pidof program to allow printf
-      style formating.
+      style formatting.
       Closes Debian bug #571590
       Thanks to Philipp Marek for the patch.
     * Added new tool (readbootlog) which will read the /var/log/boot file
@@ -365,7 +365,7 @@ sysvinit (2.89) world; urgency=low
     This should close Savannah bug report 36528.
     http://savannah.nongnu.org/bugs/?36528
     * Applied patches provided in Savannah bug report 49991. Fix tabs in
-    bootlogd and avoid printing unitialized "buf" variable when
+    bootlogd and avoid printing uninitialized "buf" variable when
     consolename() fails.
 
   [ Werner Fink ]
@@ -374,7 +374,7 @@ sysvinit (2.89) world; urgency=low
   * Handle deleted binaries in pidof (was local bug #34992)
   * Allow init to delete extra environment variables (was local bug
     #35858)
-  * Avoid that init double environment variables for its childs
+  * Avoid that init double environment variables for its children
     (was local bug #35855)
   * Remove man-db tag for encoding for canonical man
   * Sulogin: try to detect the real device(s) used for the system console
@@ -493,7 +493,7 @@ sysvinit (2.88dsf) world; urgency=low
     to disk using fdatasync().  Patch from Scott Gifford via Debian.
   * Add compatibility code to handle old path "/etc/powerstatus" for a
     while.
-  * Incude definition for MNT_DETACH which is missing in older GNU libc
+  * Include definition for MNT_DETACH which is missing in older GNU libc
     headers.
   * Do not strip binaries before installing them, to make it easier to
     get binaries with debug information installed.
@@ -522,8 +522,8 @@ sysvinit (2.88dsf) world; urgency=low
   * pidof - provide '-n' to skip stat(2) syscall on network based FS.
   * init - avoid compiler warnings
   * init - initialize console by using the macros from ttydefaults.h
-  * init - add the possiblity to ignore further interrupts from keyboard
-  * init - add the possiblity to set sane terminal line settings
+  * init - add the possibility to ignore further interrupts from keyboard
+  * init - add the possibility to set sane terminal line settings
   * sulogin - add the possibility to reset the terminal io
   * Fix some minor problems
   * init - enable is_selinux_enabled() to detect selinuxfs
@@ -539,7 +539,7 @@ sysvinit (2.88dsf) world; urgency=low
     #68621, which will add PAM support for programs spawned by init on
     the console like sulogin. Based on patch by Topi Miettinen.  This
     patch is not applied by default yet while we review its
-    usefullness.  It is only helpful for session handling, as sulogin
+    usefulness.  It is only helpful for session handling, as sulogin
     do not use and will not use a PAM conv() function.  The current
     sulogin is able to handle DES as well as MD5, SHA, and Blowfish
     encrypted passwords due using getpwnam(3).
@@ -547,7 +547,7 @@ sysvinit (2.88dsf) world; urgency=low
     use the correct pid even on a controlling tty
   * Remaining problem is that the pid of the second fork() for
     getting a controlling tty isn't that reported by spawn()
-  * Re-enable writting utmp/wtmp for boot scripts
+  * Re-enable writing utmp/wtmp for boot scripts
   * Extend sulogin to support additional encryption algorithms
   * Re-enable maintenance message of sulogin
   * Enable the sulogin fallback password check to handle  MD5, SHA, and
@@ -639,7 +639,7 @@ sysvinit (2.87dsf) world; urgency=low
     and document this requirement in the manual page.
   * Change reboot/halt to work properly when used as a login shell.
     Patch by Dale R. Worley and Fedora.
-  * Let sulogin fall back to the staticly linked /bin/sash if both roots
+  * Let sulogin fall back to the statically linked /bin/sash if both roots
     shell and /bin/sh fail to execute.
 
  -- Petter Reinholdtsen <pere@hungry.com>  Sun, 12 Jul 2009 19:58:10 +0200
@@ -647,11 +647,11 @@ sysvinit (2.87dsf) world; urgency=low
 sysvinit (2.86) cistron; urgency=low
 
   * Fixed up bootlogd to read /proc/cmdline. Also keep an internal
-    linebuffer to process \r, \t and ^H. It is becoming useable.
+    linebuffer to process \r, \t and ^H. It is becoming usable.
   * Applied trivial OWL patches
   * Block signals in syslog(), since syslog() is not re-entrant
     (James Olin Oden <joden@malachi.lee.k12.nc.us>, redhat bug #97534)
-  * Minor adjustements so that sysvinit compiles on the Hurd 
+  * Minor adjustments so that sysvinit compiles on the Hurd 
   * killall5 now skips kernel threads
   * Inittab entries with both 'S' and other runlevels were broken.
     Fix by Bryan Kadzban <bryan@kadzban.is-a-geek.net>
@@ -880,7 +880,7 @@ sysvinit (2.73-1) unstable; urgency=low
   * Use siginterrupt, now that system calls are restarted by default.
     Main symptom was that the sulogin timeout didn't work but there
     might have been more hidden problems.
-  * Kill process immidiately if turned off in inittab
+  * Kill process immediately if turned off in inittab
   * Fixed sulogin check on tty arg.
   * Use strerror() instead of sys_errlist
   * wall now supports a '-n' option to suppress [most of] the banner.

@@ -541,7 +541,7 @@ int receive_state(int fd)
 __attribute__ ((format (printf, 1, 2)))
 #endif
 #endif
-/* This function already exists on FreeBSD. No need to delcare it. */
+/* This function already exists on FreeBSD. No need to declare it. */
 #ifndef __FreeBSD__
 static int setproctitle(char *fmt, ...)
 {
@@ -737,7 +737,7 @@ void coredump(void)
 
 /*
  *	OOPS: segmentation violation!
- *	If we have the info, print where it occured.
+ *	If we have the info, print where it occurred.
  *	Then sleep 30 seconds and try to continue.
  */
 static

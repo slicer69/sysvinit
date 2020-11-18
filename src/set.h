@@ -1,7 +1,7 @@
 /*
  * set.h	Macros that look like sigaddset et al. but
  *		aren't. They are used to manipulate bits in
- *		an integer, to do our signal bookeeping.
+ *		an integer, to do our signal bookkeeping.
  *
  * Copyright (C) 2005 Miquel van Smoorenburg.
  *

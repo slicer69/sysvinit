@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 			 *	we are root or if we're NOT setgid.
 			 */
 			if (geteuid() != 0 && getgid() != getegid()) {
-				fprintf(stderr, "wall -n: not priviliged\n");
+				fprintf(stderr, "wall -n: not privileged\n");
 				exit(1);
 			}
 			remote = 1;

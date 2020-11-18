@@ -142,7 +142,7 @@ err:
 #endif /* __linux__ */
 
 /*
- * Search below /dev for the characer device in
+ * Search below /dev for the character device in
  * the local `dev_t comparedev' variable.
  */
 static dev_t comparedev;

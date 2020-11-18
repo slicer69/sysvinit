@@ -1,7 +1,7 @@
 README for SysV init
 ====================
 
-SysV init is a classic initilization program (PID 1) for GNU/Linux and
+SysV init is a classic initialization program (PID 1) for GNU/Linux and
 other UNIX/POSIX systems. It is designed to be small, simple and to
 stay out of the way.
 

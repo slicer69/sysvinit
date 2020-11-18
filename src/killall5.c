@@ -14,7 +14,7 @@
  *
  *		Riku Meskanen, <mesrik@jyu.fi>
  *		- return all running pids of given program name
- *		- single shot '-s' option for backwards combatibility
+ *		- single shot '-s' option for backwards compatibility
  *		- omit pid '-o' option and %PPID (parent pid metavariable)
  *		- syslog() only if not a connected to controlling terminal
  *		- swapped out programs pids are caught now

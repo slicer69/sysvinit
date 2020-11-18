@@ -811,7 +811,7 @@ int main(int argc, char **argv)
 
         /* Rather than loop and reduce wt (wait time) once per minute,
            we shall check the current time against the target time.
-           Then calculate the remaining wating time based on the difference
+           Then calculate the remaining waiting time based on the difference
            between current time and target time.
            This avoids missing shutdown time (target time) after the
            computer has been asleep. -- Jesse

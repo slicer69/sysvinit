@@ -35,10 +35,10 @@ shutdown \- bring the system down
 .\"{{{  Description
 .SH DESCRIPTION
 \fBshutdown\fP brings the system down in a secure way.  All logged-in users are
-notified that the system is going down, and \fBlogin\fP(1) is blocked.
+notified that the system is going down, and \fIlogin\fP(1) is blocked.
 It is possible to shut the system down immediately or after a specified delay.
 All processes are first notified that the system is going down by the
-signal \s-2SIGTERM\s0.  This gives programs like \fBvi\fP(1)
+signal \s-2SIGTERM\s0.  This gives programs like \fIvi\fP(1)
 the time to save the file being edited, 
 mail and news processing programs a chance to exit cleanly, etc. 
 \fBshutdown\fP does its job by signalling the \fBinit\fP process, 
@@ -66,30 +66,30 @@ Reboot after shutdown.
 .\"}}}
 .\"{{{  -h
 .IP \fB\-h\fP
-Halt or power off after shutdown. Usually used with the -P or -H flags,
+Halt or power off after shutdown. Usually used with the \fI-P\fP or \fI-H\fP flags,
 depending on whether we want to poweroff or simply stop the operating system.
 .\"}}}
 .\"{{{  -P
 .IP \fB\-P\fP
-Modifier to the -h flag. Halt action is to turn off the power. 
-Must be used with the -h flag.
+Modifier to the \fI-h\fP flag. Halt action is to turn off the power. 
+Must be used with the \fI-h\fP flag.
 .\"}}}
 .\"{{{  -H
 .IP \fB\-H\fP
-Modifier to the -h flag.  Halt action is to halt or drop into boot
-monitor on systems that support it.  Must be used with the -h flag.
+Modifier to the \fI-h\fP flag.  Halt action is to halt or drop into boot
+monitor on systems that support it.  Must be used with the \fI-h\fP flag.
 Halting is often used to run through the shutdown process and leave
 output on the screen for debugging purposes. Or when the user wants the OS to
 stop, but leave the power on. To power off at the end of the shutdown sequence
-use the -P modifier instead.
+use the \fI-P\fP modifier instead.
 .\"}}}
 .\"{{{  -f
 .IP \fB\-f\fP
-Skip fsck on reboot.
+Skip \fIfsck\fP on reboot.
 .\"}}}
 .\"{{{  -F
 .IP \fB\-F\fP
-Force fsck on reboot.
+Force \fIfsck\fP on reboot.
 .\"}}}
 .\"{{{  -n
 .IP \fB\-n\fP
@@ -114,7 +114,7 @@ at the 5 minue mark, and when the shutdown process actually happens.
 .IP \fB\-Q
 Silence warnings prior to shutting down. Usually shutdown displays
 warnings every 15 minutes and then every minute in the last 10 minutes of the
-countdown until \fItime\fP is reached. When \-Q is specified 
+countdown until \fItime\fP is reached. When \fI-Q\fP is specified 
 shutdown only warns when the shutdown process actually happens. All
 other warning intervals are suppressed.
 .\"}}}
@@ -126,7 +126,7 @@ The default time, if no value is specified, between these two signals is
 three seconds. Warning: when shutdown calls init to perform the shutdown (the 
 default behaviour), init checks to see if all processes have terminated 
 and will stop waiting early once its children have all terminated. 
-When shutdown is called with the -n flag, it waits the full time specified 
+When shutdown is called with the \fI-n\fP flag, it waits the full time specified 
 (or three seconds) even if all other processes have terminated.
 .\"}}}
 .\"{{{  time
@@ -195,7 +195,7 @@ to the (physical) system console. The format of \fI/etc/shutdown.allow\fP
 is one user name per line. Empty lines and comment lines (prefixed by a
 \fB#\fP) are allowed. Currently there is a limit of 32 users in this file.
 .sp 1
-Note that if \fI/etc/shutdown.allow\fP is not present, the \fB-a\fP
+Note that if \fI/etc/shutdown.allow\fP is not present, the \fI-a\fP
 argument is ignored.
 .SH HALT OR POWEROFF
 The \fB-H\fP option just sets the \fIinit\fP environment variable

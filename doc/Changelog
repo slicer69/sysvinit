@@ -1,3 +1,8 @@
+sysvinit (2.99) unreleased; urgency=low
+
+    * Fixed typos and missing underlies in shutdown manual page.
+      Corrections provided by Helge Kreutzmann.
+
 sysvinit (2.98) released; urgency=low
 
     * Fixed time parsing in shutdown when there is a + in front of a 0 time offset.

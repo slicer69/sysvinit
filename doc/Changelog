@@ -1,6 +1,6 @@
-sysvinit (2.99) unreleased; urgency=low
+sysvinit (2.99) released; urgency=low
 
-    * Fixed typos and missing underlies in shutdown manual page.
+    * Fixed typos and missing underlines in shutdown manual page.
       Corrections provided by Helge Kreutzmann.
 
 sysvinit (2.98) released; urgency=low

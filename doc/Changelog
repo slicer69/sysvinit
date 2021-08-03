@@ -1,3 +1,9 @@
+
+    * Applied patch from Matthias Schiffer which allows bootlogd to read from
+      a wider range of consoles. The console name is already passed in from the
+      kernel command line using "console=". We no longer filter out names as strictly
+      but do now check to confirm the "console=" device points to a valid TTY.
+
 sysvinit (2.99) released; urgency=low
 
     * Fixed typos and missing underlines in shutdown manual page.

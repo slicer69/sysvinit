@@ -212,6 +212,22 @@ int findpty(int *master, int *slave, char *name)
 
 	return 0;
 }
+
+static int istty(const char *dev)
+{
+	int fd, ret;
+
+	fd = open(dev, O_RDONLY|O_NONBLOCK);
+	if (fd < 0)
+		return 0;
+
+	ret = isatty(fd);
+
+	close(fd);
+
+	return ret;
+}
+
 /*
  *	See if a console taken from the kernel command line maps
  *	to a character device we know about, and if we can open it.
@@ -228,7 +244,7 @@ int isconsole(char *s, char *res, int rlen)
 		l = strlen(c->cmdline);
 		if (sl <= l) continue;
 		p = s + l;
-		if (strncmp(s, c->cmdline, l) != 0 || !isdigit(*p))
+		if (strncmp(s, c->cmdline, l) != 0)
 			continue;
 		for (i = 0; i < 2; i++) {
 			snprintf(res, rlen, i ? c->dev1 : c->dev2, p);
@@ -239,6 +255,13 @@ int isconsole(char *s, char *res, int rlen)
 			}
 		}
 	}
+
+	/* Fallback: accept any TTY device */
+	snprintf(res, rlen, "/dev/%s", s);
+	if ((q = strchr(res, ',')) != NULL) *q = 0;
+	if (istty(res))
+		return 1;
+
 	return 0;
 }
 

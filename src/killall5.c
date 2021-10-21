@@ -67,9 +67,6 @@
 #endif
 
 #define STATNAMELEN	15
-#define DO_NETFS 2
-#define DO_STAT 1
-#define NO_STAT 0
 
 /* Info about a process. */
 typedef struct proc {
@@ -79,8 +76,6 @@ typedef struct proc {
 	char *argv1;		/* Name as found out from argv[1] */
 	char *argv1base;	/* `basename argv[1]`		  */
 	char *statname;		/* the statname without braces    */
-	ino_t ino;		/* Inode number			  */
-	dev_t dev;		/* Device it is on		  */
 	pid_t pid;		/* Process ID.			  */
 	pid_t sid;		/* Session ID.			  */
 	char kernel;		/* Kernel thread or zombie.	  */
@@ -481,19 +476,17 @@ int readarg(FILE *fp, char *buf, int sz)
  *	Read the proc filesystem.
  *	CWD must be /proc to avoid problems if / is affected by the killing (ie depend on fuse).
  */
-int readproc(int do_stat)
+int readproc()
 {
 	DIR		*dir;
 	FILE		*fp;
 	PROC		*p, *n;
 	struct dirent	*d;
-	struct stat	st;
 	char		path[PATH_MAX+1];
 	char		buf[PATH_MAX+1];
 	char		*s, *q;
 	unsigned long	startcode, endcode;
 	int		pid, f;
-	ssize_t		len;
         char            process_status[11];
 
 	/* Open the /proc directory. */
@@ -600,12 +593,8 @@ int readproc(int do_stat)
 				p->kernel = 1;
 			fclose(fp);
                         if ( (! list_dz_processes) &&
-                             ( (strchr(process_status, 'D') != NULL) ||
-                               (strchr(process_status, 'Z') != NULL) ) ){
-                           /* Ignore zombie processes or processes in
-                              disk sleep, as attempts
-                              to access the stats of these will
-                              sometimes fail. */
+                               (strchr(process_status, 'Z') != NULL) ) {
+                           /* Ignore zombie processes */
                               if (p->argv0) free(p->argv0);
                               if (p->argv1) free(p->argv1);
                               if (p->statname) free(p->statname);
@@ -672,55 +661,10 @@ int readproc(int do_stat)
 
 		/* Try to stat the executable. */
 		snprintf(path, sizeof(path), "/proc/%s/exe", d->d_name);
-
-		p->nfs = 0;
-
-		switch (do_stat) {
-		case DO_NETFS:
-			if ((p->nfs = check4nfs(path, buf)))
-				goto link;
-                        /* else fall through */
-		case DO_STAT:
-			if (stat(path, &st) != 0) {
-				char * ptr;
-
-				len = readlink(path, buf, PATH_MAX);
-				if (len <= 0)
-					break;
-				buf[len] = '\0';
-
-				ptr = strstr(buf, " (deleted)");
-				if (!ptr)
-					break;
-				*ptr = '\0';
-				len -= strlen(" (deleted)");
-
-				if (stat(buf, &st) != 0)
-					break;
-				p->dev = st.st_dev;
-				p->ino = st.st_ino;
-				p->pathname = (char *)xmalloc(len + 1);
-				memcpy(p->pathname, buf, len);
-				p->pathname[len] = '\0';
-
-				/* All done */
-				break;
-			}
-
-			p->dev = st.st_dev;
-			p->ino = st.st_ino;
-
-			/* Fall through */
-		default:
-		link:
-			len = readlink(path, buf, PATH_MAX);
-			if (len > 0) {
-				p->pathname = (char *)xmalloc(len + 1);
-				memcpy(p->pathname, buf, len);
-				p->pathname[len] = '\0';
-			}
-			break;
-		}
+                p->pathname = (char *)xmalloc(PATH_MAX);
+ 		if (readlink(path, p->pathname, PATH_MAX) == -1) {
+ 			p->pathname = NULL;
+ 		}
 
 		/* Link it into the list. */
 		p->next = plist;
@@ -783,30 +727,21 @@ PIDQ_HEAD *pidof(char *prog)
 {
 	PROC		*p;
 	PIDQ_HEAD	*q;
-	struct stat	st;
 	char		*s;
 	int		nfs = 0;
 	int		dostat = 0;
 	int		foundone = 0;
 	int		ok = 0;
 	const int	root = (getuid() == 0);
-	char		real[PATH_MAX+1];
+	char		real_path[PATH_MAX+1];
 
 	if (! prog)
 		return NULL;
 
 	/* Try to stat the executable. */
-	if (prog[0] == '/') {
-		memset(&real[0], 0, sizeof(real));
-
-		if (check4nfs(prog, real))
-			nfs++;
-
-		if (real[0] != '\0')
-			prog = &real[0];	/* Binary located on network FS. */
-
-		if ((nfs == 0) && (stat(prog, &st) == 0))
-			dostat++;		/* Binary located on a local FS. */
+	if ( (prog[0] == '/') && ( realpath(prog, real_path) ) ) {
+		memset(&real_path[0], 0, sizeof(real_path));
+		dostat++;
 	}
 
 	/* Get basename of program. */
@@ -822,11 +757,9 @@ PIDQ_HEAD *pidof(char *prog)
 	q = init_pid_q(q);
 
 	/* First try to find a match based on dev/ino pair. */
-	if (dostat && !nfs) {
+	if (dostat) {
 		for (p = plist; p; p = p->next) {
-			if (p->nfs)
-				continue;
-			if (p->dev == st.st_dev && p->ino == st.st_ino) {
+			if (p->pathname && strcmp(real_path, p->pathname) == 0) {
 				add_pid_to_q(q, p);
 				foundone++;
 			}
@@ -1086,7 +1019,7 @@ int main_pidof(int argc, char **argv)
 		init_nfs();		/* Which network based FS are online? */
 
 	/* Print out process-ID's one by one. */
-	readproc((flags & PIDOF_NETFS) ? DO_NETFS : DO_STAT);
+	readproc();
 
 	for(f = 0; f < argc; f++) {
 		if ((q = pidof(argv[f])) != NULL) {
@@ -1224,7 +1157,7 @@ int main(int argc, char **argv)
 	sent_sigstop = 1;
 
 	/* Read /proc filesystem */
-	if (readproc(NO_STAT) < 0) {
+	if (readproc() < 0) {
 		kill(-1, SIGCONT);
 		return(1);
 	}

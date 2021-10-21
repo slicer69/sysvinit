@@ -66,9 +66,12 @@ a status of true or false to indicate whether a matching PID was found.
 Scripts too - this causes the program to also return process id's of
 shells running the named scripts.
 .IP \-z
-Try to detect processes which are stuck in uninterruptible (D) or zombie (Z)
+Try to detect processes which are stuck in zombie (Z)
 status. Usually these processes are skipped as trying to deal with them can cause
-pidof to hang. 
+pidof or related tools to hang. Note: In the past pidof would ignore processes
+in the uninterruptable state (D), unless the \-z flag was specified. This is no
+longer the case. The pidof program will find and report processes in the D state
+whether \-z is specified or not.
 .IP "-d \fIsep\fP"
 Tells \fIpidof\fP to use \fIsep\fP as an output separator if more than one PID
 is shown. The default separator is a space.

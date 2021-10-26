@@ -13,7 +13,7 @@
 Version information is not placed in the top-level Makefile by default
 */
 #ifndef VERSION
-#define VERSION "2.94"
+#define VERSION "3.01"
 #endif
 /*
  *		This file is part of the sysvinit suite,
@@ -1525,8 +1525,6 @@ void read_inittab(void)
 				}
 				fclose(fp_tab);
 				/* do some checks */
-				if( buf == NULL ) 
-					continue;
 				if( strlen( p  ) == 0 )
 					continue;
 			} /* end of readdir, all is done */

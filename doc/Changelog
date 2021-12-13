@@ -1,3 +1,10 @@
+sysvinit (3.01) released; urgency=low
+    * Default to showing processes in the uninterruptable state (D).
+    The -z flag no longer affects whether processes in D state are shown.
+    The -z flag does still toggle whether zombie (Z) processes are shown.
+
+    * Removed unnecessary check which is always true from init tab parsing.
+
 sysvinit (3.00) released; urgency=low
 
     * Applied patch from Matthias Schiffer which allows bootlogd to read from

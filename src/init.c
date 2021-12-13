@@ -1525,8 +1525,6 @@ void read_inittab(void)
 				}
 				fclose(fp_tab);
 				/* do some checks */
-				if( buf == NULL ) 
-					continue;
 				if( strlen( p  ) == 0 )
 					continue;
 			} /* end of readdir, all is done */

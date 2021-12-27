@@ -17,11 +17,11 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH HALT 8 "Nov 6, 2001" "" "Linux System Administrator's Manual"
+.TH HALT 8 "Nov 6, 2001" "sysvinit @VERSION@" "Linux System Administrator's Manual"
 .\"}}}
 .\"{{{  Name
 .SH NAME
-halt, reboot, poweroff \- stop the system.
+halt, reboot, poweroff \- stop the system
 .\"}}}
 .\"{{{  Synopsis
 .SH SYNOPSIS
@@ -61,7 +61,7 @@ normally, \fBshutdown\fP will be invoked instead (with the \fB-h\fP
 or \fB-r\fP flag). For more info see the \fBshutdown\fP(8)
 manpage.
 .PP
-The rest of this manpage describes the behaviour in runlevels 0
+The rest of this manpage describes the behavior in runlevels 0
 and 6, that is when the systems shutdown scripts are being run.
 .\"}}}
 .\"{{{  Options
@@ -77,13 +77,13 @@ Don't write the wtmp record.
 .IP \fB\-f\fP
 Force halt or reboot, don't call \fBshutdown\fP(8).
 .IP \fB\-i\fP
-Shut down all network interfaces just before halt or reboot.
+Shut down all network interfaces just before \fBhalt\fR or \fBreboot\fR.
 Warning: This may not work on interfaces which do not have an IP address
 and should ideally be handled by a network manager service.
 .IP \fB\-h\fP
 Put all hard drives on the system in stand-by mode just before halt or power-off.
 .IP \fB\-p\fP
-When halting the system, switch off the power. This is the default when halt is
+When halting the system, switch off the power. This is the default when \fBhalt\fR is
 called as \fBpoweroff\fP.
 .\"}}}
 .\"{{{  Diagnostics
@@ -92,12 +92,12 @@ If you're not the superuser, you will get the message `must be superuser'.
 .\"}}}
 .\"{{{  Notes
 .SH NOTES
-Under older \fBsysvinit\fP releases , \fBreboot\fP and \fBhalt\fP should
+Under older \fBsysvinit\fP releases, \fBreboot\fP and \fBhalt\fP should
 never be called directly. From release 2.74 on \fBhalt\fP and \fBreboot\fP
 invoke \fBshutdown\fP(8) if the system is not in runlevel 0 or 6. This
 means that if \fBhalt\fP or \fBreboot\fP cannot find out the current
 runlevel (for example, when \fI/var/run/utmp\fP hasn't been initialized
-correctly and /var/run/runlevel does not exist) \fBshutdown\fP will be called, 
+correctly and \fI/var/run/runlevel\fR does not exist) \fBshutdown\fP will be called, 
 which might not be what you want.
 Use the \fB-f\fP flag if you want to do a hard \fBhalt\fP or \fBreboot\fP.
 .PP
@@ -107,14 +107,16 @@ effect of putting the drive in stand-by mode is that the write cache
 on the disk is flushed. This is important for IDE drives, since the
 kernel doesn't flush the write cache itself before power-off.
 .PP
-The \fBhalt\fP program uses /proc/ide/hd* to find all IDE disk devices,
+The \fBhalt\fP program uses \fI/proc/ide/hd*\fR to find all IDE disk devices,
 which means that \fI/proc\fP needs to be mounted when \fBhalt\fP or
 \fBpoweroff\fP is called or the \fB-h\fP switch will do nothing.
 .PP
 .\"}}}
 .\"{{{  Author
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .\"}}}
 .\"{{{  See also
 .SH "SEE ALSO"

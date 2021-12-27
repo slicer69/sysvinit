@@ -17,7 +17,7 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH SHUTDOWN 8 "November 12, 2003" "" "Linux System Administrator's Manual"
+.TH SHUTDOWN 8 "November 12, 2003" "sysvinit @VERSION@" "Linux System Administrator's Manual"
 .\"}}}
 .\"{{{  Name
 .SH NAME
@@ -35,10 +35,10 @@ shutdown \- bring the system down
 .\"{{{  Description
 .SH DESCRIPTION
 \fBshutdown\fP brings the system down in a secure way.  All logged-in users are
-notified that the system is going down, and \fIlogin\fP(1) is blocked.
+notified that the system is going down, and \fBlogin\fP(1) is blocked.
 It is possible to shut the system down immediately or after a specified delay.
 All processes are first notified that the system is going down by the
-signal \s-2SIGTERM\s0.  This gives programs like \fIvi\fP(1)
+signal \fBSIGTERM\fP.  This gives programs like \fBvi\fP(1)
 the time to save the file being edited, 
 mail and news processing programs a chance to exit cleanly, etc. 
 \fBshutdown\fP does its job by signalling the \fBinit\fP process, 
@@ -46,7 +46,7 @@ asking it to change the runlevel.
 Runlevel \fB0\fP is used to halt the system, runlevel \fB6\fP is used
 to reboot the system, and runlevel \fB1\fP is used to put to system into
 a state where administrative tasks can be performed; this is the default
-if neither the \fI-h\fP or \fI-r\fP flag is given to \fBshutdown\fP.
+if neither the \fB-h\fP or \fB-r\fP flag is given to \fBshutdown\fP.
 To see which actions are taken on halt or reboot see the appropriate
 entries for these runlevels in the file \fI/etc/inittab\fP.
 .\"}}}
@@ -54,7 +54,7 @@ entries for these runlevels in the file \fI/etc/inittab\fP.
 .SH OPTIONS
 .\"{{{  -a
 .IP "\fB\-a\fP
-Use \fB/etc/shutdown.allow\fP.
+Use \fI/etc/shutdown.allow\fP.
 .\"}}}
 .\"{{{  -k
 .IP \fB\-k\fP
@@ -66,30 +66,30 @@ Reboot after shutdown.
 .\"}}}
 .\"{{{  -h
 .IP \fB\-h\fP
-Halt or power off after shutdown. Usually used with the \fI-P\fP or \fI-H\fP flags,
+Halt or power off after shutdown. Usually used with the \fB-P\fP or \fB-H\fP flags,
 depending on whether we want to poweroff or simply stop the operating system.
 .\"}}}
 .\"{{{  -P
 .IP \fB\-P\fP
-Modifier to the \fI-h\fP flag. Halt action is to turn off the power. 
-Must be used with the \fI-h\fP flag.
+Modifier to the \fB-h\fP flag. Halt action is to turn off the power. 
+Must be used with the \fB-h\fP flag.
 .\"}}}
 .\"{{{  -H
 .IP \fB\-H\fP
-Modifier to the \fI-h\fP flag.  Halt action is to halt or drop into boot
-monitor on systems that support it.  Must be used with the \fI-h\fP flag.
+Modifier to the \fB-h\fP flag.  Halt action is to halt or drop into boot
+monitor on systems that support it.  Must be used with the \fB-h\fP flag.
 Halting is often used to run through the shutdown process and leave
 output on the screen for debugging purposes. Or when the user wants the OS to
 stop, but leave the power on. To power off at the end of the shutdown sequence
-use the \fI-P\fP modifier instead.
+use the \fB-P\fP modifier instead.
 .\"}}}
 .\"{{{  -f
 .IP \fB\-f\fP
-Skip \fIfsck\fP on reboot.
+Skip \fBfsck\fP(8) on reboot.
 .\"}}}
 .\"{{{  -F
 .IP \fB\-F\fP
-Force \fIfsck\fP on reboot.
+Force \fBfsck\fP(8) on reboot.
 .\"}}}
 .\"{{{  -n
 .IP \fB\-n\fP
@@ -99,34 +99,34 @@ you'd expect.
 .\"}}}
 .\"{{{  -c
 .IP \fB\-c\fP
-Cancel a waiting shutdown. ("shutdown now" is no longer waiting.) With
+Cancel a waiting shutdown. (\fBshutdown now\fP is no longer waiting.) With
 this option it is of course not possible to give the time argument, but
 you can enter explanatory message arguments on the command line that
 will be sent to all users.
 .\"{{{  -q
 .IP \fB\-q
-Reduce the number of warnings shutdown displays. Usually shutdown displays
+Reduce the number of warnings \fBshutdown\fP displays. Usually \fBshutdown\fP displays
 warnings every 15 minutes and then every minute in the last 10 minutes of the
-countdown until \fItime\fP is reached. When \-q is specified 
-shutdown only warns at 60 minute intervals, at the 10 minute mark,
-at the 5 minue mark, and when the shutdown process actually happens.
+countdown until \fItime\fP is reached. When \fB-q\fP is specified 
+\fBshutdown\fP only warns at 60 minute intervals, at the 10 minute mark,
+at the 5 minute mark, and when the shutdown process actually happens.
 .\"{{{  -Q
 .IP \fB\-Q
-Silence warnings prior to shutting down. Usually shutdown displays
+Silence warnings prior to shutting down. Usually \fBshutdown\fP displays
 warnings every 15 minutes and then every minute in the last 10 minutes of the
-countdown until \fItime\fP is reached. When \fI-Q\fP is specified 
-shutdown only warns when the shutdown process actually happens. All
+countdown until \fItime\fP is reached. When \fB-Q\fP is specified 
+\fBshutdown\fP only warns when the shutdown process actually happens. All
 other warning intervals are suppressed.
 .\"}}}
 .\"{{{  -t sec
 .IP "\fB\-t\fP \fIsec\fP"
 Tell \fBinit\fP(8) to wait \fIsec\fP seconds between sending all processes the
-warning (SIGTERM) and the kill signal (SIGKILL), before changing to another runlevel.
+warning (\fBSIGTERM\fP) and the kill signal (\fBSIGKILL\fP), before changing to another runlevel.
 The default time, if no value is specified, between these two signals is 
-three seconds. Warning: when shutdown calls init to perform the shutdown (the 
-default behaviour), init checks to see if all processes have terminated 
+three seconds. Warning: when \fBshutdown\fP calls \fBinit\fP(8) to perform the shutdown (the 
+default behavior), \fBinit\fP(8) checks to see if all processes have terminated 
 and will stop waiting early once its children have all terminated. 
-When shutdown is called with the \fI-n\fP flag, it waits the full time specified 
+When \fBshutdown\fP is called with the \fB-n\fP flag, it waits the full time specified 
 (or three seconds) even if all other processes have terminated.
 .\"}}}
 .\"{{{  time
@@ -146,28 +146,28 @@ number of minutes to wait.  Third, it can be in the format \fB+\fP\fIhh:mm\fP,
 in which \fIhh:mm\fP is the number of hours and minutes to wait.
 The word \fBnow\fP is an alias for \fB+0\fP.
 .PP
-If shutdown is called with a delay, it will create the advisory file
+If \fBshutdown\fP is called with a delay, it will create the advisory file
 .I /etc/nologin
-which causes programs such as \fIlogin(1)\fP to not allow new user
+which causes programs such as \fBlogin\fP(1) to not allow new user
 logins. This file is created five minutes before the shutdown sequence
-starts. Shutdown removes this file if it is stopped before it
+starts. \fBshutdown\fP removes this file if it is stopped before it
 can signal init (i.e. it is cancelled or something goes wrong).
-It also removes it before calling init to change the runlevel.
+It also removes it before calling \fBinit\fP(8) to change the runlevel.
 .PP
 The \fB\-f\fP flag means `reboot fast'.  This only creates an advisory
 file \fI/fastboot\fP which can be tested by the system when it comes
 up again.  The boot rc file can test if this file is present, and decide not 
-to run \fBfsck\fP(1) since the system has been shut down in the proper way.  
+to run \fBfsck\fP(8) since the system has been shut down in the proper way.  
 After that, the boot process should remove \fI/fastboot\fP.
 .PP
 The \fB\-F\fP flag means `force fsck'.  This only creates an advisory
 file \fI/forcefsck\fP which can be tested by the system when it comes
 up again.  The boot rc file can test if this file is present, and decide
-to run \fBfsck\fP(1) with a special `force' flag so that even properly
+to run \fBfsck\fP(8) with a special `force' flag so that even properly
 unmounted file systems get checked.
 After that, the boot process should remove \fI/forcefsck\fP.
 .PP
-The \fB-n\fP flag causes \fBshutdown\fP not to call \fBinit\fP, 
+The \fB-n\fP flag causes \fBshutdown\fP not to call \fBinit\fP(8), 
 but to kill all running processes itself. 
 \fBshutdown\fP will then turn off quota, accounting, and swapping
 and unmount all file systems.
@@ -180,7 +180,7 @@ and unmount all file systems.
 to the console keyboard can shut the system down. To prevent this,
 \fBshutdown\fP can check to see if an authorized user is logged in on
 one of the virtual consoles. If \fBshutdown\fP is called with the \fB-a\fP
-argument (add this to the invocation of shutdown in /etc/inittab),
+argument (add this to the invocation of shutdown in \fI/etc/inittab\fP),
 it checks to see if the file \fI/etc/shutdown.allow\fP is present.
 It then compares the login names in that file with the list of people
 that are logged in on a virtual console (from \fI/var/run/utmp\fP). Only
@@ -195,12 +195,12 @@ to the (physical) system console. The format of \fI/etc/shutdown.allow\fP
 is one user name per line. Empty lines and comment lines (prefixed by a
 \fB#\fP) are allowed. Currently there is a limit of 32 users in this file.
 .sp 1
-Note that if \fI/etc/shutdown.allow\fP is not present, the \fI-a\fP
+Note that if \fI/etc/shutdown.allow\fP is not present, the \fB-a\fP
 argument is ignored.
 .SH HALT OR POWEROFF
-The \fB-H\fP option just sets the \fIinit\fP environment variable
-\fIINIT_HALT\fP to \fIHALT\fP, and the \fB-P\fP option just sets
-that variable to \fIPOWEROFF\fP. The script (usually /etc/init.d/halt) that calls
+The \fB-H\fP option just sets the \fBinit\fP environment variable
+\fBINIT_HALT\fP to \fBHALT\fP, and the \fB-P\fP option just sets
+that variable to \fBPOWEROFF\fP. The script (usually \fI/etc/init.d/halt\fP) that calls
 the \fBhalt\fP(8) program as the last thing in the shutting down sequence should
 check this environment variable and call the \fBhalt\fP(8) program with
 the right options for these options to actually have any effect.
@@ -219,18 +219,20 @@ and are then puzzled by the error message \fBshutdown\fP produces. The
 \fItime\fP argument is mandatory; in 90 percent of all cases this argument
 will be the word \fBnow\fP.
 .PP
-Init can only capture CTRL-ALT-DEL and start shutdown in console mode.
+\fBinit\fP(8) can only capture CTRL-ALT-DEL and start \fBshutdown\fP in console mode.
 If the system is running the X window System, the X server processes
 all key strokes. Some X11 environments make it possible to capture
 CTRL-ALT-DEL, but what exactly is done with that event depends on
 that environment.
 .PP
-Shutdown wasn't designed to be run setuid. /etc/shutdown.allow is
+\fBshutdown\fP wasn't designed to be run setuid. \fI/etc/shutdown.allow\fP is
 not used to find out who is executing shutdown, it ONLY checks who
 is currently logged in on (one of the) console(s).
 .\"{{{  Author
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .\"}}}
 .\"{{{  See also
 .SH "SEE ALSO"

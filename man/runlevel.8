@@ -15,14 +15,14 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH RUNLEVEL 8 "May 27, 1997" "" "Linux System Administrator's Manual"
+.TH RUNLEVEL 8 "May 27, 1997" "sysvinit @VERSION@" "Linux System Administrator's Manual"
 .SH NAME
-runlevel -- find the previous and current system runlevel.
+runlevel - find the previous and current system runlevel
 .SH SYNOPSIS
 .B runlevel 
 .RI [ utmp ]
 .SH DESCRIPTION
-.B Runlevel
+.B runlevel
 reads the system
 .I utmp
 file (typically 
@@ -55,4 +55,6 @@ The name of the \fIutmp\fP file to read.
 .BR init (8),
 .BR utmp (5)
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME

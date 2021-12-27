@@ -15,9 +15,9 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH PIDOF 8 "01 Sep 1998" "" "Linux System Administrator's Manual"
+.TH PIDOF 8 "01 Sep 1998" "sysvinit @VERSION@" "Linux System Administrator's Manual"
 .SH NAME
-pidof -- find the process ID of a running program.
+pidof - find the process ID of a running program
 .SH SYNOPSIS
 .B pidof
 .RB [ \-s ]
@@ -31,26 +31,24 @@ pidof -- find the process ID of a running program.
 .IR omitpid[,omitpid...]... ]
 .RB [ \-d
 .IR sep ]
-.B program
-.RB [ program... ]
+.I program
+.RI [ program... ]
 .SH DESCRIPTION
-.B Pidof
+.B pidof
 finds the process id's (PIDs) of the named programs. It prints those
 id's on the standard output. This program is on some systems used in
 run-level change scripts, especially when the system has a
 \fISystem-V\fP like \fIrc\fP structure. In that case these scripts are
-located in /etc/rc?.d, where ? is the runlevel. If the system has
-a
-.B start-stop-daemon
-(8) program that should be used instead.
+located in \fI/etc/rc?.d\fP, where ? is the runlevel. If the system has
+a \fBstart-stop-daemon\fP(8) program that should be used instead.
 .SH OPTIONS
-.IP \-s
+.IP \fB\-s\fP
 Single shot - this instructs the program to only return one \fIpid\fP.
-.IP \-c
+.IP \fB\-c\fP
 Only return process PIDs that are running with the same root directory.
 This option is ignored for non-root users, as they will be unable to check
 the current root directory of processes they do not own.
-.IP \-n
+.IP \fB\-n\fP
 Avoid
 .BR stat (2)
 system function call on all binaries which are located on network
@@ -59,25 +57,25 @@ based file systems like
 Instead of using this option the variable
 .B PIDOF_NETFS
 may be set and exported.
-.IP \-q
+.IP \fB\-q\fP
 Do not display matched PIDs to standard out. Simply exit with
 a status of true or false to indicate whether a matching PID was found.
-.IP \-x
+.IP \fB\-x\fP
 Scripts too - this causes the program to also return process id's of
 shells running the named scripts.
-.IP \-z
+.IP \fB\-z\fP
 Try to detect processes which are stuck in zombie (Z)
 status. Usually these processes are skipped as trying to deal with them can cause
 pidof or related tools to hang. Note: In the past pidof would ignore processes
-in the uninterruptable state (D), unless the \-z flag was specified. This is no
-longer the case. The pidof program will find and report processes in the D state
-whether \-z is specified or not.
+in the uninterruptable state (D), unless the \fB-z\fP flag was specified. This is no
+longer the case. The \fBpidof\fP program will find and report processes in the D state
+whether \fB-z\fP is specified or not.
 .IP "-d \fIsep\fP"
 Tells \fIpidof\fP to use \fIsep\fP as an output separator if more than one PID
 is shown. The default separator is a space.
 .IP "-o \fIomitpid\fP"
 Tells \fIpidof\fP to omit processes with that process id. The special
-pid \fB%PPID\fP can be used to name the parent process of the \fIpidof\fP
+pid \fB%PPID\fP can be used to name the parent process of the \fBpidof\fP
 program, in other words the calling shell or shell script.
 .SH "EXIT STATUS"
 .TP
@@ -87,10 +85,10 @@ At least one program was found with the requested name.
 .B 1
 No program was found with the requested name.
 .SH NOTES
-\fIpidof\fP is actually the same program as \fIkillall5\fP;
+\fIpidof\fP is actually the same program as \fBkillall5\fP(8);
 the program behaves according to the name under which it is called.
 .PP
-When \fIpidof\fP is invoked with a full pathname to the program it
+When \fBpidof\fP is invoked with a full pathname to the program it
 should find the pid of, it is reasonably safe. Otherwise it is possible
 that it returns PIDs of running programs that happen to have the same name
 as the program you're after but are actually other programs. Note 
@@ -100,7 +98,7 @@ so symbolic links to executables will also match.
 .PP
 Zombie processes or processes in disk sleep (states Z and D, respectively)
 are ignored, as attempts to access the stats of these will sometimes fail.
-The \-z flag (see above) tells pidof to try to detect these sleeping and zombie
+The \fB\-z\fP flag (see above) tells \fBpidof\fP to try to detect these sleeping and zombie
 processes, at the risk of failing or hanging.
 
 .SH SEE ALSO
@@ -110,4 +108,6 @@ processes, at the risk of failing or hanging.
 .BR reboot (8),
 .BR killall5 (8)
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME

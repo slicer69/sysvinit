@@ -14,23 +14,23 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH INITCTL 5 "April 13, 2018" "" "Linux System Administrator's Manual"
+.TH INITCTL 5 "April 13, 2018" "sysvinit @VERSION@" "File Formats"
 .SH NAME
-initctl \- /run/initctl is a named pipe which passes commands to SysV init.
+initctl \- /run/initctl is a named pipe which passes commands to SysV init
 .SH SYNOPSIS
 /run/initctl
 .SH DESCRIPTION
 
-This document describes the communiction pipe set up by SysV init
-at /run/initctl. This named pipe allows programs with the proper
+This document describes the communication pipe set up by SysV \fBinit\fR
+at \fI/run/initctl\fR. This named pipe allows programs with the proper
 permissions (typically programs run by root have read+write access to
-the pipe) to send signals to the init program (PID 1).
+the pipe) to send signals to the \fBinit\fR program (PID 1).
 
-The init manual page has, up until recently, simply stated
-that people wishing to understand how to send messages to init
+The \fBinit\fR manual page has, up until recently, simply stated
+that people wishing to understand how to send messages to \fBinit\fR
 should read the init program's source code, but that is not usually practical.
 
-Messages sent to the pipe to talk to init must have a special format.
+Messages sent to the pipe to talk to \fBinit\fR must have a special format.
 This format is defined as a C structure and the technical break-down
 is presented here:
 
@@ -56,10 +56,10 @@ struct init_request {
 
 Let's go through the init_request structure one line at a time. The
 first variable, the "magic" number must be of the value 0x03091969.
-The init program then knows that only programs with root access which send
+The \fBinit\fR program then knows that only programs with root access which send
 this magic number are authorized to communicate with init.
 
-The cmd variable is a value in the range of 0-8 (currently). This cmd
+The \fIcmd\fR variable is a value in the range of 0-8 (currently). This \fIcmd\fR
 variable tells init what we want it to do. Here are the possible options:
 
 1 - Set the current runlevel, specified by the runlevel variable.
@@ -71,31 +71,31 @@ variable tells init what we want it to do. Here are the possible options:
 4 - The power is okay, cancel shutdown.
 
 6 - Set an environment variable to a value to be specified in 
-    the data variable of this structure.
+    the \fIdata\fR variable of this structure.
 
-Other cmd options may be added to init later. For example, command values
+Other \fIcmd\fR options may be added to \fBinit\fR later. For example, command values
 0, 5 and 7 are defined but currently not implemented.
 
-The runlevel variable will specify the runlevel to switch to (0-6).
+The \fIrunlevel\fR variable will specify the runlevel to switch to (0-6).
 
-The sleeptime variable is to be used when we want to tell init to change
-the time spent waiting between sending SIGTERM and SIGKILL during the
+The \fIsleeptime\fR variable is to be used when we want to tell \fBinit\fR to change
+the time spent waiting between sending \fBSIGTERM\fR and \fBSIGKILL\fR during the
 shutdown process. Changing this at run time is not yet implemented.
 
-The data variable (in the union) can be used to pass misc data which init
+The \fIdata\fR variable (in the union) can be used to pass misc data which init
 might need to process our request. For example, when setting environment
 variables.
 
-When setting an environment variable through init's /run/initctl pipe,
-the data variable should have the format VARIABLE=VALUE. The string
+When setting an environment variable through \fBinit\fR's \fI/run/initctl\fR pipe,
+the data variable should have the format \fIVARIABLE\fR=\fIVALUE\fR. The string
 should be terminated with a NULL character.
 
 .SH EXAMPLES
 
 The following C code example shows how to send a set environment variable
-request to the init process using the /run/initctl pipe. This example
-is simplified and skips the error checking. A more comlpete example can be
-found in the shutdown.c program's init_setnv() function.
+request to the \fBinit\fR process using the \fI/run/initctl\fR pipe. This example
+is simplified and skips the error checking. A more complete example can be
+found in the shutdown.c program's \fBinit_setnv\fR() function.
 
 .nf
 struct init_request     request;           /* structure defined above */
@@ -117,32 +117,36 @@ if ((fd = open(INIT_FIFO, O_WRONLY)) >= 0) /* open pipe for writing */
 
 .sp
 .SH NOTES
-Usually the /run/initctl pipe would only be used by low-level programs to
-request a power-related shutdown or change the runlevel, like telinit
-would do. Most of the time there is no need to talk to init directly, but
-this gives us an extenable approach so init can be taught how to learn
+Usually the \fI/run/initctl\fR pipe would only be used by low-level programs to
+request a power-related shutdown or change the runlevel, like \fBtelinit\fR
+would do. Most of the time there is no need to talk to \fBinit\fR directly, but
+this gives us an extendable approach so \fBinit\fR can be taught how to learn
 more commands.
 .PP
-The commands passed through the /run/initctl pipe must be sent in a specific
+The commands passed through the \fI/run/initctl\fR pipe must be sent in a specific
 binary format and be of a specific length. Larger data structures or ones
 not using the proper format will be ignored. Typically, only root has the
 ability to write to the initctl pipe for security reasons.
 .PP
-The /run/initctl pipe can be closed by sending init (PID 1) the SIGUSR2
+The \fI/run/initctl\fR pipe can be closed by sending init (PID 1) the \fBSIGUSR2\fR
 signal. This closes the pipe and leaves it closed. This may be useful
-for making sure init is not keeping any files open. However, when the
-pipe is closed, init no longer receives signals, such as those sent by
-shutdown or telinit. In other words if we close the pipe, init cannot
-change its runlevel directly. The pipe may be re-opened by sending init (PID 1)
-the SIGUSR1 signal.
+for making sure \fBinit\fR is not keeping any files open. However, when the
+pipe is closed, \fBinit\fR no longer receives signals, such as those sent by
+\fBshutdown\fR(8) or \fBtelinit\fR(8). In other words if we close the pipe, \fBinit\fR cannot
+change its runlevel directly. The pipe may be re-opened by sending \fBinit\fR (PID 1)
+the \fBSIGUSR1\fR signal.
 .PP
-If the /run/initctl pipe is closed then it may still be possible to bring
-down the system using the shutdown command's -n flag, but this is not
+If the \fI/run/initctl\fR pipe is closed then it may still be possible to bring
+down the system using the \fBshutdown\fR(8) command's \fB-n\fR flag, but this is not
 always clean and not recommended.
+
 .SH FILES
 /run/initctl
 /sbin/init
+
 .SH AUTHOR
-Jesse Smith <jsmith@resonatingmedia.com> 
+.MT jsmith@\:resonatingmedia\:.com 
+Jesse Smith
+.ME
 .SH "SEE ALSO"
-init(8)
+.BR init (8)

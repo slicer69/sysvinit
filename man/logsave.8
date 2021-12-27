@@ -2,7 +2,7 @@
 .\" Copyright 2003 by Theodore Ts'o.  All Rights Reserved.
 .\" This file may be copied under the terms of the GNU Public License.
 .\"
-.TH LOGSAVE 8 "@E2FSPROGS_MONTH@ @E2FSPROGS_YEAR@" "E2fsprogs version @E2FSPROGS_VERSION@"
+.TH LOGSAVE 8 "" "sysvinit @VERSION@" "Linux System Administrator's Manual"
 .SH NAME
 logsave \- save the output of a command in a logfile
 .SH SYNOPSIS
@@ -30,12 +30,12 @@ If
 is a single hyphen ('-'), then instead of executing a program,
 .B logsave
 will take its input from standard input and save it in
-.I logfile
+.IR logfile .
 .PP
 .B logsave
 is useful for saving the output of initial boot scripts
-until the /var partition is mounted, so the output can be written to
-/var/log.
+until the \fI/var\fP partition is mounted, so the output can be written to
+\fI/var/log\fP.
 .SH OPTIONS
 .TP
 .B \-a
@@ -56,6 +56,8 @@ This option will make
 .B logsave
 to be more verbose in its output to the user.
 .SH AUTHOR
-Theodore Ts'o (tytso@mit.edu)
+.MT tytso@mit\:.edu
+Theodore Ts'o
+.ME
 .SH SEE ALSO
 .BR fsck (8)

@@ -15,16 +15,16 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH INITSCRIPT 5 "July 10, 2003" "" "Linux System Administrator's Manual"
+.TH INITSCRIPT 5 "July 10, 2003" "sysvinit @VERSION@" "File Formats"
 .SH NAME
-initscript \- script that executes inittab commands.
+initscript \- script that executes inittab commands
 .SH SYNOPSIS
 /bin/sh /etc/initscript id runlevels action process
 .SH DESCRIPTION
 When the shell script \fI/etc/initscript\fP is present, \fBinit\fP
 will use it to execute the commands from \fIinittab\fP.
-This script can be used to set things like \fBulimit\fP and
-\fBumask\fP default values for every process.
+This script can be used to set things like \fIulimit\fP and
+\fIumask\fP default values for every process.
 .SH EXAMPLES
 This is a sample initscript, which might be installed on your
 system as \fI/etc/initscript.sample\fP.
@@ -66,6 +66,9 @@ with this can make your system un(re)bootable.
 /etc/inittab,
 /etc/initscript.
 .SH AUTHOR
-Miquel van Smoorenburg ,<miquels@cistron.nl>
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .SH "SEE ALSO"
-inittab(5), init(8).
+.BR inittab (5),
+.BR init (8)

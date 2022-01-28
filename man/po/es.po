@@ -1,23 +1,19 @@
-# German translation of the sysvinit man pages.
-# Martin Okrslar <okrslar@informatik.uni-muenchen.de>, 2000.
-# Martin Schulze <joey@infodrom.org>, 2001.
-# Martin Eberhard Schauer <Martin.E.Schauer@gmx.de>, 2010.
-# Chris Leick <c.leick@vollbio.de>, 2010.
-# Helge Kreutzmann <debian@helgefjell.de>, 2016, 2018-2021.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2014, 2018-2021.
+# Spanish translation of the sysvinit man pages.
+# Pedro Pablo Fábrega <pfabrega@arrakis.es>, 1998-1999.
+# Fidel García <fidelgq@dinamic.net>, 1999.
+# Marcos Fouces <marcos@debian.org>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: sysvinit-man\n"
 "POT-Creation-Date: 2021-12-27 14:19+0100\n"
-"PO-Revision-Date: 2021-12-27 22:14+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
-"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
-"Language: de\n"
+"PO-Revision-Date: 2021-05-29 14:12+0200\n"
+"Last-Translator: Marcos Fouces <marcos@debian.org>\n"
+"Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 21.12.0\n"
 
 #. type: TH
 #: ../bootlogd.8:18
@@ -29,7 +25,7 @@ msgstr "BOOTLOGD"
 #: ../bootlogd.8:18
 #, no-wrap
 msgid "Jul 21, 2003"
-msgstr "21. Juli 2003"
+msgstr "21 de julio de 2003"
 
 #. type: TH
 #: ../bootlogd.8:18 ../fstab-decode.8:20 ../halt.8:20 ../init.8:20
@@ -47,7 +43,7 @@ msgstr "sysvinit @VERSION@"
 #: ../shutdown.8:20 ../sulogin.8:18
 #, no-wrap
 msgid "Linux System Administrator's Manual"
-msgstr "Linux-Systemverwaltungshandbuch"
+msgstr "Manual del Administrador del Sistema Linux"
 
 #. type: SH
 #: ../bootlogd.8:19 ../fstab-decode.8:22 ../halt.8:23 ../init.8:23
@@ -57,12 +53,12 @@ msgstr "Linux-Systemverwaltungshandbuch"
 #: ../utmpdump.1:19 ../wall.1:20
 #, no-wrap
 msgid "NAME"
-msgstr "BEZEICHNUNG"
+msgstr "NOMBRE"
 
 #. type: Plain text
 #: ../bootlogd.8:21
 msgid "bootlogd - record boot messages"
-msgstr "bootlogd - Boot-Meldungen aufzeichnen"
+msgstr ""
 
 #. type: SH
 #: ../bootlogd.8:21 ../fstab-decode.8:25 ../halt.8:27 ../init.8:27
@@ -72,16 +68,17 @@ msgstr "bootlogd - Boot-Meldungen aufzeichnen"
 #: ../utmpdump.1:21 ../wall.1:23
 #, no-wrap
 msgid "SYNOPSIS"
-msgstr "ÜBERSICHT"
+msgstr "SINOPSIS"
 
 #. type: Plain text
 #: ../bootlogd.8:31
+#, fuzzy
+#| msgid ""
+#| "B</sbin/halt> [B<-n>] [B<-w>] [B<-d>] [B<-f>] [B<-i>] [B<-p>] [B<-h>]"
 msgid ""
 "B</sbin/bootlogd> [B<-c>] [B<-d>] [B<-e>] [B<-r>] [B<-s>] [B<-v>] [I< >B<-"
 "l>I< logfile >] [I< >B<-p>I< pidfile >]"
-msgstr ""
-"B</sbin/bootlogd> [B<-c>] [B<-d>] [B<-e>] [B<-r>] [B<-s>] [B<-v>] [I< >B<-"
-"l>I< Protokolldatei >] [I< >B<-p>I< PID-Datei >]"
+msgstr "B</sbin/halt> [B<-n>] [B<-w>] [B<-d>] [B<-f>] [B<-i>] [B<-p>] [B<-h>]"
 
 #. type: SH
 #: ../bootlogd.8:31 ../fstab-decode.8:28 ../halt.8:53 ../init.8:46
@@ -91,7 +88,7 @@ msgstr ""
 #: ../utmpdump.1:25 ../wall.1:28
 #, no-wrap
 msgid "DESCRIPTION"
-msgstr "BESCHREIBUNG"
+msgstr "DESCRIPCIÓN"
 
 #. type: Plain text
 #: ../bootlogd.8:35
@@ -100,10 +97,6 @@ msgid ""
 "console> device to a logfile. If the I<logfile> is not accessible, the "
 "messages will be kept in memory until it is."
 msgstr ""
-"B<bootlogd> wird im Hintergrund ausgeführt und kopiert alle an das Gerät I</"
-"dev/console> gesendeten Zeichenketten in eine Protokolldatei. Falls auf die "
-"I<Ptotokolldatei> nicht zugegriffen werden kann, werden die Meldungen im "
-"Speicher behalten, bis der Zugriff wieder möglich ist."
 
 #. type: SH
 #: ../bootlogd.8:35 ../halt.8:68 ../killall5.8:34 ../last.1:70 ../logsave.8:39
@@ -111,7 +104,7 @@ msgstr ""
 #: ../runlevel.8:49 ../shutdown.8:54 ../utmpdump.1:28 ../wall.1:52
 #, no-wrap
 msgid "OPTIONS"
-msgstr "OPTIONEN"
+msgstr "OPCIONES"
 
 #. type: IP
 #: ../bootlogd.8:36 ../halt.8:75 ../last.1:87 ../mountpoint.1:36
@@ -137,10 +130,6 @@ msgid ""
 "escape characters and allows tools like GNU B<less>(1) to see and use colour "
 "control characters (show the log in colour)."
 msgstr ""
-"gibt Escape-Zeichen in die Boot-Protokolldatei aus. Dadurch wird die "
-"Filterung der Escape-Zeichen deaktiviert und Werkzeugen wie GNU B<less>(1) "
-"ermöglicht, diese zu sehen und Farb-Steuerzeichen zu verwenden (also das "
-"Protokoll farbig anzuzeigen)."
 
 #. type: IP
 #: ../bootlogd.8:42 ../pidof.8:47 ../shutdown.8:101
@@ -156,11 +145,6 @@ msgid ""
 "write to it. This behavior prevents B<bootlogd> from creating logfiles under "
 "mount points."
 msgstr ""
-"versucht, auch dann in die Protokolldatei zu schreiben, wenn diese noch "
-"nicht existiert. Ohne diese Option wartet B<bootlogd>, bis die "
-"Protokolldatei erscheint, bevor ein Schreibversuch unternommen wird. Dieses "
-"Verhalten hindert B<bootlogd> daran, Protokolldateien unterhalb von "
-"Einhängepunkten zu erstellen."
 
 #. type: IP
 #: ../bootlogd.8:47 ../shutdown.8:64 ../utmpdump.1:31
@@ -174,9 +158,6 @@ msgid ""
 "If there is an existing logfile called I<logfile> rename it to I<logfile~> "
 "unless I<logfile~> already exists."
 msgstr ""
-"Eine vorhandene I<Protokolldatei> wird umbenannt, indem dem Namen eine Tilde "
-"angehängt wird (I<Protokolldatei~>), außer wenn die I<Protokolldatei~> "
-"bereits vorhanden ist."
 
 #. type: IP
 #: ../bootlogd.8:50 ../logsave.8:45 ../pidof.8:45
@@ -191,9 +172,6 @@ msgid ""
 "B<fdatasync>(3).  This will slow down a B<fsck>(8)  process running in "
 "parallel."
 msgstr ""
-"stellt sicher, dass die Daten tatsächlich in die Datei geschrieben werden, "
-"indem nach jeder Zeile B<fdatasync>(3) aufgerufen wird. Dadurch wird ein "
-"parallel laufender B<fsck>(8)-Prozess verlangsamt."
 
 #. type: TP
 #: ../bootlogd.8:56 ../logsave.8:53
@@ -204,32 +182,31 @@ msgstr "B<-v>"
 #. type: Plain text
 #: ../bootlogd.8:58
 msgid "Show version."
-msgstr "zeigt die Version an."
+msgstr ""
 
 #. type: IP
 #: ../bootlogd.8:58
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid "B<-f>, B<--file> I<file>"
 msgid "B<-l> I<logfile>"
-msgstr "B<-l> I<Protokolldatei>"
+msgstr "B<-f>,B< --file >I<archivo>"
 
 #. type: Plain text
 #: ../bootlogd.8:60
 msgid "Log to this logfile. The default is I</var/log/boot>."
 msgstr ""
-"speichert in die angegebene Protokolldatei. Die Vorgabe ist I</var/log/boot>."
 
 #. type: IP
 #: ../bootlogd.8:60
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid "B<-f>, B<--file> I<file>"
 msgid "B<-p> I<pidfile>"
-msgstr "B<-p> I<PID-Datei>"
+msgstr "B<-f>,B< --file >I<archivo>"
 
 #. type: Plain text
 #: ../bootlogd.8:62
 msgid "Put process-id in this file. The default is no pidfile."
 msgstr ""
-"speichert die Prozesskennung (PID) in dieser Datei. Standardmäßig wird keine "
-"PID-Datei gespeichert."
 
 #. }}}
 #. type: SH
@@ -238,7 +215,7 @@ msgstr ""
 #: ../shutdown.8:216
 #, no-wrap
 msgid "NOTES"
-msgstr "ANMERKUNGEN"
+msgstr "NOTAS"
 
 #. type: Plain text
 #: ../bootlogd.8:67
@@ -253,7 +230,7 @@ msgstr ""
 #: ../bootlogd.8:67 ../utmpdump.1:52
 #, no-wrap
 msgid "BUGS"
-msgstr "FEHLER"
+msgstr "ERRORES"
 
 #. type: Plain text
 #: ../bootlogd.8:77
@@ -294,7 +271,7 @@ msgstr "E<.MT miquels@\\:cistron\\:.nl> Miquel van Smoorenburg E<.ME>"
 #: ../utmpdump.1:62 ../wall.1:70
 #, no-wrap
 msgid "SEE ALSO"
-msgstr "SIEHE AUCH"
+msgstr "VÉASE TAMBIÉN"
 
 #. type: Plain text
 #: ../bootlogd.8:85
@@ -311,17 +288,17 @@ msgstr "FSTAB-DECODE"
 #: ../fstab-decode.8:20
 #, no-wrap
 msgid "May 2006"
-msgstr "Mai 2006"
+msgstr "Mayo de 2006"
 
 #. type: Plain text
 #: ../fstab-decode.8:24
 msgid "fstab-decode - run a command with fstab-encoded arguments"
-msgstr "fstab-decode - einen Befehl mit fstab-kodierten Argumenten ausführen"
+msgstr ""
 
 #. type: Plain text
 #: ../fstab-decode.8:27
 msgid "B<fstab-decode> I<COMMAND> [I<ARGUMENT>]..."
-msgstr "B<fstab-decode> I<BEFEHL> [I<ARGUMENT>] …"
+msgstr ""
 
 #. type: Plain text
 #: ../fstab-decode.8:34
@@ -364,7 +341,7 @@ msgstr ""
 #: ../fstab-decode.8:50 ../killall5.8:40 ../mountpoint.1:42 ../pidof.8:80
 #, no-wrap
 msgid "EXIT STATUS"
-msgstr "EXIT-STATUS"
+msgstr "ESTADO DE SALIDA"
 
 #. type: Plain text
 #: ../fstab-decode.8:56
@@ -372,9 +349,6 @@ msgid ""
 "B<fstab-decode> exits with status 127 if I<COMMAND> can't be run.  Otherwise "
 "it exits with the status returned by I<COMMAND>."
 msgstr ""
-"B<fstab-decode> beendet sich mit dem Status 127, falls der I<BEFEHL> nicht "
-"ausgeführt werden kann. Anderenfalls beendet es sich mit dem vom I<BEFEHL> "
-"zurückgegebenen Status."
 
 #. }}}
 #. }}}
@@ -383,7 +357,7 @@ msgstr ""
 #: ../fstab-decode.8:57 ../initctl.5:93 ../initscript.5:28 ../inittab.5:184
 #, no-wrap
 msgid "EXAMPLES"
-msgstr "BEISPIELE"
+msgstr "EJEMPLOS"
 
 #. type: Plain text
 #: ../fstab-decode.8:62
@@ -393,17 +367,14 @@ msgid ""
 "file).  B<fstab-decode> then runs the specified program, B<umount>(8), and "
 "passes it the list of VFAT mountpoints. This unmounts all VFAT partitions."
 msgstr ""
-"Das folgende Beispiel liest die Datei I<fstab>, findet alle Vorkommen von "
-"VFAT-Dateisystemen und gibt deren Einhängepunkte aus (das 2. Argument in der "
-"I<fstab>-Datei). B<fstab-decode> führt dann das angegebene Programm aus "
-"(B<umount>(8)) und übergibt an dieses eine Liste der VFAT-Einhängepunkte. "
-"Dadurch werden alle VFAT-Partitionen ausgehängt."
 
 #. type: Plain text
 #: ../fstab-decode.8:65
 #, no-wrap
-msgid "B<fstab-decode umount $(awk \\[aq]$3 == \\[dq]vfat\\[dq] { print $2 }\\[aq] /etc/fstab)>\n"
-msgstr "B<fstab-decode umount $(awk \\[aq]$3 == \\[dq]vfat\\[dq] { print $2 }\\[aq] /etc/fstab)>\n"
+msgid ""
+"B<fstab-decode umount $(awk \\[aq]$3 == \\[dq]vfat\\[dq] { print $2 }\\[aq]"
+" /etc/fstab)>\n"
+msgstr ""
 
 #. type: Plain text
 #: ../fstab-decode.8:68
@@ -420,14 +391,14 @@ msgstr "HALT"
 #: ../halt.8:20
 #, no-wrap
 msgid "Nov 6, 2001"
-msgstr "6. November 2001"
+msgstr "6 de noviembre de 2001"
 
 #. }}}
 #. {{{  Synopsis
 #. type: Plain text
 #: ../halt.8:27
 msgid "halt, reboot, poweroff - stop the system"
-msgstr "halt, poweroff, reboot - das System anhalten"
+msgstr "halt, reboot, poweroff - detienen el sistema"
 
 #. type: Plain text
 #: ../halt.8:36
@@ -471,8 +442,6 @@ msgid ""
 "The rest of this manpage describes the behavior in runlevels 0 and 6, that "
 "is when the systems shutdown scripts are being run."
 msgstr ""
-"Der Rest dieser Handbuchseite beschreibt das Verhalten in den Runlevels 0 "
-"und 6, also wenn die Herunterfahr-Skripte des Systems laufen."
 
 #. type: IP
 #: ../halt.8:69 ../pidof.8:51 ../shutdown.8:95 ../wall.1:53
@@ -499,13 +468,11 @@ msgid ""
 "Don't actually reboot or halt but only write the wtmp record (in the I</var/"
 "log/wtmp> file)."
 msgstr ""
-"führt keinen Systemhalt oder Neustart tatsächlich aus, sondern schreibt nur "
-"den Wtmp-Herunterfahreintrag (in die Datei I</var/log/wtmp>)."
 
 #. type: Plain text
 #: ../halt.8:77
 msgid "Don't write the wtmp record."
-msgstr "schreibt keinen Wtmp-Herunterfahreintrag."
+msgstr ""
 
 #. type: IP
 #: ../halt.8:77 ../shutdown.8:87 ../utmpdump.1:29
@@ -516,7 +483,7 @@ msgstr "B<-f>"
 #. type: Plain text
 #: ../halt.8:79
 msgid "Force halt or reboot, don't call B<shutdown>(8)."
-msgstr "erzwingt Systemhalt oder Neustart und ruft B<shutdown>(8) nicht auf."
+msgstr ""
 
 #. type: IP
 #: ../halt.8:79 ../last.1:93
@@ -544,8 +511,6 @@ msgid ""
 "Put all hard drives on the system in stand-by mode just before halt or power-"
 "off."
 msgstr ""
-"versetzt alle Festplattenlaufwerke im System direkt vor Systemhalt oder "
-"Ausschalten in den Standby-Modus."
 
 #. type: IP
 #: ../halt.8:85 ../mountpoint.1:38
@@ -561,14 +526,12 @@ msgid ""
 "When halting the system, switch off the power. This is the default when "
 "B<halt> is called as B<poweroff>."
 msgstr ""
-"schaltet beim Anhalten des Systems die Energieversorgung ab. Dies ist die "
-"Vorgabe, wenn B<halt> als B<poweroff> aufgerufen wird."
 
 #. type: SH
 #: ../halt.8:90 ../init.8:327
 #, no-wrap
 msgid "DIAGNOSTICS"
-msgstr "DIAGNOSE"
+msgstr "DIAGNÓSTICOS"
 
 #. }}}
 #. {{{  Notes
@@ -577,8 +540,6 @@ msgstr "DIAGNOSE"
 msgid ""
 "If you're not the superuser, you will get the message `must be superuser'."
 msgstr ""
-"Falls Sie nicht der Superuser sind, erhalten Sie die Meldung »must be "
-"superuser«."
 
 #. type: Plain text
 #: ../halt.8:103
@@ -591,15 +552,6 @@ msgid ""
 "does not exist) B<shutdown> will be called, which might not be what you "
 "want.  Use the B<-f> flag if you want to do a hard B<halt> or B<reboot>."
 msgstr ""
-"Unter älteren Versionen von B<sysvinit> sollten B<reboot> und B<halt> "
-"niemals direkt aufgerufen werden. Ab der Version 2.74 rufen B<halt> und "
-"B<reboot> den Befehl B<shutdown>(8) auf, falls sich das System nicht im "
-"Runlevel 0 oder 6 befindet. Falls B<halt> oder B<reboot> den aktuellen "
-"Runlevel nicht ermitteln können (beispielsweise wenn I</var/run/utmp> nicht "
-"korrekt initialisiert wurde und I</var/run/runlevel> nicht existiert), "
-"bedeutet das, dass B<shutdown> aufgerufen wird, was möglicherweise nicht das "
-"ist, was Sie wollen. Verwenden Sie den Schalter B<-f>, wenn Sie einen harten "
-"Systemhalt oder Neustart ausführen wollen."
 
 #. type: Plain text
 #: ../halt.8:109
@@ -610,12 +562,6 @@ msgid ""
 "flushed. This is important for IDE drives, since the kernel doesn't flush "
 "the write cache itself before power-off."
 msgstr ""
-"Der Schalter B<-h> versetzt alle Festplatten direkt vor dem Systemhalt oder "
-"Ausschalten in den Standby-Modus. Bislang ist das nur für IDE-Laufwerke "
-"implemetiert. Ein Nebeneffekt des Versetzens in den Standby-Modus ist, dass "
-"der Schreib-Cache des Laufwerks geleert wird. Das ist für IDE-Laufwerke "
-"wichtig, da der Kernel selbst den Schreib-Cache vor dem Ausschalten nicht "
-"leert."
 
 #. type: Plain text
 #: ../halt.8:113
@@ -624,9 +570,6 @@ msgid ""
 "which means that I</proc> needs to be mounted when B<halt> or B<poweroff> is "
 "called or the B<-h> switch will do nothing."
 msgstr ""
-"Das Programm B<halt> findet alle IDE-Laufwerke mit Hilfe von I</proc/ide/"
-"hd*>, was bedeutet, dass I</proc> beim Aufruf von B<halt> oder B<poweroff> "
-"eingehängt sein muss. Anderenfalls wird der Schalter B<-h> nichts bewirken."
 
 #. type: Plain text
 #: ../halt.8:124
@@ -643,14 +586,14 @@ msgstr "INIT"
 #: ../init.8:20
 #, no-wrap
 msgid "29 Jul 2004"
-msgstr "29. Juli 2004"
+msgstr "29 de julio de 2004"
 
 #. }}}
 #. {{{  Synopsis
 #. type: Plain text
 #: ../init.8:27
 msgid "init, telinit - process control initialization"
-msgstr "init, telinit - Initialisierung der Prozesssteuerung"
+msgstr "init, telinit - control de inicialización de procesos"
 
 #. type: Plain text
 #: ../init.8:34
@@ -667,14 +610,14 @@ msgstr "B</sbin/init> [B< --version >]"
 #. type: Plain text
 #: ../init.8:41
 msgid "B</sbin/telinit> [ B<-t> I<SECONDS> ] [B< 0123456sSQqabcUu >]"
-msgstr "B</sbin/telinit> [ B<-t> I<SEKUNDEN> ] [B< 0123456sSQqabcUu >]"
+msgstr "B</sbin/telinit> [ B<-t> I<SEGUNDOS> ] [B< 0123456sSQqabcUu >]"
 
 #. }}}
 #. {{{  Description
 #. type: Plain text
 #: ../init.8:46
 msgid "B</sbin/telinit> [ B<-e> I<VAR>[B<=>I<VAL>] ]"
-msgstr "B</sbin/telinit> [ B<-e> I<VAR>[B<=>I<WERT>] ]"
+msgstr "B</sbin/telinit> [ B<-e> I<VAR>[B<=>I<VAL>] ]"
 
 #. {{{  init
 #. type: SS
@@ -692,19 +635,18 @@ msgid ""
 "B<getty>s on each line that users can log in.  It also controls autonomous "
 "processes required by any particular system."
 msgstr ""
-"B<init> ist der Elternprozess aller Prozesse. Seine Hauptaufgabe besteht "
-"darin, Prozesse aus einem Skript in der Datei I</etc/inittab> zu erzeugen "
-"(siehe auch B<inittab>(5)). Diese Datei hat normalerweise Einträge, die "
-"B<init> dazu veranlassen auf jeder Leitung B<getty>s zu erzeugen, auf der "
-"sich ein Benutzer einloggen kann. Er steuert auch alle unabhängigen "
-"Prozesse, die von einem bestimmten System benötigt werden."
+"B<Init> es el padre de todos los procesos. Su papel primario es crear "
+"procesos a partir de un guión guardado en el fichero I</etc/inittab> (véase "
+"B<inittab>(5)).  Este fichero normalmente tiene entradas que harán que se "
+"levante B<getty>s en cada línea en que los usuarios puedan conectarse. "
+"También controla procesos autónomos requeridos por un sistema particular."
 
 #. {{{ Runlevels
 #. type: SH
 #: ../init.8:57
 #, no-wrap
 msgid "RUNLEVELS"
-msgstr "RUNLEVEL"
+msgstr "NIVELES DE EJECUCIÓN (RUNLEVELS)"
 
 #. type: Plain text
 #: ../init.8:66
@@ -716,14 +658,14 @@ msgid ""
 "runlevel is changed by having a privileged user run B<telinit>, which sends "
 "appropriate signals to B<init>, telling it which runlevel to change to."
 msgstr ""
-"Ein I<Runlevel> ist eine Software-Konfiguration des Systems, der es nur "
-"einer ausgewählten Gruppe von Prozessen erlaubt, ausgeführt zu werden. Die "
-"Prozesse, die von B<init> für jeden dieser Runlevel erzeugt werden, sind in "
-"der Datei I</etc/inittab> definiert. B<Init> kann in einem von acht "
-"Runleveln sein: B<0-6> und B<S> (auch B<s>). B<Init> wechselt den Runlevel, "
-"wenn ein privilegierter Benutzer das Programm B</sbin/telinit> startet, das "
-"B<init> passende Signale sendet, die ihm mitteilen, in welchen Runlevel es "
-"wechseln soll."
+"Un I<nivel de ejecución> es una configuración de software del sistema que "
+"permite existir solo a un grupo de procesos seleccionado. Los procesos "
+"levantados por B<init> para cada uno de estos niveles de ejecución se "
+"definen en el fichero I</etc/inittab>.  B<Init> puede estar en uno de los "
+"ocho niveles de ejecución: B<0\\(en6> y B<S> o B<s>.  El cambio de nivel de "
+"ejecución se hace mediante un usuario con privilegio que ejecute B<telinit>, "
+"que envía las señales apropiadas a B<init>, diciéndole a qué nivel de "
+"ejecuación tiene que cambiar."
 
 #. type: Plain text
 #: ../init.8:75
@@ -734,12 +676,6 @@ msgid ""
 "``single-user mode'', after which the current runlevel is S.  Runlevel 0 is "
 "used to halt the system; runlevel 6 is used to reboot the system."
 msgstr ""
-"Die Runlevel B<S>, B<0>, B<1> und B<6> sind reserviert. Der Runlevel S wird "
-"benutzt, um das System beim Start zu initialisieren. Wenn Runlevel S (beim "
-"Start) oder Runlevel 1 (umschalten von einem Mehrbenutzer-Runlevel) "
-"gestartet wird, wechselt das System in den »Einzelbenutzermodus«, nach dem "
-"der aktuelle Runlevel S ist. Runlevel 0 wird benutzt, um das System zu "
-"stoppen, Runlevel 6 startet das System neu."
 
 #. type: Plain text
 #: ../init.8:82
@@ -750,19 +686,12 @@ msgid ""
 "single-user mode the administrator performs maintenance and then reboots the "
 "system."
 msgstr ""
-"Nach dem Starten durch S tritt das System automatisch in die Mehrbenutzer-"
-"Runlevel 2 bis 5 ein, falls es dort kein Problem gibt, das vom Administrator "
-"im Einzelbenutzermodus behoben werden muss. Normalerweise führt der "
-"Administrator nach Eintreten in den Einzelbenutzermodus Wartungsarbeiten "
-"durch und startet dann das System neu."
 
 #. type: Plain text
 #: ../init.8:85
 msgid ""
 "For more information, see the manpages for B<shutdown>(8) and B<inittab>(5)."
 msgstr ""
-"Lesen Sie die Handbuchseiten von B<shutdown>(8) und B<inittab>(5), um "
-"weitere Informationen zu erhalten."
 
 #. type: Plain text
 #: ../init.8:88
@@ -770,9 +699,8 @@ msgid ""
 "Runlevels 7-9 are also valid, though not really documented. This is because "
 "\"traditional\" Unix variants don't use them."
 msgstr ""
-"Die Runlevel 7-9 sind ebenfalls gültig, wenngleich nicht wirklich "
-"dokumentiert. Dies ist deshalb so, weil »traditionelle« Unix-Varianten sie "
-"nicht benutzen."
+"Los niveles 7-9 también son válidos, aunque realmente no están documantados. "
+"Esto es porque las variantes Unix tradicionales no los usan."
 
 #. }}}
 #. type: Plain text
@@ -781,14 +709,12 @@ msgid ""
 "Runlevels I<S> and I<s> are the same.  Internally they are aliases for the "
 "same runlevel."
 msgstr ""
-"Die Runlevel I<S> und I<s> sind identisch. Intern sind sie Aliase für den "
-"gleichen Runlevel."
 
 #. type: SH
 #: ../init.8:93
 #, no-wrap
 msgid "BOOTING"
-msgstr "SYSTEMSTART"
+msgstr "CARGA"
 
 #. type: Plain text
 #: ../init.8:100
@@ -799,27 +725,32 @@ msgid ""
 "initial runlevel of the system.  If there is no such entry (or no I</etc/"
 "inittab> at all), a runlevel must be entered at the system console."
 msgstr ""
-"Nachdem B<init> im letzten Schritt des Startprozesses aufgerufen wird, sucht "
-"es nach der Datei I</etc/inittab> und sieht nach, ob es dort einen "
-"B<initdefault>-Eintrag gibt (siehe B<inittab>(5)). Der Eintrag "
-"B<initdefault> bestimmt den Anfangs-I<Runlevel> des Systems. Falls es dort "
-"keinen derartigen Eintrag gibt (oder gar keine Datei I</etc/inittab> "
-"existiert), muss der I<Runlevel> in der Systemkonsole eingegeben werden."
+"Tras llamar a B<init> como el último paso de la secuencia de carga del "
+"núcleo, busca el fichero I</etc/inittab> para ver si hay una entrada del "
+"tipo B<initdefault> (véase B<inittab>(5)). La entrada B<initdefault> "
+"determina el nivel de ejecución inicial del sistema.  Si no está esa entrada "
+"(o no existe I</etc/inittab>), se debe introducir un nivel de ejecución en "
+"la consola del sistema."
 
 #. type: Plain text
 #: ../init.8:103
+#, fuzzy
+#| msgid ""
+#| "Runlevel B<S> or B<s> bring the system to single user mode and do not "
+#| "require an B</etc/initttab> file.  In single user mode, B</sbin/sulogin> "
+#| "is invoked on B</dev/console>."
 msgid ""
 "Runlevel B<S> or B<s> initialize the system and do not require an I</etc/"
 "inittab> file."
 msgstr ""
-"Die Runlevel B<S> oder B<s> initialisieren das System und benötigen keine I</"
-"etc/inittab>-Datei."
+"El nivel de ejecución B<S> o B<s> lleva al sistema al modo monousuario y no "
+"requiere un fichero B</etc/initttab> . En modo monousuario, se llama a B</"
+"sbin/sulogin> en B</dev/console>."
 
 #. type: Plain text
 #: ../init.8:105
 msgid "In single user mode, B</sbin/sulogin> is invoked on I</dev/console>."
 msgstr ""
-"Im Einzelbenutzermodus wird B</sbin/sulogin> auf I</dev/console> aufgerufen."
 
 #. type: Plain text
 #: ../init.8:109
@@ -828,10 +759,6 @@ msgid ""
 "settings to sane values. Clocal mode is set. Hardware speed and handshaking "
 "are not changed."
 msgstr ""
-"Beim Eintritt in den Einzelbenutzermodus initialisiert B<init> die B<stty>-"
-"Einstellungen der Konsolen auf vernünftige Werte. Der »Clocal«-Modus wird "
-"gesetzt. Hardware-Geschwindigkeit und Datenflusssteuerung werden nicht "
-"geändert."
 
 #. type: Plain text
 #: ../init.8:114
@@ -840,10 +767,10 @@ msgid ""
 "B<boot> and B<bootwait> entries to allow file systems to be mounted before "
 "users can log in.  Then all entries matching the runlevel are processed."
 msgstr ""
-"Beim ersten Eintritt in den Mehrbenutzermodus führt B<init> die B<boot>- und "
-"B<bootwait>-Einträge aus, um das Einhängen von Dateisystemen zu erlauben, "
-"bevor Anwender sich anmelden können. Dann werden alle Einträge, die zum "
-"Runlevel passen, verarbeitet."
+"Cuando se entra por primera vez en un modo multiusuario, B<init> realiza las "
+"entradas B<boot> y B<bootwait> para permitir que se monten los sistemas de "
+"ficheros antes de que los usuarios se presenten al sistema. Entonces se "
+"procesan todas las entradas para este nivel."
 
 #. type: Plain text
 #: ../init.8:118
@@ -851,9 +778,9 @@ msgid ""
 "When starting a new process, B<init> first checks whether the file I</etc/"
 "initscript> exists. If it does, it uses this script to start the process."
 msgstr ""
-"Wenn ein neuer Prozess gestartet wird, prüft B<init> zuerst, ob die Datei I</"
-"etc/initscript> existiert. Ist dies der Fall, benutzt es dieses Skript, um "
-"den Prozess zu starten."
+"Cuando inicia un nuevo proceso, B<init> primero verifica si existe el "
+"fichero I</etc/initscript>. Si existe, usa este script para iniciar el "
+"proceso."
 
 #. type: Plain text
 #: ../init.8:122
@@ -862,15 +789,15 @@ msgid ""
 "died in I</var/run/utmp> and I</var/log/wtmp>, provided that these files "
 "exist."
 msgstr ""
-"Jedesmal, wenn ein Kindprozess endet, zeichnet B<init> diesen Umstand und "
-"den Grund der Beendigung in I</var/run/utmp> und I</var/log/wtmp> auf, "
-"sofern diese Dateien existieren."
+"Cada vez que un hijo termina, B<init> registra el hecho y la razón de su "
+"muerte en I</var/run/utmp> y I</var/log/wtmp>, suponiendo  que estos "
+"ficheros existen."
 
 #. type: SH
 #: ../init.8:122
 #, no-wrap
 msgid "CHANGING RUNLEVELS"
-msgstr "RUNLEVEL ÄNDERN"
+msgstr "CAMBIO DE NIVEL DE EJECUCIÓN"
 
 #. type: Plain text
 #: ../init.8:132
@@ -884,34 +811,36 @@ msgid ""
 "instantaneous response, the B<telinit Q> or B<q> command can wake up B<init> "
 "to re-examine (reload) the I</etc/inittab> file."
 msgstr ""
-"Nachdem alle vorgesehenen Prozesse erzeugt worden sind, wartet B<init> "
-"darauf, dass ein untergeordneter Prozess endet, ein Stromausfallsignal oder "
-"darauf, dass B<telinit> einen Wechsel des Runlevels signalisiert. Wenn eine "
-"der drei oben genannten Bedingungen erfüllt ist, untersucht B<init> nochmals "
-"die I</etc/inittab>-Datei. Es können jederzeit neue Einträge zu dieser Datei "
-"hinzugefügt werden. Jedoch wartet B<init> immer noch darauf, dass einer der "
-"drei oben genannten Bedingungen eintritt. Um eine sofortige Antwort "
-"bereitzustellen, können die Befehle B<telinit Q> oder B<q> B<init> "
-"aufwecken, um die Datei I</etc/inittab> erneut zu prüfen (neu zu laden)."
+"Tras haber lanzado todos los procesos especificados, B<init> espera a que "
+"alguno de sus procesos descendientes muera, una señal de fallo de "
+"alimentación o hsata que se le indique por B<telinit> que cambie el nivel de "
+"ejecución del sisema. Cuando alguna de las tres condiciones anteriores "
+"ocurre, re-examina el fichero I</etc/inittab>. Se pueden añadir nuevas "
+"entradas a este fichero en cualquier momento. Sin embargo, B<init> aun "
+"espera a que alguna de las tres condiciones anteriores suceda. Para "
+"proporcionar un respuesta inmediata, B<telinit Q> o el mandato B<q> puede "
+"levantar B<init> para que re-examine el fichero I</etc/inittab>."
 
-# FIXME SIGPWR → B<SIGPWR>
 #. type: Plain text
 #: ../init.8:136
+#, fuzzy
+#| msgid ""
+#| "If B<init> is not in single user mode and receives a powerfail signal "
+#| "(SIGPWR), it reads the file B</etc/powerstatus>. It then starts a command "
+#| "based on the contents of this file:"
 msgid ""
 "If B<init> is not in single user mode and receives a powerfail signal "
 "(SIGPWR), it reads the file I</etc/powerstatus>. It then starts a command "
 "based on the contents of this file:"
 msgstr ""
-"Falls B<init> sich nicht im Einzelbenutzermodus befindet, und ein "
-"Stromausfallsignal (SIGPWR) empfängt, liest es die Datei I</etc/"
-"powerstatus>. Anschließend wird ein Befehl anhand des Inhalts der Datei "
-"gestartet:"
+"Si B<init> no está en modo monousuario una señal de fallo de alimentación, "
+"se llaman las entradas especiales powerfail."
 
 #. type: IP
 #: ../init.8:136
 #, no-wrap
 msgid "F(AIL)"
-msgstr "F(EHLSCHLAG)"
+msgstr "F(AIL)"
 
 #. type: Plain text
 #: ../init.8:139
@@ -919,8 +848,6 @@ msgid ""
 "Power is failing, UPS is providing the power. Execute the B<powerwait> and "
 "B<powerfail> entries."
 msgstr ""
-"Strom fällt aus, die USV versorgt den Rechner mit Strom. Die B<powerwait>- "
-"und B<powerfail>-Einträge werden ausgeführt."
 
 #. type: IP
 #: ../init.8:139
@@ -932,14 +859,12 @@ msgstr "O(K)"
 #: ../init.8:141
 msgid "The power has been restored, execute the B<powerokwait> entries."
 msgstr ""
-"Stromkreis wurde wieder geschlossen, die B<powerokwait>-Einträge werden "
-"ausgeführt."
 
 #. type: IP
 #: ../init.8:141
 #, no-wrap
 msgid "L(OW)"
-msgstr "L(OW/niedrig)"
+msgstr "L(OW)"
 
 #. type: Plain text
 #: ../init.8:144
@@ -947,8 +872,6 @@ msgid ""
 "The power is failing and the UPS has a low battery. Execute the "
 "B<powerfailnow> entries."
 msgstr ""
-"Strom fällt aus und der Ladestand der USV ist niedrig. Die B<powerfailnow>-"
-"Einträge werden ausgeführt."
 
 #. type: Plain text
 #: ../init.8:148
@@ -957,9 +880,6 @@ msgid ""
 "letters B<F>, B<O> or B<L>, B<init> will behave as if it has read the letter "
 "B<F>."
 msgstr ""
-"Wenn I</etc/powerstatus> nicht existiert oder etwas anderes enthält als die "
-"Buchstaben B<F>, B<O> oder B<L>, wird B<init> sich so verhalten, als hätte "
-"es den Buchstaben B<F> gelesen."
 
 #. type: Plain text
 #: ../init.8:153
@@ -968,10 +888,6 @@ msgid ""
 "to interact with B<init> should use the I</run/initctl> control channel - "
 "see the B<initctl>(5) manual page for more documentation about this."
 msgstr ""
-"Die Verwendung von B<SIGPWR> und I</etc/powerstatus> werden nicht empfohlen. "
-"Wenn etwas mit B<init> interagieren möchte, sollte der Steuerkanal I</run/"
-"initctl> verwendet werden - lesen Sie die Handbuchseite von B<initctl>(5), "
-"um weitere Dokumentation darüber zu erhalten."
 
 #. }}}
 #. {{{  telinit
@@ -987,14 +903,14 @@ msgid ""
 "will not receive these signals.  Such processes need to be terminated "
 "separately."
 msgstr ""
-"Falls B<init> die Aufforderung zum Wechsel des Runlevels erhält, sendet es "
-"das Warnsignal B<SIGTERM> an alle nicht im neuen Runlevel definierten "
-"Prozesse. Dann wartet es drei Sekunden bevor es diese Prozesse gewaltsam per "
-"Signal B<SIGKILL> beendet. Beachten Sie, dass B<init> davon ausgeht, dass "
-"diese Prozesse (und ihre Unterprozesse) in der gleichen Prozessgruppe "
-"verbleiben, die B<init> ursprünglich für sie erstellt hatte. Wenn Prozesse "
-"ihre Gruppenzugehörigkeit andern, werden Sie diese Signale nicht empfangen. "
-"Solche Prozesse müssen separat beendet werden."
+"Cuando se lesolicita a B<init> que cambie el nivel, envía la señal de aviso "
+"B<SIGTERM> a todos los procesos que no están definidos en el nuevo nivel de "
+"ejecución. Espera 3 segundos antes de forzar la terminación de estos "
+"procesos mediante la señal B<SIGKILL>. Observe que B<init> supone que todos "
+"estos procesos (y sus descendientes) permanecen en el mismo grupo de "
+"procesos que B<init> creó originalmente para ellos. Si cualquier proceso "
+"cambia la afiliación de grupo de proceso no recibirá estas señales. Tales "
+"procesos necesitan ser terminados de forma separada."
 
 #. type: SH
 #: ../init.8:165
@@ -1009,20 +925,20 @@ msgid ""
 "argument and signals B<init> to perform the appropriate action.  The "
 "following arguments serve as directives to B<telinit>:"
 msgstr ""
-"B</sbin/telinit> ist mit B</sbin/init> verknüpft. Es empfängt Argumente aus "
-"einem Buchstaben oder B<init>-Signale, um die zugehörige Aktion "
-"durchzuführen. Die folgenden Argumente dienen als Anweisungen für B<telinit>:"
+"B</sbin/telinit> está enlazado con B</sbin/init>.  Toma un argumento de un "
+"solo carácter y señala a B<init> para realizar la acción apropiada. Los "
+"siguientes argumetos sirven como directivas para B<telinit>:"
 
 #. type: IP
 #: ../init.8:170
 #, no-wrap
 msgid "B<0>, B<1>, B<2>, B<3>, B<4>, B<5> or B<6>"
-msgstr "B<0>, B<1>, B<2>, B<3>, B<4>, B<5> oder B<6>"
+msgstr "B<0>, B<1>, B<2>, B<3>, B<4>, B<5> or B<6>"
 
 #. type: Plain text
 #: ../init.8:172
 msgid "tell B<init> to switch to the specified run level."
-msgstr "B<init> mitteilen, in den angegebenen Runlevel zu schalten."
+msgstr "indica a B<init> que cambie al nivel de ejecución especificado."
 
 #. type: IP
 #: ../init.8:172
@@ -1030,44 +946,42 @@ msgstr "B<init> mitteilen, in den angegebenen Runlevel zu schalten."
 msgid "B<a>,"
 msgstr "B<a>,"
 
-# FIXME missing whitespace
-# FIXME B</etc/inittab> → I</etc/inittab>
 #. type: Plain text
 #: ../init.8:175
 msgid ""
 "tell B<init> to process only those B</etc/inittab> file entries having "
 "runlevel B<a>,B<b> or B<c>."
 msgstr ""
-"B<init> mitteilen, nur die Einträge in der Datei B</etc/inittab> zu "
-"verarbeiten, die den Runlevel B<a>, B<b> oder B<c> haben."
+"indica a B<init> que procese solo las entradas del fichero B</etc/inittab> "
+"que tengan nivel de ejecución B<a>,B<b> o B<c>."
 
 #. type: IP
 #: ../init.8:175
 #, no-wrap
 msgid "B<Q> or B<q>"
-msgstr "B<Q> oder B<q>"
+msgstr "B<Q> o B<q>"
 
 #. type: Plain text
 #: ../init.8:177
 msgid "tell B<init> to re-examine the I</etc/inittab> file."
-msgstr "B<init> mitteilen, die Datei I</etc/inittab> erneut zu prüfen."
+msgstr "indica a B<init> que re-examine el fichero I</etc/inittab>."
 
 #. type: IP
 #: ../init.8:177
 #, no-wrap
 msgid "B<S> or B<s>"
-msgstr "B<S> oder B<s>"
+msgstr "B<S> o B<s>"
 
 #. type: Plain text
 #: ../init.8:179
 msgid "tell B<init> to switch to single user mode."
-msgstr "B<init> mitteilen, in den Einzelbenutzermodus zu wechseln."
+msgstr "indica a B<init> que cambie a modo monousuario."
 
 #. type: IP
 #: ../init.8:179
 #, no-wrap
 msgid "B<U> or B<u>"
-msgstr "B<U> oder B<u>"
+msgstr "B<U> o B<u>"
 
 #. type: Plain text
 #: ../init.8:184
@@ -1076,10 +990,9 @@ msgid ""
 "I</etc/inittab> file happens. Runlevel should be one of B<Ss0123456> "
 "otherwise request would be silently ignored."
 msgstr ""
-"B<init> mitteilen, sich selbst erneut (unter Beibehalten des Status) "
-"auszuführen. Es kommt zu keiner erneuten Ausführung der Datei I</etc/"
-"inittab>. Der Runlevel sollte einer aus B<Ss0123456> sein, anderenfalls wird "
-"die Anfrage stillschweigend ignoriert."
+"indica a B<init> que reejecute él mismo (guardando el estado). No re-"
+"examining el fichero I</etc/inittab>. El nivel de ejecución debería ser uno "
+"de B<Ss0123456>, en otro caso la solicitud sería ignorada silenciosamente."
 
 #. type: Plain text
 #: ../init.8:188
@@ -1088,9 +1001,9 @@ msgid ""
 "processes the B<SIGTERM> and B<SIGKILL> signals.  The default is 3 seconds, "
 "but this can be changed with the B<-t> option."
 msgstr ""
-"B<telinit> kann dem B<init>-Prozess mitteilen, wie viel Zeit dieser zwischen "
-"dem Senden der Signale B<SIGTERM> und B<SIGKILL> warten soll. Die Vorgabe "
-"ist drei Sekunden, dies kann aber durch die Option B<-t> geändert werden."
+"B<telinit> ptambién puede decir a B<init> cuanto esperará entre los envíos a "
+"los procesos de las señales B<SIGTERM> y B<SIGKILL>.  El valor por defecto "
+"es is 3 segundos, pero se puede cambiar con la opción B<-t>."
 
 #. type: Plain text
 #: ../init.8:196
@@ -1100,16 +1013,12 @@ msgid ""
 "sets variable I<VAR> to value I<VAL>, or of the form I<VAR> (without an "
 "equality sign)  which unsets variable I<VAR>."
 msgstr ""
-"B<telinit -e> weist B<init> an, die Umgebung für Prozesse zu ändern, die es "
-"erzeugt. Das Argument von B<-e> ist entweder in der Form I<VAR>=I<WERT>, was "
-"die Variable I<VAR> auf den Wert I<WERT> setzt oder in der FormI<VAR> (ohne "
-"Gleichheitszeichen), was die Variable I<VAR> leert."
 
 #. type: Plain text
 #: ../init.8:199
 msgid "B<telinit> can be invoked only by users with appropriate privileges."
 msgstr ""
-"B<init> kann nur von Benutzern mit geeigneten Rechten aufgerufen werden."
+"B<telinit> solo se puede llamar por usuarios con los privilegios apropiados."
 
 #. }}}
 #. }}}
@@ -1121,21 +1030,21 @@ msgid ""
 "follows that instead of calling B<telinit> one can also just use B<init> "
 "instead as a shortcut."
 msgstr ""
-"Das Programm B<init> prüft durch Auswerten der Prozesskennung, ob es B<init> "
-"oder B<telinit> ist. Der echte Prozess von B<init> ist immer B<1>. Daraus "
-"folgt, dass jemand anstelle des Aufrufs B<telinit> auch nur B<init> als "
-"Abkürzung benutzen kann."
+"El binario B<init> comprueba si es B<init> o B<telinit> mirando a su I<id de "
+"proceso>; el id del proceso B<init> real es siempre B<1>.  De esto podemos "
+"concluir que en lugar de llamar a B<telinit> se puede usar B<init> en su "
+"lugar como abreviatura."
 
 #. type: SH
 #: ../init.8:206 ../wall.1:63
 #, no-wrap
 msgid "ENVIRONMENT"
-msgstr "UMGEBUNGSVARIABLEN"
+msgstr "ENTORNO"
 
 #. type: Plain text
 #: ../init.8:208
 msgid "B<Init> sets the following environment variables for all its children:"
-msgstr "B<Init> setzt folgende Umgebungsvariablen für alle seine Kindprozesse:"
+msgstr "B<Init> fija las siguientes variables de entorno para todos sus hijos:"
 
 #. type: IP
 #: ../init.8:208
@@ -1159,8 +1068,8 @@ msgstr "B<INIT_VERSION>"
 msgid ""
 "As the name says. Useful to determine if a script runs directly from B<init>."
 msgstr ""
-"Wie der Name schon sagt. Nützlich, um festzustellen, ob ein Skript direkt "
-"von B<init> ausgeführt wird."
+"Como el nombre dice. Útil para determinar si un guión corre directamente de "
+"B<init>."
 
 #. type: IP
 #: ../init.8:212
@@ -1171,7 +1080,7 @@ msgstr "B<RUNLEVEL>"
 #. type: Plain text
 #: ../init.8:214
 msgid "The current system runlevel."
-msgstr "Der aktuelle Runlevel des Systems."
+msgstr "El nivel actual de ejecución del sistema."
 
 #. type: IP
 #: ../init.8:214
@@ -1182,7 +1091,7 @@ msgstr "B<PREVLEVEL>"
 #. type: Plain text
 #: ../init.8:216
 msgid "The previous runlevel (useful after a runlevel switch)."
-msgstr "Der vorherige Runlevel (nützlich nach einer Änderung des Runlevels)."
+msgstr "El nivel de ejecución previo (útil tras un cambio de nivel)."
 
 #. type: IP
 #: ../init.8:216
@@ -1196,15 +1105,14 @@ msgid ""
 "The system console. This is really inherited from the kernel; however if it "
 "is not set B<init> will set it to I</dev/console> by default."
 msgstr ""
-"Die Systemkonsole. Diese wird tatsächlich vom Kernel vererbt; wenn sie "
-"jedoch nicht gesetzt ist, wird B<init> sie als Vorgabe auf I</dev/console> "
-"setzen."
+"La consola del sistema. Esto realmente es heredado del núcleo; sin embargo "
+"si no está fijado B<init> lo pondrá como I</dev/console> por defecto."
 
 #. type: SH
 #: ../init.8:219
 #, no-wrap
 msgid "BOOTFLAGS"
-msgstr "BOOTSCHALTER"
+msgstr "BANDERAS DE CARGA"
 
 #. type: Plain text
 #: ../init.8:222
@@ -1212,8 +1120,8 @@ msgid ""
 "It is possible to pass a number of flags to B<init> from the boot monitor "
 "(eg. LILO or GRUB). B<init> accepts the following flags:"
 msgstr ""
-"Es ist möglich, B<init> eine Reihe von Bootschaltern vom Bootmonitor aus (z."
-"B. LILO oder GRUB) zu übergeben. B<init> akzeptiert folgende Schalter:"
+"Es posible pasar un número de banderas a B<init> desde el monitor de "
+"arranque (v.g. LILO o GRUB). B<init> acepta las siguientes banderas:"
 
 #. type: TP
 #: ../init.8:222
@@ -1228,9 +1136,9 @@ msgid ""
 "bootup rc scripts are usually run before the single user mode shell is "
 "started."
 msgstr ""
-"Bootet im Einzelbenutzermodus. In diesem Modus wird zuerst die Datei I</etc/"
-"inittab> untersucht und die »rc«-Startskripte werden ausgeführt, bevor die "
-"Einzelbenutzer-Shell gestartet wird."
+"Arranque en modo monousuario. En este modo I</etc/inittab> se examina y los "
+"guiones de carga rc normalmente se ejecutan antes de que la shell del modo "
+"monousuario se inicie."
 
 #. type: TP
 #: ../init.8:228
@@ -1241,13 +1149,13 @@ msgstr "B<1-5>"
 #. type: Plain text
 #: ../init.8:231
 msgid "Runlevel to boot into."
-msgstr "Runlevel, in den gestartet wird."
+msgstr "Nivel de ejecución en el que arrancar."
 
 #. type: TP
 #: ../init.8:232
 #, no-wrap
 msgid "B<-b, emergency>"
-msgstr "B<-b>, B<emergency>"
+msgstr "B<-b, emergency>"
 
 #. type: Plain text
 #: ../init.8:236
@@ -1255,14 +1163,14 @@ msgid ""
 "Boot directly into a single user shell without running any other startup "
 "scripts."
 msgstr ""
-"Startet direkt in eine Einzelbenutzer-Shell, ohne irgendwelche anderen "
-"Startskripte auszuführen."
+"Carga directamente en una shell monousuario sin ejecutar cualquier otro "
+"guion de inicio."
 
 #. type: TP
 #: ../init.8:237
 #, no-wrap
 msgid "B<-a, auto>"
-msgstr "B<-a>, B<auto>"
+msgstr "B<-a, auto>"
 
 #. type: Plain text
 #: ../init.8:245
@@ -1273,12 +1181,6 @@ msgid ""
 "Note that you cannot use this for any security measures - of course the user "
 "could specify \"auto\" or B<-a> on the command line manually."
 msgstr ""
-"Der LILO-Bootloader fügt das Wort »auto« zur Befehlszeile hinzu, wenn der "
-"Kernel mit der Standard-Befehlszeile (ohne Eingriff des Anwenders) gestartet "
-"wird. Falls dies gefunden wird, setzt B<init> die Umgebungsvariable "
-"»AUTOBOOT« auf »yes«. Beachten Sie, dass Sie die nicht für irgendwelche "
-"Sicherheitsmaßnahmen verwenden können - selbstverständlich kann der Anwender "
-"»auto« oder B<-a> manuell auf der Befehlszeile angeben."
 
 #. type: TP
 #: ../init.8:246
@@ -1293,10 +1195,6 @@ msgid ""
 "line a bit, so that it takes some more space on the stack. B<init> can then "
 "manipulate the command line so that B<ps>(1) shows the current runlevel."
 msgstr ""
-"Das Argument zu B<-z> wird ignoriert. Sie können es benutzen, um die "
-"Befehlszeile etwas zu verlängern, damit sie etwas mehr Platz auf dem Stack "
-"reserviert. B<init> kann dann die Befehlszeile derart verändern, dass "
-"B<ps>(1) den aktuellen Runlevel anzeigt."
 
 #. type: TP
 #: ../init.8:253
@@ -1312,19 +1210,13 @@ msgid ""
 "and version is being used. After the version information is displayed, "
 "B<init> immediately exits with a return code of zero."
 msgstr ""
-"Wenn dieses Argument alleine verwendet wird, zeigt es die aktuelle Version "
-"von B<init> auf der Konsole/Standardausgabe an. Dies ist eine schnelle "
-"Methode, herauszufinden, welche B<init>-Software und Version verwendet wird. "
-"Nachdem die Versionsinformation angezeigt wurde, beendet sich B<init> sofort "
-"mit einem Rückgabewert von Null."
 
 #. type: SH
 #: ../init.8:260
 #, no-wrap
 msgid "INTERFACE"
-msgstr "SCHNITTSTELLE"
+msgstr "INTERFAZ"
 
-# FIXME /dev → I</dev>
 #. type: Plain text
 #: ../init.8:266
 msgid ""
@@ -1333,22 +1225,21 @@ msgid ""
 "well documented or finished. Those interested should study the I<initreq.h> "
 "file in the I<src/> subdirectory of the B<init> source code tar archive."
 msgstr ""
-"B<init> lauscht auf einem I<fifo> in /dev, I</run/initctl>, auf Nachrichten. "
-"B<telinit> benutzt diesen, um mit B<init> zu kommunizieren. Die "
-"Schnittstelle ist noch nicht sehr ausführlich dokumentiert oder "
-"fertiggestellt. Wer interessiert ist, sollte die Datei I<initreq.h> im "
-"Unterverzeichnis des B<init>-Quellcode-Tar-Archives studieren."
+"B<init> escucha en un I<fifo> en /dev, I</run/initctl>, los mensajes. "
+"B<Telinit> usa esto para comunicar con B<init>. La interfaz no está muy bien "
+"documentada o acabada. Quienes estén interesados debería estudiar el fichero "
+"I<initreq.h> del subdirectorio I<src/> del código fuente de B<init>."
 
 #. type: SH
 #: ../init.8:266
 #, no-wrap
 msgid "SIGNALS"
-msgstr "SIGNALE"
+msgstr "SEÑALES"
 
 #. type: Plain text
 #: ../init.8:268
 msgid "Init reacts to several signals:"
-msgstr "Init reagiert auf mehrere Signale:"
+msgstr "Init reacciona ante diversas señales:"
 
 #. type: TP
 #: ../init.8:268
@@ -1359,7 +1250,7 @@ msgstr "B<SIGHUP>"
 #. type: Plain text
 #: ../init.8:271
 msgid "Has the same effect as B<telinit q>."
-msgstr "Hat die gleichen Auswirkungen wie B<telinit q>."
+msgstr ""
 
 #. type: TP
 #: ../init.8:272
@@ -1373,9 +1264,9 @@ msgid ""
 "On receipt of this signals, B<init> closes and re-opens its control fifo, B</"
 "run/initctl>. Useful for bootscripts when I</dev> is remounted."
 msgstr ""
-"Beim Empfang dieses Signals schließt B<init> seinen Steuerungs-Fifo I</run/"
-"initctl> und öffnet ihn wieder. Nützlich für Systemstartskripte, wenn I</"
-"dev> neu eingehängt wird."
+"Al recibir esta señal, B<init> cierra y reabre su fifo de de control B</run/"
+"initctl>.  Ess útil para los guiones de arranque cuando se vuelve a montar "
+"I</dev>."
 
 #. type: TP
 #: ../init.8:276
@@ -1383,7 +1274,6 @@ msgstr ""
 msgid "B<SIGUSR2>"
 msgstr "B<SIGUSR2>"
 
-# FIXME shutdown → B<shutdown>(8)
 #. type: Plain text
 #: ../init.8:283
 msgid ""
@@ -1393,12 +1283,6 @@ msgid ""
 "runlevels. Which means commands like shutdown no longer work.  The fifo can "
 "be re-opened by sending B<init> the B<SIGUSR1> signal."
 msgstr ""
-"Wenn B<init> B<SIGUSR2> empfängt, schließt B<init> sich und läßt das Steuer-"
-"FIFO B</run/initctl> geschlossen. Damit können Sie sicherstellen, dass "
-"B<init> keine Dateien offen hält. Allerdings hindert es B<init> auch daran, "
-"die Runlevel zu ändern. Das bedeutet, dass Befehle wie B<shutdown>(8) nicht "
-"mehr funktionieren. Der FIFO kann durch Senden des Signals B<SIGUSR1> an "
-"B<init> wieder geöffnet werden."
 
 #. type: TP
 #: ../init.8:283
@@ -1412,8 +1296,8 @@ msgid ""
 "Normally the kernel sends this signal to B<init> when CTRL-ALT-DEL is "
 "pressed. It activates the I<ctrlaltdel> action."
 msgstr ""
-"Normalerweise sendet der Kernel dieses Signal an I<init>, wenn CTRL-ALT-DEL "
-"gedrückt wurde. Es aktiviert die Aktion I<ctrlaltdel>."
+"Normalmente el núcleo envía esta señal a B<init> cuando se pulsa CTRL-ALT-"
+"SUPR. Esto activa la acción I<ctrlaltdel>."
 
 #. type: TP
 #: ../init.8:287
@@ -1427,15 +1311,15 @@ msgid ""
 "The kernel sends this signal when the I<KeyboardSignal> key is hit.  It "
 "activates the I<kbrequest> action."
 msgstr ""
-"Der Kernel sendet dieses Signal, falls die I<KeyboardSignal>-Taste gedrückt "
-"wurde. Es aktiviert die I<kbdrequest>-Aktion."
+"El núcleo envía esta señal cuado se pulsa la tecla I<KeyboardSignal>.  "
+"Activa la acción I<kbrequest>."
 
 #. {{{  Conforming to
 #. type: SH
 #: ../init.8:292
 #, no-wrap
 msgid "CONFORMING TO"
-msgstr "KONFORM ZU"
+msgstr "CONFORME A"
 
 #. }}}
 #. {{{  Files
@@ -1447,17 +1331,17 @@ msgid ""
 "If your system uses this convention, there should be a I<README> file in the "
 "directory I</etc/init.d> explaining how these scripts work."
 msgstr ""
-"B<init> ist kompatibel zu System-V-Init. Es arbeitet eng mit den Skripten in "
-"den Verzeichnissen I</etc/init.d> und I</etc/rc{runlevel}.d> zusammen.Falls "
-"Ihr System diesem Grundsatz folgt, sollte sich in diesem Verzeichnis eine "
-"B<README>-Datei befinden, die erklärt wie diese Skripte funktionieren."
+"B<init> es compatible con el init System V init. Funciona junto a los "
+"guiones de lso directorios I</etc/init.d> y I</etc/rc{runlevel}.d>.  Si su "
+"sistema usa esta convención, debería haber un fichero I<README> en el "
+"directorio I</etc/init.d> que explica como funcionan estos guiones."
 
 #. type: SH
 #: ../init.8:300 ../initctl.5:143 ../initscript.5:65 ../inittab.5:251
 #: ../last.1:114 ../readbootlog.1:48 ../shutdown.8:207
 #, no-wrap
 msgid "FILES"
-msgstr "DATEIEN"
+msgstr "ARCHIVOS"
 
 #. type: Plain text
 #: ../init.8:308
@@ -1483,7 +1367,7 @@ msgstr ""
 #: ../init.8:311
 #, no-wrap
 msgid "WARNINGS"
-msgstr "WARNUNGEN"
+msgstr "AVISOS"
 
 #. type: Plain text
 #: ../init.8:317
@@ -1493,11 +1377,10 @@ msgid ""
 "change their group, B<init> can't kill them and you may end up with two "
 "processes reading from one terminal line."
 msgstr ""
-"B<init> geht davon aus, dass alle Prozesse und Kindprozesse in der selben "
-"Prozessgruppe verbleiben, die ursprünglich für sie eingerichtet wurde. Falls "
-"einer dieser Prozesse die Gruppe wechselt, kann B<init> ihn nicht mehr "
-"beenden und es kann passieren, dass Sie in einem Zustand landen, in dem zwei "
-"Prozesse von einer Terminalzeile Befehle einlesen wollen."
+"B<init> supone que procesos y descendientes de procesos permanecen en el "
+"mismo grupo de procesos que se creó originalmente para ellos. Si los "
+"procesos cambian su grupo B<init> no puede matarlos y v.d. puede acabar con "
+"dos procesos leyendo de una línea del terminal."
 
 #. }}}
 #. {{{  Diagnostics
@@ -1511,13 +1394,6 @@ msgid ""
 "runlevel S and are needed for normal operation are no longer running.  The "
 "system should be rebooted."
 msgstr ""
-"Auf einem Debian-System veranlasst das Eintreten in Runlevel 1, dass alle "
-"Prozesse mit Ausnahme von Kernel-Threads und dem Skript, das das Beenden "
-"erledigt und andere Prozesse in deren Sitzung, beendet werden. Als "
-"Konsequenz davon ist es nicht sicher, von von Runlevel 1 zu einem "
-"Mehrbenutzer-Runlevel zurückzukehren: Daemons, die in Runlevel S gestartet "
-"wurden und für normale Operationen benötigt werden, laufen nicht länger. Das "
-"System sollte neu gestartet werden."
 
 #. }}}
 #. {{{  Author
@@ -1532,13 +1408,13 @@ msgid ""
 "a typographical error in the I</etc/inittab> file or the program for the "
 "entry is removed."
 msgstr ""
-"Wenn B<init> herausfindet, dass es kontinuierlich einen Eintrag öfter als "
-"zehn mal in zwei Minuten neu erzeugt, wird es annehmen, dass ein Fehler in "
-"der Befehlszeile vorliegt, eine Fehlermeldung auf der Befehlszeile erzeugen "
-"und sich weigern, den Eintrag auszuführen, bis fünf Minuten vergangen sind "
-"oder es ein Signal empfängt. Dieses verhindert, dass Systemressourcen "
-"verschwendet werden, wenn jemandem ein Tippfehler in I</etc/inittab> "
-"unterläuft oder das zum Eintrag gehörende Programm gelöscht wird."
+"Si B<init> encuantra que está levantando continuamente una entrada, más de "
+"10 veces en dos minutos, supondrá que es un error en la cedena del mandato, "
+"genera un mensaje de error en la consola del sistema y rehusa levantar esta "
+"entrada hasta que hayan pasado 5 minutos o recibas una señal. Esto no "
+"previene de que se coma los recursos del sistema cuando alguien comete un "
+"error tipográfico en el fichero I</etc/inittab> o en el programa para el que "
+"se elimina la entrada."
 
 #. }}}
 #. {{{  See also
@@ -1549,8 +1425,8 @@ msgid ""
 "manual page by> E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> "
 "Michael Haardt E<.ME .>"
 msgstr ""
-"E<.MT miquels@\\:cistron\\:.nl> Miquel van Smoorenburg E<.ME>, ursprüngliche "
-"Handbuchseite von E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> "
+"E<.MT miquels@\\:cistron\\:.nl> Miquel van Smoorenburg E<.ME>, página de "
+"manual inicial por E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> "
 "Michael Haardt E<.ME .>"
 
 #. type: Plain text
@@ -1572,13 +1448,13 @@ msgstr "INITCTL"
 #: ../initctl.5:17
 #, no-wrap
 msgid "April 13, 2018"
-msgstr "13. April 2018"
+msgstr "13 de abril de 2018"
 
 #. type: TH
 #: ../initctl.5:17 ../initscript.5:18 ../inittab.5:20
 #, no-wrap
 msgid "File Formats"
-msgstr "Dateiformate"
+msgstr ""
 
 #. type: Plain text
 #: ../initctl.5:20
@@ -1607,10 +1483,6 @@ msgid ""
 "wishing to understand how to send messages to B<init> should read the init "
 "program's source code, but that is not usually practical."
 msgstr ""
-"In der Handbuchseite von B<init> wurde bis vor kurzem noch empfohlen, dass "
-"Benutzer, die verstehen wollen, wie Meldungen an B<init> gesendet werden, "
-"doch den Quellcode von I<init> lesen sollten. Dies ist aber nicht wirklich "
-"praxisgerecht."
 
 #. type: Plain text
 #: ../initctl.5:36
@@ -1648,16 +1520,6 @@ msgid ""
 "        } i;\n"
 "};\n"
 msgstr ""
-"struct init_request {\n"
-"        int     magic;                  /* Magische Zahl                 */\n"
-"        int     cmd;                    /* Art der Anfrage               */\n"
-"        int     runlevel;               /* Ziel-Runlevel                 */\n"
-"        int     sleeptime;              /* Zeit zwischen TERM und KILL   */\n"
-"        union {\n"
-"                struct init_request_bsd bsd;\n"
-"                char                    data[368];\n"
-"        } i;\n"
-"};\n"
 
 #. type: Plain text
 #: ../initctl.5:61
@@ -1716,7 +1578,7 @@ msgstr ""
 #, fuzzy
 #| msgid "The previous runlevel (useful after a runlevel switch)."
 msgid "The I<runlevel> variable will specify the runlevel to switch to (0-6)."
-msgstr "Der vorherige Runlevel (nützlich nach einer Änderung des Runlevels)."
+msgstr "El nivel de ejecución previo (útil tras un cambio de nivel)."
 
 #. type: Plain text
 #: ../initctl.5:84
@@ -1827,7 +1689,6 @@ msgstr ""
 msgid "/run/initctl /sbin/init"
 msgstr "/run/initctl /sbin/init"
 
-# FIXME superfluous whitespace
 #. type: Plain text
 #: ../initctl.5:151
 msgid "E<.MT jsmith@\\:resonatingmedia\\:.com > Jesse Smith E<.ME>"
@@ -1848,17 +1709,17 @@ msgstr "INITSCRIPT"
 #: ../initscript.5:18
 #, no-wrap
 msgid "July 10, 2003"
-msgstr "10. Juli 2003"
+msgstr "10 de julio de 2003"
 
 #. type: Plain text
 #: ../initscript.5:21
 msgid "initscript - script that executes inittab commands"
-msgstr "initscript - Skript, das Inittab-Befehle ausführt"
+msgstr "initscript - guión que ejecuta órdenes inittab"
 
 #. type: Plain text
 #: ../initscript.5:23
 msgid "/bin/sh /etc/initscript id runlevels action process"
-msgstr "/bin/sh /etc/initscript ID Runlevels Aktion Prozess"
+msgstr "/bin/sh /etc/initscript id niveles_de_ejecucion acción proceso"
 
 #. type: Plain text
 #: ../initscript.5:28
@@ -1867,10 +1728,10 @@ msgid ""
 "execute the commands from I<inittab>.  This script can be used to set things "
 "like I<ulimit> and I<umask> default values for every process."
 msgstr ""
-"Wenn das Shell-Skript I</etc/initscript> existiert, wird es von B<init> "
-"verwendet, um Befehle aus I<inittab> auszuführen. Dieses Skript kann "
-"verwendet werden, um für Parameter wie I<ulimit> und I<umask> für jeden "
-"Prozess Standardwerte festzulegen."
+"Cuando el guión de entorno I</etc/initscript> existe, B<init> lo usará para "
+"ejecutar órdenes para I<inittab>.  Este guión puede ser usado para cosas "
+"como, por ejemplo, colocar los valores por defecto I<ulimit> y I<umask> para "
+"cada proceso."
 
 #. type: Plain text
 #: ../initscript.5:31
@@ -1878,8 +1739,8 @@ msgid ""
 "This is a sample initscript, which might be installed on your system as I</"
 "etc/initscript.sample>."
 msgstr ""
-"Dies ist ein Beispiel, das auf Ihrem System als I</etc/initscript.sample> "
-"installiert werden könnte."
+"Este es un ejemplo de initscript, que se podría instalar en tu sistema como "
+"I</etc/initscript.sample>."
 
 #. type: Plain text
 #: ../initscript.5:42
@@ -1889,15 +1750,16 @@ msgid ""
 "# initscript   Executed by init(8) for every program it\n"
 "#              wants to spawn like this:\n"
 "#\n"
-"#              /bin/sh /etc/initscript E<lt>idE<gt> E<lt>levelE<gt> E<lt>actionE<gt> E<lt>processE<gt>\n"
+"#              /bin/sh /etc/initscript E<lt>idE<gt> E<lt>levelE<gt> E<lt"
+">actionE<gt> E<lt>processE<gt>\n"
 "#\n"
 msgstr ""
 "#\n"
-"# initscript   Wird von init(8) für alle Programme, für die\n"
-"#              ein Prozess erzeugt werden soll, wie folgt\n"
-"#              ausgeführt:\n"
+"# initscript   Ejecutado por init(8) para cada programa,\n"
+"#              requiere un formato como el siguiente\n"
 "#\n"
-"#    /bin/sh /etc/initscript E<lt>IDE<gt> E<lt>LevelE<gt> E<lt>AktionE<gt>  E<lt>ProzessE<gt>\n"
+"#              /bin/sh /etc/initscript E<lt>idE<gt> E<lt>nivelE<gt> E<lt"
+">acciónE<gt> E<lt>procesoE<gt>\n"
 "#\n"
 
 #. type: Plain text
@@ -1910,8 +1772,8 @@ msgid ""
 "  PATH=/bin:/sbin:/usr/bin:/usr/sbin\n"
 "  export PATH\n"
 msgstr ""
-"# Umask auf einen sicheren Wert setzen und Speicherauszüge\n"
-"# nach Abstürzen (Core-Dumps) ermöglichen.\n"
+"  # Colocamos umask para salvar el nivel, y permitir volcados de\n"
+"  # memoria.\n"
 "  umask 022\n"
 "  ulimit -c 2097151\n"
 "  PATH=/bin:/sbin:/usr/bin:/usr/sbin\n"
@@ -1927,13 +1789,6 @@ msgid ""
 "  # with \"ulimit -Sn xxx\" (needs a 2.2.13 or later Linux kernel).\n"
 "  ulimit -Hn 8192\n"
 msgstr ""
-"# Erhöht die absolute Obergrenze (hard limit) für Datei-\n"
-"# deskriptoren pro Prozess auf 8192. Die überschreitbare (weiche,\n"
-"# soft) Grenze ist immer noch 1024. Sie kann aber von jedem un-\n"
-"# privilegierten Prozess mittels »ulimit -Sn xxx« bis zur\n"
-"# Obergrenze heraufgesetzt werden. Dafür ist ein Kernel der\n"
-"# Version 2.2.13 oder höher erforderlich.\n"
-"  ulimit-Hn 8192\n"
 
 #. type: Plain text
 #: ../initscript.5:57
@@ -1942,10 +1797,9 @@ msgid ""
 "  # Execute the program.\n"
 "  eval exec \"$4\"\n"
 msgstr ""
-"# das Programm ausführen\n"
+"  # Ejecutamos el programa.\n"
 "  eval exec \"$4\"\n"
 
-# FIXME B</etc/inittab> → I</etc/inittab>
 #. type: Plain text
 #: ../initscript.5:65
 msgid ""
@@ -1954,16 +1808,11 @@ msgid ""
 "things executed from B</etc/inittab>. Experimenting with this can make your "
 "system un(re)bootable."
 msgstr ""
-"Dieses Skript ist nicht als Startup-Skript für Daemonen oder Dienste "
-"gemeint. Es hat nichts mit einem Skript im I<rc.local>-Stil zu tun. Es ist "
-"nur ein Handler für aus B</etc/inittab> heraus ausgeführte Arbeiten. Das "
-"Experimentieren damit kann bewirken, dass Ihr System nicht (mehr neu) "
-"starten kann."
 
 #. type: Plain text
 #: ../initscript.5:68
 msgid "/etc/inittab, /etc/initscript."
-msgstr "/etc/inittab, /etc/initscript"
+msgstr "/etc/inittab, /etc/initscript."
 
 #. type: Plain text
 #: ../initscript.5:74
@@ -1980,7 +1829,7 @@ msgstr "INITTAB"
 #: ../inittab.5:20
 #, no-wrap
 msgid "Dec 4, 2001"
-msgstr "4. Dezember 2001"
+msgstr "4 de diciembre de 2001"
 
 #. }}}
 #. {{{  Description
@@ -1989,9 +1838,9 @@ msgstr "4. Dezember 2001"
 msgid ""
 "inittab - format of the inittab file used by the sysv-compatible init process"
 msgstr ""
-"inittab - Format der Datei inittab für den SysV-kompatiblen Init-Prozess"
+"inittab - formato del fichero inittab usado por el proceso init compatible "
+"SysV"
 
-# FIXME file name markup
 #. type: Plain text
 #: ../inittab.5:36
 msgid ""
@@ -2002,63 +1851,72 @@ msgid ""
 "B<0>-B<6> plus B<A>, B<B>, and B<C> for B<ondemand> entries.  An entry in "
 "the B<inittab> file has the following format:"
 msgstr ""
-"Die Datei B<inittab> beschreibt, welche Prozesse beim Booten und während des "
-"normalen Betriebs gestartet werden (z. B. \\& /etc/init.d/boot, /etc/init.d/"
-"rc, gettys …). B<init>(8) unterscheidet mehrere I<Runlevel>, von denen jeder "
-"einen eigenen Satz von Prozessen umfasst, die gestartet werden. Gültige "
-"Runlevel sind B<0>-B<6> plus B<A>, B<B> und B<C> für B<ondemand>-Einträge. "
-"Ein Eintrag in der Datei B<inittab> hat folgendes Format:"
+"El fichero B<inittab> describe qué procesos se inician en la carga y durante "
+"la operación normal (por ejemplo, \\& /etc/init.d/boot, /etc/init.d/rc, "
+"gettys...).  B<init>(8)  distingue múltiples I<niveles de ejecución>, cada "
+"uno de los cuales puede tener su propio conjunto de procesos que se inician. "
+"Los niveles de ejecución válidos son B<0>-B<6> más B<A>, B<B> y B<C> para "
+"entradas B<bajo demanda>.  Una entrada del fichero B<inittab> tiene el "
+"siguiente formato:"
 
 #. type: Plain text
 #: ../inittab.5:39
 msgid "I<id>:I<runlevels>:I<action>:I<process>"
-msgstr "I<ID>:I<Runlevel>:I<Aktion>:I<Prozess>"
+msgstr "I<id>:I<niveles_ejecución>:I<acción>:I<proceso>"
 
 #. {{{  id
 #. type: Plain text
 #: ../inittab.5:43
 msgid "Lines beginning with `#' are ignored."
-msgstr "Zeilen mit einer Raute »#« am Anfang werden ignoriert."
+msgstr "Las líneas que comienzan con `#' se ignoran."
 
 #. type: IP
 #: ../inittab.5:43
 #, no-wrap
 msgid "I<id>"
-msgstr "I<ID>"
+msgstr "I<id>"
 
-# Zur Schreibweise: http://de.wikipedia.org/wiki/SysVinit
 #. type: Plain text
 #: ../inittab.5:48
+#, fuzzy
+#| msgid ""
+#| "is a unique sequence of 1-4 characters which identifies an entry in "
+#| "B<inittab> (for versions of sysvinit compiled with libraries E<lt> 5.2.18 "
+#| "or a.out libraries the limit is 2 characters)."
 msgid ""
 "is a unique sequence of 1-4 characters which identifies an entry in "
 "B<inittab> (for versions of sysvinit compiled with the I<old> libc5 (E<lt> "
 "5.2.18) or a.out libraries the limit is 2 characters)."
 msgstr ""
-"ist eine eindeutige Folge von 1-4 Zeichen zur Identifikation eines Eintrags "
-"in B<inittab>. (Für Versionen von SysVinit, die mit der I<alten> Libc5 "
-"(E<lt> 5.2.18) oder a.out-Bibliotheken kompiliert wurden, ist das Limit 2 "
-"Zeichen)."
+"es una secuencia única de 1 a 4 caracteres que identifican una entrada de "
+"B<inittab> (para las versiones de sysvinit compiladas con bibliotecas E<lt> "
+"5.2.18 o bibliotecas a.out el límite es de 2 caracteres)."
 
 #. }}}
 #. {{{  runlevels
 #. type: Plain text
 #: ../inittab.5:55
+#, fuzzy
+#| msgid ""
+#| "Note: For gettys or other login processes, the I<id> field should be the "
+#| "tty suffix of the corresponding tty, e.g.\\& B<1> for B<tty1>.  "
+#| "Otherwise, the login accounting might not work correctly."
 msgid ""
 "Note: traditionally, for getty and other login processes, the value of the "
 "I<id> field is kept the same as the suffix of the corresponding tty, e.g.\\& "
 "B<1> for B<tty1>. Some ancient login accounting programs might expect this, "
 "though I can't think of any."
 msgstr ""
-"Hinweis: Traditionell ist für Getty und andere Anmeldeverfahren der Wert des "
-"I<ID>-Felds der gleiche wie die Endung des entsprechenden ttys gehalten, z."
-"B. \\& B<1> für B<tty1>. Einige alte Anmeldeabrechnungsprogramme könnten das "
-"voraussetzen, obwohl der Verfasser sich keines vorstellen kann."
+"Nota: Para gettys u otros procesos de presentación al sistema, el campo "
+"I<id> debería de ser el sufijo tty de la correspondiente tty, por ejemplo, "
+"\\& B<1> para B<tty1>.  En otro caso, las contabilidades de conexiones puede "
+"que no funcionen correctamente."
 
 #. type: IP
 #: ../inittab.5:55
 #, no-wrap
 msgid "I<runlevels>"
-msgstr "I<Runlevel>"
+msgstr "I<niveles_ejecución>"
 
 #. }}}
 #. {{{  action
@@ -2066,30 +1924,37 @@ msgstr "I<Runlevel>"
 #: ../inittab.5:59
 msgid "lists the runlevels for which the specified action should be taken."
 msgstr ""
-"listet die Runlevel, für die die angegebene Aktion durchgeführt werden soll."
+"es la lista de niveles de ejecución para lo cuales se llevarán a cabo las "
+"acciones especificadas."
 
 #. type: IP
 #: ../inittab.5:59
 #, no-wrap
 msgid "I<action>"
-msgstr "I<Aktion>"
+msgstr "I<acción>"
 
 #. }}}
 #. {{{  process
 #. type: Plain text
 #: ../inittab.5:63
 msgid "describes which action should be taken."
-msgstr "beschreibt, was getan werden soll."
+msgstr "describe qué acción se debería llevar a cabo."
 
 #. type: IP
 #: ../inittab.5:63
 #, no-wrap
 msgid "I<process>"
-msgstr "I<Prozess>"
+msgstr "I<proceso>"
 
 #. }}}
 #. type: Plain text
 #: ../inittab.5:71
+#, fuzzy
+#| msgid ""
+#| "specifies the process to be executed.  If the process field starts with a "
+#| "`+' character, B<init> will not do utmp and wtmp accounting for that "
+#| "process.  This is needed for gettys that insist on doing their own utmp/"
+#| "wtmp housekeeping.  This is also a historic bug."
 msgid ""
 "specifies the process to be executed.  If the process field starts with a `"
 "+' character, B<init> will not do utmp and wtmp accounting for that "
@@ -2097,11 +1962,10 @@ msgid ""
 "housekeeping.  This is also a historic bug. The length of this field is "
 "limited to 127 characters."
 msgstr ""
-"gibt an, welcher Prozess ausgeführt werden soll. Wenn das Prozess-Feld mit "
-"einem »+«-Zeichen beginnt, führt B<Init>(8) keine utmp- und wtmp-Abrechnung "
-"(accounting) für diesen Prozess. Dies ist für Gettys erforderlich, die "
-"darauf bestehen, das selber zu erledigen. Dies ist auch ein historischer "
-"Fehler. Die Länge dieses Feldes ist auf 127 Zeichen begrenzt."
+"especifica el proceso a ejecutar. Si el campo proceso comienza con un "
+"carácter `+', B<init> no registrará utmp y wtmp para ese proceso.  Esto es "
+"necesario para gettys que insisten en hacer sus propias labores de utmp/"
+"wtmp.  Esto es también un fallo histórico."
 
 #. type: Plain text
 #: ../inittab.5:78
@@ -2112,11 +1976,12 @@ msgid ""
 "contain an B<A>, B<B>, or B<C>.  The I<runlevels> field of B<sysinit>, "
 "B<boot>, and B<bootwait> entries are ignored."
 msgstr ""
-"Das Feld I<Runlevel> kann mehrere Zeichen für verschiedene Runlevel "
-"enthalten. Beispielsweise legt B<123> fest, dass der Prozess in den "
-"Runleveln 1, 2 und 3 gestartet werden soll. Die Runlevel für B<ondemand>-"
-"Einträge können B<A>, B<B> oder B<C> enthalten. Das Feld I<Runlevel> der "
-"Einträge B<sysinit>, B<boot> und B<bootwait> wird ignoriert."
+"El campo I<niveles_ejecución> tiene que contener múltiples caracteres para "
+"diferente niveles de ejecución. Por ejemplo, B<123> especifica que el "
+"proceso se debería iniciar en los niveles de ejecución 1, 2 y 3.  Las "
+"entrada de I<niveles de ejecución> B<bajo demanda> pueden contener una B<A>, "
+"B<B>, o B<C>.  Las entradas de campos de I<nivel_ejecución> de B<sysinit>, "
+"B<boot> y B<bootwait> se ignoran."
 
 #. type: Plain text
 #: ../inittab.5:82
@@ -2125,15 +1990,15 @@ msgid ""
 "specified for the new runlevel are killed, first with \\s-2SIGTERM\\s0, then "
 "with \\s-2SIGKILL\\s0."
 msgstr ""
-"Bei einem Wechsel des Runlevels des Systems werden alle laufenden Prozesse, "
-"die nicht im neuen Runlevel laufen sollen, beendet; zuerst mit \\s-2SIGTERM"
-"\\s0, dann mit \\s-2SIGKILL\\s0."
+"Cuando se cambia un nivel de ejecución, cualesquiera procesos en ejecución "
+"que no estén especificados en el nuevo nivel de ejecución se matan, primero "
+"con \\s-2SIGTERM\\s0 y después con \\s-2SIGKILL\\s0."
 
 #. {{{  respawn
 #. type: Plain text
 #: ../inittab.5:85
 msgid "Valid actions for the I<action> field are:"
-msgstr "Gültige Einträge für das I<Aktion>-Feld sind:"
+msgstr "Acciones válidas para el campo I<acción> son:"
 
 #. type: IP
 #: ../inittab.5:85
@@ -2146,9 +2011,7 @@ msgstr "B<respawn>"
 #. type: Plain text
 #: ../inittab.5:89
 msgid "The process will be restarted whenever it terminates (e.g.\\& getty)."
-msgstr ""
-"Der Prozess wird jedesmal, wenn er terminiert, neu gestartet (z.B. \\& "
-"getty)."
+msgstr "El proceso se reiniciará cuando termine (v.g.\\& getty)."
 
 #. type: IP
 #: ../inittab.5:89
@@ -2164,8 +2027,8 @@ msgid ""
 "The process will be started once when the specified runlevel is entered and "
 "B<init> will wait for its termination."
 msgstr ""
-"Der Prozess wird einmal beim Eintritt in den Runlevel gestartet und "
-"B<Init>(8) wartet auf den Abschluss des Prozesses."
+"El proceso se iniciará una vez cuando se entre en el nivel de ejecución "
+"específico e B<init> esperará a su terminación."
 
 #. type: IP
 #: ../inittab.5:95
@@ -2180,7 +2043,8 @@ msgstr "B<once>"
 msgid ""
 "The process will be executed once when the specified runlevel is entered."
 msgstr ""
-"Der Prozess wird einmal während der Initialisierung des Runlevels ausgeführt."
+"El proceso se ejecutará una vez cuando se entre en el nivel de ejecución "
+"especificado."
 
 #. type: IP
 #: ../inittab.5:100
@@ -2196,8 +2060,8 @@ msgid ""
 "The process will be executed during system boot.  The I<runlevels> field is "
 "ignored."
 msgstr ""
-"Der Prozess wird ausgeführt, während das System hochfährt. Das Feld "
-"I<Runlevel> wird ignoriert."
+"El proceso se ejecutará durante el arranque del sistema. El campo The "
+"I<niveles_ejecución> se ignora."
 
 #. type: IP
 #: ../inittab.5:105
@@ -2213,8 +2077,9 @@ msgid ""
 "The process will be executed during system boot, while B<init> waits for its "
 "termination (e.g.\\& /etc/rc).  The I<runlevels> field is ignored."
 msgstr ""
-"Der Prozess läuft während des Systemstarts und B<Init>(8) wartet auf seinen "
-"Abschluss (z. B.\\& /etc/rc). Das Feld I<Runlevel> wird ignoriert."
+"El proceso se ejecutará durante el arranque del sistema, mientras B<init> "
+"espera su terminación (v.g.\\& /etc/rc).  El campo I<niveles_ejección> se "
+"ignora."
 
 #. type: IP
 #: ../inittab.5:112
@@ -2227,7 +2092,7 @@ msgstr "B<off>"
 #. type: Plain text
 #: ../inittab.5:116
 msgid "This does nothing."
-msgstr "Es wird keine Aktion durchgeführt."
+msgstr "Esto no hace nada."
 
 #. type: IP
 #: ../inittab.5:116
@@ -2244,9 +2109,10 @@ msgid ""
 "specified B<ondemand> runlevel is called.  However, no runlevel change will "
 "occur (B<ondemand> runlevels are `a', `b', and `c')."
 msgstr ""
-"Ein mit B<ondemand> gekennzeichneter Prozess wird jedesmal ausgeführt, wenn "
-"das angegebene B<ondemand>-Runlevel aufgerufen wird. Es erfolgt aber kein "
-"Wechsel des Runlevels. (Die B<ondemand>-Runlevel sind »a«, »b« und »c«.)"
+"Un proceso marcado con un nivel de ejecución B<ondemand> se ejecutará cuando "
+"se llame al nivel de ejecución especificado B<ondemand>. Sin embargo, no se "
+"produce cambio de nivel de ejecución (los niveles de ejecución B<ondemand> "
+"son `a', `b', y `c')."
 
 #. type: IP
 #: ../inittab.5:123
@@ -2263,9 +2129,9 @@ msgid ""
 "system boot.  If none exists, B<init> will ask for a runlevel on the "
 "console. The I<process> field is ignored."
 msgstr ""
-"Ein B<initdefault>-Eintrag legt den Runlevel nach dem Systemstart fest. "
-"Fehlt dieser Eintrag, wird B<init>(8) auf der Konsole nach dem Runlevel "
-"fragen. Das I<Prozess>-Feld wird ignoriert."
+"Una entrada B<initdefault> especifica el nivel de ejecución en el cual se "
+"entrará tras el arranque del sistema. Si no existe ninguno, B<init> pedirá "
+"un nivel de ejecución en la consola. El campo I<proceso> se ignora."
 
 #. type: IP
 #: ../inittab.5:130
@@ -2281,8 +2147,9 @@ msgid ""
 "The process will be executed during system boot. It will be executed before "
 "any B<boot> or B< bootwait> entries.  The I<runlevels> field is ignored."
 msgstr ""
-"Dieser Prozess läuft beim Systemstart vor den B<boot>- und B<bootwait>-"
-"Einträgen. Das Feld I<Runlevel> wird ignoriert. "
+"El proceso se ejecutará durante el arranque del sistema. Se ejecutará antes "
+"de cualquier entrada B<boot> o B< bootwait>.  El campo I<niveles_ejecución> "
+"se ignora."
 
 #. type: IP
 #: ../inittab.5:136
@@ -2299,10 +2166,9 @@ msgid ""
 "informed about this by a process talking to a UPS connected to the "
 "computer.  B<init> will wait for the process to finish before continuing."
 msgstr ""
-"Dieser Prozess wird ausgeführt, wenn die Spannung der Stromversorgung sinkt. "
-"B<init>(8) wird üblicherweise von einem Prozess informiert, der mit der USV "
-"kommuniziert. B<init>(8) wartet das Ende dieses Prozesses ab, bevor es "
-"weiter macht."
+"El proceso se ejecutará cuando B<init> reciba la señal SIGPWR, indicando que "
+"hay algún problema con la alimentación eléctrica.  B<init> esperará que el "
+"proceso termine antes de continuar."
 
 #. type: IP
 #: ../inittab.5:142
@@ -2318,8 +2184,8 @@ msgid ""
 "As for B<powerwait>, except that B<init> does not wait for the process's "
 "completion."
 msgstr ""
-"Wie B<powerwait>; B<init>(8) wartet aber nicht auf den Abschluss dieses "
-"Prozesses."
+"Como en B<powerwait>, excepto que B<init> no espera que el proceso se "
+"complete."
 
 #. type: IP
 #: ../inittab.5:147
@@ -2331,12 +2197,14 @@ msgstr "B<powerokwait>"
 #. {{{  powerfailnow
 #. type: Plain text
 #: ../inittab.5:152
+#, fuzzy
 msgid ""
 "This process will be executed as soon as B<init> is informed that the power "
 "has been restored."
 msgstr ""
-"Dieser Prozess wird ausgeführt, sobald B<init>(8) erfährt, dass die "
-"Spannungsversorgung wieder normal funktioniert. "
+"El proceso se ejecutará cuando B<init> reciba la señal SIGPWR, con la "
+"condición de que haya un fichero llamado B</etc/powerstatus> que contenga la "
+"palabra B<OK>. Esto significa que la alimentación eléctrica ha vuelto."
 
 #. type: IP
 #: ../inittab.5:152
@@ -2353,9 +2221,8 @@ msgid ""
 "external UPS is almost empty and the power is failing (provided that the "
 "external UPS and the monitoring process are able to detect this condition)."
 msgstr ""
-"Dieser Prozess wird ausgeführt, wenn B<init>(8) erfährt, dass die Batterie "
-"der externen USV fast leer ist und ein Stromausfall droht. Voraussetzung ist "
-"natürlich, dass USV und Überwachungsprozess diesen Zustand erkennen können."
+"Como en B<powerwait>, excepto que B<init> no espera que el proceso se "
+"complete."
 
 #. type: IP
 #: ../inittab.5:158
@@ -2373,11 +2240,10 @@ msgid ""
 "DEL> key combination. Typically one wants to execute some sort of "
 "B<shutdown> either to get into single-user level or to reboot the machine."
 msgstr ""
-"Der Prozess wird ausgeführt, wenn B<init>(8) das Signal B<SIGINT> erhält. "
-"Dies bedeutet, dass jemand auf der System-Konsole die Tastenkombination "
-"B<STRG-ALT-ENTF> eingegeben hat. Normalerweise will man eine Art von "
-"B<shutdown> ausführen; entweder in den Single-User-Runlevel wechseln oder "
-"den Rechner neu starten."
+"El proceso se ejecutará cuando B<init> reciba la señal B<SIGINT>.  Esto "
+"significa que alguien en la consola del sistema ha pulsado la combinación de "
+"teclas B<CTRL-ALT-DEL> . Normalmente uno quiere ejecutar algún tipo de "
+"B<shutdown> bien para entrar en modo monousuario o reiniciar la máquina."
 
 #. type: IP
 #: ../inittab.5:166
@@ -2385,7 +2251,6 @@ msgstr ""
 msgid "B<kbrequest>"
 msgstr "B<kbrequest>"
 
-# Etwas freier
 #. type: Plain text
 #: ../inittab.5:170
 msgid ""
@@ -2393,9 +2258,9 @@ msgid ""
 "keyboard handler that a special key combination was pressed on the console "
 "keyboard."
 msgstr ""
-"Der Prozess wird ausgeführt, wenn der Tastatur-Handler B<init>(8) "
-"signalisiert, dass auf der Tastatur der Konsole eine bestimmte "
-"Tastenkombination eingegeben wurde."
+"El proceso se ejecutará cuando B<init> reciba una señal del gestor de "
+"teclado que se ha pulsado una combinación especial de teclas en el teclado "
+"de la consola."
 
 #. type: Plain text
 #: ../inittab.5:176
@@ -2406,12 +2271,11 @@ msgid ""
 "\"KeyboardSignal\" action. For example, to map Alt-Uparrow for this purpose "
 "use the following in your keymaps file:"
 msgstr ""
-"Die Dokumentation für diese Funktion ist noch nicht vollständig. Zusätzliche "
-"Dokumentation finden Sie in den kbd-x.xx-Paketen (das aktuellste war beim "
-"Schreiben dieser Handbuchseite kbd-0.94). Wahrscheinlich möchten Sie der "
-"»KeyboardSignal«-Aktion eine Tastenkombinationen zuordnen. Um beispielsweise "
-"die Kombination »Alt Aufwärtspfeil« zu verwenden, tragen Sie in Ihre keymaps-"
-"Datei ein:"
+"La documentación para esta función no está completa aun; se puede encontrar "
+"más documentación en los paquetes kbd-x.xx (el mas reciente era kbd-0.94 en "
+"el momento de escribir esto). Básicamente quiere aplicar alguna combinación "
+"de teclado a la acción \"KeyboardSignal\". Por ejemplo, para aplicar Alt-"
+"FlechaArriba para este propósito use lo siguiente en su fichero keymap:"
 
 #. type: Plain text
 #: ../inittab.5:179
@@ -2422,7 +2286,7 @@ msgstr "alt keycode 103 = KeyboardSignal"
 #: ../inittab.5:186
 msgid "This is an example of a inittab which resembles the old Linux inittab:"
 msgstr ""
-"Dies ist ein Beispiel für eine inittab, die der alten Linux-inittab ähnelt:"
+"Esto es un ejemplo de un inittab que reensambla el viejo inittab de Linux:"
 
 #. type: Plain text
 #: ../inittab.5:197
@@ -2436,7 +2300,7 @@ msgid ""
 "3:1:respawn:/etc/getty 9600 tty3\n"
 "4:1:respawn:/etc/getty 9600 tty4\n"
 msgstr ""
-"# inittab für Linux\n"
+"# inittab para linux\n"
 "id:1:initdefault:\n"
 "rc::bootwait:/etc/rc\n"
 "1:1:respawn:/etc/getty 9600 tty1\n"
@@ -2450,8 +2314,8 @@ msgid ""
 "This inittab file executes I</etc/rc> during boot and starts gettys on tty1-"
 "tty4."
 msgstr ""
-"Diese inittab-Datei führt beim Systemstart I</etc/rc> aus und startet Gettys "
-"auf tty1 bis tty4."
+"Este fichero inittab ejecuta I</etc/rc> durante el arranque e inicia gettys "
+"en tty1-tty4."
 
 #. type: Plain text
 #: ../inittab.5:205
@@ -2459,8 +2323,8 @@ msgid ""
 "A more elaborate B<inittab> with different runlevels (see the comments "
 "inside):"
 msgstr ""
-"Eine ausgefeiltere B<inittab> mit verschiedenen Runleveln (siehe die "
-"innenstehenden Kommentare):"
+"Un B<inittab> más elaborado con diferentes niveles de ejecución (vea los "
+"comentarios interiores):"
 
 #. type: Plain text
 #: ../inittab.5:211
@@ -2469,19 +2333,21 @@ msgid ""
 "# Level to run in\n"
 "id:2:initdefault:\n"
 msgstr ""
-"# Standard-Runlevel\n"
+"# Nivel para ejecutar\n"
 "id:2:initdefault:\n"
 
 #. type: Plain text
 #: ../inittab.5:214
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "# System initialization before anything else.\n"
+#| "si::sysinit:/etc/rc.d/bcheckrc\n"
 msgid ""
 "# Boot-time system configuration/initialization script.\n"
 "si::sysinit:/etc/init.d/rcS\n"
 msgstr ""
-"# Skript für Konfiguration/Initialisierung während\n"
-"# des Systemstarts\n"
-"si::sysinit:/etc/init.d/rcS\n"
+"# Inicialización del sistema antes de cualquier otra cosa.\n"
+"si::sysinit:/etc/rc.d/bcheckrc\n"
 
 #. type: Plain text
 #: ../inittab.5:217
@@ -2490,8 +2356,6 @@ msgid ""
 "# What to do in single-user mode.\n"
 "~:S:wait:/sbin/sulogin\n"
 msgstr ""
-"# Das läuft im Single-User-Modus.\n"
-"~:S:wait:/sbin/sulogin\n"
 
 #. type: Plain text
 #: ../inittab.5:225
@@ -2505,13 +2369,6 @@ msgid ""
 "# Runlevels 2-5 are multi-user.\n"
 "# Runlevel 6 is reboot.\n"
 msgstr ""
-"# /etc/init.d führt beim Wechsel des Runlevel die\n"
-"# S- und K-Skripte aus.\n"
-"#\n"
-"# Runlevel 0 ist Halt.\n"
-"# Runlevel 1 ist der Single-User-Betrieb.\n"
-"# Runlevel 2-5 sind Mehrbenutzer-Modi.\n"
-"# Runlevel 6 ist der Neustart (Reboot).\n"
 
 #. type: Plain text
 #: ../inittab.5:233
@@ -2540,12 +2397,19 @@ msgid ""
 "# What to do at the \"3 finger salute\".\n"
 "ca::ctrlaltdel:/sbin/shutdown -t1 -h now\n"
 msgstr ""
-"# Was wird beim »Affengriff« getan?\n"
+"# Qué hacer ante el \"saludo de 3 dedos\".\n"
 "ca::ctrlaltdel:/sbin/shutdown -t1 -h now\n"
 
 #. type: Plain text
 #: ../inittab.5:245
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "# Runlevel 2&3: getty on console, level 3 also getty on modem port.\n"
+#| "1:23:respawn:/sbin/getty tty1 VC linux\n"
+#| "2:23:respawn:/sbin/getty tty2 VC linux\n"
+#| "3:23:respawn:/sbin/getty tty3 VC linux\n"
+#| "4:23:respawn:/sbin/getty tty4 VC linux\n"
+#| "S2:3:respawn:/sbin/uugetty ttyS2 M19200\n"
 msgid ""
 "# Runlevel 2,3: getty on virtual consoles\n"
 "# Runlevel   3: getty on terminal (ttyS0) and modem (ttyS1)\n"
@@ -2556,14 +2420,13 @@ msgid ""
 "S0:3:respawn:/sbin/getty -L 9600 ttyS0 vt320\n"
 "S1:3:respawn:/sbin/mgetty -x0 -D ttyS1\n"
 msgstr ""
-"# Runlevel 2,3: Getty auf virtuellen Konsolen\n"
-"# Runlevel   3: Getty auf Terminal (ttyS0) und Modem (ttyS1)\n"
+"# Nivel de ejecución 2&3: getty en consola, nivel 3 también  getty \n"
+"# en el puerto del módem.\n"
 "1:23:respawn:/sbin/getty tty1 VC linux\n"
 "2:23:respawn:/sbin/getty tty2 VC linux\n"
 "3:23:respawn:/sbin/getty tty3 VC linux\n"
 "4:23:respawn:/sbin/getty tty4 VC linux\n"
-"S0:3:respawn:/sbin/getty -L 9600 ttyS0 vt320\n"
-"S1:3:respawn:/sbin/mgetty -x0 -D ttyS1\n"
+"S2:3:respawn:/sbin/uugetty ttyS2 M19200\n"
 
 #. }}}
 #. {{{  Author
@@ -2583,11 +2446,11 @@ msgid ""
 "modified by E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> "
 "Michael Haardt E<.ME .>"
 msgstr ""
-"Der Autor von B<init>(8) ist E<.MT miquels@\\:cistron\\:.nl> Miquel van "
-"Smoorenburg E<.ME .> Diese Handbuchseite wurde von E<.MT lederer@\\:francium"
-"\\:.informatik\\:.uni-bonn\\:.de> Sebastian Lederer E<.ME> geschrieben und "
-"von E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> Michael Haardt "
-"E<.ME> überarbeitet."
+"B<Init> fue escrito por E<.MT miquels@\\:cistron\\:.nl> Miquel van "
+"Smoorenburg E<.ME>.  Esta página de manual fue escrita por E<.MT lederer@\\:"
+"francium\\:.informatik\\:.uni-bonn\\:.de> Sebastian Lederer E<.ME> y "
+"modificada por E<.MT u31b3hs@\\:pool\\:.informatik\\:.rwth-aachen\\:.de> "
+"Michael Haardt E<.ME .>"
 
 #. type: Plain text
 #: ../inittab.5:272
@@ -2604,12 +2467,12 @@ msgstr "KILLALL5"
 #: ../killall5.8:18
 #, no-wrap
 msgid "04 Nov 2003"
-msgstr "4. November 2003"
+msgstr "4 de Noviembre de 2003"
 
 #. type: Plain text
 #: ../killall5.8:21
 msgid "killall5 - send a signal to all processes"
-msgstr "killall5 - ein Signal an alle Prozesse senden"
+msgstr "killall5 - envía una señal a todos los procesos"
 
 #. type: Plain text
 #: ../killall5.8:28
@@ -2620,6 +2483,12 @@ msgstr ""
 
 #. type: Plain text
 #: ../killall5.8:34
+#, fuzzy
+#| msgid ""
+#| "B<killall5> is the SystemV killall command. It sends a signal to all "
+#| "processes except the processes in its own session, so it won't kill the "
+#| "shell that is running the script it was called from. Its primary (only) "
+#| "use is in the B<rc> scripts found in the /etc/init.d directory."
 msgid ""
 "B<killall5> is the SystemV B<killall> command. It sends a signal to all "
 "processes except kernel threads and the processes in its own session, so it "
@@ -2627,17 +2496,22 @@ msgid ""
 "primary (only) use is in the B<rc> scripts found in the I</etc/init.d> "
 "directory."
 msgstr ""
+"B<killall5> es la orden killall de SystemV. Envía una señal a todos los "
+"procesos excepto al de su propia sesión, para no eliminar el shell que "
+"ejecutó el guión desde el que fue llamado. Su uso principal (único) es en el "
+"guión B<rc> que se encuentra en el directorio /etc/init.d"
 
 #. type: IP
 #: ../killall5.8:35
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid "-o I<omitpid>"
 msgid "B<-o> I<omitpid>"
-msgstr "B<-o> I<PID-Ausschluss>"
+msgstr "-o I<omitpid>"
 
 #. type: Plain text
 #: ../killall5.8:37
 msgid "Tells B<killall5> to omit processes with that process id."
-msgstr "weist B<killall5> an, Prozesse mit dieser Kennung (PID) zu übergehen."
+msgstr ""
 
 #. type: Plain text
 #: ../killall5.8:40
@@ -2645,8 +2519,6 @@ msgid ""
 "B<killall5> can also be invoked as B<pidof>(8), which is simply a (symbolic) "
 "link to the B<killall5> program."
 msgstr ""
-"B<killall5> kann auch als B<pidof>(8) aufgerufen werden, welches einfach ein "
-"(symbolischer) Link auf das Programm B<killall5> ist."
 
 #. type: Plain text
 #: ../killall5.8:44
@@ -2655,9 +2527,6 @@ msgid ""
 "were killed, and 1 if it was unable to find any processes (I</proc/> is "
 "missing)."
 msgstr ""
-"Das Programm gibt 0 zurück, wenn Prozesse abgewürgt werden konnten. Es gibt "
-"2 zurück, wenn kein Prozess abgewürgt wurde, und 1, wenn keine Prozesse "
-"gefunden werden konnten (I</proc> fehlt)."
 
 #. type: Plain text
 #: ../killall5.8:48
@@ -2680,14 +2549,14 @@ msgstr "1"
 #: ../last.1:20
 #, no-wrap
 msgid "Jul 31, 2004"
-msgstr "31. Juli 2004"
+msgstr "31 de julio de 2004"
 
 #. }}}
 #. {{{  Synopsis
 #. type: Plain text
 #: ../last.1:27
 msgid "last, lastb - show listing of last logged in users"
-msgstr "last, lastb - eine Liste der zuletzt angemeldeten Benutzer anzeigen"
+msgstr "last, lastb - muestra los usuarios que han accedido al sistema"
 
 #. type: Plain text
 #: ../last.1:37
@@ -2695,8 +2564,6 @@ msgid ""
 "B<last> [B<-R>] [B<->I<num>] [-B<n> I<num\\/>] [B<-adFiowx>] [-B<f> I<file\\/"
 ">] [-B<t> I<YYYYMMDDHHMMSS\\/>] [I<name...>] [I<tty...>]"
 msgstr ""
-"B<last> [B<-R>] [B<->I<Zahl>] [-B<n> I<Zahl\\/>] [B<-adFiowx>] [-B<f> I<Datei"
-"\\/>] [-B<t> I<JJJJMMTTHHMMSS\\/>] [I<Name…>] [I<TTY…>]"
 
 #. }}}
 #. {{{  Description
@@ -2706,8 +2573,6 @@ msgid ""
 "B<lastb> [B<-R>] [B<->I<num>] [-B<n> I<num\\/>] [-B<f> I<file\\/>] [B<-"
 "adFiowx>] [I<name...>] [I<tty...>]"
 msgstr ""
-"B<lastb> [B<-R>] [B<->I<Zahl>] [-B<n> I<Zahl\\/>] [-B<f> I<Datei\\/>] [B<-"
-"adFiowx>] [I<Name…>] [I<TTY…>]"
 
 #. type: Plain text
 #: ../last.1:56
@@ -2727,27 +2592,32 @@ msgid ""
 "arguments.  Names of ttys can be abbreviated, thus B<last 0> is the same as "
 "B<last tty0>."
 msgstr ""
-"B<last> durchsucht die Datei I</var/log/wtmp> (oder die durch die Option B<-"
-"f> angegebene Datei) rückwärts und zeigt eine Liste aller Benutzer an, die "
-"sich seit der Erstellung der Datei angemeldet (und abgemeldet) haben. Einer "
-"oder mehrere I<Benutzernamen> und/oder I<TTYs> können angegeben werden, in "
-"welchem Fall B<last> nur die Einträge anzeigt, die auf diese Argumente "
-"passen. Die Namen der I<TTYs> können abgekürzt werden, daher ist B<last 0> "
-"gleichbedeutend mit B<last TTY0>."
+"B<last> analiza el contenido del archivo I</var/log/wtmp> (o el que se haya "
+"indicada mediante la opción B<-f>) y muestra un listado con los usuarios "
+"conectados (y desconectados) desde la creación de dicho archivo. Es posible "
+"indicar uno o más I<nombres_de_usuario> y/o I<ttys>, en cuyo caso solo se "
+"mostrarán las entradas que coincidan con éstos patrones. También cabe la "
+"posibilidad de abreviar los nombres de los I<ttys>, por ejemplo B<last0> es "
+"lo mismo que B<last tty0>."
 
 #. type: Plain text
 #: ../last.1:61
+#, fuzzy
+#| msgid ""
+#| "When catching a SIGINT signal (generated by the interrupt key, usually "
+#| "control-C) or a SIGQUIT signal, B<last> will show how far it has searched "
+#| "through the file; in the case of the SIGINT signal B<last> will then "
+#| "terminate."
 msgid ""
 "When B<last> catches a B<SIGINT> signal (generated by the interrupt key, "
 "usually control-C) or a B<SIGQUIT> signal (generated by the quit key, "
 "usually control-\\e), B<last> will show how far it has searched through the "
 "file; in the case of the B<SIGINT> signal B<last> will then terminate."
 msgstr ""
-"Wenn eine B<SIGINT>-Signalerbrechungstastenkombination (üblicherweise mit "
-"Strg-C erzeugt) oder ein B<SIGQUIT>-Signal (üblicherweise mit Strg-\\e "
-"erzeugt) empfangen wird, zeigt B<last> an, wie weit die Suche durch die "
-"Datei bereits fortgeschritten ist; im Falle des B<SIGINT>-Signals wird "
-"B<last> dann beeendet."
+"Si B<last> recibe una señal SIGINT (creada por una solicitud de "
+"interrupción, generalmente con Control-C) o SIGQUIT; se mostrará en qué "
+"punto estaba el análisis. En el caso de haber recibido la señal SIGINT, el "
+"proceso finalizará."
 
 #. type: Plain text
 #: ../last.1:65
@@ -2755,9 +2625,9 @@ msgid ""
 "The pseudo user B<reboot> logs in each time the system is rebooted.  Thus "
 "B<last reboot> will show a log of all reboots since the log file was created."
 msgstr ""
-"Der Pseudo-Benutzer B<reboot> meldet sich jedesmal an, wenn das System neu "
-"gestartet wird. Daher zeigt B<last reboot> ein Protokoll aller Neustarts "
-"seit der Erstellung der Protokolldatei an."
+"El pseudo-usuario B<reboot> accede al sistema cada vez que se reinicia el "
+"equipo, por lo tanto B<last reboot> mostrará una lista de todos los "
+"reinicios desde la creación del archivo."
 
 #. }}}
 #. {{{  Options
@@ -2767,62 +2637,65 @@ msgid ""
 "B<lastb> is the same as B<last>, except that by default it shows a log of "
 "the file B</var/log/btmp>, which contains all the bad login attempts."
 msgstr ""
-"B<lastb> ist gleichbedeutend mit B<last>, außer dass es in der "
-"Voreinstellung ein Protokoll aus der Datei I</var/log/btmp> anzeigt, welches "
-"die fehlgeschlagenen Anmeldeversuche enthält."
+"B<lastb> es idéntico a B<last> salvo que analiza por defecto el archivo I</"
+"var/log/btmp> que muestra los intentos de acceso fallidos."
 
 #. type: IP
 #: ../last.1:71 ../readbootlog.1:43
 #, no-wrap
 msgid "B<-f> I<file>"
-msgstr "B<-f> I<Datei>"
+msgstr "B<-f> I<archivo>"
 
 #. type: Plain text
 #: ../last.1:73
 msgid "Tells B<last> to use a specific file instead of I</var/log/wtmp>."
 msgstr ""
-"weist B<last> an, eine spezifische Datei anstelle von I</var/log/wtmp> zu "
-"verwenden."
 
 #. type: IP
 #: ../last.1:73
 #, no-wrap
 msgid "B<->I<num>"
-msgstr "B<->I<Zahl>"
+msgstr "B<->I<num>"
 
 #. type: Plain text
 #: ../last.1:75
+#, fuzzy
+#| msgid "Tell B<last> how many lines to show."
 msgid "This is a count telling B<last> how many lines to show."
-msgstr "weist B<last> an, wie viele Zeilen es anzeigen soll."
+msgstr "Indica a B<last> el número de líneas que debe mostrar."
 
 #. type: IP
 #: ../last.1:75
 #, no-wrap
 msgid "B<-n> I<num>"
-msgstr "B<-n> I<Zahl>"
+msgstr "B<-n> I<num>"
 
 #. type: Plain text
 #: ../last.1:77
 msgid "The same."
-msgstr "Das gleiche."
+msgstr ""
 
 #. type: IP
 #: ../last.1:77
 #, no-wrap
 msgid "B<-t> I<YYYYMMDDHHMMSS>"
-msgstr "B<-t> I<JJJJMMTTHHMMSS>"
+msgstr ""
 
 #. type: Plain text
 #: ../last.1:82
+#, fuzzy
+#| msgid ""
+#| "Display the state of logins since the specified I<time>.  This is useful, "
+#| "e.g., to easily determine who was logged in at a particular time.  The "
+#| "option is often combined with B<--until>."
 msgid ""
 "Display the state of logins as of the specified time.  This is useful, e.g., "
 "to determine easily who was logged in at a particular time -- specify that "
 "time with B<-t> and look for \"still logged in\"."
 msgstr ""
-"zeigt den Status der Anmeldungen zur angegebenen I<Zeit> an. Dies ist "
-"beispielsweise nützlich, um zu ermitteln, wer zu einem bestimmten Zeitpunkt "
-"angemeldet war. Geben Sie diese Zeit mit B<-t> an und schauen Sie nach "
-"»still logged in«."
+"Muestra la situación de los accesos a partir del la I<fecha_y_hora> "
+"indicados. Esto suele ser útil para ver quien accedió al sistema en un "
+"instante determinado. Esta opción suele combinarse con B<--until>."
 
 #. type: IP
 #: ../last.1:82
@@ -2833,7 +2706,7 @@ msgstr "B<-R>"
 #. type: Plain text
 #: ../last.1:84
 msgid "Suppresses the display of the hostname field."
-msgstr "unterdrückt die Ausgabe des Rechnernamenfeldes."
+msgstr "No muestra el campo con el nombre del equipo."
 
 #. {{{  -a
 #. type: IP
@@ -2844,12 +2717,16 @@ msgstr "B<-a>"
 
 #. type: Plain text
 #: ../last.1:87
+#, fuzzy
+#| msgid ""
+#| "Display the hostname in the last column. Useful in combination with the "
+#| "B<--dns> option."
 msgid ""
 "Display the hostname in the last column. Useful in combination with the next "
 "flag."
 msgstr ""
-"zeigt den Rechnernamen in der letzten Spalte an. Dies ist in Kombination mit "
-"der nächsten Option nützlich."
+"Muestra el nombre del equipo en la última columna. Suele usarse en "
+"conjunción con la opción B<--dns>."
 
 #. type: Plain text
 #: ../last.1:91
@@ -2858,9 +2735,9 @@ msgid ""
 "but its IP number as well. This option translates the IP number back into a "
 "hostname."
 msgstr ""
-"übersetzt die IP-Nummer zurück in einen Rechnernamen. Bei nichtlokalen "
-"Anmeldungen speichert Linux nicht nur den Namen des fernen Rechners, sondern "
-"auch dessen IP-Nummer."
+"Para el caso de accesos desde otros equipos, Linux no solo guarda el nombre "
+"del equipo remoto sino también su dirección IP. Esta opción convierte esa "
+"dirección IP en un nombre de equipo."
 
 #. type: IP
 #: ../last.1:91 ../shutdown.8:91
@@ -2871,7 +2748,7 @@ msgstr "B<-F>"
 #. type: Plain text
 #: ../last.1:93
 msgid "Print full login and logout times and dates."
-msgstr "gibt die vollständigen Zeiten und Daten der An- und Abmeldungen aus."
+msgstr "Muestra la fecha y hora de los accesos."
 
 #. type: Plain text
 #: ../last.1:96
@@ -2879,8 +2756,6 @@ msgid ""
 "This option is like B<-d> in that it displays the IP number of the remote "
 "host, but it displays the IP number in numbers-and-dots notation."
 msgstr ""
-"entspricht B<-d> insoweit, dass es die IP des fernen Rechners anzeigt, aber "
-"in einer Ziffer-Punkt-Notation."
 
 #. type: IP
 #: ../last.1:96
@@ -2906,13 +2781,12 @@ msgstr "B<-o>"
 #: ../last.1:102
 msgid "Read an old-type wtmp file (written by linux-libc5 applications)."
 msgstr ""
-"liest eine Wtmp-Datei des alten Typs (von linux-libc5-Anwendungen "
-"geschrieben)."
 
 #. type: Plain text
 #: ../last.1:104
 msgid "Display full user and domain names in the output."
-msgstr "zeigt die vollständigen Benutzer- und Domainnamen in der Ausgabe an."
+msgstr ""
+"Muestra el nombre de usuario completo y el nombre de dominio en la salida."
 
 #. type: IP
 #: ../last.1:104 ../mountpoint.1:40 ../pidof.8:63
@@ -2925,8 +2799,8 @@ msgstr "B<-x>"
 #: ../last.1:107
 msgid "Display the system shutdown entries and run level changes."
 msgstr ""
-"zeigt die Einträge zum Herunterfahren und zu den Runlevel-Änderungen des "
-"Systems an."
+"Muestra las veces que se apagó un equipo y los cambios en los niveles de "
+"ejecución."
 
 #. {{{  Files
 #. type: Plain text
@@ -2937,11 +2811,11 @@ msgid ""
 "configuration issue. If you want the files to be used, they can be created "
 "with a simple B<touch>(1) command (for example, B<touch /var/log/wtmp>)."
 msgstr ""
-"Die Dateien I<wtmp> und I<btmp> könnten nicht gefunden werden. Das System "
-"protokolliert nur Informationen in diesen Dateien, wenn diese vorhanden "
-"sind. Dies ist ein Problem der lokalen Konfiguration. Wenn Sie diese Dateien "
-"verwenden wollen, können sie mit dem einfachen Befehl B<touch>(1) angelegt "
-"werden (zum Beispiel B<touch /var/log/wtmp>)."
+"Es posible que los archivos I<wtmp> y I<btmp> no se encuentren en el equipo. "
+"Observe que el mismo solo registrará información en estos archivos si "
+"existen, esto sería un error en la configuración que se subsanaría "
+"simplemente creándolos con la orden B<touch>(1), es decir ejecutando "
+"B<touch /var/log/wtmp>."
 
 #. type: Plain text
 #: ../last.1:116
@@ -2969,12 +2843,12 @@ msgstr "LOGSAVE"
 #. type: Plain text
 #: ../logsave.8:8
 msgid "logsave - save the output of a command in a logfile"
-msgstr "logsave - die Ausgabe eines Befehls in einer Protokolldatei speichern"
+msgstr ""
 
 #. type: Plain text
 #: ../logsave.8:14
 msgid "B<logsave> [ B<-asv> ] I<logfile cmd_prog [ ... ]>"
-msgstr "B<logsave> [ B<-asv> ] I<Protokolldatei Befehl [ … ]>"
+msgstr ""
 
 #. type: Plain text
 #: ../logsave.8:27
@@ -2985,12 +2859,6 @@ msgid ""
 "output in memory until it can be written out.  A copy of the output will "
 "also be written to standard output."
 msgstr ""
-"Das Programm B<logsave> führt den einen I<Befehl> mit den angegebenen "
-"Argumenten aus und speichert eine Kopie der Ausgabe in die "
-"I<Protokolldatei>. Falls das Verzeichnis für die I<Protokolldatei> nicht "
-"existiert, sammelt B<logsave> die Ausgabe im Speicher, bis die Datei "
-"geschrieben werden kann. Außerdem wird eine Kopie der Ausgabe in die "
-"Standardausgabe gschrieben."
 
 #. type: Plain text
 #: ../logsave.8:34
@@ -2999,9 +2867,6 @@ msgid ""
 "program, B<logsave> will take its input from standard input and save it in "
 "I<logfile>."
 msgstr ""
-"Falls das Programm als einzelnes Minuszeichen (»-«) angegeben wird, dann "
-"bezieht B<logsave> seine Eingabe aus der Standardeingabe, anstatt ein "
-"Programm auszuführen, und speichert die Ausgabe in der I<Protokolldatei>."
 
 #. type: Plain text
 #: ../logsave.8:39
@@ -3009,9 +2874,6 @@ msgid ""
 "B<logsave> is useful for saving the output of initial boot scripts until the "
 "I</var> partition is mounted, so the output can be written to I</var/log>."
 msgstr ""
-"B<logsave> eignet sich zum Speichern der Ausgaben initialer Boot-Skripte, "
-"bis die I</var>-Partition eingehängt ist und die Ausgabe in I</var/log> "
-"geschrieben werden kann."
 
 #. type: Plain text
 #: ../logsave.8:45
@@ -3019,8 +2881,6 @@ msgid ""
 "This option will cause the output to be appended to I<logfile>, instead of "
 "replacing its current contents."
 msgstr ""
-"bewirkt, dass die Ausgabe an die I<Protokolldatei> angehängt wird, anstatt "
-"deren momentanen Inhalt zu ersetzen."
 
 #. type: Plain text
 #: ../logsave.8:53
@@ -3036,7 +2896,7 @@ msgstr ""
 msgid ""
 "This option will make B<logsave> to be more verbose in its output to the "
 "user."
-msgstr "bewirkt, dass die Ausgaben von B<logsave> ausführlicher werden."
+msgstr ""
 
 #. type: Plain text
 #: ../logsave.8:62
@@ -3058,21 +2918,21 @@ msgstr "MESG"
 #: ../mesg.1:20
 #, no-wrap
 msgid "Feb 26, 2001"
-msgstr "26. Februar 2001"
+msgstr "26 de febrero de 2001"
 
 #. type: TH
 #: ../mesg.1:20 ../mountpoint.1:18 ../readbootlog.1:20 ../utmpdump.1:18
 #: ../wall.1:18
 #, no-wrap
 msgid "User Commands"
-msgstr "Dienstprogramme für Benutzer"
+msgstr "Órdenes de usuario"
 
 #. }}}
 #. {{{  Synopsis
 #. type: Plain text
 #: ../mesg.1:27
 msgid "mesg - control write access to your terminal"
-msgstr "mesg - den Schreibzugriff auf Ihr Terminal steuern"
+msgstr ""
 
 #. }}}
 #. {{{  Description
@@ -3089,9 +2949,6 @@ msgid ""
 "B<mesg> controls the access to your terminal by others.  It's typically used "
 "to allow or disallow other users to write to your terminal (see B<write>(1))."
 msgstr ""
-"B<mesg> steuert den Zugriff auf Ihr Terminal durch andere. Es wird "
-"üblicherweise dazu verwendet, anderen Benutzern entweder zu gestatten oder "
-"zu verbieten, auf Ihr Terminal zu schreiben (siehe B<write>(1))."
 
 #. type: IP
 #: ../mesg.1:39
@@ -3102,7 +2959,7 @@ msgstr "B<y>"
 #. type: Plain text
 #: ../mesg.1:41
 msgid "Allow write access to your terminal."
-msgstr "erlaubt den Schreibzugriff auf Ihr Terminal."
+msgstr ""
 
 #. type: IP
 #: ../mesg.1:41
@@ -3113,20 +2970,23 @@ msgstr "B<n>"
 #. type: Plain text
 #: ../mesg.1:43
 msgid "Disallow write access to your terminal."
-msgstr "verbietet den Schreibzugriff auf Ihr Terminal."
+msgstr ""
 
 #. }}}
 #. {{{  Notes
 #. type: Plain text
 #: ../mesg.1:48
+#, fuzzy
+#| msgid ""
+#| "If no arguments are given, B<mesg> displays the present message status to "
+#| "the standard error output."
 msgid ""
 "If no option is given, B<mesg> prints out the current access state of your "
 "terminal."
 msgstr ""
-"Falls keine Argumente angegeben sind, zeigt B<mesg> den aktuellen Status des "
-"Zugriffs auf Ihr Terminal an."
+"Si no se indica ninguna opción, B<mesg> imprimirá el estado actual del "
+"terminal."
 
-# FIXME mesg → B<mesg>
 #. type: Plain text
 #: ../mesg.1:53
 msgid ""
@@ -3135,10 +2995,6 @@ msgid ""
 "mesg status of other sessions by using redirection.  For example \"mesg n "
 "E<lt> /dev/pts/46\"."
 msgstr ""
-"B<mesg> geht davon aus, dass seine Standardeingabe mit Ihrem Terminal "
-"verbunden ist. Das bedeutet auch, falls Sie mehrfach angemeldet sind, den "
-"B<mesg>-Status anderer Sitzungen durch Umleitung abfragen oder setzen "
-"können. Zum Beispiel »mesg n E<lt> /dev/pts/46«."
 
 #. type: Plain text
 #: ../mesg.1:62
@@ -3155,27 +3011,27 @@ msgstr "MOUNTPOINT"
 #: ../mountpoint.1:18
 #, no-wrap
 msgid "Mar 15, 2004"
-msgstr "15. Mai 2004"
+msgstr "15 de marzo de 2004"
 
 #. type: Plain text
 #: ../mountpoint.1:21
 msgid "mountpoint - see if a directory is a mountpoint"
-msgstr "mountpoint - überprüfen, ob ein Verzeichnis ein Einhängepunkt ist"
+msgstr ""
 
 #. type: Plain text
 #: ../mountpoint.1:26
 msgid "B<mountpoint> [B<-q>] [B<-d>] I</path/to/directory>"
-msgstr "B<mountpoint> [B<-q>] [B<-d>] I</Pfad/zum/Verzeichnis>"
+msgstr ""
 
 #. type: Plain text
 #: ../mountpoint.1:30
 msgid "B<mountpoint> B<-x> I</dev/device>"
-msgstr "B<mountpoint> B<-x> I</dev/Gerät>"
+msgstr ""
 
 #. type: Plain text
 #: ../mountpoint.1:32
 msgid "B<mountpoint> checks if the directory is a mountpoint."
-msgstr "B<mountpoint> überprüft, ob ein Verzeichnis ein Einhängepunkt ist."
+msgstr ""
 
 #. type: IP
 #: ../mountpoint.1:34 ../pidof.8:60 ../shutdown.8:107
@@ -3186,14 +3042,12 @@ msgstr "B<-q>"
 #. type: Plain text
 #: ../mountpoint.1:36
 msgid "Be quiet - don't print anything."
-msgstr "unterdrückt die Ausgaben."
+msgstr ""
 
 #. type: Plain text
 #: ../mountpoint.1:38
 msgid "Print major/minor device number of the filesystem on stdout."
 msgstr ""
-"zeigt die Major/Minor-Gerätenummern des Dateisystems in der Standardausgabe "
-"an."
 
 #. type: Plain text
 #: ../mountpoint.1:40
@@ -3205,14 +3059,11 @@ msgstr ""
 #: ../mountpoint.1:42
 msgid "Print major/minor device number of the blockdevice on stdout."
 msgstr ""
-"zeigt die Major/Minor-Gerätenummer des angegebenen blockorientierten Geräts "
-"in der Standardausgabe an."
 
 #. type: Plain text
 #: ../mountpoint.1:44
 msgid "Zero if the directory is a mountpoint, non-zero if not."
 msgstr ""
-"Null, falls das Verzeichnis ein Einhängepunkt ist, nicht Null, wenn nicht."
 
 #. type: Plain text
 #: ../mountpoint.1:48
@@ -3220,9 +3071,6 @@ msgid ""
 "Symbolic links are not followed, except when the B<-x> option is used. To "
 "force following symlinks, add a trailing slash to the path of the directory."
 msgstr ""
-"Symbolischen Links wird nur gefolgt, wenn die Option B<-x> angegeben wird. "
-"Um das Verfolgen von symbolischen Links zu erzwingen, hängen Sie einen "
-"Schrägstrich an den Pfad zum Verzeichnis an."
 
 #. type: Plain text
 #: ../mountpoint.1:52
@@ -3231,13 +3079,7 @@ msgid ""
 "option is useful for comparing if a directory and a device match up, and "
 "there is no other command that can print the info easily."
 msgstr ""
-"Der Name des Befehls ist irreführend, wenn die Option B<-x> verwendet wird, "
-"aber diese Option ist nützlich beim Vergleichen, ob ein Verzeichnis und ein "
-"Gerät zusammengehören. Es gibt keinen anderen Befehl, der dies so einfach "
-"ausgeben kann."
 
-# FIXME mountpoint → B<mountpoint>
-# FIXME binded → bind-mounted
 #. type: Plain text
 #: ../mountpoint.1:57
 msgid ""
@@ -3276,26 +3118,32 @@ msgstr "PIDOF"
 #: ../pidof.8:18
 #, no-wrap
 msgid "01 Sep 1998"
-msgstr "1. September 1998"
+msgstr "1 de Septiembre de 1998"
 
 #. type: Plain text
 #: ../pidof.8:21
 msgid "pidof - find the process ID of a running program"
-msgstr "pidof - die Prozesskennung eines laufenden Programms finden"
+msgstr "pidof - busca el ID de un programa que se está ejecutando"
 
 #. type: Plain text
 #: ../pidof.8:36
+#, fuzzy
+#| msgid ""
+#| "B<pidof> [B<-s>] [B<-c>] [B<-n>] [B<-x>] [B<-o> I<omitpid[,omitpid...]>] "
+#| "[B<-o> I<omitpid[,omitpid...]...>] [B<-f> I<format>] B<program> "
+#| "[B<program...>]"
 msgid ""
 "B<pidof> [B<-s>] [B<-c>] [B<-n>] [B<-x>] [B<-z>] [B<-o> I<omitpid[,"
 "omitpid...]>] [B<-o> I<omitpid[,omitpid...]...>] [B<-d> I<sep>] I<program> "
 "[I<program...>]"
 msgstr ""
-"B<pidof> [B<-s>] [B<-c>] [B<-n>] [B<-x>] [B<-z>] [B<-o> I<Ausschluss-PID[,"
-"Ausschluss-PID…]>] [B<-o> I<Ausschluss-PID[,Ausschluss-PID…]…>] [B<-d> "
-"I<Trenner>] I<Programm> [I<Programm…>]"
+"B<pidof> [B<-s>] [B<-c>] [B<-n>] [B<-x>] [B<-o> I<omitpid[,omitpid...]>] [B<-"
+"o> I<omitpid[,omitpid...]...>] [B<-f> I<formato>] B<programa> [B<programa..."
+">]"
 
 #. type: Plain text
 #: ../pidof.8:44
+#, fuzzy
 msgid ""
 "B<pidof> finds the process id's (PIDs) of the named programs. It prints "
 "those id's on the standard output. This program is on some systems used in "
@@ -3304,11 +3152,18 @@ msgid ""
 "where ? is the runlevel. If the system has a B<start-stop-daemon>(8) program "
 "that should be used instead."
 msgstr ""
+"B<Pidof> busca el id del proceso del nombre del programa. Imprime los ids a "
+"la salida estándar. Es usado generalmente en guiones que cambian el nivel de "
+"ejecución, especialmente cuando el sistema tiene el I<System-V> como una "
+"estructura I<rc>. En este caso los guiones están en /etc/rc?.d, donde ? es "
+"el nivel de ejecución."
 
 #. type: Plain text
 #: ../pidof.8:47
+#, fuzzy
 msgid "Single shot - this instructs the program to only return one I<pid>."
 msgstr ""
+"Lanzamiento simple - indica al programa que solo debe retornar un I<pid>."
 
 #. type: Plain text
 #: ../pidof.8:51
@@ -3335,10 +3190,13 @@ msgstr ""
 
 #. type: Plain text
 #: ../pidof.8:66
+#, fuzzy
 msgid ""
 "Scripts too - this causes the program to also return process id's of shells "
 "running the named scripts."
 msgstr ""
+"También guión - hace que el programa devuelva también el id del entorno que "
+"ejecutó el guión."
 
 #. type: IP
 #: ../pidof.8:66
@@ -3357,43 +3215,36 @@ msgid ""
 "D state whether B<-z> is specified or not."
 msgstr ""
 
-# FIXME missing markup
 #. type: IP
 #: ../pidof.8:73
 #, no-wrap
 msgid "-d I<sep>"
-msgstr "-d I<Trenner>"
+msgstr ""
 
-# FIXME I<pidof> → B<pidof>
 #. type: Plain text
 #: ../pidof.8:76
 msgid ""
 "Tells I<pidof> to use I<sep> as an output separator if more than one PID is "
 "shown. The default separator is a space."
 msgstr ""
-"weist B<pidof> an, den angegebenen I<Trenner> für die Ausgabe zu verwenden, "
-"falls mehr als eine PID angezeigt wird. Der vorgegebene Trenner ist ein "
-"Leerzeichen."
 
-# FIXME -o → B<-o>
 #. type: IP
 #: ../pidof.8:76
 #, no-wrap
 msgid "-o I<omitpid>"
-msgstr "-o I<Ausschluss-PID>"
+msgstr "-o I<omitpid>"
 
-# FIXME I<pidof> → B<pidof>
 #. type: Plain text
 #: ../pidof.8:80
+#, fuzzy
 msgid ""
 "Tells I<pidof> to omit processes with that process id. The special pid B<"
 "%PPID> can be used to name the parent process of the B<pidof> program, in "
 "other words the calling shell or shell script."
 msgstr ""
-"weist B<pidof> an, Prozesse mit dieser Kennung (PID) zu übergehen. Mit der "
-"speziellen PID B<%PPID> können Sie den Namen des Elternprozesses des "
-"Programms B<pidof> benennen, mit anderen Worten, die aufrufende Shell oder "
-"das Shell-Skript."
+"Le dice a I<pidof> que omita los procesos que tienen ese id. El pid especial "
+"B<%PPID> puede usarse para nombrar el proceso del programa I<pidof>, en "
+"otras palabras la llamada al entorno o al guión de entorno."
 
 #. type: TP
 #: ../pidof.8:81
@@ -3404,7 +3255,7 @@ msgstr "B<0>"
 #. type: Plain text
 #: ../pidof.8:84
 msgid "At least one program was found with the requested name."
-msgstr "Es wurde mindestens ein Programm mit dem angegebenen Namen gefunden."
+msgstr ""
 
 #. type: TP
 #: ../pidof.8:84
@@ -3415,18 +3266,17 @@ msgstr "B<1>"
 #. type: Plain text
 #: ../pidof.8:87
 msgid "No program was found with the requested name."
-msgstr "Es wurde kein Programm mit dem angegebenen Namen gefunden."
+msgstr ""
 
-# FIXME I<pidof> → B<pidof>
 #. type: Plain text
 #: ../pidof.8:90
+#, fuzzy
 msgid ""
 "I<pidof> is actually the same program as B<killall5>(8); the program behaves "
 "according to the name under which it is called."
 msgstr ""
-"B<pidof> ist eigentlich das gleiche Programm wie B<killall5>(8). Das "
-"Programm verhält sich nur unterschiedlich, je nachdem, unter welchem Namen "
-"es aufgerufen wird."
+"I<pidof> es un enlace simple (simbólico) para el programa I<killall5>, que "
+"debería estar también en I</sbin>."
 
 #. type: Plain text
 #: ../pidof.8:98
@@ -3463,7 +3313,7 @@ msgstr "READBOOTLOG"
 #: ../readbootlog.1:20
 #, no-wrap
 msgid "NOV 12, 2018"
-msgstr "12. November 2018"
+msgstr "12 de noviembre de 2018"
 
 #. }}}
 #. {{{  Synopsis
@@ -3472,12 +3322,12 @@ msgstr "12. November 2018"
 msgid ""
 "readbootlog - show contents of the boot log, stripping away control "
 "characters"
-msgstr "readbootlog - Inhalt des Bootprotokolls ohne Steuerzeichen anzeigen"
+msgstr ""
 
 #. type: Plain text
 #: ../readbootlog.1:31
 msgid "B<readbootlog> [B<-h>] [-B<f> I<file\\/>]"
-msgstr "B<readbootlog> [B<-h>] [-B<f> I<Datei\\/>]"
+msgstr "B<readbootlog> [B<-h>] [-B<f> I<archivo\\/>]"
 
 #. }}}
 #. {{{  Options
@@ -3500,7 +3350,7 @@ msgstr ""
 #. type: Plain text
 #: ../readbootlog.1:48
 msgid "Displays a brief help message."
-msgstr "zeigt eine kurze Hilfemeldung an."
+msgstr ""
 
 #. }}}
 #. {{{  Author
@@ -3531,19 +3381,19 @@ msgstr "RUNLEVEL"
 #: ../runlevel.8:18
 #, no-wrap
 msgid "May 27, 1997"
-msgstr "27. Mai 1997"
+msgstr "27 de mayo de 1997"
 
-# FIXME -- → -
 #. type: Plain text
 #: ../runlevel.8:21
 msgid "runlevel - find the previous and current system runlevel"
-msgstr ""
-"runlevel - den vorhergehenden und aktuellen Runlevel des Systems ausgeben"
+msgstr "runlevel - busca el nivel de ejecución previo y actual"
 
 #. type: Plain text
 #: ../runlevel.8:24
+#, fuzzy
+#| msgid "B<runlevel> [options...]"
 msgid "B<runlevel> [I<utmp>]"
-msgstr "B<runlevel> [I<utmp>]"
+msgstr "B<runlevel> [opciones...]"
 
 #. type: Plain text
 #: ../runlevel.8:34
@@ -3553,11 +3403,6 @@ msgid ""
 "runlevel on its standard output, separated by a single space. If there is no "
 "previous system runlevel, the letter B<N> will be printed instead."
 msgstr ""
-"B<runlevel> liest die I<utmp>-Datei des Systems (typischerweise I</var/run/"
-"utmp>), um den Runlevel zu ermitteln und dann den vorherigen und aktuellen "
-"Runlevel, durch ein einzelnes Leerzeichen getrennt, in die Standardausgabe "
-"zu schreiben. Gibt es keinen vorherigen Runlevel, wird stattdessen der "
-"Buchstabe B<N> ausgegeben."
 
 #. type: Plain text
 #: ../runlevel.8:42
@@ -3566,11 +3411,7 @@ msgid ""
 "var/run/runlevel> file, B<runlevel> prints the word B<unknown> and exits "
 "with an error."
 msgstr ""
-"Falls keine I<utmp>-Datei existiert und kein Runlevel in der Datei I</var/"
-"run/runlevel> vermerkt ist, gibt B<runlevel> das Wort B<unknown> aus und "
-"beendet sich mit einem Fehler."
 
-# FIXME B<Runlevel> → B<runlevel>
 #. type: Plain text
 #: ../runlevel.8:49
 msgid ""
@@ -3579,23 +3420,19 @@ msgid ""
 "information is also available in the environment variables B<RUNLEVEL> and "
 "B<PREVLEVEL>."
 msgstr ""
-"B<runlevel> kann in I<rc>-Skripten als Ersatz für den System-V-Befehl B<who -"
-"r> verwendet werden. Allerdings steht diese Information in neueren Versionen "
-"von B<init>(8) in den Umgebungsvariablen B<RUNLEVEL> und B<PREVLEVEL> zur "
-"Verfügung."
 
 #. {{{ utmp
 #. type: IP
 #: ../runlevel.8:51
 #, no-wrap
 msgid "I<utmp>"
-msgstr "I<utmp>"
+msgstr ""
 
 #. }}}
 #. type: Plain text
 #: ../runlevel.8:54
 msgid "The name of the I<utmp> file to read."
-msgstr "gibt den Namen der zu lesenden I<utmp>-Datei an."
+msgstr ""
 
 #. type: Plain text
 #: ../runlevel.8:57
@@ -3612,14 +3449,14 @@ msgstr "SHUTDOWN"
 #: ../shutdown.8:20
 #, no-wrap
 msgid "November 12, 2003"
-msgstr "12. November 2003"
+msgstr "12 de noviembre de 2003"
 
 #. }}}
 #. {{{  Synopsis
 #. type: Plain text
 #: ../shutdown.8:27
 msgid "shutdown - bring the system down"
-msgstr "shutdown - das System herunterfahren"
+msgstr ""
 
 #. }}}
 #. {{{  Description
@@ -3629,8 +3466,6 @@ msgid ""
 "B</sbin/shutdown> [B<-akrhPHfFncqQ>] [B<-t> I<sec>] I<time> [I<warning "
 "message>]"
 msgstr ""
-"B</sbin/shutdown> [B<-akrhPHfFncqQ>] [B<-t> I<Sekunden>] I<Zeit> "
-"[I<Warnmeldung>]"
 
 #. }}}
 #. {{{  Options
@@ -3671,15 +3506,13 @@ msgstr "B<-k>"
 #: ../shutdown.8:64
 msgid "Don't really shutdown; only send the warning messages to everybody."
 msgstr ""
-"fährt nicht wirklich herunter, sondern sendet lediglich Warnmeldungen an "
-"alle."
 
 #. }}}
 #. {{{  -h
 #. type: Plain text
 #: ../shutdown.8:68
 msgid "Reboot after shutdown."
-msgstr "Startet nach dem Herunterfahren neu."
+msgstr "Reinicia después de cerrarlo."
 
 #. }}}
 #. {{{  -P
@@ -3730,14 +3563,14 @@ msgstr ""
 #. type: Plain text
 #: ../shutdown.8:91
 msgid "Skip B<fsck>(8) on reboot."
-msgstr "Überspringt B<fsck>(8) beim Neustart."
+msgstr ""
 
 #. }}}
 #. {{{  -n
 #. type: Plain text
 #: ../shutdown.8:95
 msgid "Force B<fsck>(8) on reboot."
-msgstr "Erzwingt B<fsck>(8) beim Neustart."
+msgstr ""
 
 #. }}}
 #. {{{  -c
@@ -3792,7 +3625,7 @@ msgstr ""
 #: ../shutdown.8:122
 #, no-wrap
 msgid "B<-t> I<sec>"
-msgstr "B<-t> I<Sekunden>"
+msgstr ""
 
 #. }}}
 #. {{{  time
@@ -3814,26 +3647,28 @@ msgstr ""
 #: ../shutdown.8:133
 #, no-wrap
 msgid "I<time>"
-msgstr "I<Zeit>"
+msgstr ""
 
 #. }}}
 #. {{{  warning-message
 #. type: Plain text
 #: ../shutdown.8:137
+#, fuzzy
+#| msgid "shutdown"
 msgid "When to shutdown."
-msgstr "Gibt den Zeitpunkt des Herunterfahrens an."
+msgstr "shutdown"
 
 #. type: IP
 #: ../shutdown.8:137
 #, no-wrap
 msgid "I<warning message>"
-msgstr "I<Warnmeldung>"
+msgstr ""
 
 #. }}}
 #. type: Plain text
 #: ../shutdown.8:140
 msgid "Message to send to all users."
-msgstr "Gibt die an alle Benutzer zu sendende Meldung an."
+msgstr ""
 
 #. type: Plain text
 #: ../shutdown.8:148
@@ -3891,7 +3726,7 @@ msgstr ""
 #: ../shutdown.8:176
 #, no-wrap
 msgid "ACCESS CONTROL"
-msgstr "ZUGRIFFSKONTROLLE"
+msgstr ""
 
 #. type: Plain text
 #: ../shutdown.8:189
@@ -4004,18 +3839,17 @@ msgstr "SULOGIN"
 #: ../sulogin.8:18
 #, no-wrap
 msgid "17 Jan 2006"
-msgstr "17. Januar 2006"
+msgstr ""
 
-# FIXME Single → single
 #. type: Plain text
 #: ../sulogin.8:21
 msgid "sulogin - Single-user login"
-msgstr "sulogin - Einzelbenutzeranmeldung"
+msgstr "sulogin - conexión en modo monousuario"
 
 #. type: Plain text
 #: ../sulogin.8:27
 msgid "B<sulogin> [ B<-e> ] [ B<-p> ] [ B<-t> I<SECONDS> ] [ I<TTY> ]"
-msgstr "B<sulogin> [ B<-e> ] [ B<-p> ] [ B<-t> I<SEKUNDEN> ] [ I<TTY> ]"
+msgstr ""
 
 #. type: Plain text
 #: ../sulogin.8:35
@@ -4025,25 +3859,21 @@ msgid ""
 "tries to execute B<sulogin> when the boot loader (e.g., B<grub>(8))  passes "
 "it the B<-b> option."
 msgstr ""
-"I<sulogin> wird von B<init>(8) aufgerufen, wenn das System in den "
-"Einzelbenutzer-Modus eintritt (dies geschieht durch einen Eintrag in "
-"B<inittab>(5).)  B<init>(8) versucht auch, B<sulogin> auszuführen, wenn an "
-"den Bootloader (zum Beispiel B<grub>(8)) die Option B<-b> übergeben wird."
 
 #. type: Plain text
 #: ../sulogin.8:37
 msgid "The user is prompted:"
-msgstr "Der Benutzer wird um folgende Eingaben gebeten:"
+msgstr "Al usuario se le muestra el siguiente mensaje:"
 
 #. type: Plain text
 #: ../sulogin.8:39
 msgid "Give root password for system maintenance"
-msgstr "Administratorpasswort für Wartungszwecke eingeben"
+msgstr "Introduciendo la clave de root para su mantenimiento"
 
 #. type: Plain text
 #: ../sulogin.8:41
 msgid "(or type Control-D for normal startup):"
-msgstr "(oder Strg+D drücken, um fortzufahren):"
+msgstr "(o tecleando Control-D para un comienzo normal):"
 
 #. type: Plain text
 #: ../sulogin.8:45
@@ -4051,9 +3881,8 @@ msgid ""
 "B<sulogin> will be connected to the current terminal, or to the optional "
 "device that can be specified on the command line (typically I</dev/console>)."
 msgstr ""
-"B<sulogin> wird mit dem aktuellen Terminal oder mit dem optional in der "
-"Befehlszeile angegebenen Gerät verbunden (Letzteres ist typischerweise I</"
-"dev/console>)."
+"B<sulogin> conectará en el terminal actual, o para conexiones opcionales se "
+"puede especificar en la línea de órdenes (generalmente I</dev/console>)."
 
 #. type: Plain text
 #: ../sulogin.8:48
@@ -4061,8 +3890,6 @@ msgid ""
 "If the B<-t> option is used then the program only waits the given number of "
 "seconds for user input."
 msgstr ""
-"Wenn die Option B<-t> verwendet wird, wartet das Programm nur die angegebene "
-"Anzahl Sekunden auf Benutzereingaben."
 
 #. type: Plain text
 #: ../sulogin.8:55
@@ -4079,15 +3906,13 @@ msgid ""
 "After the user exits the single-user shell, or presses control-D at the "
 "prompt, the system will (continue to) boot to the default runlevel."
 msgstr ""
-"Wenn der Benutzer die Einzelbenutzer-Shell verlässt oder an der "
-"Eingabeaufforderung Strg-D drückt, wird der Bootvorgang in den Standard-"
-"Runlevel gestartet bzw. fortgesetzt."
 
 #. type: SH
 #: ../sulogin.8:59
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid "ENVIRONMENT"
 msgid "ENVIRONMENT VARIABLES"
-msgstr "UMGEBUNGSVARIABLEN"
+msgstr "ENTORNO"
 
 #. type: Plain text
 #: ../sulogin.8:64
@@ -4097,11 +3922,10 @@ msgid ""
 "will try to execute root's shell from I</etc/passwd>. If that fails it will "
 "fall back to I</bin/sh>."
 msgstr ""
-"B<sulogin> schaut nach der Umgebungsvariable B<SUSHELL> oder B<sushell>, um "
-"zu bestimmen, welche Shell gestartet werden soll. Falls die "
-"Umgebungsvariable nicht gesetzt ist, versucht es, die Shell des Root-"
-"Benutzers aus I</etc/passwd> zu starten. Falls dies fehlschlägt, fällt es "
-"auf I</bin/sh> zurück."
+"B<sulogin> busca la variable de entorno B<SUSHELL> o B<sushell> para saber "
+"que entorno debe comenzar. Si la variable de entorno no está puesta, probará "
+"a ejecutar el entorno del root desde I</etc/passwd>. Si falla retrocederá a "
+"I</bin/sh>."
 
 #. type: Plain text
 #: ../sulogin.8:69
@@ -4121,7 +3945,7 @@ msgstr "boot: linux -b rw sushell=/sbin/sash"
 #: ../sulogin.8:71
 #, no-wrap
 msgid "FALLBACK METHODS"
-msgstr "AUSWEICHMETHODEN"
+msgstr ""
 
 #. type: Plain text
 #: ../sulogin.8:76
@@ -4130,9 +3954,6 @@ msgid ""
 "(B<getpwnam>(3))  first.  Then, if the B<-e> option was specified, "
 "B<sulogin> examines these files directly to find the root password:"
 msgstr ""
-"B<sulogin> prüft das Root-Password zuerst mit der Standardmethode "
-"(B<getpwnam>(3)). Dann, falls die Option B<-e> angegeben wurde, untersucht "
-"B<sulogin> folgende Dateien direkt, um das Root-Passwort zu finden:"
 
 #. type: Plain text
 #: ../sulogin.8:78
@@ -4142,7 +3963,7 @@ msgstr "/etc/passwd,"
 #. type: Plain text
 #: ../sulogin.8:80
 msgid "/etc/shadow (if present)"
-msgstr "/etc/shadow (falls vorhanden)"
+msgstr ""
 
 #. type: Plain text
 #: ../sulogin.8:84
@@ -4151,10 +3972,6 @@ msgid ""
 "without asking for a password. Only use the B<-e> option if you are sure the "
 "console is physically protected against unauthorized access."
 msgstr ""
-"Falls diese beschädigt oder nicht vorhanden sind, startet B<sulogin> eine "
-"Root-Shell, ohne nach einem Passwort zu fragen. Verwenden Sie die Option B<-"
-"e> nur dann, wenn Sie sicher sind, dass die Konsole physisch gegen "
-"unerlaubten Zugriff geschützt ist."
 
 #. type: Plain text
 #: ../sulogin.8:90
@@ -4171,17 +3988,17 @@ msgstr "UTMPDUMP"
 #: ../utmpdump.1:18
 #, no-wrap
 msgid "Februar 8, 2010"
-msgstr "8. Februar 2010"
+msgstr "8 de febrero de 2010"
 
 #. type: Plain text
 #: ../utmpdump.1:21
 msgid "utmpdump - dump UTMP and WTMP files in raw format"
-msgstr "utmpdump - UTMP- und WTMP-Dateien im Rohformat ausgeben"
+msgstr ""
 
 #. type: Plain text
 #: ../utmpdump.1:25
 msgid "B<utmpdump> [B<-froh>] I<filename>"
-msgstr "B<utmpdump> [B<-froh>] I<Dateiname>"
+msgstr ""
 
 #. type: Plain text
 #: ../utmpdump.1:28
@@ -4189,32 +4006,27 @@ msgid ""
 "B<utmpdump> is a simple program to dump UTMP and WTMP files in raw format, "
 "so they can be examined."
 msgstr ""
-"B<utmpdump> ist ein einfaches Programm zum Ausgeben von UTMP- und WTMP-"
-"Dateien im Rohformat, so dass diese untersucht werden können."
 
 #. type: Plain text
 #: ../utmpdump.1:31
 msgid "output appended data as the file grows."
-msgstr "gibt angehängte Daten aus, wenn die Datei wächst."
+msgstr ""
 
 #. type: Plain text
 #: ../utmpdump.1:33
 msgid "reverse. Write back edited login information into utmp or wtmp files."
 msgstr ""
-"kehrt den Vorgang um. Die bearbeiteten Anmeldeinformationen werden in die "
-"UTMP- oder WTMP-Dateien zurück geschrieben."
 
 #. type: Plain text
 #: ../utmpdump.1:35
 msgid "use old libc5 format."
-msgstr "verwendet das alte Libc5-Format."
+msgstr ""
 
 #. type: Plain text
 #: ../utmpdump.1:37
 msgid "usage information."
 msgstr ""
 
-# FIXME utmpdump → B<utmpdump>
 #. type: Plain text
 #: ../utmpdump.1:41
 msgid ""
@@ -4222,22 +4034,17 @@ msgid ""
 "dump out utmp/wtmp to an ASCII file, then that file can be edited to remove "
 "bogus entries and reintegrated, using"
 msgstr ""
-"B<utmpdump> kann im Falle beschädigter UTMP- oder WTMP-Einträge hilfreich "
-"sein. Es kann die Daten in eine ASCII-Datei ausgeben, die Sie bearbeiten "
-"können, um die falschen Einträge zu entfernen. Folgender Befehl führt dies "
-"aus:"
 
 #. type: Plain text
 #: ../utmpdump.1:46
 #, no-wrap
 msgid "B<utmpdump -r E<lt> ascii file E<gt> wtmp>\n"
-msgstr "B<utmpdump -r E<lt> ASCII-Datei E<gt> wtmp>\n"
+msgstr ""
 
 #. type: Plain text
 #: ../utmpdump.1:52
 msgid "but be warned as B<utmpdump> was written for debugging purpose only."
 msgstr ""
-"Seien Sie gewarnt, B<utmpdump> wurde nur für Debugging-Zwecke geschrieben."
 
 #. type: Plain text
 #: ../utmpdump.1:60
@@ -4246,9 +4053,6 @@ msgid ""
 "strongly depends on the input format. This tool was B<not> written for "
 "normal use but for debugging."
 msgstr ""
-"Sie dürfen die Option B<-r> B<nicht> verwenden, da das Format der utmp/wtmp-"
-"Dateien stark vom Eingabeformat abhängt. Dieses Werkzeug wurde B<nicht> für "
-"normale Verwendung geschrieben, sondern lediglich für Debugging-Zwecke."
 
 #. type: Plain text
 #: ../utmpdump.1:62
@@ -4270,17 +4074,17 @@ msgstr "WALL"
 #: ../wall.1:18
 #, no-wrap
 msgid "15 April 2003"
-msgstr "15. April 2003"
+msgstr "15 de abril de 2003"
 
 #. type: Plain text
 #: ../wall.1:22
 msgid "wall - send a message to everybody's terminal"
-msgstr "wall - eine Nachricht an die Terminals aller Benutzer senden"
+msgstr "wall - envía un mensaje a todos los terminales"
 
 #. type: Plain text
 #: ../wall.1:27
 msgid "B<wall> [B<-n>] [I<message>]"
-msgstr "B<wall> [B<-n>] [I<Nachricht>]"
+msgstr ""
 
 #. type: Plain text
 #: ../wall.1:43
@@ -4314,8 +4118,6 @@ msgid ""
 "B<wall> ignores the B<TZ> variable - the time printed in the banner is based "
 "on the system's local time."
 msgstr ""
-"B<wall> ignoriert die Umgebungsvariable B<TZ> - die im Banner ausgegebene "
-"Zeit basiert auf der lokalen Zeit des Systems."
 
 #. type: Plain text
 #: ../wall.1:73
@@ -4325,80 +4127,56 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgid "Miquel van Smoorenburg, miquels@cistron.nl"
 #~ msgstr "Miquel van Smoorenburg, miquels@cistron.nl"
 
-# FIXME fstab-decode → FSTAB-DECODE
 #, no-wrap
 #~ msgid "fstab-decode"
 #~ msgstr "fstab-decode"
 
-# FIXME missing whitespace
 #, no-wrap
 #~ msgid "B<a>,B<b>,B<c>"
 #~ msgstr "B<a>,B<b>,B<c>"
 
-#~ msgid "Jesse Smith E<lt>jsmith@resonatingmedia.comE<gt>"
-#~ msgstr "Jesse Smith E<lt>jsmith@resonatingmedia.comE<gt>"
-
 #~ msgid "Miquel van Smoorenburg ,E<lt>miquels@cistron.nlE<gt>"
 #~ msgstr "Miquel van Smoorenburg ,E<lt>miquels@cistron.nlE<gt>"
 
-# FIXME missing whitespace
-#, no-wrap
+#, fuzzy, no-wrap
+#~| msgid "LAST, LASTB"
 #~ msgid "LAST,LASTB"
 #~ msgstr "LAST, LASTB"
 
-# FIXME unused variables
-#, no-wrap
-#~ msgid "@E2FSPROGS_MONTH@ @E2FSPROGS_YEAR@"
-#~ msgstr "@E2FSPROGS_MONTH@ @E2FSPROGS_YEAR@"
-
-# FIXME unused variables
-#, no-wrap
-#~ msgid "E2fsprogs version @E2FSPROGS_VERSION@"
-#~ msgstr "E2fsprogs Version @E2FSPROGS_VERSION@"
-
-# FIXMe missing markup
-#~ msgid "Theodore Ts'o (tytso@mit.edu)"
-#~ msgstr "Theodore Ts'o E<lt>tytso@mit.eduE<gt>"
-
-#, no-wrap
+#, fuzzy, no-wrap
+#~| msgid "Linux System Administrator's Manual"
 #~ msgid "Linux User's Manual"
-#~ msgstr "Linux-Benutzerhandbuch"
+#~ msgstr "Manual del Administrador del Sistema Linux"
 
-# FIXME missing markup
+#, fuzzy
+#~| msgid "Miquel van Smoorenburg, miquels@cistron.nl"
 #~ msgid "Miquel van Smoorenburg (miquels@cistron.nl)"
-#~ msgstr "Miquel van Smoorenburg E<lt>miquels@cistron.nlE<gt>"
+#~ msgstr "Miquel van Smoorenburg, miquels@cistron.nl"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-s"
 #~ msgstr "-s"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-c"
 #~ msgstr "-c"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-n"
 #~ msgstr "-n"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-q"
 #~ msgstr "-q"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-x"
 #~ msgstr "-x"
 
-# FIXME missing markup
 #, no-wrap
 #~ msgid "-z"
 #~ msgstr "-z"
 
-# FIXME markup file name
 #, fuzzy
 #~| msgid ""
 #~| "B<sulogin> looks for the environment variable B<SUSHELL> or B<sushell> "
@@ -4411,14 +4189,15 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "will try to execute root's shell from /etc/passwd. If that fails it will "
 #~ "fall back to B</bin/sh>."
 #~ msgstr ""
-#~ "B<sulogin> schaut nach der Umgebungsvariable B<SUSHELL> oder B<sushell>, "
-#~ "um zu bestimmen, welche Shell gestartet werden soll. Falls die "
-#~ "Umgebungsvariable nicht gesetzt ist, versucht es, die Shell des Root-"
-#~ "Benutzers aus I</etc/passwd> zu starten. Falls dies fehlschlägt, fällt es "
-#~ "auf I</bin/sh> zurück."
+#~ "B<sulogin> busca la variable de entorno B<SUSHELL> o B<sushell> para "
+#~ "saber que entorno debe comenzar. Si la variable de entorno no está "
+#~ "puesta, probará a ejecutar el entorno del root desde I</etc/passwd>. Si "
+#~ "falla retrocederá a I</bin/sh>."
 
+#, fuzzy
+#~| msgid "Miquel van Smoorenburg ,E<lt>miquels@cistron.nlE<gt>"
 #~ msgid "Miquel van Smoorenburg E<lt>miquels@cistron.nlE<gt>"
-#~ msgstr "Miquel van Smoorenburg E<lt>miquels@cistron.nlE<gt>"
+#~ msgstr "Miquel van Smoorenburg ,E<lt>miquels@cistron.nlE<gt>"
 
 #, no-wrap
 #~ msgid "systemd 249"
@@ -4429,87 +4208,34 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgstr "halt"
 
 #~ msgid "B<halt> [OPTIONS...]"
-#~ msgstr "B<halt> [OPTIONEN…]"
+#~ msgstr "B<halt> [OPCIONES...]"
 
 #~ msgid "B<poweroff> [OPTIONS...]"
-#~ msgstr "B<poweroff> [OPTIONEN…]"
+#~ msgstr "B<poweroff> [OPCIONES...]"
 
 #~ msgid "B<reboot> [OPTIONS...]"
-#~ msgstr "B<reboot> [OPTIONEN…]"
-
-#~ msgid ""
-#~ "B<halt>, B<poweroff>, B<reboot> may be used to halt, power-off, or reboot "
-#~ "the machine\\&. All three commands take the same options\\&."
-#~ msgstr ""
-#~ "B<halt>, B<poweroff>, B<reboot> kann zum Herunterfahren, Ausschalten oder "
-#~ "Neustarten der Maschine verwandt werden\\&. Alle drei Befehle akzeptieren "
-#~ "die gleichen Optionen\\&."
-
-#~ msgid "The following options are understood:"
-#~ msgstr "Die folgenden Optionen werden verstanden:"
+#~ msgstr "B<reboot> [OPCIONES...]"
 
 #~ msgid "B<--help>"
 #~ msgstr "B<--help>"
 
 #~ msgid "Print a short help text and exit\\&."
-#~ msgstr "Zeigt einen kurzen Hilfetext an und beendet das Programm\\&."
+#~ msgstr "Mostrar texto de ayuda y finalizar\\&."
 
 #~ msgid "B<--halt>"
 #~ msgstr "B<--halt>"
 
-#~ msgid ""
-#~ "Halt the machine, regardless of which one of the three commands is invoked"
-#~ "\\&."
-#~ msgstr ""
-#~ "Die Maschine anhalten, unabhängig davon, welcher der drei Befehle "
-#~ "aufgerufen wurde\\&."
-
 #~ msgid "B<-p>, B<--poweroff>"
 #~ msgstr "B<-p>, B<--poweroff>"
-
-#~ msgid ""
-#~ "Power-off the machine, regardless of which one of the three commands is "
-#~ "invoked\\&."
-#~ msgstr ""
-#~ "Die Maschine ausschalten, unabhängig davon, welcher der drei Befehle "
-#~ "aufgerufen wurde\\&."
 
 #~ msgid "B<--reboot>"
 #~ msgstr "B<--reboot>"
 
-#~ msgid ""
-#~ "Reboot the machine, regardless of which one of the three commands is "
-#~ "invoked\\&."
-#~ msgstr ""
-#~ "Die Maschine neustarten, unabhängig davon, welcher der drei Befehle "
-#~ "aufgerufen wurde\\&."
-
 #~ msgid "B<-f>, B<--force>"
 #~ msgstr "B<-f>, B<--force>"
 
-#~ msgid ""
-#~ "Force immediate halt, power-off, or reboot\\&. When specified once, this "
-#~ "results in an immediate but clean shutdown by the system manager\\&. When "
-#~ "specified twice, this results in an immediate shutdown without contacting "
-#~ "the system manager\\&. See the description of B<--force> in "
-#~ "B<systemctl>(1)  for more details\\&."
-#~ msgstr ""
-#~ "Erzwingt sofortiges Anhalten, Ausschalten oder Neustarten\\&. Wird dies "
-#~ "einmal angegeben, führt dies zu einem sofortigen aber sauberen "
-#~ "Herunterfahren durch den Systemverwalter\\&. Bei doppelter Angabe führt "
-#~ "dies zu einem sofortigen Herunterfahren ohne Kontakt zum Diensteverwalter"
-#~ "\\&. Lesen Sie die Beschreibung von B<--force> in B<systemctl>(1) für "
-#~ "weitere Details\\&."
-
 #~ msgid "B<-w>, B<--wtmp-only>"
 #~ msgstr "B<-w>, B<--wtmp-only>"
-
-#~ msgid ""
-#~ "Only write wtmp shutdown entry, do not actually halt, power-off, reboot"
-#~ "\\&."
-#~ msgstr ""
-#~ "Nur einen Wtmp-Herunterfahreintrag schreiben, nicht tatsächlich die "
-#~ "Maschine anhalten, ausschalten oder neustarten\\&."
 
 #~ msgid "B<-d>, B<--no-wtmp>"
 #~ msgstr "B<-d>, B<--no-wtmp>"
@@ -4517,83 +4243,34 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgid "B<-n>, B<--no-sync>"
 #~ msgstr "B<-n>, B<--no-sync>"
 
-#~ msgid ""
-#~ "Don\\*(Aqt sync hard disks/storage media before halt, power-off, reboot"
-#~ "\\&."
-#~ msgstr ""
-#~ "Die Festplatte/das Speichermedium nicht vor dem Herunterfahren, "
-#~ "Ausschalten oder Neustarten synchronisieren\\&."
-
 #~ msgid "B<--no-wall>"
 #~ msgstr "B<--no-wall>"
 
-#~ msgid "Do not send wall message before halt, power-off, reboot\\&."
-#~ msgstr ""
-#~ "Keine Wall-Nachrichten vor dem Anhalten, Herunterfahren oder Neustarten "
-#~ "senden\\&."
-
 #~ msgid "On success, 0 is returned, a non-zero failure code otherwise\\&."
 #~ msgstr ""
-#~ "Bei Erfolg wird 0 zurückgegeben, anderenfalls ein Fehlercode ungleich Null"
-#~ "\\&."
-
-#~ msgid ""
-#~ "These commands are implemented in a way that preserves basic "
-#~ "compatibility with the original SysV commands\\&.  B<systemctl>(1)  verbs "
-#~ "B<halt>, B<poweroff>, B<reboot> provide the same functionality with some "
-#~ "additional features\\&."
-#~ msgstr ""
-#~ "Diese Befehle sind auf eine Art implementiert, die die grundlegende "
-#~ "Kompatibilität zu den ursprünglichen SysV-Befehlen erhalten\\&. Die "
-#~ "Unterbefehle B<halt>, B<poweroff>, B<reboot> von B<systemctl>(1) stellen "
-#~ "die gleichen Funktionalitäten mit zusätzlichen Funktionen bereit\\&."
-
-#~ msgid ""
-#~ "Note that on many SysV systems B<halt> used to be synonymous to "
-#~ "B<poweroff>, i\\&.e\\&. both commands would equally result in powering "
-#~ "the machine off\\&. systemd is more accurate here, and B<halt> results in "
-#~ "halting the machine only (leaving power on), and B<poweroff> is required "
-#~ "to actually power it off\\&."
-#~ msgstr ""
-#~ "Beachten Sie, dass viele SysV-Systeme B<halt> als Synonym zu B<poweroff> "
-#~ "verwendet haben, das heißt, dass beide Befehle gleichermaßen ein "
-#~ "Ausschalten des Systems bewirken würden\\&. Systemd ist hier genauer: "
-#~ "B<halt> bewirkt nur ein Anhalten der Maschine (die eingeschaltet bleibt) "
-#~ "und B<poweroff> ist nötig, um sie tatsächlich auszuschalten\\&."
+#~ "En caso de éxito se devuelve 0, en caso contrario un código de fallo "
+#~ "diferente de cero\\&."
 
 #~ msgid "B<systemd>(1), B<systemctl>(1), B<shutdown>(8), B<wall>(1)"
 #~ msgstr "B<systemd>(1), B<systemctl>(1), B<shutdown>(8), B<wall>(1)"
 
-#, no-wrap
+#, fuzzy, no-wrap
 #~ msgid "systemd 250"
-#~ msgstr "systemd 250"
-
-# FIXME: somesuch sounds strange
-#~ msgid ""
-#~ "This script is not meant as startup script for daemons or somesuch.  It "
-#~ "has nothing to do with a I<rc.local> style script. It's just a handler "
-#~ "for things executed from B</etc/inittab>. Experimenting with this can "
-#~ "make your system un(re)bootable."
-#~ msgstr ""
-#~ "Dieses Skript ist nicht als Startup-Skript für Daemonen oder so etwas "
-#~ "gemeint. Es hat nichts mit einem Skript im I<rc.local>-Stil zu tun. Es "
-#~ "ist nur ein Handler für aus B</etc/inittab> heraus ausgeführte Arbeiten. "
-#~ "Das Experimentieren damit kann bewirken, dass Ihr System nicht (mehr neu) "
-#~ "starten kann."
+#~ msgstr "systemd 249"
 
 #, no-wrap
 #~ msgid "2021-06-02"
-#~ msgstr "2. Juni 2021"
+#~ msgstr "2 Junio 2021"
 
 #, no-wrap
 #~ msgid "util-linux 2.37.2"
 #~ msgstr "util-linux 2.37.2"
 
 #~ msgid "B<last> [options] [I<username>...] [I<tty>...]"
-#~ msgstr "B<last> [Optionen] [I<Benutzername>…] [I<TTY>…]"
+#~ msgstr "B<last> [opciones] [I<usuario>...] [I<tty>...]"
 
 #~ msgid "B<lastb> [options] [I<username>...] [I<tty>...]"
-#~ msgstr "B<lastb> [Optionen] [I<Benutzername>…] [I<TTY>…]"
+#~ msgstr "B<lastb> [opciones] [I<usuario>...] [I<tty>...]"
 
 #~ msgid ""
 #~ "B<last> searches back through the I</var/log/wtmp> file (or the file "
@@ -4603,13 +4280,13 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "matching those arguments. Names of I<ttys> can be abbreviated, thus "
 #~ "B<last 0> is the same as B<last tty0>."
 #~ msgstr ""
-#~ "B<last> durchsucht die Datei I</var/log/wtmp> (oder die durch die Option "
-#~ "B<-f> angegebene Datei) rückwärts und zeigt eine Liste aller Benutzer an, "
-#~ "die sich seit der Erstellung der Datei angemeldet (und abgemeldet) haben. "
-#~ "Einer oder mehrere I<Benutzernamen> und/oder I<TTYs> können angegeben "
-#~ "werden, in welchem Fall B<last> nur die Einträge anzeigt, die auf diese "
-#~ "Argumente passen. Die Namen der I<TTYs> können abgekürzt werden, daher "
-#~ "ist B<last 0> gleichbedeutend mit B<last TTY0>."
+#~ "B<last> analiza el contenido del archivo I</var/log/wtmp> (o el que se "
+#~ "haya indicada mediante la opción B<-f>) y muestra un listado con los "
+#~ "usuarios conectados (y desconectados) desde la creación de dicho archivo. "
+#~ "Es posible indicar uno o más I<nombres_de_usuario> y/o I<ttys>, en cuyo "
+#~ "caso solo se mostrarán las entradas que coincidan con éstos patrones. "
+#~ "También cabe la posibilidad de abreviar los nombres de los I<ttys>, por "
+#~ "ejemplo B<last0> es lo mismo que B<last tty0>."
 
 #~ msgid ""
 #~ "When catching a B<SIGINT> signal (generated by the interrupt key, usually "
@@ -4617,86 +4294,86 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "through the file; in the case of the B<SIGINT> signal B<last> will then "
 #~ "terminate."
 #~ msgstr ""
-#~ "Wenn eine B<SIGINT>-Signalunterbrechungstastenkombination (üblicherweise "
-#~ "mit Strg-C erzeugt) oder ein B<SIGQUIT>-Signal empfangen wird, zeigt "
-#~ "B<last> an, wie weit die Suche durch die Datei bereits fortgeschritten "
-#~ "ist; im Falle des B<SIGINT>-Signals wird B<last> dann beeendet."
+#~ "Si B<last> recibe una señal B<SIGINT> (creada por una solicitud de "
+#~ "interrupción, generalmente con Control-C) o SIGQUIT; se mostrará en qué "
+#~ "punto estaba el análisis. En el caso de haber recibido la señal "
+#~ "B<SIGINT>, el proceso finalizará."
 
 #~ msgid ""
 #~ "The pseudo user B<reboot> logs in each time the system is rebooted. Thus "
 #~ "B<last reboot> will show a log of all the reboots since the log file was "
 #~ "created."
 #~ msgstr ""
-#~ "Der Pseudo-Benutzer B<reboot> meldet sich jedesmal an, wenn das System "
-#~ "neu gestartet wird. Daher zeigt B<last reboot> ein Protokoll aller "
-#~ "Neustarts seit der Erstellung der Protokolldatei an."
+#~ "El pseudo-usuario B<reboot> accede al sistema cada vez que se reinicia el "
+#~ "equipo, por lo tanto B<last reboot> mostrará una lista de todos los "
+#~ "reinicios desde la creación del archivo."
 
 #~ msgid "B<-a>, B<--hostlast>"
-#~ msgstr "B<-a>, B<--hostlast>"
+#~ msgstr "B<-a>,B< --hostlast>"
 
 #~ msgid "B<-d>, B<--dns>"
-#~ msgstr "B<-d>, B<--dns>"
+#~ msgstr "B<-d>,B< --dns>"
 
 #~ msgid ""
 #~ "Tell B<last> to use a specific I<file> instead of I</var/log/wtmp>. The "
 #~ "B<--file> option can be given multiple times, and all of the specified "
 #~ "files will be processed."
 #~ msgstr ""
-#~ "weist B<last> an, eine bestimmte I<Datei> anstelle von I</var/log/wtmp> "
-#~ "zu verwenden. Die Option B<--file> kann mehrfach angegeben werden, "
-#~ "wodurch alle angegebenen Dateien verarbeitet werden."
+#~ "Indica a B<last> que debe usar el I<archivo> indicado en lugar de I</var/"
+#~ "log/wtmp>. Es posible indicar varios archivos usando varias veces la "
+#~ "opción B<--file>, procesándose así todos los archivos indicados."
 
 #~ msgid "B<-F>, B<--fulltimes>"
-#~ msgstr "B<-F>, B<--fulltimes>"
+#~ msgstr "B<-F>,B< --fulltimes>"
 
 #~ msgid "B<-i>, B<--ip>"
-#~ msgstr "B<-i>, B<--ip>"
+#~ msgstr "B<-i>,B< --ip>"
 
-# Müsste das nicht eigentlich IP-Adresse heißen?
 #~ msgid ""
 #~ "Like B<--dns ,> but displays the host\\(cqs IP number instead of the name."
 #~ msgstr ""
-#~ "wie B<--dns>, zeigt aber die IP-Adresse des Rechners anstelle des Namens "
-#~ "an."
+#~ "Igual que B<--dns>, pero muestra la dirección IP del equipo en lugar de "
+#~ "su nombre."
 
 #~ msgid "B<->I<number>; B<-n>, B<--limit> I<number>"
-#~ msgstr "B<->I<Zahl>; B<-n>, B<--limit> I<Zahl>"
+#~ msgstr "B<->I<cantidad>; B<-n>, B<--limit> I<cantidad>"
 
 #~ msgid "B<-p>, B<--present> I<time>"
-#~ msgstr "B<-p>, B<--present> I<Zeit>"
+#~ msgstr "B<-p>,B< --present >I<fecha_y_hora>"
 
 #~ msgid ""
 #~ "Display the users who were present at the specified time. This is like "
 #~ "using the options B<--since> and B<--until> together with the same "
 #~ "I<time>."
 #~ msgstr ""
-#~ "zeigt die Benutzer an, die zur angegebenen Zeit angemeldet waren. Dies "
-#~ "entspricht der Verwendung der Optionen B<--since> und B<--until> zusammen "
-#~ "mit der gleichen I<Zeit>."
+#~ "Muestra los usuario conectados en la fecha y hora indicados. Coincide con "
+#~ "el uso de B<--since> y B<--until> indicando en ambos la misma "
+#~ "I<fecha_y_hora>."
 
 #~ msgid "B<-R>, B<--nohostname>"
 #~ msgstr "B<-R>, B<--nohostname>"
 
 #~ msgid "B<-s>, B<--since> I<time>"
-#~ msgstr "B<-s>, B<--since> I<Zeit>"
+#~ msgstr "B<-s>,B< --since >I<fecha_y_hora>"
 
 #~ msgid ""
 #~ "Display the state of logins since the specified I<time>. This is useful, "
 #~ "e.g., to easily determine who was logged in at a particular time. The "
 #~ "option is often combined with B<--until>."
 #~ msgstr ""
-#~ "zeigt den Status der Anmeldungen seit der angegebenen I<Zeit> an. Dies "
-#~ "ist beispielsweise nützlich, um zu ermitteln, wer zu einem bestimmten "
-#~ "Zeitpunkt angemeldet war. Diese Option wird oft mit B<--until> kombiniert."
+#~ "Muestra la situación de los accesos a partir del la I<fecha_y_hora> "
+#~ "indicados. Esto suele ser útil para ver quien accedió al sistema en un "
+#~ "instante determinado. Esta opción suele combinarse con B<--until>."
 
 #~ msgid "B<-t>, B<--until> I<time>"
-#~ msgstr "B<-t>, B<--until> I<Zeit>"
+#~ msgstr "B<-t>, B< --until >I<fecha_y_hora>"
 
 #~ msgid "Display the state of logins until the specified I<time>."
-#~ msgstr "zeigt den Status der Anmeldungen bis zu der angegebenen I<Zeit> an."
+#~ msgstr ""
+#~ "Muesta la situación de los accesos hasta la I<fecha_y_hora> indicados."
 
 #~ msgid "B<--time-format> I<format>"
-#~ msgstr "B<--time-format> I<Format>"
+#~ msgstr "B<--time-format>I< formato>"
 
 #~ msgid ""
 #~ "Define the output timestamp I<format> to be one of I<notime>, I<short>, "
@@ -4706,30 +4383,29 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "ISO-8601 format. The ISO format contains timezone information, making it "
 #~ "preferable when printouts are investigated outside of the system."
 #~ msgstr ""
-#~ "definiert das I<Format> des Ausgabe-Zeitstempels, entweder I<notime>, "
-#~ "I<short>, I<full> oder I<iso>. Die Variante I<notime> gibt keinerlei "
-#~ "Zeitstempel aus, I<short> ist die Vorgabe, und I<full> ist "
-#~ "gleichbedeutend mit der Option B<--fulltimes>. Die Variante I<iso> zeigt "
-#~ "den Zeitstempel im ISO-8601-Format an. Das ISO-Format zeigt Informationen "
-#~ "zur Zeitzone an, wodurch es bevorzugt zum Einsatz kommt, wenn Ausgaben "
-#~ "außerhalb des Systems untersucht werden."
+#~ "Define el I<formato> de fecha y hora que se mostrará. Puede ser "
+#~ "I<notime>, I<short>, I<full> o I<iso>. La opción I<notime> no mostrará "
+#~ "ninguna información de este tipo, I<short> es la opción por defecto y "
+#~ "I<full> es lo mismo que B<--fulltime>. La opción B<iso> mostrará la fecha "
+#~ "y hora en formato ISO-8601 que contiene información sobre la zona horaria "
+#~ "resultando especialmente útil cuando se investigan accesos desde otros "
+#~ "equipos."
 
 #~ msgid "B<-w>, B<--fullnames>"
-#~ msgstr "B<-w>, B<--fullnames>"
+#~ msgstr "B<-w>, B< --fullnames>"
 
 #~ msgid "B<-x>, B<--system>"
-#~ msgstr "B<-x>, B<--system>"
+#~ msgstr "B<-x>, B< --system>"
 
 #, no-wrap
 #~ msgid "TIME FORMATS"
-#~ msgstr "ZEITFORMATE"
+#~ msgstr "FORMATOS DE FECHA Y HORA"
 
 #~ msgid ""
 #~ "The options that take the I<time> argument understand the following "
 #~ "formats:"
 #~ msgstr ""
-#~ "Die Optionen, die das I<Zeit>-Argument akzeptieren, verstehen folgende "
-#~ "Formate:"
+#~ "El argumento I<fecha_y_hora> puede expresarse en los siguientes formatos:"
 
 #, no-wrap
 #~ msgid ".sp\n"
@@ -4737,27 +4413,27 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "YYYYMMDDhhmmss"
-#~ msgstr "JJJJMMTThhmmss"
+#~ msgstr "AAAAMMDDhhmmss"
 
 #, no-wrap
 #~ msgid "YYYY-MM-DD hh:mm:ss"
-#~ msgstr "JJJJ-MM-TT hh:mm:ss"
+#~ msgstr "AAAA-MM-DD hh:mm:ss"
 
 #, no-wrap
 #~ msgid "YYYY-MM-DD hh:mm"
-#~ msgstr "JJJJ-MM-TT hh:mm"
+#~ msgstr "AAAA-MM-DD hh:mm"
 
 #, no-wrap
 #~ msgid "(seconds will be set to 00)"
-#~ msgstr "(Sekunden werden auf 00 gesetzt)"
+#~ msgstr "(se definen los segundo a 00)"
 
 #, no-wrap
 #~ msgid "YYYY-MM-DD"
-#~ msgstr "JJJJ-MM-TT"
+#~ msgstr "AAAA-MM-DD"
 
 #, no-wrap
 #~ msgid "(time will be set to 00:00:00)"
-#~ msgstr "(Zeit wird auf 00:00:00 gesetzt)"
+#~ msgstr "(la horas se definirá como 00:00:00)"
 
 #, no-wrap
 #~ msgid "hh:mm:ss"
@@ -4765,7 +4441,7 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "(date will be set to today)"
-#~ msgstr "(Datum wird auf heute gesetzt)"
+#~ msgstr "(se usará la fecha de hoy)"
 
 #, no-wrap
 #~ msgid "hh:mm"
@@ -4773,7 +4449,7 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "(date will be set to today, seconds to 00)"
-#~ msgstr "(Datum wird auf heute gesetzt, Sekunden auf 00)"
+#~ msgstr "(se usa la fecha de hoy y los segundo a 00)"
 
 #, no-wrap
 #~ msgid "now"
@@ -4785,7 +4461,7 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "(time is set to 00:00:00)"
-#~ msgstr "(Zeit wird auf 00:00:00 gesetzt)"
+#~ msgstr "(se define la hora a 00:00:00)"
 
 #, no-wrap
 #~ msgid "today"
@@ -4808,32 +4484,34 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "AUTHORS"
-#~ msgstr "AUTOREN"
+#~ msgstr "AUTORES"
 
 #~ msgid "B<login>(1), B<wtmp>(5), B<init>(8), B<shutdown>(8)"
 #~ msgstr "B<login>(1), B<wtmp>(5), B<init>(8), B<shutdown>(8)"
 
 #, no-wrap
 #~ msgid "REPORTING BUGS"
-#~ msgstr "FEHLER MELDEN"
+#~ msgstr "INFORMAR DE ERRORES"
 
 #~ msgid "For bug reports, use the issue tracker at"
-#~ msgstr "Verwenden Sie zum Melden von Fehlern das Fehlererfassungssystem auf"
+#~ msgstr ""
+#~ "Para informar de cualquier error, utilice el sistema de seguimiento de "
+#~ "fallos"
 
 #, no-wrap
 #~ msgid "AVAILABILITY"
-#~ msgstr "VERFÜGBARKEIT"
+#~ msgstr "DISPONIBILIDAD"
 
 #~ msgid ""
 #~ "The B<last> command is part of the util-linux package which can be "
 #~ "downloaded from"
 #~ msgstr ""
-#~ "Der Befehl B<last> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
+#~ "La orden B<last> forma parte del paquete util-linux que puede ser "
+#~ "descargado"
 
 #, no-wrap
 #~ msgid "October 2013"
-#~ msgstr "Oktober 2013"
+#~ msgstr "Octubre de 2013"
 
 #, no-wrap
 #~ msgid "util-linux"
@@ -4847,8 +4525,8 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "Display the hostname in the last column.  Useful in combination with the "
 #~ "B<--dns> option."
 #~ msgstr ""
-#~ "zeigt den Rechnernamen in der letzten Spalte an. Dies ist in Kombination "
-#~ "mit der Option B<--dns> nützlich."
+#~ "Muestra el nombre del equipo en la última columna. Suele usarse en "
+#~ "conjunción con la opción B<--dns>."
 
 #, no-wrap
 #~ msgid "B<-d>,B< --dns>"
@@ -4859,22 +4537,22 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "host, but its IP number as well.  This option translates the IP number "
 #~ "back into a hostname."
 #~ msgstr ""
-#~ "übersetzt die IP-Nummer zurück in einen Rechnernamen. Bei nichtlokalen "
-#~ "Anmeldungen speichert Linux nicht nur den Namen des fernen Rechners, "
-#~ "sondern auch dessen IP-Nummer."
+#~ "Para el caso de accesos desde otros equipos, Linux no solo guarda el "
+#~ "nombre del equipo remoto sino también su dirección IP. Esta opción "
+#~ "convierte esa dirección IP en un nombre de equipo."
 
 #, no-wrap
 #~ msgid "B<-f>,B< --file >I<file>"
-#~ msgstr "B<-f>,B< --file >I<Datei>"
+#~ msgstr "B<-f>,B< --file >I<archivo>"
 
 #~ msgid ""
 #~ "Tell B<last> to use a specific I<file> instead of I</var/log/wtmp>.  The "
 #~ "B<--file> option can be given multiple times, and all of the specified "
 #~ "files will be processed."
 #~ msgstr ""
-#~ "weist B<last> an, eine bestimmte I<Datei> anstelle von I</var/log/wtmp> "
-#~ "zu verwenden. Die Option B<--file> kann mehrfach angegeben werden, "
-#~ "wodurch alle angegebenen Dateien verarbeitet werden."
+#~ "Indica a B<last> que debe usar el archivo indicado en lugar de I</var/log/"
+#~ "wtmp>. Es posible indicar varios archivos usando varias veces la opción "
+#~ "B<--file>, se procesarán así todos los archivos indicados."
 
 #, no-wrap
 #~ msgid "B<-F>,B< --fulltimes>"
@@ -4884,29 +4562,27 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgid "B<-i>,B< --ip>"
 #~ msgstr "B<-i>,B< --ip>"
 
-# Müsste das nicht eigentlich IP-Adresse heißen?
 #~ msgid ""
 #~ "Like B<--dns ,> but displays the host's IP number instead of the name."
 #~ msgstr ""
-#~ "wie B<--dns>, zeigt aber die IP-Adresse des Rechners anstelle des Namens "
-#~ "an."
+#~ "Igual que B<--dns>, pero muestra la dirección IP del equipo en lugar de "
+#~ "su nombre."
 
 #, no-wrap
 #~ msgid "B<-n>,B< --limit >I<number>"
-#~ msgstr "B<-n>,B< --limit >I<Zahl>"
+#~ msgstr "B<-n>,B< --limit >I<cantidad>"
 
 #, no-wrap
 #~ msgid "B<-p>,B< --present >I<time>"
-#~ msgstr "B<-p>,B< --present >I<Zeit>"
+#~ msgstr "B<-p>,B< --present >I<fecha_y_hora>"
 
 #~ msgid ""
 #~ "Display the users who were present at the specified time.  This is like "
 #~ "using the options B<--since> and B<--until> together with the same "
 #~ "I<time>."
 #~ msgstr ""
-#~ "zeigt die Benutzer an, die zur angegebenen Zeit angemeldet waren. Dies "
-#~ "entspricht der Verwendung der Optionen B<--since> und B<--until> zusammen "
-#~ "mit der gleichen I<Zeit>."
+#~ "Muestra los usuario conectados en la fecha y hora indicados. Coincide con "
+#~ "el uso de B<--since> y B<--until> indicando en ambos el mismo momento."
 
 #, no-wrap
 #~ msgid "B<-R>,B< --nohostname>"
@@ -4914,15 +4590,15 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 
 #, no-wrap
 #~ msgid "B<-s>,B< --since >I<time>"
-#~ msgstr "B<-s>,B< --since >I<Zeit>"
+#~ msgstr "B<-s>,B< --since >I<fecha_y_hora>"
 
 #, no-wrap
 #~ msgid "B<-t>,B< --until >I<time>"
-#~ msgstr "B<-t>,B< --until >I<Zeit>"
+#~ msgstr "B<-t>,B< --until >I<fecha_y_hora>"
 
 #, no-wrap
 #~ msgid "B<--time-format>I< format>"
-#~ msgstr "B<--time-format>I< Format>"
+#~ msgstr "B<--time-format>I< formato>"
 
 #~ msgid ""
 #~ "Define the output timestamp I<format> to be one of I<notime>, I<short>, "
@@ -4932,13 +4608,13 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "ISO-8601 format.  The ISO format contains timezone information, making it "
 #~ "preferable when printouts are investigated outside of the system."
 #~ msgstr ""
-#~ "definiert das I<Format> des Ausgabe-Zeitstempels, entweder I<notime>, "
-#~ "I<short>, I<full> oder I<iso>. Die Variante I<notime> gibt keinerlei "
-#~ "Zeitstempel aus, I<short> ist die Vorgabe, und I<full> ist "
-#~ "gleichbedeutend mit der Option B<--fulltimes>. Die Variante I<iso> zeigt "
-#~ "den Zeitstempel im ISO-8601-Format an. Das ISO-Format zeigt Informationen "
-#~ "zur Zeitzone an, wodurch es bevorzugt zum Einsatz kommt, wenn Ausgaben "
-#~ "außerhalb des Systems untersucht werden."
+#~ "Define el formato de fecha y hora que se mostrará. Puede ser I<notime>, "
+#~ "I<short>, I<full> o I<iso>. La opción I<notime> no mostrará ninguna "
+#~ "información de este tipo, I<short> es la opción por defecto y I<full> es "
+#~ "lo mismo que B<--fulltime>. La opción B<iso> mostrará la fecha y hora en "
+#~ "formato ISO-8601 que contiene información sobre la zona horaria "
+#~ "resultando especialmente útil cuando se investigan accesos desde otros "
+#~ "equipos."
 
 #, no-wrap
 #~ msgid "B<-w>,B< --fullnames>"
@@ -4955,169 +4631,98 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ "created with a simple B<touch>(1)  command (for example, I<touch /var/log/"
 #~ "wtmp>)."
 #~ msgstr ""
-#~ "Die Dateien I<wtmp> und I<btmp> könnten nicht gefunden werden. Das System "
-#~ "protokolliert nur Informationen in diesen Dateien, wenn diese vorhanden "
-#~ "sind. Dies ist ein Problem der lokalen Konfiguration. Wenn Sie diese "
-#~ "Dateien verwenden wollen, können sie mit dem einfachen Befehl B<touch>(1) "
-#~ "angelegt werden (zum Beispiel I<touch /var/log/wtmp>)."
+#~ "Es posible que los archivos I<wtmp> y I<btmp> no se encuentren en el "
+#~ "equipo. Observe que el mismo solo registrará información en estos "
+#~ "archivos si existen, esto sería un error en la configuración que se "
+#~ "subsanaría simplemente creándolos con la orden B<touch>(1), es decir "
+#~ "ejecutando I<touch /var/log/wtmp>."
 
 #~ msgid ""
 #~ "The last command is part of the util-linux package and is available from "
 #~ "E<.UR https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> "
 #~ "Linux Kernel Archive E<.UE .>"
 #~ msgstr ""
-#~ "Der Befehl last ist Teil des Pakets util-linux, welches aus dem E<.UR "
+#~ "La orden last es parte del paquete util-linux, está disponible en: E<.UR "
 #~ "https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> Linux "
-#~ "Kernel-Archiv E<.UE .> heruntergeladen werden kann."
+#~ "Kernel Archive E<.UE .>"
 
+#, fuzzy
 #~ msgid "mesg - display (or do not display) messages from other users"
-#~ msgstr "mesg - Nachrichten von anderen Benutzern anzeigen (oder nicht)"
+#~ msgstr "mesg - controla el acceso de escritura a tu terminal"
 
+#, fuzzy
+#~| msgid "B<mesg> [option] [B<n>|B<y>]"
 #~ msgid "B<mesg> [I<option>] [B<n>|B<y>]"
-#~ msgstr "B<mesg> [I<Option>] [B<n>|B<y>]"
+#~ msgstr "B<mesg> [opción] [B<n>|B<y>]"
 
+#, fuzzy
 #~ msgid ""
 #~ "The B<mesg> utility is invoked by a user to control write access others "
 #~ "have to the terminal device associated with standard error output. If "
 #~ "write access is allowed, then programs such as B<talk>(1) and B<write>(1) "
 #~ "may display messages on the terminal."
 #~ msgstr ""
-#~ "Das Dienstprogramm B<mesg> wird von einem Benutzer aufgerufen, um den "
-#~ "Schreibzugriff anderer auf das Terminal zu steuern, das mit der "
-#~ "Standardfehlerausgabe verknüpft ist. Falls der Schreibzugriff gestattet "
-#~ "wird, dann können Programme wie B<talk>(1) und B<write>(1) Nachrichten im "
-#~ "Terminal anzeigen."
-
-#~ msgid ""
-#~ "Traditionally, write access is allowed by default. However, as users "
-#~ "become more conscious of various security risks, there is a trend to "
-#~ "remove write access by default, at least for the primary login shell. To "
-#~ "make sure your ttys are set the way you want them to be set, B<mesg> "
-#~ "should be executed in your login scripts."
-#~ msgstr ""
-#~ "Traditionell ist der Schreibzugriff standardmäßig erlaubt. Als jedoch "
-#~ "diverse Sicherheitsaspekte in das Bewusstsein der Benutzer rückten, ergab "
-#~ "sich der Trend, den Schreibzugriff standardmäßig zu unterbinden, "
-#~ "zumindest für die primäre Anmelde-Shell. Um sicherzustellen, dass Ihre "
-#~ "TTYs nach Ihren Wünschen gesetzt sind, sollte B<mesg> in Ihren "
-#~ "Anmeldeskripten ausgeführt werden."
-
-#~ msgid ""
-#~ "The B<mesg> utility silently exits with error status 2 if not executed on "
-#~ "terminal. In this case execute B<mesg> is pointless. The command line "
-#~ "option B<--verbose> forces mesg to print a warning in this situation. "
-#~ "This behaviour has been introduced in version 2.33."
-#~ msgstr ""
-#~ "Das Dienstprogramm B<mesg> beendet sich stillschweigend mit dem "
-#~ "Fehlerstatus 2, falls sich die aktuelle Fehlerausgabe nicht auf ein "
-#~ "Terminal bezieht. In diesem Fall ist die Ausführung von B<mesg> sinnlos. "
-#~ "Die Befehlszeilenoption B<--verbose> erzwingt, dass Mesg eine Warnung in "
-#~ "diesem Fall ausgibt. Dieses Verhalten wurde in Version 2.33 hinzugefügt."
+#~ "B<Mesg> controla el acceso a tu terminal por otros. Generalmente es usado "
+#~ "para permitir o negar a otros usuarios la escritura en el terminal (vea "
+#~ "B<write>(1))."
 
 #, no-wrap
 #~ msgid "ARGUMENTS"
-#~ msgstr "ARGUMENTE"
+#~ msgstr "ARGUMENTOS"
 
+#, fuzzy
 #~ msgid "Disallow messages."
-#~ msgstr "unterbindet Nachrichten."
+#~ msgstr "Niega el acceso a escritura al terminal."
 
+#, fuzzy
 #~ msgid "Allow messages to be displayed."
-#~ msgstr "erlaubt die Anzeige von Nachrichten."
+#~ msgstr "Permite el acceso a escritura al terminal."
 
 #~ msgid "B<-v>, B<--verbose>"
 #~ msgstr "B<-v>, B<--verbose>"
-
-#~ msgid "Explain what is being done."
-#~ msgstr "erklärt, was geschieht."
 
 #, no-wrap
 #~ msgid "B<-V>, B<--version>"
 #~ msgstr "B<-V>, B<--version>"
 
 #~ msgid "Display version information and exit."
-#~ msgstr "zeigt Versionsinformationen an und beendet das Programm."
+#~ msgstr "Mostrar información de versión y finalizar."
 
 #, no-wrap
 #~ msgid "B<-h>, B<--help>"
 #~ msgstr "B<-h>, B<--help>"
 
 #~ msgid "Display help text and exit."
-#~ msgstr "zeigt einen Hilfetext an und beendet das Programm."
-
-#~ msgid "The B<mesg> utility exits with one of the following values:"
-#~ msgstr "Das Dienstprogramm B<mesg> gibt die folgenden Rückgabewerte aus:"
-
-#~ msgid "Messages are allowed."
-#~ msgstr "Nachrichten sind erlaubt."
+#~ msgstr "Mostrar texto de ayuda y finalizar."
 
 #, no-wrap
 #~ msgid "B<E<gt>1>"
 #~ msgstr "B<E<gt>1>"
-
-#~ msgid "An error has occurred."
-#~ msgstr "Ein Fehler ist aufgetreten."
 
 #~ msgid "I</dev/[pt]ty[pq]?>"
 #~ msgstr "I</dev/[pt]ty[pq]?>"
 
 #, no-wrap
 #~ msgid "HISTORY"
-#~ msgstr "GESCHICHTE"
+#~ msgstr "HISTORIAL"
 
 #~ msgid "A B<mesg> command appeared in Version 6 AT&T UNIX."
-#~ msgstr "Ein B<mesg>-Befehl erschien in Version 6 von AT&T UNIX."
-
-#~ msgid "B<login>(1), B<talk>(1), B<write>(1), B<wall>(1), B<xterm>(1)"
-#~ msgstr "B<login>(1), B<talk>(1), B<write>(1), B<wall>(1), B<xterm>(1)"
-
-#~ msgid ""
-#~ "The B<mesg> command is part of the util-linux package which can be "
-#~ "downloaded from"
-#~ msgstr ""
-#~ "Der Befehl B<mesg> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
+#~ msgstr "Una orden B<mesg> apareció en la Versión 6 del UNIX de AT&T."
 
 #, no-wrap
 #~ msgid "July 2014"
-#~ msgstr "Juli 2014"
+#~ msgstr "Julio 2014"
 
+#, fuzzy
 #~ msgid ""
 #~ "The B<mesg> utility is invoked by a user to control write access others "
 #~ "have to the terminal device associated with standard error output.  If "
 #~ "write access is allowed, then programs such as B<talk>(1)  and "
 #~ "B<write>(1)  may display messages on the terminal."
 #~ msgstr ""
-#~ "Das Dienstprogramm B<mesg> wird von einem Benutzer aufgerufen, um den "
-#~ "Schreibzugriff anderer auf das Terminal zu steuern, das mit der "
-#~ "Standardfehlerausgabe verknüpft ist. Falls der Schreibzugriff gestattet "
-#~ "wird, dann können Programme wie B<talk>(1) und B<write>(1) Nachrichten im "
-#~ "Terminal anzeigen."
-
-#~ msgid ""
-#~ "Traditionally, write access is allowed by default.  However, as users "
-#~ "become more conscious of various security risks, there is a trend to "
-#~ "remove write access by default, at least for the primary login shell.  To "
-#~ "make sure your ttys are set the way you want them to be set, B<mesg> "
-#~ "should be executed in your login scripts."
-#~ msgstr ""
-#~ "Traditionell ist der Schreibzugriff standardmäßig erlaubt. Als jedoch "
-#~ "diverse Sicherheitsaspekte in das Bewusstsein der Benutzer rückten, ergab "
-#~ "sich der Trend, den Schreibzugriff standardmäßig zu unterbinden, "
-#~ "zumindest für die primäre Anmelde-Shell. Um sicherzustellen, dass Ihre "
-#~ "TTYs nach Ihren Wünschen gesetzt sind, sollte B<mesg> in Ihren "
-#~ "Anmeldeskripten ausgeführt werden."
-
-#~ msgid ""
-#~ "The B<mesg> utility silently exits with error status 2 if not executed on "
-#~ "terminal.  In this case execute B<mesg> is pointless.  The command line "
-#~ "option B<--verbose> forces mesg to print a warning in this situation.  "
-#~ "This behaviour has been introduced in version 2.33."
-#~ msgstr ""
-#~ "Das Dienstprogramm B<mesg> beendet sich stillschweigend mit dem "
-#~ "Fehlerstatus 2, falls sich die aktuelle Fehlerausgabe nicht auf ein "
-#~ "Terminal bezieht. In diesem Fall ist die Ausführung von B<mesg> sinnlos. "
-#~ "Die Befehlszeilenoption B<--verbose> erzwingt, dass Mesg eine Warnung in "
-#~ "diesem Fall ausgibt. Dieses Verhalten wurde in Version 2.33 hinzugefügt."
+#~ "B<Mesg> controla el acceso a tu terminal por otros. Generalmente es usado "
+#~ "para permitir o negar a otros usuarios la escritura en el terminal (vea "
+#~ "B<write>(1))."
 
 #, no-wrap
 #~ msgid "B<-v>,B< --verbose>"
@@ -5139,184 +4744,9 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgid "B<\\ 1>"
 #~ msgstr "B<\\ 1>"
 
-#~ msgid ""
-#~ "The mesg command is part of the util-linux package and is available from "
-#~ "https://www.kernel.org/pub/linux/utils/util-linux/."
-#~ msgstr ""
-#~ "Der Befehl »mesg« ist Teil des Pakets util-linux, welches auf https://www."
-#~ "kernel.org/pub/linux/utils/util-linux/ verfügbar ist."
-
-#~ msgid ""
-#~ "B<mountpoint> checks whether the given I<directory> or I<file> is "
-#~ "mentioned in the I</proc/self/mountinfo> file."
-#~ msgstr ""
-#~ "B<mountpoint> überprüft, ob das angegebene I<Verzeichnis> oder die "
-#~ "angegebene I<Datei> in der Datei I</proc/self/mountinfo> aufgeführt ist."
-
-#~ msgid "B<-d>, B<--fs-devno>"
-#~ msgstr "B<-d>, B<--fs-devno>"
-
-#~ msgid ""
-#~ "Show the major/minor numbers of the device that is mounted on the given "
-#~ "directory."
-#~ msgstr ""
-#~ "zeigt die Major/Minor-Nummern des Geräts an, das in dem angegebenen "
-#~ "Verzeichnis eingehängt ist."
-
-#~ msgid "B<-q>, B<--quiet>"
-#~ msgstr "B<-q>, B<--quiet>"
-
-#~ msgid "Be quiet - don\\(cqt print anything."
-#~ msgstr "unterdrückt die Ausgaben."
-
-#, no-wrap
-#~ msgid "B<--nofollow>"
-#~ msgstr "B<--nofollow>"
-
-#~ msgid ""
-#~ "Do not follow symbolic link if it the last element of the I<directory> "
-#~ "path."
-#~ msgstr ""
-#~ "folgt keinem symbolischen Link, wenn er das letzte Element in einem "
-#~ "I<Verzeichnis>-Pfad ist."
-
-#~ msgid "B<-x>, B<--devno>"
-#~ msgstr "B<-x>, B<--devno>"
-
-#~ msgid "B<mountpoint> has the following exit status values:"
-#~ msgstr "B<mountpoint> hat die folgenden Exit-Status-Werte:"
-
-#~ msgid ""
-#~ "success; the directory is a mountpoint, or device is block device on B<--"
-#~ "devno>"
-#~ msgstr ""
-#~ "Erfolg; das Verzeichnis ist ein Einhängepunkt, oder das Gerät ist ein "
-#~ "Blockgerät (mit B<--devno>)"
-
-#~ msgid "failure; incorrect invocation, permissions or system error"
-#~ msgstr "Fehlschlag; fehlerhafter Aufruf, Zugriffsrechte- oder Systemfehler"
-
-#~ msgid "B<32>"
-#~ msgstr "B<32>"
-
-#~ msgid ""
-#~ "failure; the directory is not a mountpoint, or device is not a block "
-#~ "device on B<--devno>"
-#~ msgstr ""
-#~ "Fehlschlag; das Verzeichnis ist kein Einhängepunkt, oder das Gerät ist "
-#~ "kein Blockgerät (mit B<--devno>)"
-
-#, no-wrap
-#~ msgid "LIBMOUNT_DEBUG=all"
-#~ msgstr "LIBMOUNT_DEBUG=all"
-
-#~ msgid "enables libmount debug output."
-#~ msgstr "aktiviert die Fehlersuchausgabe für libmount."
-
-#~ msgid ""
-#~ "The util-linux B<mountpoint> implementation was written from scratch for "
-#~ "libmount. The original version for sysvinit suite was written by Miquel "
-#~ "van Smoorenburg."
-#~ msgstr ""
-#~ "Die B<mountpoint>-Implementation von Util-linux wurde für Libmount von "
-#~ "Grund auf neu geschrieben. Die Originalversion für die SysVinit-Suite "
-#~ "wurde von Miquel van Smoorenburg geschrieben."
-
-#~ msgid "B<mount>(8)"
-#~ msgstr "B<mount>(8)"
-
-#~ msgid ""
-#~ "The B<mountpoint> command is part of the util-linux package which can be "
-#~ "downloaded from"
-#~ msgstr ""
-#~ "Der Befehl B<mountpoint> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
-
-#, no-wrap
-#~ msgid "August 2019"
-#~ msgstr "August 2019"
-
-#~ msgid "B<mountpoint> [B<-d>|B<-q>] I<directory> | I<file>"
-#~ msgstr "B<mountpoint> [B<-d>|B<-q>] I<Verzeichnis> | I<Datei>"
-
-#~ msgid ""
-#~ "B<mountpoint> checks whether the given I<directory> or I<file> is "
-#~ "mentioned in the /proc/self/mountinfo file."
-#~ msgstr ""
-#~ "B<mountpoint> überprüft, ob das angegebene I<Verzeichnis> oder die "
-#~ "angegebene I<Datei> in der Datei /proc/self/mountinfo aufgeführt ist."
-
-#, no-wrap
-#~ msgid "B<-d>,B< --fs-devno>"
-#~ msgstr "B<-d>,B< --fs-devno>"
-
-#, no-wrap
-#~ msgid "B<-q>,B< --quiet>"
-#~ msgstr "B<-q>,B< --quiet>"
-
-#, no-wrap
-#~ msgid "B<-x>,B< --devno>"
-#~ msgstr "B<-x>,B< --devno>"
-
-#~ msgid ""
-#~ "The util-linux B<mountpoint> implementation was written from scratch for "
-#~ "libmount.  The original version for sysvinit suite was written by Miquel "
-#~ "van Smoorenburg."
-#~ msgstr ""
-#~ "Die B<mountpoint>-Implementation von Util-linux wurde für Libmount von "
-#~ "Grund auf neu geschrieben. Die Originalversion für die SysVinit-Suite "
-#~ "wurde von Miquel van Smoorenburg geschrieben."
-
-#~ msgid "Karel Zak E<lt>kzak@redhat.comE<gt>"
-#~ msgstr "Karel Zak E<lt>kzak@redhat.comE<gt>"
-
-#~ msgid ""
-#~ "The mountpoint command is part of the util-linux package and is available "
-#~ "from https://www.kernel.org/pub/linux/utils/util-linux/."
-#~ msgstr ""
-#~ "Der Befehl mountpoint ist Teil des Pakets util-linux, welches auf https://"
-#~ "www.kernel.org/pub/linux/utils/util-linux/ verfügbar ist."
-
 #, no-wrap
 #~ msgid "runlevel"
 #~ msgstr "runlevel"
-
-#, no-wrap
-#~ msgid "OVERVIEW"
-#~ msgstr "ÜBERBLICK"
-
-#~ msgid ""
-#~ "\"Runlevels\" are an obsolete way to start and stop groups of services "
-#~ "used in SysV init\\&. systemd provides a compatibility layer that maps "
-#~ "runlevels to targets, and associated binaries like B<runlevel>\\&. "
-#~ "Nevertheless, only one runlevel can be \"active\" at a given time, while "
-#~ "systemd can activate multiple targets concurrently, so the mapping to "
-#~ "runlevels is confusing and only approximate\\&. Runlevels should not be "
-#~ "used in new code, and are mostly useful as a shorthand way to refer the "
-#~ "matching systemd targets in kernel boot parameters\\&."
-#~ msgstr ""
-#~ "»Runlevel« sind eine veraltete, in SysV-Init verwandte Art, Gruppen von "
-#~ "Diensten zu starten und zu stoppen\\&. Systemd stellt eine "
-#~ "Kompatibilitätsschicht bereit, die Runlevel auf Ziele abbildet, sowie "
-#~ "zugehörige Programme wie B<runlevel>\\&. Nichtsdestotrotz kann zu einem "
-#~ "gegebenen Zeitpunkt immer nur ein Runlevel »aktiv« sein, während Systemd "
-#~ "mehrere Ziele gleichzeitig aktivieren kann, daher ist die Abbildung von "
-#~ "Runlevel irritierend und nur ungefähr\\&. In neuem Code sollten Runlevel "
-#~ "nicht mehr verwandt werden und sind hauptsächlich als Abkürzung zur "
-#~ "Referenz auf die entsprechenden Systemd-Ziele bei Kernel-Boot-Parametern "
-#~ "nützlich\\&."
-
-#~ msgid "B<Table\\ \\&1.\\ \\&Mapping between runlevels and systemd targets>"
-#~ msgstr ""
-#~ "B<Tabelle\\ \\&1.\\ \\&Abbildung zwischen Runleveln und Systemd-Zielen>"
-
-#, no-wrap
-#~ msgid "Runlevel"
-#~ msgstr "Runlevel"
-
-#, no-wrap
-#~ msgid "Target"
-#~ msgstr "Ziel"
 
 #, no-wrap
 #~ msgid ".T&"
@@ -5366,643 +4796,103 @@ msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
 #~ msgid "reboot\\&.target"
 #~ msgstr "reboot\\&.target"
 
-#~ msgid ""
-#~ "B<runlevel> prints the previous and current SysV runlevel if they are "
-#~ "known\\&."
-#~ msgstr ""
-#~ "runlevel - gibt den vorhergehenden und aktuellen SysV-Runlevel aus, falls "
-#~ "bekannt"
-
-#~ msgid ""
-#~ "The two runlevel characters are separated by a single space character\\&. "
-#~ "If a runlevel cannot be determined, N is printed instead\\&. If neither "
-#~ "can be determined, the word \"unknown\" is printed\\&."
-#~ msgstr ""
-#~ "Die zwei Runlevelzeichen werden durch ein einzelnes Leerzeichen getrennt"
-#~ "\\&. Falls ein Runlevel nicht bestimmt werden kann, wird N stattdessen "
-#~ "ausgegeben\\&. Falls keiner bestimmt werden kann, wird das Wort »unknown« "
-#~ "ausgegeben\\&."
-
-#~ msgid ""
-#~ "Unless overridden in the environment, this will check the utmp database "
-#~ "for recent runlevel changes\\&."
-#~ msgstr ""
-#~ "Dies wird die Utmp-Datenbank für kürzliche Runlevel-Änderungen prüfen, "
-#~ "außer dies ist in der Umgebung außer Kraft gesetzt\\&."
-
-#~ msgid "The following option is understood:"
-#~ msgstr "Die folgende Option wird verstanden:"
-
+#, fuzzy
+#~| msgid "On success, 0 is returned, a non-zero failure code otherwise\\&."
 #~ msgid ""
 #~ "If one or both runlevels could be determined, 0 is returned, a non-zero "
 #~ "failure code otherwise\\&."
 #~ msgstr ""
-#~ "Falls einer oder beide Runlevel bestimmt werden konnten, wird 0 "
-#~ "zurückgegeben, anderenfalls ein Fehlercode ungleich Null\\&."
+#~ "En caso de éxito se devuelve 0, en caso contrario un código de fallo "
+#~ "diferente de cero\\&."
 
 #~ msgid "I<$RUNLEVEL>"
 #~ msgstr "I<$RUNLEVEL>"
 
-#~ msgid ""
-#~ "If I<$RUNLEVEL> is set, B<runlevel> will print this value as current "
-#~ "runlevel and ignore utmp\\&."
-#~ msgstr ""
-#~ "Falls I<$RUNLEVEL> gesetzt ist, wird B<runlevel> diesen Wert als "
-#~ "aktuellen Runlevel ausgeben und Utmp ignorieren\\&."
-
 #~ msgid "I<$PREVLEVEL>"
 #~ msgstr "I<$PREVLEVEL>"
-
-#~ msgid ""
-#~ "If I<$PREVLEVEL> is set, B<runlevel> will print this value as previous "
-#~ "runlevel and ignore utmp\\&."
-#~ msgstr ""
-#~ "Falls I<$RUNLEVEL> gesetzt ist, wird B<runlevel> diesen Wert als "
-#~ "vorherigen Runlevel ausgeben und Utmp ignorieren\\&."
 
 #~ msgid "/run/utmp"
 #~ msgstr "/run/utmp"
 
-#~ msgid ""
-#~ "The utmp database B<runlevel> reads the previous and current runlevel from"
-#~ "\\&."
-#~ msgstr ""
-#~ "Die Utmp-Datenbank, aus der B<runlevel> den vorherigen und aktuellen "
-#~ "Runlevel ausliest\\&."
-
 #~ msgid "B<systemd>(1), B<systemd.target>(5), B<systemctl>(1)"
 #~ msgstr "B<systemd>(1), B<systemd.target>(5), B<systemctl>(1)"
-
-#~ msgid "shutdown - Halt, power-off or reboot the machine"
-#~ msgstr "shutdown - Die Maschine anhalten, ausschalten oder neustarten"
-
-#~ msgid "B<shutdown> [OPTIONS...] [TIME] [WALL...]"
-#~ msgstr "B<shutdown> [OPTIONEN…] [ZEIT] [WALL…]"
-
-#~ msgid "B<shutdown> may be used to halt, power-off or reboot the machine\\&."
-#~ msgstr ""
-#~ "B<shutdown> kann zum Anhalten, Herunterfahren oder Neustarten der "
-#~ "Maschine verwandt werden\\&."
-
-#~ msgid ""
-#~ "The first argument may be a time string (which is usually \"now\")\\&. "
-#~ "Optionally, this may be followed by a wall message to be sent to all "
-#~ "logged-in users before going down\\&."
-#~ msgstr ""
-#~ "Das erste Argument kann eine Zeitzeichenkette sein (normalerweise "
-#~ "»now«)\\&. Optional kann diese eine Wall-Nachricht sein, die vor dem "
-#~ "Herunterfahren an alle angemeldeten Benutzer versandt wird\\&."
-
-#~ msgid ""
-#~ "The time string may either be in the format \"hh:mm\" for hour/minutes "
-#~ "specifying the time to execute the shutdown at, specified in 24h clock "
-#~ "format\\&. Alternatively it may be in the syntax \"+m\" referring to the "
-#~ "specified number of minutes m from now\\&.  \"now\" is an alias for "
-#~ "\"+0\", i\\&.e\\&. for triggering an immediate shutdown\\&. If no time "
-#~ "argument is specified, \"+1\" is implied\\&."
-#~ msgstr ""
-#~ "Die Zeitzeichenkette kann entweder im Format »hh:mm« für Stunden/Minuten "
-#~ "sein, die die Zeit (im 24-Stunden-Format) der Ausführung des "
-#~ "Herunterfahrens festlegt\\&. Alternativ kann sie in der Syntax »+m« "
-#~ "vorliegen, die sich auf die festgelegte Anzahl »m« an Minuten von jetzt "
-#~ "an bezieht\\&. »now« ist ein Alias für »+0«, d\\&.h\\. für das Auslösen "
-#~ "eines sofortigen Herunterfahrens\\&. Falls kein Zeitargument festgelegt "
-#~ "ist, wird »+1« angenommen\\&."
-
-#~ msgid ""
-#~ "Note that to specify a wall message you must specify a time argument, too"
-#~ "\\&."
-#~ msgstr ""
-#~ "Beachten Sie, dass Sie für die Angabe einer Wall-Nachricht auch ein "
-#~ "Zeitargument angeben müssen\\&."
-
-#~ msgid ""
-#~ "If the time argument is used, 5 minutes before the system goes down the /"
-#~ "run/nologin file is created to ensure that further logins shall not be "
-#~ "allowed\\&."
-#~ msgstr ""
-#~ "Falls ein Zeitargument verwandt wird, wird 5 Minuten bevor das System "
-#~ "heruntergefahren  wird, die Datei /run/nologin erstellt, um "
-#~ "sicherzustellen, dass weitere Anmeldungen nicht erlaubt werden\\&."
 
 #~ msgid "B<-H>, B<--halt>"
 #~ msgstr "B<-H>, B<--halt>"
 
-#~ msgid "Halt the machine\\&."
-#~ msgstr "Die Maschine anhalten\\&."
-
 #~ msgid "B<-P>, B<--poweroff>"
 #~ msgstr "B<-P>, B<--poweroff>"
-
-#~ msgid "Power-off the machine (the default)\\&."
-#~ msgstr "Die Maschine ausschalten (die Vorgabe)\\&."
 
 #~ msgid "B<-r>, B<--reboot>"
 #~ msgstr "B<-r>, B<--reboot>"
 
-#~ msgid "Equivalent to B<--poweroff>, unless B<--halt> is specified\\&."
-#~ msgstr "Äquivalent zu B<--poweroff>, außer B<--halt> is angegeben\\&."
-
-#~ msgid "Do not halt, power-off, reboot, just write wall message\\&."
-#~ msgstr ""
-#~ "Nicht anhalten, ausschalten oder neustarten, nur die Wall-Nachricht "
-#~ "schreiben\\&."
-
-#~ msgid ""
-#~ "Cancel a pending shutdown\\&. This may be used to cancel the effect of an "
-#~ "invocation of B<shutdown> with a time argument that is not \"+0\" or \"now"
-#~ "\"\\&."
-#~ msgstr ""
-#~ "Anhängende Herunterfahraktionen abbrechen\\&. Dies kann dazu verwandt "
-#~ "werden, die Wirkung eines Aufrufs von B<shutdown> mit einem Zeitargument, "
-#~ "das nicht »+0« oder »now« ist, aufzuheben\\&."
+#~ msgid "B<systemd>(1), B<systemctl>(1), B<halt>(8), B<wall>(1)"
+#~ msgstr "B<systemd>(1), B<systemctl>(1), B<halt>(8), B<wall>(1)"
 
 #, fuzzy
-#~| msgid "B<--shadow>"
+#~| msgid "B<--si>"
 #~ msgid "B<--show>"
-#~ msgstr "B<--shadow>"
+#~ msgstr "B<--si>"
 
 #, no-wrap
 #~ msgid "System Administration"
-#~ msgstr "System-Administration"
+#~ msgstr "Administración del sistema"
 
 #~ msgid "B<sulogin> [options] [I<tty>]"
-#~ msgstr "B<sulogin> [Optionen] [I<TTY>]"
+#~ msgstr "B<sulogin> [opciones] [I<tty>]"
 
-#~ msgid ""
-#~ "B<sulogin> is invoked by B<init> when the system goes into single-user "
-#~ "mode."
-#~ msgstr ""
-#~ "B<sulogin> wird von B<init> aufgerufen, wenn das System in den "
-#~ "Einzelbenutzermodus (single user mode) wechselt."
-
+#, fuzzy
+#~| msgid "Give root password for system maintenance"
 #~ msgid ""
 #~ "Give root password for system maintenance (or type Control-D for normal "
 #~ "startup):"
-#~ msgstr ""
-#~ "Administratorpasswort für Wartungszwecke eingeben (oder drücken Sie Strg"
-#~ "+D, um fortzufahren):"
-
-#~ msgid ""
-#~ "If the root account is locked and B<--force> is specified, no password is "
-#~ "required."
-#~ msgstr ""
-#~ "Wenn das Root-Benutzerkonto gesperrt ist und B<--force> angegeben wird, "
-#~ "ist keine Passworteingabe erforderlich."
+#~ msgstr "Introduciendo la clave de root para su mantenimiento"
 
 #, no-wrap
 #~ msgid "B<-e>, B<--force>"
 #~ msgstr "B<-e>, B<--force>"
 
-#~ msgid ""
-#~ "If the default method of obtaining the root password from the system via "
-#~ "B<getpwnam>(3) fails, then examine I</etc/passwd> and I</etc/shadow> to "
-#~ "get the password. If these files are damaged or nonexistent, or when root "
-#~ "account is locked by \\(aq!\\(aq or \\(aq*\\(aq at the begin of the "
-#~ "password then B<sulogin> will B<start a root shell without asking for a "
-#~ "password>."
-#~ msgstr ""
-#~ "untersucht I</etc/passwd> und I</etc/shadow>, um das Passwort zu "
-#~ "ermitteln, falls die Standardmethode zum Ermitteln des Passworts aus dem "
-#~ "System mittels B<getpwnam>(3) fehlschlägt. Wenn diese Dateien beschädigt "
-#~ "oder nicht vorhanden sind oder wenn das Root-Benutzerkonto durch »!« oder "
-#~ "»*« am Anfang des Passworts gesperrt ist, dann startet B<sulogin> eine "
-#~ "B<Root-Shell, ohne nach einem Passwort zu fragen>."
-
 #, no-wrap
 #~ msgid "B<-p>, B<--login-shell>"
 #~ msgstr "B<-p>, B<--login-shell>"
 
-#~ msgid ""
-#~ "Specifying this option causes B<sulogin> to start the shell process as a "
-#~ "login shell."
-#~ msgstr ""
-#~ "bewirkt, dass B<sulogin> den Shell-Prozess als Anmelde-Shell startet."
-
+#, fuzzy
+#~| msgid "B<-t>, B<--timeout >I<seconds>"
 #~ msgid "B<-t>, B<--timeout> I<seconds>"
-#~ msgstr "B<-t>, B<--timeout> I<Sekunden>"
-
-#~ msgid ""
-#~ "Specify the maximum amount of time to wait for user input. By default, "
-#~ "B<sulogin> will wait forever."
-#~ msgstr ""
-#~ "gibt die maximale Zeitspanne an, die auf Benutzereingaben gewartet werden "
-#~ "soll. Standardmäßig wartet B<sulogin> unbegrenzte Zeit."
-
-#~ msgid ""
-#~ "B<sulogin> was written by Miquel van Smoorenburg for sysvinit and later "
-#~ "ported to util-linux by Dave Reisner and Karel Zak."
-#~ msgstr ""
-#~ "B<sulogin> wurde für SysVinit von Miquel van Smoorenburg geschrieben und "
-#~ "später von Dave Reisner und Karel Zak auf util-linux portiert."
-
-#~ msgid ""
-#~ "The B<sulogin> command is part of the util-linux package which can be "
-#~ "downloaded from"
-#~ msgstr ""
-#~ "Der Befehl B<sulogin> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
-
-#~ msgid ""
-#~ "If the root account is locked and --force is specified, no password is "
-#~ "required."
-#~ msgstr ""
-#~ "Wenn das Root-Benutzerkonto gesperrt ist und --force angegeben wird, ist "
-#~ "keine Passworteingabe erforderlich."
-
-#~ msgid ""
-#~ "If the default method of obtaining the root password from the system via "
-#~ "B<getpwnam>(3)  fails, then examine I</etc/passwd> and I</etc/shadow> to "
-#~ "get the password.  If these files are damaged or nonexistent, or when "
-#~ "root account is locked by '!' or '*' at the begin of the password then "
-#~ "B<sulogin> will B<start a root shell without asking for a password>."
-#~ msgstr ""
-#~ "untersucht I</etc/passwd> und I</etc/shadow>, um das Passwort zu "
-#~ "ermitteln, falls die Standardmethode zum Ermitteln des Passworts aus dem "
-#~ "System mittels B<getpwnam>(3) fehlschlägt. Wenn diese Dateien beschädigt "
-#~ "oder nicht vorhanden sind oder wenn das Root-Benutzerkonto durch »!« oder "
-#~ "»*« am Anfang des Passworts gesperrt ist, dann startet B<sulogin> eine "
-#~ "B<Root-Shell, ohne nach einem Passwort zu fragen>."
+#~ msgstr "B<-t>, B<--timeout >I<segundos>"
 
 #, no-wrap
 #~ msgid "B<-t>, B<--timeout >I<seconds>"
-#~ msgstr "B<-t>, B<--timeout >I<Sekunden>"
+#~ msgstr "B<-t>, B<--timeout >I<segundos>"
 
-#~ msgid ""
-#~ "Specify the maximum amount of time to wait for user input.  By default, "
-#~ "B<sulogin> will wait forever."
-#~ msgstr ""
-#~ "gibt die maximale Zeitspanne an, die auf Benutzereingaben gewartet werden "
-#~ "soll. Standardmäßig wartet B<sulogin> unbegrenzte Zeit."
-
-#~ msgid ""
-#~ "The sulogin command is part of the util-linux package and is available "
-#~ "from E<.UR https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-"
-#~ "linux/> Linux Kernel Archive E<.UE .>"
-#~ msgstr ""
-#~ "Der Befehl »sulogin« ist Teil des Pakets util-linux, welches aus dem E<."
-#~ "UR https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> "
-#~ "Linux Kernel-Archiv E<.UE .> heruntergeladen werden kann."
-
-#, no-wrap
-#~ msgid "telinit"
-#~ msgstr "telinit"
-
-#~ msgid "telinit - Change SysV runlevel"
-#~ msgstr "telinit - SysV-Runlevel ändern"
-
-#~ msgid "B<telinit >B<[OPTIONS...]>B< >B<{COMMAND}>"
-#~ msgstr "B<telinit >B<[OPTIONEN…]>B< >B<{BEFEHL}>"
-
-#~ msgid ""
-#~ "B<telinit> may be used to change the SysV system runlevel\\&. Since the "
-#~ "concept of SysV runlevels is obsolete the runlevel requests will be "
-#~ "transparently translated into systemd unit activation requests\\&."
-#~ msgstr ""
-#~ "B<telinit> kann zum Ändern des SysV-System-Runlevels verwandt werden\\&. "
-#~ "Da das Konzept der SysV-Runlevel veraltet ist, wird die Runlevel-Anfrage "
-#~ "transparent in eine Systemd-Unit-Aktivierungsanfrage übersetzt\\&."
-
-#~ msgid "Do not send wall message before reboot/halt/power-off\\&."
-#~ msgstr ""
-#~ "Es werden keine Wall-Nachrichten vor dem Neustart/Anhalten/Ausschalten "
-#~ "versandt\\&."
-
-#~ msgid "The following commands are understood:"
-#~ msgstr "Die folgenden Befehle werden verstanden:"
-
-#~ msgid ""
-#~ "Power-off the machine\\&. This is translated into an activation request "
-#~ "for poweroff\\&.target and is equivalent to B<systemctl poweroff>\\&."
-#~ msgstr ""
-#~ "Schaltet die Maschine aus\\&. Dies wird in eine Aktivierungsanfrage für "
-#~ "poweroff\\&.target übersetzt und ist äquivalent zu B<systemctl poweroff>"
-#~ "\\&."
-
-#~ msgid "B<6>"
-#~ msgstr "B<6>"
-
-#~ msgid ""
-#~ "Reboot the machine\\&. This is translated into an activation request for "
-#~ "reboot\\&.target and is equivalent to B<systemctl reboot>\\&."
-#~ msgstr ""
-#~ "Startet die Maschine neu\\&. Diese wird in eine Aktivierungsanfrage für "
-#~ "reboot\\&.target übersetzt und ist äquivalent zu B<systemctl reboot>\\&."
-
-#~ msgid "B<2>, B<3>, B<4>, B<5>"
-#~ msgstr "B<2>, B<3>, B<4>, B<5>"
-
-#~ msgid ""
-#~ "Change the SysV runlevel\\&. This is translated into an activation "
-#~ "request for runlevel2\\&.target, runlevel3\\&.target, \\&... and is "
-#~ "equivalent to B<systemctl isolate runlevel2\\&.target>, B<systemctl "
-#~ "isolate runlevel3\\&.target>, \\&..."
-#~ msgstr ""
-#~ "Ändert den SysV-Runlevel\\&. Diese wird in eine Aktivierungsanfrage für "
-#~ "runlevel2\\&.target, runlevel3\\&.target, … übersetzt und ist äquivalent "
-#~ "zu B<systemctl isolate runlevel2\\&.target>, B<systemctl isolate "
-#~ "runlevel3\\&.target>, …"
-
-#~ msgid "B<1>, B<s>, B<S>"
-#~ msgstr "B<1>, B<s>, B<S>"
-
-#~ msgid ""
-#~ "Change into system rescue mode\\&. This is translated into an activation "
-#~ "request for rescue\\&.target and is equivalent to B<systemctl rescue>\\&."
-#~ msgstr ""
-#~ "Wechselt in den Systemrettungsmodus\\&. Diese wird in eine "
-#~ "Aktivierungsanfrage für rescue\\&.target übersetzt und ist äquivalent zu "
-#~ "B<systemctl rescue>\\&."
-
-#~ msgid "B<q>, B<Q>"
-#~ msgstr "B<q>, B<Q>"
-
-#~ msgid ""
-#~ "Reload daemon configuration\\&. This is equivalent to B<systemctl daemon-"
-#~ "reload>\\&."
-#~ msgstr ""
-#~ "Lädt die Daemon-Konfiguration neu\\&. Diese ist äquivalent zu B<systemctl "
-#~ "daemon-reload>\\&."
-
-#~ msgid "B<u>, B<U>"
-#~ msgstr "B<u>, B<U>"
-
-#~ msgid ""
-#~ "Serialize state, reexecute daemon and deserialize state again\\&. This is "
-#~ "equivalent to B<systemctl daemon-reexec>\\&."
-#~ msgstr ""
-#~ "Serialisiert den Zustand, führt den Daemon neu aus und deserialisiert den "
-#~ "Zustand wieder\\&. Diese ist äquivalent zu B<systemctl daemon-reexec>\\&."
-
-#~ msgid ""
-#~ "This is a legacy command available for compatibility only\\&. It should "
-#~ "not be used anymore, as the concept of runlevels is obsolete\\&."
-#~ msgstr ""
-#~ "Dies ist ein veralteter und nur aus Kompatibilitätsgründen verfügbarer "
-#~ "Befehl\\&. Er sollte nicht mehr verwandt werden, da das Konzept der "
-#~ "Runlevel veraltet ist\\&."
-
-#~ msgid "B<-f>, B<--follow>"
-#~ msgstr "B<-f>, B<--follow>"
-
-#~ msgid "Write command output to I<file> instead of standard output."
-#~ msgstr "schreibt das Ergebnis in I<Datei> statt in die Standardausgabe."
-
-#~ msgid "B<-r>, B<--reverse>"
-#~ msgstr "B<-r>, B<--reverse>"
-
-#~ msgid ""
-#~ "B<utmpdump> can be useful in cases of corrupted utmp or wtmp entries. It "
-#~ "can dump out utmp/wtmp to an ASCII file, which can then be edited to "
-#~ "remove bogus entries, and reintegrated using:"
-#~ msgstr ""
-#~ "B<utmpdump> kann im Falle beschädigter UTMP- oder WTMP-Einträge hilfreich "
-#~ "sein. Es kann die Daten in eine ASCII-Datei ausgeben, die Sie bearbeiten "
-#~ "können, um die falschen Einträge zu entfernen. Folgender Befehl führt "
-#~ "dies aus:"
-
-#~ msgid ""
-#~ "Only the binary version of the B<utmp>(5) is standardised. Textual dumps "
-#~ "may become incompatible in future."
-#~ msgstr ""
-#~ "Nur die binäre Version von B<utmp>(5) ist standardisiert. Auszüge in "
-#~ "Textform können in der Zukunft inkompatibel werden."
-
-#~ msgid ""
-#~ "The version 2.28 was the last one that printed text output using "
-#~ "B<ctime>(3) timestamp format. Newer dumps use millisecond precision "
-#~ "ISO-8601 timestamp format in UTC-0 timezone. Conversion from former "
-#~ "timestamp format can be made to binary, although attempt to do so can "
-#~ "lead the timestamps to drift amount of timezone offset."
-#~ msgstr ""
-#~ "Die Version 2.28 war die letzte, die die Textausgabe mittels des "
-#~ "Zeitstempelformats von B<ctime>(3) ausgab. Neuere Auszüge verwenden "
-#~ "Millisekundengenauigkeit im Zeitstempelformat von ISO-8601 in der UTC-0-"
-#~ "Zeitzone. Eine Umwandlung vom früheren Zeitstempelformat kann in das "
-#~ "binäre erfolgen. Allerdings können solche Versuche dazu führen, dass der "
-#~ "Zeitstempel aufgrund von Zeitzonen-Versätzen abweicht."
-
-#~ msgid ""
-#~ "The B<utmpdump> command is part of the util-linux package which can be "
-#~ "downloaded from"
-#~ msgstr ""
-#~ "Der Befehl B<utmpdump> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
-
-#~ msgid "B<utmpdump> [options] [I<filename>]"
-#~ msgstr "B<utmpdump> [Optionen] [I<Dateiname>]"
-
-#~ msgid ""
-#~ "B<utmpdump> is a simple program to dump UTMP and WTMP files in raw "
-#~ "format, so they can be examined.  B<utmpdump> reads from stdin unless a "
-#~ "I<filename> is passed."
-#~ msgstr ""
-#~ "B<utmpdump> ist ein einfaches Programm zum Ausgeben von UTMP- und WTMP-"
-#~ "Dateien im Rohformat, so dass diese untersucht werden können. B<utmpdump> "
-#~ "liest aus der Standardeingabe, wenn kein I<Dateiname> übergeben wird."
-
-#, no-wrap
-#~ msgid "B<-f>,B< --follow>"
-#~ msgstr "B<-f>,B< --follow>"
-
-#, no-wrap
-#~ msgid "B<-o>,B< --output >I<file>"
-#~ msgstr "B<-o>,B< --output >I<Datei>"
-
-#, no-wrap
-#~ msgid "B<-r>,B< --reverse>"
-#~ msgstr "B<-r>,B< --reverse>"
-
-#~ msgid ""
-#~ "Only the binary version of the B<utmp>(5)  is standardised.  Textual "
-#~ "dumps may become incompatible in future."
-#~ msgstr ""
-#~ "Nur die binäre Version von B<utmp>(5) ist standardisiert. Auszüge in "
-#~ "Textform können in der Zukunft inkompatibel werden."
-
-#~ msgid ""
-#~ "The version 2.28 was the last one that printed text output using "
-#~ "B<ctime>(3)  timestamp format.  Newer dumps use millisecond precision "
-#~ "ISO-8601 timestamp format in UTC-0 timezone.  Conversion from former "
-#~ "timestamp format can be made to binary, although attempt to do so can "
-#~ "lead the timestamps to drift amount of timezone offset."
-#~ msgstr ""
-#~ "Die Version 2.28 war die letzte, die die Textausgabe mittels des "
-#~ "Zeitstempelformats von B<ctime>(3) ausgab. Neuere Auszüge verwenden "
-#~ "Millisekundengenauigkeit im Zeitstempelformat von ISO-8601 in der UTC-0-"
-#~ "Zeitzone. Eine Umwandlung vom früheren Zeitstempelformat kann in das "
-#~ "binäre erfolgen. Allerdings können solche Versuche dazu führen, dass der "
-#~ "Zeitstempel aufgrund von Zeitzonen-Versätzen abweicht."
-
-#~ msgid ""
-#~ "You may B<not> use the B<-r> option, as the format for the utmp/wtmp "
-#~ "files strongly depends on the input format.  This tool was B<not> written "
-#~ "for normal use, but for debugging only."
-#~ msgstr ""
-#~ "Sie dürfen die Option B<-r> B<nicht> verwenden, da das Format der utmp/"
-#~ "wtmp-Dateien stark vom Eingabeformat abhängt. Dieses Werkzeug wurde "
-#~ "B<nicht> für normale Verwendung geschrieben, sondern lediglich für "
-#~ "Debugging-Zwecke."
-
-#~ msgid ""
-#~ "The utmpdump command is part of the util-linux package and is available "
-#~ "from E<.UR https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-"
-#~ "linux/> Linux Kernel Archive E<.UE .>"
-#~ msgstr ""
-#~ "Der Befehl utmpdump ist Teil des Pakets util-linux, welches aus dem E<.UR "
-#~ "https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> Linux "
-#~ "Kernel-Archiv E<.UE .> heruntergeladen werden kann."
-
-#~ msgid ""
-#~ "B<wall> [B<-n>] [B<-t> I<timeout>] [B<-g> I<group>] [I<message> | I<file>]"
-#~ msgstr ""
-#~ "B<wall> [B<-n>] [B<-t> I<Dauer>] [B<-g> I<Gruppe>] [I<Nachricht> | "
-#~ "I<Datei>]"
-
-#~ msgid ""
-#~ "B<wall> displays a I<message>, or the contents of a I<file>, or otherwise "
-#~ "its standard input, on the terminals of all currently logged in users. "
-#~ "The command will wrap lines that are longer than 79 characters. Short "
-#~ "lines are whitespace padded to have 79 characters. The command will "
-#~ "always put a carriage return and new line at the end of each line."
-#~ msgstr ""
-#~ "B<wall> zeigt auf den Terminals aller aktuell angemeldeten Benutzer eine "
-#~ "I<Nachricht> oder den Inhalt einer I<Datei> an, oder ansonsten dessen "
-#~ "Standardeingabe. Der Befehl bricht Zeilen um, die länger als 79 Zeichen "
-#~ "sind. Kurze Zeilen werden mit Leerraum bis zum Erreichen von 79 Zeichen "
-#~ "aufgefüllt. Der Befehl setzt immer einen Wagenrücklauf und einen "
-#~ "Zeilenvorschub ans Ende jeder Zeile."
-
-#~ msgid ""
-#~ "Only the superuser can write on the terminals of users who have chosen to "
-#~ "deny messages or are using a program which automatically denies messages."
-#~ msgstr ""
-#~ "Nur der Superuser kann auf Terminals jener Benutzer schreiben, die "
-#~ "Nachrichten abweisen oder ein Programm verwenden, das Nachrichten "
-#~ "automatisch abweist."
-
-#~ msgid ""
-#~ "Reading from a I<file> is refused when the invoker is not superuser and "
-#~ "the program is set-user-ID or set-group-ID."
-#~ msgstr ""
-#~ "Das Lesen aus einer I<Datei> wird verweigert, wenn der Aufrufende nicht "
-#~ "der Superuser ist und das Programm »set-user-ID« oder »set-group-ID« "
-#~ "gesetzt hat."
-
+#, fuzzy
+#~| msgid "B<-n>,B< --nobanner>"
 #~ msgid "B<-n>, B<--nobanner>"
-#~ msgstr "B<-n>, B<--nobanner>"
+#~ msgstr "B<-n>,B< --nobanner>"
 
-#~ msgid "Suppress the banner."
-#~ msgstr "unterdrückt das Banner."
-
+#, fuzzy
+#~| msgid "B<-f>, B<--silent>, B<--quiet>"
 #~ msgid "B<-t>, B<--timeout> I<timeout>"
-#~ msgstr "B<-t>, B<--timeout> I<Dauer>"
+#~ msgstr "B<-f>, B<--silent>, B<--quiet>"
 
-#~ msgid ""
-#~ "Abandon the write attempt to the terminals after I<timeout> seconds. This "
-#~ "I<timeout> must be a positive integer. The default value is 300 seconds, "
-#~ "which is a legacy from the time when people ran terminals over modem "
-#~ "lines."
-#~ msgstr ""
-#~ "gibt den Schreibversuch nach der in Sekunden angegebenen I<Dauer> auf. "
-#~ "Diese I<Dauer> muss eine positive Ganzzahl sein. Der Standardwert ist 300 "
-#~ "Sekunden, der aus der Zeit herrührt, als die Benutzer Terminals über "
-#~ "Modemleitungen bedient haben."
-
+#, fuzzy
+#~| msgid "B<-g>,B< --group >I<group>"
 #~ msgid "B<-g>, B<--group> I<group>"
-#~ msgstr "B<-g>, B<--group> I<Gruppe>"
+#~ msgstr "B<-g>,B< --group >I<grupo>"
 
-#~ msgid ""
-#~ "Limit printing message to members of group defined as a I<group> "
-#~ "argument. The argument can be group name or GID."
-#~ msgstr ""
-#~ "begrenzt die Ausgabe der Nachricht auf die Mitglieder der angegebenen "
-#~ "I<Gruppe>. Das Argument kann ein Gruppenname oder eine GID sein."
-
-#~ msgid ""
-#~ "Some sessions, such as B<wdm>(1x), that have in the beginning of "
-#~ "B<utmp>(5) ut_type data a \\(aq:\\(aq character will not get the message "
-#~ "from B<wall>. This is done to avoid write errors."
-#~ msgstr ""
-#~ "Einige Sitzungen, beispielsweise B<wdm>(1x), die am Anfang der ut_type-"
-#~ "Daten in B<utmp>(5) einen Doppelpunkt gesetzt haben, empfangen keine "
-#~ "Nachricht von B<wall>. Dies geschieht, um Schreibfehler zu vermeiden."
-
+#, fuzzy
+#~| msgid "A E<.Nm> command appeared in E<.At v7>."
 #~ msgid "A B<wall> command appeared in Version 7 AT&T UNIX."
-#~ msgstr "Ein B<wall>-Befehl erschien in Version 7 von AT&T UNIX."
-
-#~ msgid "B<mesg>(1), B<talk>(1), B<write>(1), B<shutdown>(8)"
-#~ msgstr "B<mesg>(1), B<talk>(1), B<write>(1), B<shutdown>(8)"
-
-#~ msgid ""
-#~ "The B<wall> command is part of the util-linux package which can be "
-#~ "downloaded from"
-#~ msgstr ""
-#~ "Der Befehl B<wall> ist Teil des Pakets util-linux, welches "
-#~ "heruntergeladen werden kann von:"
+#~ msgstr "La orden E<.Nm> apareció en E<.At v7>."
 
 #, no-wrap
 #~ msgid "August 2013"
-#~ msgstr "August 2013"
-
-#~ msgid ""
-#~ "B<wall> displays a I<message>, or the contents of a I<file>, or otherwise "
-#~ "its standard input, on the terminals of all currently logged in users.  "
-#~ "The command will wrap lines that are longer than 79 characters.  Short "
-#~ "lines are whitespace padded to have 79 characters.  The command will "
-#~ "always put a carriage return and new line at the end of each line."
-#~ msgstr ""
-#~ "B<wall> zeigt auf den Terminals aller aktuell angemeldeten Benutzer eine "
-#~ "I<Nachricht> oder den Inhalt einer I<Datei> an, oder ansonsten dessen "
-#~ "Standardeingabe. Der Befehl bricht Zeilen um, die länger als 79 Zeichen "
-#~ "sind. Kurze Zeilen werden mit Leerraum bis zum Erreichen von 79 Zeichen "
-#~ "aufgefüllt. Der Befehl setzt immer einen Wagenrücklauf und einen "
-#~ "Zeilenvorschub ans Ende jeder Zeile."
+#~ msgstr "Agosto 2013"
 
 #, no-wrap
 #~ msgid "B<-n>,B< --nobanner>"
 #~ msgstr "B<-n>,B< --nobanner>"
 
 #, no-wrap
-#~ msgid "B<-t>,B< --timeout >I<timeout>"
-#~ msgstr "B<-t>,B< --timeout >I<Dauer>"
-
-#~ msgid ""
-#~ "Abandon the write attempt to the terminals after I<timeout> seconds.  "
-#~ "This I<timeout> must be a positive integer.  The default value is 300 "
-#~ "seconds, which is a legacy from the time when people ran terminals over "
-#~ "modem lines."
-#~ msgstr ""
-#~ "gibt den Schreibversuch nach der in Sekunden angegebenen I<Dauer> auf. "
-#~ "Diese I<Dauer> muss eine positive Ganzzahl sein. Der Standardwert ist 300 "
-#~ "Sekunden, der aus der Zeit herrührt, als die Benutzer Terminals über "
-#~ "Modemleitungen bedient haben."
-
-#, no-wrap
 #~ msgid "B<-g>,B< --group >I<group>"
-#~ msgstr "B<-g>,B< --group >I<Gruppe>"
-
-#~ msgid ""
-#~ "Limit printing message to members of group defined as a I<group> "
-#~ "argument.  The argument can be group name or GID."
-#~ msgstr ""
-#~ "begrenzt die Ausgabe der Nachricht auf die Mitglieder der angegebenen "
-#~ "I<Gruppe>. Das Argument kann ein Gruppenname oder eine GID sein."
-
-#~ msgid ""
-#~ "Some sessions, such as wdm, that have in the beginning of B<utmp>(5)  "
-#~ "ut_type data a ':' character will not get the message from B<wall>.  This "
-#~ "is done to avoid write errors."
-#~ msgstr ""
-#~ "Einige Sitzungen, beispielsweise wdm, die am Anfang der ut_type-Daten in "
-#~ "B<utmp>(5) einen Doppelpunkt gesetzt haben, empfangen keine Nachricht von "
-#~ "B<wall>. Dies geschieht, um Schreibfehler zu vermeiden."
-
-#~ msgid ""
-#~ "The wall command is part of the util-linux package and is available from "
-#~ "E<.UR https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> "
-#~ "Linux Kernel Archive E<.UE .>"
-#~ msgstr ""
-#~ "Der Befehl »wall« ist Teil des Pakets util-linux, welches aus dem E<.UR "
-#~ "https://\\:www.kernel.org\\:/pub\\:/linux\\:/utils\\:/util-linux/> Linux "
-#~ "Kernel-Archiv E<.UE> heruntergeladen werden kann."
+#~ msgstr "B<-g>,B< --group >I<grupo>"

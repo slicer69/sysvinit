@@ -4,6 +4,8 @@
     * Added translation framework (po4a) from Mario Blttermann.
     * Added Makefile for man/ directory. Will handle translations
       and substitutions.
+    * Applied new translations for multiple languages from Mario Blattermann.
+
 
 sysvinit (3.01) released; urgency=low
     * Default to showing processes in the uninterruptable state (D).

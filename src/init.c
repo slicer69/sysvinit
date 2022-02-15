@@ -1097,10 +1097,12 @@ pid_t spawn(CHILD *ch, int *res)
 			break;
 		}
 	}
+        if (proc[0] == '@') proc++;    /*skip leading backslash */
 	args[6] = proc;
 	args[7] = NULL;
-  } else if (strpbrk(proc, "~`!$^&*()=|\\{}[];\"'<>?")) {
+  } else if ( (strpbrk(proc, "~`!$^&*()=|\\{}[];\"'<>?")) && (proc[0] != '@') ){
   /* See if we need to fire off a shell for this command */
+  /* Do not launch shell if first character in proc string is an at symbol  */
   	/* Give command line to shell */
   	args[1] = SHELL;
   	args[2] = "-c";
@@ -1111,6 +1113,7 @@ pid_t spawn(CHILD *ch, int *res)
   } else {
 	/* Split up command line arguments */
 	buf[0] = 0;
+        if (proc[0] == '@') proc++;
   	strncat(buf, proc, sizeof(buf) - 1);
   	ptr = buf;
   	for(f = 1; f < 15; f++) {
@@ -1312,7 +1315,7 @@ pid_t spawn(CHILD *ch, int *res)
 
 	if (pid == -1) {
 		initlog(L_VB, "cannot fork, retry..");
-		do_msleep(SHORT_SLEEP);
+	do_msleep(SHORT_SLEEP);
 		continue;
 	}
 	return(pid);

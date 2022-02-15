@@ -17,7 +17,7 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH INITTAB 5 "Dec 4, 2001" "sysvinit @VERSION@" "File Formats"
+.TH INITTAB 5 "Dec 4, 2001" "sysvinit " "File Formats"
 .\"}}}
 .\"{{{  Name
 .SH NAME
@@ -67,6 +67,26 @@ a `+' character,
 will not do utmp and wtmp accounting for that process.  This is needed for 
 gettys that insist on doing their own utmp/wtmp housekeeping.  This is also 
 a historic bug. The length of this field is limited to 127 characters.
+
+Please note that including certain characters in the process field will result
+in
+.B init
+attempting to launch a shell to interpret the command contained in the process field. 
+The characters which will trigger a shell are: 
+.B ~`!$^&*()=|\{}[];\"'<>?
+
+On systems which do not have a shell to be launched or which do not wish to
+use a shell to interpret the process field, the process field can be prefixed
+with the @ symbol. The @ will be ignored and everything followed will be treated
+as a command to be launched, literally, by the
+.B init
+service.
+
+In cases where both a + and @ sign are to be used (to turn off logging and shell
+interpretation), place the + sign before the @ symbol. Both flags will be handled
+and then everything following the @ will be handled by
+.B init
+
 .\"}}}
 .PP
 The \fIrunlevels\fP field may contain multiple characters for different

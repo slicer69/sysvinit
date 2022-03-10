@@ -43,6 +43,7 @@
 #include <fcntl.h>
 #ifdef __linux__
 #include <pty.h>
+#include <sys/sysmacros.h>
 #endif
 
 #ifdef __FreeBSD__
@@ -107,12 +108,26 @@ void handler(int sig)
 
 
 /*
+ *	chdir with error message on fail.
+ */
+static int chdir_int(const char *path)
+{
+	int ret;
+
+	if ((ret = chdir(path)) != 0) {
+		const char *msgprefix = "bootlogd: %s";
+		char msg[PATH_MAX + sizeof(msgprefix)];
+		snprintf(msg, sizeof(msg), msgprefix, path);
+ 	        perror(msg);
+	}
+
+	return ret;
+}
+ 
+
+/*
  *	Scan /dev and find the device name.
  */
-/*
-This function does not appear to be called anymore. Commenting it
-out for now, can probably be removed entirely in the future.
-
 static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 {
 	DIR		*dir;
@@ -121,13 +136,8 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 	int		r = -1;
 	char *olddir = getcwd(NULL, 0);
 
-	if (chdir(startdir) < 0 || (dir = opendir(".")) == NULL) {
-		int msglen = strlen(startdir) + 11;
-		char *msg = malloc(msglen);
-		snprintf(msg, msglen, "bootlogd: %s", startdir);
-		perror(msg);
-		free(msg);
-		chdir(olddir);
+	if (chdir_int(startdir) < 0 || (dir = opendir(".")) == NULL) {
+		chdir_int(olddir);
 		return -1;
 	}
 	while ((ent = readdir(dir)) != NULL) {
@@ -142,7 +152,7 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 			free(path);
 			if (0 == r) { 
 				closedir(dir);
-				chdir(olddir);
+				chdir_int(olddir);
 				return 0;
 			}
 			continue;
@@ -153,22 +163,21 @@ static int findtty(char *res, const char *startdir, int rlen, dev_t dev)
 			if ( (int) (strlen(ent->d_name) + strlen(startdir) + 1) >= rlen) {
 				fprintf(stderr, "bootlogd: console device name too long\n");
 				closedir(dir);
-				chdir(olddir);
+				chdir_int(olddir);
 				return -1;
 			} else {
 				snprintf(res, rlen, "%s/%s", startdir, ent->d_name);
 				closedir(dir);
-				chdir(olddir);
+				chdir_int(olddir);
 				return 0;
 			}
 		}
 	}
 	closedir(dir);
 
-	chdir(olddir);
+	chdir_int(olddir);
 	return r;
 }
-*/
 
 
 
@@ -272,7 +281,7 @@ int isconsole(char *s, char *res, int rlen)
 int consolenames(struct real_cons *cons, int max_consoles)
 {
 #ifdef TIOCGDEV
-	/* This appears to be unused.  unsigned int	kdev; */
+	unsigned int	kdev;
 #endif
 	struct stat	st, st2;
 	char		buf[KERNEL_COMMAND_LENGTH];
@@ -341,6 +350,32 @@ int consolenames(struct real_cons *cons, int max_consoles)
 		}
 dontuse:
 		p--;
+	}
+
+	if (num_consoles > 0) return num_consoles;
+#endif
+	fstat(0, &st);
+	if (major(st.st_rdev) != 5 || minor(st.st_rdev) != 1) {
+		/*
+		 *	Old kernel, can find real device easily.
+		 */
+		int r = findtty(cons[num_consoles].name, "/dev", 
+                                sizeof(cons[num_consoles].name), st.st_rdev);
+		if (!r)
+			num_consoles++;
+	}
+
+	if (num_consoles > 0) return num_consoles;
+
+#ifdef TIOCGDEV
+# ifndef  ENOIOCTLCMD
+#  define ENOIOCTLCMD	515
+# endif
+	if (ioctl(0, TIOCGDEV, &kdev) == 0) {
+		int r = findtty(cons[num_consoles].name, "/dev", 
+                                sizeof(cons[num_consoles].name), (dev_t)kdev);
+		if (!r)
+			num_consoles++;
 	}
 
 	if (num_consoles > 0) return num_consoles;

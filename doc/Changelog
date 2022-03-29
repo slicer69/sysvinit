@@ -1,3 +1,7 @@
+sysvinit (3.03) unreleased; urgency=low
+    * Fixed formatting in init.8 man page.
+      Patch provided by Mark Hindley.
+
 sysvinit (3.02) released; urgency=low
     * Added q and Q flags to synopsis in shutdown manual page.
     * Applied fixes for markup and spacing in manual pages.

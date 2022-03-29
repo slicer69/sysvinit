@@ -15,20 +15,20 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH MOUNTPOINT 1 "Mar 15, 2004" "" "Linux System Administrator's Manual"
+.TH MOUNTPOINT 1 "Mar 15, 2004" "sysvinit " "User Commands"
 .SH NAME
 mountpoint \- see if a directory is a mountpoint
 .SH SYNOPSIS
-.B /bin/mountpoint
+.B mountpoint
 .RB [ \-q ]
 .RB [ \-d ]
 .I /path/to/directory
 .br
-.B /bin/mountpoint
+.B mountpoint
 .B \-x
 .I /dev/device
 .SH DESCRIPTION
-\fBMountpoint\fP checks if the directory is a mountpoint.
+\fBmountpoint\fP checks if the directory is a mountpoint.
 
 .SH OPTIONS
 .IP \fB\-q\fP
@@ -36,7 +36,7 @@ Be quiet - don't print anything.
 .IP \fB\-d\fP
 Print major/minor device number of the filesystem on stdout.
 .IP \fB\-p\fP
-Check Linux's /proc/mounts file to try to detect circular mount points.
+Check Linux's \fI/proc/mounts\fP file to try to detect circular mount points.
 .IP \fB\-x\fP
 Print major/minor device number of the blockdevice on stdout.
 .SH EXIT STATUS
@@ -46,7 +46,7 @@ Symbolic links are not followed, except when the \fB-x\fP option is
 used. To force following symlinks, add a trailing slash to the
 path of the directory.
 .PP
-The name of the command is misleading when the -x option is used,
+The name of the command is misleading when the \fB-x\fP option is used,
 but the option is useful for comparing if a directory and a device
 match up, and there is no other command that can print the info easily.
 .PP
@@ -56,14 +56,16 @@ For example, if /a/b/c/d is a mount point for /a/b then mountpoint will report
 its new mount point share the same inode and device number.
 .PP
 The circular mount problem can be worked around on Linux systems by using 
-the -p flag to check the /proc/mounts file for references to the circular mount bind.
-When using the -p flag, make sure to specify the full path (ie /home/user/mp and
-not just mp). Also, mountpoint may still fail if there are spaces in
-the mount point's path, even when using the -p flag because of the way
-/proc/mounts mangles the spaces in the path name. Of course, if the
+the\fB-p\fP flag to check the \fI/proc/mounts\fP file for references to the circular mount bind.
+When using the \fB-p\fP flag, make sure to specify the full path (ie \fI/home/user/mp\fP and
+not just \fImp\fP). Also, \fBmountpoint\fP may still fail if there are spaces in
+the mount point's path, even when using the \fB-p\fP flag because of the way
+\fB/proc/mounts\fP mangles the spaces in the path name. Of course, if the
 admin is using circular mount points with spaces in the name, there
 are bigger concerns.
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .SH "SEE ALSO"
 .BR stat (1)

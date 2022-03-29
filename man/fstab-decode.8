@@ -17,7 +17,7 @@
 .\" 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 .\"
 .\" Author: Miloslav Trmac <mitr@redhat.com>
-.TH fstab-decode 8 "May 2006"
+.TH FSTAB-DECODE 8 "May 2006" "sysvinit " "Linux System Administrator's Manual"
 
 .SH NAME
 fstab-decode \- run a command with fstab-encoded arguments
@@ -30,11 +30,9 @@ fstab-decode \- run a command with fstab-encoded arguments
 decodes escapes (such as newline characters and other whitespace) 
 in the specified \fIARGUMENT\fRs and uses them to run \fICOMMAND\fR.
 The argument escaping uses the same rules as path escaping in
-\fB/etc/fstab\fR,
-.B /etc/mtab
-and \fB/proc/mtab\fR.
+\fI/etc/fstab\fR, \fI/etc/mtab\fR and \fI/proc/mtab\fR.
 
-In essence fstab-decode can be used anytime we want to pass multiple
+In essence \fBfstab-decode\fR can be used anytime we want to pass multiple
 parameters to a command as a list of command line arguments. It turns output
 like this:
 
@@ -47,7 +45,7 @@ Into one long list of parameters, "/root /mnt/remote-disk /home". This
 can be useful when trying to work with multiple filesystems at once. For
 instance, we can use it to unmount multiple NFS shares. This program also
 removes whitespace and other characters which might cause programs such
-as mount or umount to fail.
+as \fBmount\fR(8) or \fBumount\fR(8) to fail.
 
 .SH EXIT STATUS
 .B fstab-decode
@@ -57,13 +55,12 @@ can't be run.
 Otherwise it exits with the status returned by \fICOMMAND\fR.
 
 .SH EXAMPLES
+The following example reads \fIfstab\fR, finds all instances of VFAT filesystems
+and prints their mount points (argument 2 in the \fIfstab\fR file).
+\fBfstab-decode\fR then runs the specified program, \fBumount\fR(8), and passes
+it the list of VFAT mountpoints. This unmounts all VFAT partitions.
+
 .nf
-The following example reads fstab, finds all instances of VFAT filesystems and
-prints their mount points (argument 2 in the fstab file). fstab-decode then runs 
-the specified program, umount, and passes it the list of VFAT mountpoints. 
-This unmounts all VFAT partitions.
-
-
 .B fstab-decode umount $(awk \[aq]$3 == \[dq]vfat\[dq] { print $2 }\[aq] /etc/fstab)
 .fi
 

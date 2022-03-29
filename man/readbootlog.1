@@ -17,7 +17,7 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH READBOOTLOG 1 "NOV 12, 2018" "" "Linux System Administrator's Manual"
+.TH READBOOTLOG 1 "NOV 12, 2018" "sysvinit " "User Commands"
 .\"}}}
 .\"{{{  Name
 .SH NAME
@@ -33,7 +33,7 @@ readbootlog \- show contents of the boot log, stripping away control characters
 .\"{{{  Description
 .SH DESCRIPTION
 .B readbootlog
-is a tool for reading the boot log (by default /var/log/boot). The program
+is a tool for reading the boot log (by default \fI/var/log/boot\fP). The program
 strips away control characters and non-human readable contents from the log
 file. Output is dumped to the terminal where it can be piped or redirected
 to a file.
@@ -41,7 +41,7 @@ to a file.
 .\"{{{  Options
 .SH OPTIONS
 .IP "\fB\-f\fP \fIfile\fP"
-Tells \fBreadbootlog\fP to use a specific file instead of \fB/var/log/boot\fP.
+Tells \fBreadbootlog\fP to use a specific file instead of \fI/var/log/boot\fP.
 .IP \fB\-h\fP
 Displays a brief help message.
 .\"{{{  Files
@@ -50,7 +50,9 @@ Displays a brief help message.
 .\"}}}
 .\"{{{  Author
 .SH AUTHOR
-Jesse Smith <jsmith@resonatingmedia.com>
+.MT jsmith@\:resonatingmedia\:.com
+Jesse Smith
+.ME
 .\"}}}
 .\"{{{  See also
 .SH "SEE ALSO"

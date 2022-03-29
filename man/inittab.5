@@ -17,7 +17,7 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH INITTAB 5 "Dec 4, 2001" "" "Linux System Administrator's Manual"
+.TH INITTAB 5 "Dec 4, 2001" "sysvinit " "File Formats"
 .\"}}}
 .\"{{{  Name
 .SH NAME
@@ -28,7 +28,7 @@ process
 .SH DESCRIPTION
 The \fBinittab\fP file describes which processes are started at bootup and
 during normal operation (e.g.\& /etc/init.d/boot, /etc/init.d/rc, gettys...).
-.BR Init (8)
+.BR init (8)
 distinguishes multiple \fIrunlevels\fP, each of which can have its own set of
 processes that are started.  Valid runlevels are \fB0\fP\-\fB6\fP plus
 \fBA\fP, \fBB\fP, and \fBC\fP for \fBondemand\fP entries.  An entry in the
@@ -67,6 +67,26 @@ a `+' character,
 will not do utmp and wtmp accounting for that process.  This is needed for 
 gettys that insist on doing their own utmp/wtmp housekeeping.  This is also 
 a historic bug. The length of this field is limited to 127 characters.
+
+Please note that including certain characters in the process field will result
+in
+.B init
+attempting to launch a shell to interpret the command contained in the process field. 
+The characters which will trigger a shell are: 
+.B ~`!$^&*()=|\{}[];\"'<>?
+
+On systems which do not have a shell to be launched or which do not wish to
+use a shell to interpret the process field, the process field can be prefixed
+with the @ symbol. The @ will be ignored and everything followed will be treated
+as a command to be launched, literally, by the
+.B init
+service.
+
+In cases where both a + and @ sign are to be used (to turn off logging and shell
+interpretation), place the + sign before the @ symbol. Both flags will be handled
+and then everything following the @ will be handled by
+.B init
+
 .\"}}}
 .PP
 The \fIrunlevels\fP field may contain multiple characters for different
@@ -134,9 +154,9 @@ The \fIrunlevels\fP field is ignored.
 .\"}}}
 .\"{{{  powerwait
 .IP \fBpowerwait\fP
-The process will be executed when the power goes down. Init is usually
+The process will be executed when the power goes down. \fBinit\fR is usually
 informed about this by a process talking to a UPS connected to the computer.
-\fBInit\fP will wait for the process to finish before continuing.
+\fBinit\fP will wait for the process to finish before continuing.
 .\"}}}
 .\"{{{  powerfail
 .IP \fBpowerfail\fP
@@ -156,7 +176,7 @@ external UPS and the monitoring process are able to detect this condition).
 .\"}}}
 .\"{{{  ctrlaltdel
 .IP \fBctrlaltdel\fP
-The process will be executed when \fBinit\fP receives the SIGINT signal.
+The process will be executed when \fBinit\fP receives the \fBSIGINT\fP signal.
 This means that someone on the system console has pressed the
 \fBCTRL\-ALT\-DEL\fP key combination. Typically one wants to execute some
 sort of \fBshutdown\fP either to get into single\-user level or to
@@ -197,7 +217,7 @@ rc::bootwait:/etc/rc
 .fi
 .sp
 .RE
-This inittab file executes \fB/etc/rc\fP during boot and starts gettys
+This inittab file executes \fI/etc/rc\fP during boot and starts gettys
 on tty1\-tty4.
 .PP
 A more elaborate \fBinittab\fP with different runlevels (see the comments
@@ -253,10 +273,18 @@ S1:3:respawn:/sbin/mgetty -x0 -D ttyS1
 .\"}}}
 .\"{{{  Author
 .SH AUTHOR
-\fBInit\fP was written by Miquel van Smoorenburg 
-(miquels@cistron.nl).  This manual page was written by 
-Sebastian Lederer (lederer@francium.informatik.uni-bonn.de) and modified
-by Michael Haardt (u31b3hs@pool.informatik.rwth-aachen.de).
+\fBinit\fP was written by
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME .
+This manual page was written by
+.MT lederer@\:francium\:.informatik\:.uni-bonn\:.de
+Sebastian Lederer
+.ME
+and modified by 
+.MT u31b3hs@\:pool\:.informatik\:.rwth-aachen\:.de
+Michael Haardt
+.ME .
 .\"}}}
 .\"{{{  See also
 .SH "SEE ALSO"

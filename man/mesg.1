@@ -17,7 +17,7 @@
 .\"
 .\"{{{}}}
 .\"{{{  Title
-.TH MESG 1 "Feb 26, 2001" "" "Linux User's Manual"
+.TH MESG 1 "Feb 26, 2001" "sysvinit " "User Commands"
 .\"}}}
 .\"{{{  Name
 .SH NAME
@@ -30,7 +30,7 @@ mesg \- control write access to your terminal
 .\"}}}
 .\"{{{  Description
 .SH DESCRIPTION
-.B Mesg
+.B mesg
 controls the access to your terminal by others.  It's typically used to
 allow or disallow other users to write to your terminal (see \fBwrite\fP(1)).
 .\"}}}
@@ -46,12 +46,14 @@ terminal.
 .\"}}}
 .\"{{{  Notes
 .SH NOTES
-\fBMesg\fP assumes that its standard input is connected to your
+\fBmesg\fP assumes that its standard input is connected to your
 terminal. That also means that if you are logged in multiple times,
 you can get/set the mesg status of other sessions by using redirection.
 For example "mesg n < /dev/pts/46".
 .SH AUTHOR
-Miquel van Smoorenburg (miquels@cistron.nl)
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .\"}}}
 .\"{{{  See also
 .SH "SEE ALSO"

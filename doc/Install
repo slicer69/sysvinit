@@ -28,6 +28,9 @@ SysV can be built on virtually any Linux system featuring
 the GNU C library or musl libc. A C compiler, such as the GNU Compiler
 Collection (GCC) or Clang is also required.
 
+On systems which want to provide translated versions of manual pages
+the po4a package should be installed.
+
 Here is a list of preferred directories to install the progs & manpages,
 this should be done for you automatically when you run "make install"
 as the root user, or via sudo, ie "sudo make install".

@@ -15,7 +15,7 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH BOOTLOGD 8 "Jul 21, 2003" "" "Linux System Administrator's Manual"
+.TH BOOTLOGD 8 "Jul 21, 2003" "sysvinit " "Linux System Administrator's Manual"
 .SH NAME
 bootlogd \- record boot messages
 .SH SYNOPSIS
@@ -26,25 +26,24 @@ bootlogd \- record boot messages
 .RB [ \-r ]
 .RB [ \-s ]
 .RB [ \-v ]
-.RB [ " -l logfile " ]
-.RB [ " -p pidfile " ]
+.RI [ " \fB-l\fP logfile " ]
+.RI [ " \fB-p\fP pidfile " ]
 .SH DESCRIPTION
-\fBBootlogd\fP runs in the background and copies all strings sent to the
-\fI/dev/console\fP device to a logfile. If the logfile is not accessible,
+\fBbootlogd\fP runs in the background and copies all strings sent to the
+\fI/dev/console\fP device to a logfile. If the \fIlogfile\fP is not accessible,
 the messages will be kept in memory until it is.
 .SH OPTIONS
 .IP \fB\-d\fP
 Do not fork and run in the background.
 .IP \fB\-e\fP
 Print escape characters to the boot log file. This turns off filtering of
-escape characters and allows tools like GNU Less to see and use colour control
-characters (show the log in colour).
+escape characters and allows tools like GNU \fBless\fP(1) to see and use
+colour control characters (show the log in colour).
 .IP \fB\-c\fP
 Attempt to write to the logfile even if it does not yet exist.
-Without this option,
-.B bootlogd
-will wait for the logfile to appear before attempting to write to it.
-This behavior prevents bootlogd from creating logfiles under mount points.
+Without this option, \fBbootlogd\fP will wait for the logfile to appear before
+attempting to write to it. This behavior prevents \fBbootlogd\fP from creating
+logfiles under mount points.
 .IP \fB\-r\fP
 If there is an existing logfile called \fIlogfile\fP rename it to
 \fIlogfile~\fP unless \fIlogfile~\fP already exists.
@@ -61,12 +60,12 @@ Log to this logfile. The default is \fI/var/log/boot\fP.
 .IP "\fB\-p\fP \fIpidfile\fP"
 Put process-id in this file. The default is no pidfile.
 .SH NOTES
-bootlogd saves log data which includes control characters. The log is
+\fBbootlogd\fP saves log data which includes control characters. The log is
 technically a text file, but not very easy for humans to read. To address
-this the readbootlog(1) command can be used to display the boot log
+this the \fBreadbootlog\fP(1) command can be used to display the boot log
 without the control characters.
 .SH BUGS
-Bootlogd works by redirecting the console output from the console device.
+\fBbootlogd\fP works by redirecting the console output from the console device.
 (Consequently \fBbootlogd\fP requires PTY support in the kernel configuration.)
 It copies that output to the real console device and to a log file.
 There is no standard way of ascertaining the real console device
@@ -77,6 +76,10 @@ If that syntax is ever changed by the kernel, or a console type is used that
 \fBbootlogd\fP does not know about then \fBbootlogd\fP will not work.
 
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME
 .SH "SEE ALSO"
-.BR dmesg (8),  fdatasync (3),  readbootlog(1).
+.BR dmesg (8),
+.BR fdatasync (3),
+.BR readbootlog (1)

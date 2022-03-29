@@ -15,9 +15,9 @@
 .\" along with this program; if not, write to the Free Software
 .\" Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 .\"
-.TH KILLALL5 8 "04 Nov 2003" "" "Linux System Administrator's Manual"
+.TH KILLALL5 8 "04 Nov 2003" "sysvinit " "Linux System Administrator's Manual"
 .SH NAME
-killall5 -- send a signal to all processes.
+killall5 - send a signal to all processes
 .SH SYNOPSIS
 .B killall5
 .B \-signalnumber
@@ -27,23 +27,25 @@ killall5 -- send a signal to all processes.
 .IR omitpid [, omitpid ...]...]
 .SH DESCRIPTION
 .B killall5
-is the SystemV killall command. It sends a signal to all processes except
+is the SystemV \fBkillall\fR command. It sends a signal to all processes except
 kernel threads and the processes in its own session, so it won't kill
 the shell that is running the script it was called from. Its primary
-(only) use is in the \fBrc\fP scripts found in the /etc/init.d directory.
+(only) use is in the \fBrc\fP scripts found in the \fI/etc/init.d\fP directory.
 .SH OPTIONS
-.IP "-o \fIomitpid\fP"
-Tells \fIkillall5\fP to omit processes with that process id.
+.IP "\fB-o\fP \fIomitpid\fP"
+Tells \fBkillall5\fP to omit processes with that process id.
 .SH NOTES
-\fIkillall5\fP can also be invoked as pidof, which is simply a
-(symbolic) link to the \fIkillall5\fP program.
+\fBkillall5\fP can also be invoked as \fBpidof\fP(8), which is simply a
+(symbolic) link to the \fBkillall5\fP program.
 .SH EXIT STATUS
-The program return zero if it killed processes.  It return 2 if no
+The program return zero if it killed processes.  It returns 2 if no
 process were killed, and 1 if it was unable to find any processes
-(/proc/ is missing).
+(\fI/proc/\fP is missing).
 .SH SEE ALSO
 .BR halt (8),
 .BR reboot (8),
 .BR pidof (8)
 .SH AUTHOR
-Miquel van Smoorenburg, miquels@cistron.nl
+.MT miquels@\:cistron\:.nl
+Miquel van Smoorenburg
+.ME

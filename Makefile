@@ -3,6 +3,7 @@ VERSION=$(shell sed -rn '1s/.*[[:blank:]]\((.*)\)[[:blank:]].*/\1/p' doc/Changel
 
 all install clean distclean:
 	@rm -f $(PACKAGE)-$(VERSION).tar.xz $(PACKAGE)-$(VERSION).tar.xz.sig
+	$(MAKE) VERSION=$(VERSION) -C man $@
 	$(MAKE) VERSION=$(VERSION) -C src $@
 
 GITLOGIN=$(shell git remote -v | head -n 1 | cut -f 1 -d '@' | sed 's/origin\t//g')
@@ -42,3 +43,4 @@ $(TMP)/$(PACKAGE)-$(VERSION): distclean
 	@cp -R $(SOURCES) $(TMP)/$(PACKAGE)-$(VERSION)/ 
 	@chmod -R a+r,u+w,og-w $@
 	@find $@ -type d | xargs -r chmod a+rx,u+w,og-w
+

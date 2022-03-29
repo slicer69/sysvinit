@@ -1,3 +1,21 @@
+sysvinit (3.02) released; urgency=low
+    * Added q and Q flags to synopsis in shutdown manual page.
+    * Applied fixes for markup and spacing in manual pages.
+      Patch provided by Mario Blattermann.
+    * Added translation framework (po4a) from Mario Blttermann.
+    * Added Makefile for man/ directory. Will handle translations
+      and substitutions.
+    * Applied new translations for multiple languages from Mario Blattermann.
+    * Added ability to use "@" symbol in command named in the inittab file. This
+      treats commands as literal and does not launch a shell to interpret them.
+    * Updated inittab manual page to include overview of symbols which trigger
+      a shell interpretor and how to disable them using the @ symbol.
+    * Introduced change which adds error checking in bootlogd when performing
+      chdir(). - Provided by Alexander Vickberg 
+    * Add check for console using TIOCGDEV on Linux systems in bootlogd to
+      make finding console more robust. - Provided by Alexander Vickberg
+ 
+
 sysvinit (3.01) released; urgency=low
     * Default to showing processes in the uninterruptable state (D).
     The -z flag no longer affects whether processes in D state are shown.

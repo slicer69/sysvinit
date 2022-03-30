@@ -10,3 +10,7 @@
 #define FALSE 0
 #endif
 
+#ifndef PATH_MAX
+#define PATH_MAX 2048
+#endif
+

@@ -41,6 +41,7 @@
 #include <getopt.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <limits.h>
 #ifdef __linux__
 #include <pty.h>
 #include <sys/sysmacros.h>

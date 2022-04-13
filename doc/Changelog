@@ -1,7 +1,7 @@
-sysvinit (3.03) unreleased; urgency=low
+sysvinit (3.03) released; urgency=low
     * Fixed formatting in init.8 man page.
       Patch provided by Mark Hindley.
-    * Fixed compile error on GNU Hurd and musl-base systems. due to missing MAX_PATH definition.
+    * Fixed compile error on GNU Hurd and musl-base systems. Due to missing MAX_PATH definition.
       Error reported by Mark Hindly.
 
 sysvinit (3.02) released; urgency=low

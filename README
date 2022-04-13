@@ -28,3 +28,12 @@ src		Source code
 For instructions on building and installing SysV init, please
 see the "doc/Install" file.
 
+SysV init releases are signed with one of two keys, depending on the build machine.
+These keys are public keys A573ED5E687A40F89D30E6BE2A72EB41906F8E49 
+and 5A2DC686CDC5D6087D88C198351F75FA45D53656. 
+Both of these keys can be fetched from the Savannah mirror at:
+
+https://download.savannah.nongnu.org/releases/sysvinit/
+
+The keys are also available on the public key server https://keys.openpgp.org/
+

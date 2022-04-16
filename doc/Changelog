@@ -1,3 +1,7 @@
+sysvinit (3.03) unreleased; urgency=low
+    * Mark Hindley supplied patch to make bootlogd compile
+      on GNU Hurd systems. Was missing major/minor macro.
+
 sysvinit (3.03) released; urgency=low
     * Fixed formatting in init.8 man page.
       Patch provided by Mark Hindley.

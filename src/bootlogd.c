@@ -43,6 +43,9 @@
 #include <fcntl.h>
 #ifdef __linux__
 #include <pty.h>
+#endif
+
+#if defined (__linux__) || defined(__GNU__)
 #include <sys/sysmacros.h>
 #endif
 

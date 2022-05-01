@@ -1,3 +1,8 @@
+sysvinit (3.05) unreleased; urgency=low
+    * Helge Kreutzmann provided updated Makefile for
+      translation of manual pages. This has been added
+      to the man directory.
+
 sysvinit (3.04) released; urgency=low
     * Mark Hindley supplied patch to make bootlogd compile
       on GNU Hurd systems. Was missing major/minor macro.

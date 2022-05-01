@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sysvinit-man\n"
-"POT-Creation-Date: 2021-12-27 14:19+0100\n"
+"Report-Msgid-Bugs-To: Your Bugmail <mail@example.com>\n"
+"POT-Creation-Date: 2022-05-01 15:59-0300\n"
 "PO-Revision-Date: 1998-04-10 11:01+0200\n"
 "Last-Translator: Tuukka Forssell <taf@jytol.fi>\n"
 "Language-Team: Finnish <>\n"
@@ -33,9 +34,10 @@ msgstr "21. heinäkuuta 2003"
 #: ../last.1:20 ../logsave.8:5 ../mesg.1:20 ../mountpoint.1:18 ../pidof.8:18
 #: ../readbootlog.1:20 ../runlevel.8:18 ../shutdown.8:20 ../sulogin.8:18
 #: ../utmpdump.1:18 ../wall.1:18
-#, no-wrap
-msgid "sysvinit @VERSION@"
-msgstr "sysvinit @VERSION@"
+#, fuzzy, no-wrap
+#| msgid "B<sysinit>"
+msgid "sysvinit "
+msgstr "B<sysinit>"
 
 #. type: TH
 #: ../bootlogd.8:18 ../fstab-decode.8:20 ../halt.8:20 ../init.8:20
@@ -245,7 +247,7 @@ msgstr ""
 
 #. type: SH
 #: ../bootlogd.8:78 ../halt.8:116 ../init.8:337 ../initctl.5:147
-#: ../initscript.5:68 ../inittab.5:255 ../killall5.8:48 ../last.1:120
+#: ../initscript.5:68 ../inittab.5:275 ../killall5.8:48 ../last.1:120
 #: ../logsave.8:58 ../mesg.1:53 ../mountpoint.1:66 ../pidof.8:110
 #: ../readbootlog.1:52 ../runlevel.8:57 ../shutdown.8:232 ../sulogin.8:84
 #: ../utmpdump.1:60 ../wall.1:74
@@ -262,7 +264,7 @@ msgstr "E<.MT miquels@\\:cistron\\:.nl> Miquel van Smoorenburg E<.ME>"
 
 #. type: SH
 #: ../bootlogd.8:82 ../fstab-decode.8:67 ../halt.8:122 ../init.8:346
-#: ../initctl.5:151 ../initscript.5:72 ../inittab.5:270 ../killall5.8:44
+#: ../initctl.5:151 ../initscript.5:72 ../inittab.5:290 ../killall5.8:44
 #: ../last.1:126 ../logsave.8:62 ../mesg.1:59 ../mountpoint.1:70 ../pidof.8:104
 #: ../readbootlog.1:58 ../runlevel.8:54 ../shutdown.8:238 ../sulogin.8:88
 #: ../utmpdump.1:62 ../wall.1:70
@@ -351,7 +353,7 @@ msgstr ""
 #. }}}
 #. {{{  Examples
 #. type: SH
-#: ../fstab-decode.8:57 ../initctl.5:93 ../initscript.5:28 ../inittab.5:184
+#: ../fstab-decode.8:57 ../initctl.5:93 ../initscript.5:28 ../inittab.5:204
 #, no-wrap
 msgid "EXAMPLES"
 msgstr "ESIMERKKEJÄ"
@@ -872,14 +874,14 @@ msgstr ""
 #. type: IP
 #: ../init.8:172
 #, no-wrap
-msgid "B<a>,"
-msgstr "B<a>,"
+msgid "B<a>, B<b>, B<c>"
+msgstr ""
 
 #. type: Plain text
 #: ../init.8:175
 msgid ""
 "tell B<init> to process only those B</etc/inittab> file entries having "
-"runlevel B<a>,B<b> or B<c>."
+"runlevel B<a>, B<b> or B<c>."
 msgstr ""
 
 #. type: IP
@@ -1227,7 +1229,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: ../init.8:300 ../initctl.5:143 ../initscript.5:65 ../inittab.5:251
+#: ../init.8:300 ../initctl.5:143 ../initscript.5:65 ../inittab.5:271
 #: ../last.1:114 ../readbootlog.1:48 ../shutdown.8:207
 #, no-wrap
 msgid "FILES"
@@ -1770,9 +1772,8 @@ msgstr ""
 msgid "I<process>"
 msgstr ""
 
-#. }}}
 #. type: Plain text
-#: ../inittab.5:71
+#: ../inittab.5:70
 msgid ""
 "specifies the process to be executed.  If the process field starts with a `"
 "+' character, B<init> will not do utmp and wtmp accounting for that "
@@ -1781,8 +1782,36 @@ msgid ""
 "limited to 127 characters."
 msgstr ""
 
+#. '<>?
 #. type: Plain text
-#: ../inittab.5:78
+#: ../inittab.5:77
+msgid ""
+"Please note that including certain characters in the process field will "
+"result in B<init> attempting to launch a shell to interpret the command "
+"contained in the process field.  The characters which will trigger a shell "
+"are: B<~`!$^&*()=|\\{}[];>"
+msgstr ""
+
+#. type: Plain text
+#: ../inittab.5:84
+msgid ""
+"On systems which do not have a shell to be launched or which do not wish to "
+"use a shell to interpret the process field, the process field can be "
+"prefixed with the @ symbol. The @ will be ignored and everything followed "
+"will be treated as a command to be launched, literally, by the B<init> "
+"service."
+msgstr ""
+
+#. type: Plain text
+#: ../inittab.5:89
+msgid ""
+"In cases where both a + and @ sign are to be used (to turn off logging and "
+"shell interpretation), place the + sign before the @ symbol. Both flags will "
+"be handled and then everything following the @ will be handled by B<init>"
+msgstr ""
+
+#. type: Plain text
+#: ../inittab.5:98
 msgid ""
 "The I<runlevels> field may contain multiple characters for different "
 "runlevels.  For example, B<123> specifies that the process should be started "
@@ -1792,7 +1821,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:82
+#: ../inittab.5:102
 msgid ""
 "When the system runlevel is changed, any running processes that are not "
 "specified for the new runlevel are killed, first with \\s-2SIGTERM\\s0, then "
@@ -1801,12 +1830,12 @@ msgstr ""
 
 #. {{{  respawn
 #. type: Plain text
-#: ../inittab.5:85
+#: ../inittab.5:105
 msgid "Valid actions for the I<action> field are:"
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:85
+#: ../inittab.5:105
 #, no-wrap
 msgid "B<respawn>"
 msgstr "B<respawn>"
@@ -1814,12 +1843,12 @@ msgstr "B<respawn>"
 #. }}}
 #. {{{  wait
 #. type: Plain text
-#: ../inittab.5:89
+#: ../inittab.5:109
 msgid "The process will be restarted whenever it terminates (e.g.\\& getty)."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:89
+#: ../inittab.5:109
 #, no-wrap
 msgid "B<wait>"
 msgstr "B<wait>"
@@ -1827,14 +1856,14 @@ msgstr "B<wait>"
 #. }}}
 #. {{{  once
 #. type: Plain text
-#: ../inittab.5:95
+#: ../inittab.5:115
 msgid ""
 "The process will be started once when the specified runlevel is entered and "
 "B<init> will wait for its termination."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:95
+#: ../inittab.5:115
 #, no-wrap
 msgid "B<once>"
 msgstr "B<once>"
@@ -1842,13 +1871,13 @@ msgstr "B<once>"
 #. }}}
 #. {{{  boot
 #. type: Plain text
-#: ../inittab.5:100
+#: ../inittab.5:120
 msgid ""
 "The process will be executed once when the specified runlevel is entered."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:100
+#: ../inittab.5:120
 #, no-wrap
 msgid "B<boot>"
 msgstr "B<boot>"
@@ -1856,14 +1885,14 @@ msgstr "B<boot>"
 #. }}}
 #. {{{  bootwait
 #. type: Plain text
-#: ../inittab.5:105
+#: ../inittab.5:125
 msgid ""
 "The process will be executed during system boot.  The I<runlevels> field is "
 "ignored."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:105
+#: ../inittab.5:125
 #, no-wrap
 msgid "B<bootwait>"
 msgstr "B<bootwait>"
@@ -1871,14 +1900,14 @@ msgstr "B<bootwait>"
 #. }}}
 #. {{{  off
 #. type: Plain text
-#: ../inittab.5:112
+#: ../inittab.5:132
 msgid ""
 "The process will be executed during system boot, while B<init> waits for its "
 "termination (e.g.\\& /etc/rc).  The I<runlevels> field is ignored."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:112
+#: ../inittab.5:132
 #, no-wrap
 msgid "B<off>"
 msgstr "B<off>"
@@ -1886,12 +1915,12 @@ msgstr "B<off>"
 #. }}}
 #. {{{  ondemand
 #. type: Plain text
-#: ../inittab.5:116
+#: ../inittab.5:136
 msgid "This does nothing."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:116
+#: ../inittab.5:136
 #, no-wrap
 msgid "B<ondemand>"
 msgstr "B<ondemand>"
@@ -1899,7 +1928,7 @@ msgstr "B<ondemand>"
 #. }}}
 #. {{{  initdefault
 #. type: Plain text
-#: ../inittab.5:123
+#: ../inittab.5:143
 msgid ""
 "A process marked with an B<ondemand> runlevel will be executed whenever the "
 "specified B<ondemand> runlevel is called.  However, no runlevel change will "
@@ -1907,7 +1936,7 @@ msgid ""
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:123
+#: ../inittab.5:143
 #, no-wrap
 msgid "B<initdefault>"
 msgstr "B<initdefault>"
@@ -1915,7 +1944,7 @@ msgstr "B<initdefault>"
 #. }}}
 #. {{{  sysinit
 #. type: Plain text
-#: ../inittab.5:130
+#: ../inittab.5:150
 msgid ""
 "An B<initdefault> entry specifies the runlevel which should be entered after "
 "system boot.  If none exists, B<init> will ask for a runlevel on the "
@@ -1923,7 +1952,7 @@ msgid ""
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:130
+#: ../inittab.5:150
 #, no-wrap
 msgid "B<sysinit>"
 msgstr "B<sysinit>"
@@ -1931,14 +1960,14 @@ msgstr "B<sysinit>"
 #. }}}
 #. {{{  powerwait
 #. type: Plain text
-#: ../inittab.5:136
+#: ../inittab.5:156
 msgid ""
 "The process will be executed during system boot. It will be executed before "
 "any B<boot> or B< bootwait> entries.  The I<runlevels> field is ignored."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:136
+#: ../inittab.5:156
 #, no-wrap
 msgid "B<powerwait>"
 msgstr "B<powerwait>"
@@ -1946,7 +1975,7 @@ msgstr "B<powerwait>"
 #. }}}
 #. {{{  powerfail
 #. type: Plain text
-#: ../inittab.5:142
+#: ../inittab.5:162
 msgid ""
 "The process will be executed when the power goes down. B<init> is usually "
 "informed about this by a process talking to a UPS connected to the "
@@ -1954,7 +1983,7 @@ msgid ""
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:142
+#: ../inittab.5:162
 #, no-wrap
 msgid "B<powerfail>"
 msgstr "B<powerfail>"
@@ -1962,14 +1991,14 @@ msgstr "B<powerfail>"
 #. }}}
 #. {{{  powerokwait
 #. type: Plain text
-#: ../inittab.5:147
+#: ../inittab.5:167
 msgid ""
 "As for B<powerwait>, except that B<init> does not wait for the process's "
 "completion."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:147
+#: ../inittab.5:167
 #, no-wrap
 msgid "B<powerokwait>"
 msgstr "B<powerokwait>"
@@ -1977,14 +2006,14 @@ msgstr "B<powerokwait>"
 #. }}}
 #. {{{  powerfailnow
 #. type: Plain text
-#: ../inittab.5:152
+#: ../inittab.5:172
 msgid ""
 "This process will be executed as soon as B<init> is informed that the power "
 "has been restored."
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:152
+#: ../inittab.5:172
 #, no-wrap
 msgid "B<powerfailnow>"
 msgstr "B<powerfailnow>"
@@ -1992,7 +2021,7 @@ msgstr "B<powerfailnow>"
 #. }}}
 #. {{{  ctrlaltdel
 #. type: Plain text
-#: ../inittab.5:158
+#: ../inittab.5:178
 msgid ""
 "This process will be executed when B<init> is told that the battery of the "
 "external UPS is almost empty and the power is failing (provided that the "
@@ -2000,7 +2029,7 @@ msgid ""
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:158
+#: ../inittab.5:178
 #, no-wrap
 msgid "B<ctrlaltdel>"
 msgstr "B<ctrlaltdel>"
@@ -2008,7 +2037,7 @@ msgstr "B<ctrlaltdel>"
 #. }}}
 #. {{{  kbrequest
 #. type: Plain text
-#: ../inittab.5:166
+#: ../inittab.5:186
 msgid ""
 "The process will be executed when B<init> receives the B<SIGINT> signal.  "
 "This means that someone on the system console has pressed the B<CTRL-ALT-"
@@ -2017,13 +2046,13 @@ msgid ""
 msgstr ""
 
 #. type: IP
-#: ../inittab.5:166
+#: ../inittab.5:186
 #, no-wrap
 msgid "B<kbrequest>"
 msgstr "B<kbrequest>"
 
 #. type: Plain text
-#: ../inittab.5:170
+#: ../inittab.5:190
 msgid ""
 "The process will be executed when B<init> receives a signal from the "
 "keyboard handler that a special key combination was pressed on the console "
@@ -2031,7 +2060,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:176
+#: ../inittab.5:196
 msgid ""
 "The documentation for this function is not complete yet; more documentation "
 "can be found in the kbd-x.xx packages (most recent was kbd-0.94 at the time "
@@ -2041,17 +2070,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:179
+#: ../inittab.5:199
 msgid "alt keycode 103 = KeyboardSignal"
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:186
+#: ../inittab.5:206
 msgid "This is an example of a inittab which resembles the old Linux inittab:"
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:197
+#: ../inittab.5:217
 #, no-wrap
 msgid ""
 "# inittab for linux\n"
@@ -2064,21 +2093,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:202
+#: ../inittab.5:222
 msgid ""
 "This inittab file executes I</etc/rc> during boot and starts gettys on tty1-"
 "tty4."
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:205
+#: ../inittab.5:225
 msgid ""
 "A more elaborate B<inittab> with different runlevels (see the comments "
 "inside):"
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:211
+#: ../inittab.5:231
 #, no-wrap
 msgid ""
 "# Level to run in\n"
@@ -2086,7 +2115,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:214
+#: ../inittab.5:234
 #, no-wrap
 msgid ""
 "# Boot-time system configuration/initialization script.\n"
@@ -2094,7 +2123,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:217
+#: ../inittab.5:237
 #, no-wrap
 msgid ""
 "# What to do in single-user mode.\n"
@@ -2102,7 +2131,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:225
+#: ../inittab.5:245
 #, no-wrap
 msgid ""
 "# /etc/init.d executes the S and K scripts upon change\n"
@@ -2115,7 +2144,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:233
+#: ../inittab.5:253
 #, no-wrap
 msgid ""
 "l0:0:wait:/etc/init.d/rc 0\n"
@@ -2135,7 +2164,7 @@ msgstr ""
 "l6:6:wait:/etc/init.d/rc 6\n"
 
 #. type: Plain text
-#: ../inittab.5:236
+#: ../inittab.5:256
 #, no-wrap
 msgid ""
 "# What to do at the \"3 finger salute\".\n"
@@ -2143,7 +2172,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:245
+#: ../inittab.5:265
 #, no-wrap
 msgid ""
 "# Runlevel 2,3: getty on virtual consoles\n"
@@ -2159,14 +2188,14 @@ msgstr ""
 #. }}}
 #. {{{  Author
 #. type: Plain text
-#: ../inittab.5:255
+#: ../inittab.5:275
 msgid "/etc/inittab"
 msgstr "/etc/inittab"
 
 #. }}}
 #. {{{  See also
 #. type: Plain text
-#: ../inittab.5:270
+#: ../inittab.5:290
 msgid ""
 "B<init> was written by E<.MT miquels@\\:cistron\\:.nl> Miquel van "
 "Smoorenburg E<.ME .> This manual page was written by E<.MT lederer@\\:"
@@ -2176,7 +2205,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../inittab.5:272
+#: ../inittab.5:292
 msgid "B<init>(8), B<telinit>(8)"
 msgstr "B<init>(8), B<telinit>(8)"
 
@@ -3745,6 +3774,14 @@ msgstr ""
 #: ../wall.1:73
 msgid "B<mesg>(1), B<rpc.rwalld>(8)"
 msgstr "B<mesg>(1), B<rpc.rwalld>(8)"
+
+#, no-wrap
+#~ msgid "sysvinit @VERSION@"
+#~ msgstr "sysvinit @VERSION@"
+
+#, no-wrap
+#~ msgid "B<a>,"
+#~ msgstr "B<a>,"
 
 #, fuzzy, no-wrap
 #~| msgid "LAST, LASTB"

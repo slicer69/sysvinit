@@ -32,6 +32,10 @@
 #include <getopt.h>
 #include <stdio.h>
 
+#if defined (__linux__) || defined(__GNU__)
+#include <sys/sysmacros.h>
+#endif
+
 #ifndef PATH_MAX
 #define PATH_MAX 2048
 #endif

@@ -2,6 +2,8 @@ sysvinit (3.05) unreleased; urgency=low
     * Helge Kreutzmann provided updated Makefile for
       translation of manual pages. This has been added
       to the man directory.
+    * Added sys/sysmacros.h include in mountpoint.c to fix
+      compiler errors on systems where major/minor macros were not defined.
 
 sysvinit (3.04) released; urgency=low
     * Mark Hindley supplied patch to make bootlogd compile

@@ -4,6 +4,8 @@ sysvinit (3.05) unreleased; urgency=low
       to the man directory.
     * Added sys/sysmacros.h include in mountpoint.c to fix
       compiler errors on systems where major/minor macros were not defined.
+    * Applied patches from Mark Hindley to clean up man page
+      Makefile, translations and installs of new man pages.
 
 sysvinit (3.04) released; urgency=low
     * Mark Hindley supplied patch to make bootlogd compile

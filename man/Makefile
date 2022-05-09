@@ -3,25 +3,26 @@ killall5.8 last.1 lastb.1 logsave.8 mesg.1 mountpoint.1 pidof.8 poweroff.8 \
 readbootlog.1 reboot.8 runlevel.8 shutdown.8 sulogin.8 telinit.8 utmpdump.1 \
 wall.1
 
-LANGUAGES_DIST =`sed -ne 's/^.*\[po4a_langs\] \(.*\)$/\1/p' po/po4a.cfg`
-LANGUAGES=$(LANGUAGES_DIST)
-LANGUAGES=de es fi fr hu id pl
+LANGUAGES=$(shell sed -ne 's/^.*\[po4a_langs\] \(.*\)$$/\1/p' po/po4a.cfg)
 
-VERSION?=1.2.3
+PO4A := $(shell command -v po4a 2> /dev/null)
+PO4A_OPTS = --previous --srcdir po/ --destdir ./ --no-backups --stamp \
+            --package-name sysvinit --package-version $(VERSION)
 
-PO4A_OPTS = --previous --srcdir po/ --destdir po/ --no-backups \
-            --package-name sysvinit --package-version $(VERSION) \
-            --msgid-bugs-address "Your Bugmail <mail@example.com>"
-
-translated:
-	po4a $(PO4A_OPTS) po/po4a.cfg
-
-all install: translated
+all:
 	sed --in-place=.orig --separate 's/\@VERSION\@/$(VERSION)/g' $(MANPAGES)
+ifdef PO4A
+	po4a $(PO4A_OPTS) po/po4a.cfg
+else
+	@echo 'Install po4a to build translated manpages'
+endif
+
+# Installation recipes are in ../src/Makefile
+install: all
 
 clean distclean:
 	for man in $(MANPAGES) ; do \
 	   if [ -f "$$man.orig" ] ; then mv "$$man.orig" "$$man" ; fi \
-	done  
-	for lang in $(LANGUAGES) ; do rm -rf "po/$$lang" ; done
+	done
+	for lang in $(LANGUAGES) ; do rm -rf "$$lang" "$$lang.po" ; done
 

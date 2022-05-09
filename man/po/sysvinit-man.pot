@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: sysvinit 1.2.3\n"
+"Project-Id-Version: sysvinit 3.05\n"
 "Report-Msgid-Bugs-To: Your Bugmail <mail@example.com>\n"
-"POT-Creation-Date: 2022-05-01 15:59-0300\n"
+"POT-Creation-Date: 2022-05-09 12:43-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

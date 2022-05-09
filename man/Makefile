@@ -24,5 +24,5 @@ clean distclean:
 	for man in $(MANPAGES) ; do \
 	   if [ -f "$$man.orig" ] ; then mv "$$man.orig" "$$man" ; fi \
 	done
-	for lang in $(LANGUAGES) ; do rm -rf "$$lang" "$$lang.po" ; done
+	for lang in $(LANGUAGES) ; do rm -rf "po/$$lang" "$$lang.po" ; done
 

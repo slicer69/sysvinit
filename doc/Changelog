@@ -1,8 +1,10 @@
 sysvinit (3.03) unreleased; urgency=low
     * Fixed formatting in init.8 man page.
       Patch provided by Mark Hindley.
-    * Fixed compile error on GNU Hurd and musl-base systems. due to missing MAX_PATH definition.
+    * Fixed compile error on GNU Hurd and musl-base systems. Due to missing MAX_PATH definition.
       Error reported by Mark Hindly.
+    * Remove reliance on linux/fs.h as it conflcits with glibc 2.36.
+   
 
 sysvinit (3.02) released; urgency=low
     * Added q and Q flags to synopsis in shutdown manual page.

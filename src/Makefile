@@ -214,7 +214,7 @@ install:	all
 		fi
 		$(INSTALL_DIR) $(ROOT)/usr/include/
 		$(INSTALL_DATA) initreq.h $(ROOT)/usr/include/
-		for lang in  '' $(subst ../man/,,$(wildcard ../man/po/??/)); do \
+		for lang in  '' $(patsubst ../man/po/%.po,%,$(wildcard ../man/po/??.po)); do \
 			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man1/$$lang; \
 			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man5/$$lang; \
 			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man8/$$lang; \

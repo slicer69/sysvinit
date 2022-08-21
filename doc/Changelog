@@ -1,3 +1,14 @@
+sysvinit (3.05) unreleased; urgency=low
+    * Helge Kreutzmann provided updated Makefile for
+      translation of manual pages. This has been added
+      to the man directory.
+    * Added sys/sysmacros.h include in mountpoint.c to fix
+      compiler errors on systems where major/minor macros were not defined.
+    * Applied patches from Mark Hindley to clean up man page
+      Makefile, translations and installs of new man pages.
+    * Remove reliance on linux/fs.h as it conflicts with glibc 2.36.
+      Patch provided by lucascars.
+
 sysvinit (3.04) released; urgency=low
     * Mark Hindley supplied patch to make bootlogd compile
       on GNU Hurd systems. Was missing major/minor macro.

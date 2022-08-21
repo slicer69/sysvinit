@@ -51,7 +51,6 @@
 #ifdef __linux__
 #  include <sys/statfs.h>
 #  include <sys/mount.h>
-#  include <linux/fs.h>
 #  include <linux/magic.h>
 #  include <linux/major.h>
 #  ifndef TMPFS_MAGIC

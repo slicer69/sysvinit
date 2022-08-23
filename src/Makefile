@@ -65,6 +65,9 @@ BIN	+= mountpoint
 MAN1	+= mountpoint.1
 endif
 
+MANPAGES:=$(MAN1) $(MAN5) $(MAN8)
+MANPAGES+=$(subst ../man/,,$(foreach man,$(MANPAGES),$(wildcard ../man/??/$(man))))
+
 ID		= $(shell id -u)
 BIN_OWNER	= root
 BIN_GROUP	= root
@@ -214,22 +217,11 @@ install:	all
 		fi
 		$(INSTALL_DIR) $(ROOT)/usr/include/
 		$(INSTALL_DATA) initreq.h $(ROOT)/usr/include/
-		for lang in  '' $(patsubst ../man/po/%.po,%,$(wildcard ../man/po/??.po)); do \
-			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man1/$$lang; \
-			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man5/$$lang; \
-			$(INSTALL_DIR) $(ROOT)$(MANDIR)/man8/$$lang; \
-		done
-		for man in $(MAN1) $(subst ../man/,,$(foreach man,$(MAN1),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man1/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man1/$$man ; \
-		done
-		for man in $(MAN5) $(subst ../man/,,$(foreach man,$(MAN5),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man5/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man5/$$man ; \
-		done
-		for man in $(MAN8) $(subst ../man/,,$(foreach man,$(MAN8),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(MANDIR)/man8/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(MANDIR)/man8/$$man ; \
+		for man in $(MANPAGES) ; do \
+		    targetdir=$(ROOT)$(MANDIR)/$$(dirname $$man)/man$${man##*.}; \
+		    $(INSTALL_DIR) $$targetdir; \
+		    $(INSTALL_DATA) ../man/$$man $$targetdir/$$(basename $$man); \
+		    sed -i "1{ $(MANDB); }" $$targetdir/$$(basename $$man); \
 		done
 ifeq ($(ROOT),)
 		#

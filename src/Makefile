@@ -40,8 +40,8 @@ endif
 
 ifeq ($(DISTRO),Debian)
 CPPFLAGS+= -DACCTON_OFF
-SBIN	+= sulogin bootlogd
-MAN8	+= sulogin.8 bootlogd.8
+SBIN	+= bootlogd
+MAN8	+= bootlogd.8
 MANDB	:=
 endif
 

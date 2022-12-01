@@ -2,6 +2,8 @@ sysvinit (3.06) unreleased; urgency=low
     * Mark Hindley fixed typo in es.po
     * Mark Hindley cleaned up translation code in src/Makefile. 
     * Drop sulogin from Debian build. Removed libcrypt-dev dependency.
+    * Fixed pt translation pages which were failing due to mis-matched
+      open/close tags.
 
 sysvinit (3.05) released; urgency=low
     * Helge Kreutzmann provided updated Makefile for

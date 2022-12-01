@@ -6,6 +6,10 @@ sysvinit (3.06) unreleased; urgency=low
       open/close tags.
     * Makefile now respects ROOT prefix when setting up pidof-to-killall5
       symbolic link.
+    * Removed redundant translation files from man directory.
+    * Makefile now respects DESTDIR. User can specify either ROOT= or DESTDIR=
+      to set install prefix.
+
 
 sysvinit (3.05) released; urgency=low
     * Helge Kreutzmann provided updated Makefile for

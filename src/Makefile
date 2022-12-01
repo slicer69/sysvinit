@@ -92,6 +92,8 @@ else
   SULOGINLIBS	=
 endif
 
+ROOT	?= $(DESTDIR)
+
 # Additional libs for GNU libc.
 ifneq ($(wildcard $(ROOT)/usr/lib*/libcrypt.*),)
   SULOGINLIBS	+= -lcrypt

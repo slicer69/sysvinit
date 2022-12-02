@@ -213,7 +213,7 @@ install:	all
 		ln -sf halt $(ROOT)/sbin/reboot
 		ln -sf halt $(ROOT)/sbin/poweroff
 		ln -sf init $(ROOT)/sbin/telinit
-		ln -sf $(ROOT)/sbin/killall5 $(ROOT)/bin/pidof
+		ln -sf ../sbin/killall5 $(ROOT)/bin/pidof
 		if [ ! -f $(ROOT)/usr/bin/lastb ]; then \
 			ln -sf last $(ROOT)/usr/bin/lastb; \
 		fi

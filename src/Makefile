@@ -40,8 +40,8 @@ endif
 
 ifeq ($(DISTRO),Debian)
 CPPFLAGS+= -DACCTON_OFF
-SBIN	+= sulogin bootlogd
-MAN8	+= sulogin.8 bootlogd.8
+SBIN	+= bootlogd
+MAN8	+= bootlogd.8
 MANDB	:=
 endif
 
@@ -64,6 +64,9 @@ ifeq ($(MNTPOINT),yes)
 BIN	+= mountpoint
 MAN1	+= mountpoint.1
 endif
+
+MANPAGES:=$(MAN1) $(MAN5) $(MAN8)
+MANPAGES+=$(subst ../man/,,$(foreach man,$(MANPAGES),$(wildcard ../man/??/$(man))))
 
 ID		= $(shell id -u)
 BIN_OWNER	= root
@@ -95,6 +98,8 @@ else
   INITLIBS	=
   SULOGINLIBS	=
 endif
+
+ROOT	?= $(DESTDIR)
 
 # Additional libs for GNU libc.
 ifneq ($(wildcard $(ROOT)/usr/lib*/libcrypt.*),)
@@ -212,6 +217,7 @@ install:	all
 		# $(INSTALL_DIR) $(ROOT)/etc/
 		$(INSTALL_DIR) $(ROOT)/etc/inittab.d
 		# $(INSTALL_EXEC) ../doc/initscript.sample $(ROOT)/etc/
+<<<<<<< HEAD
 		ln -sf halt $(ROOT)$(base_sbindir)/reboot
 		ln -sf halt $(ROOT)$(base_sbindir)/poweroff
 		ln -sf init $(ROOT)$(base_sbindir)/telinit
@@ -237,6 +243,22 @@ install:	all
 		for man in $(MAN8) $(subst ../man/,,$(foreach man,$(MAN8),$(wildcard ../man/??/$(man)))); do \
 			$(INSTALL_DATA) ../man/$$man $(ROOT)$(mandir)/man8/$$man; \
 			sed -i "1{ $(MANDB); }" $(ROOT)$(mandir)/man8/$$man ; \
+=======
+		ln -sf halt $(ROOT)/sbin/reboot
+		ln -sf halt $(ROOT)/sbin/poweroff
+		ln -sf init $(ROOT)/sbin/telinit
+		ln -sf ../sbin/killall5 $(ROOT)/bin/pidof
+		if [ ! -f $(ROOT)/usr/bin/lastb ]; then \
+			ln -sf last $(ROOT)/usr/bin/lastb; \
+		fi
+		$(INSTALL_DIR) $(ROOT)/usr/include/
+		$(INSTALL_DATA) initreq.h $(ROOT)/usr/include/
+		for man in $(MANPAGES) ; do \
+		    targetdir=$(ROOT)$(MANDIR)/$$(dirname $$man)/man$${man##*.}; \
+		    $(INSTALL_DIR) $$targetdir; \
+		    $(INSTALL_DATA) ../man/$$man $$targetdir/$$(basename $$man); \
+		    sed -i "1{ $(MANDB); }" $$targetdir/$$(basename $$man); \
+>>>>>>> 3.06
 		done
 ifeq ($(ROOT),)
 		#

@@ -873,7 +873,7 @@ PIDQ_HEAD *pidof(char *prog)
 /* Give usage message and exit. */
 void usage(void)
 {
-	nsyslog(LOG_ERR, "only one argument, a signal number, allowed");
+	nsyslog(LOG_ERR, "usage: killall5 -signum [-o omitpid] [-o omitpid] ...");
 	closelog();
 	exit(1);
 }

@@ -1,4 +1,8 @@
-sysvinit (3.06) unreleased; urgency=low
+sysvinit (3.07) released; urgency=low
+    * Fixed killall5 so that processes in the omit list are
+      not sent any signals, including SIGSTOP.
+
+sysvinit (3.06) released; urgency=low
     * Mark Hindley fixed typo in es.po
     * Mark Hindley cleaned up translation code in src/Makefile. 
     * Drop sulogin from Debian build. Removed libcrypt-dev dependency.

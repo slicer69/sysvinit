@@ -120,16 +120,16 @@ typedef struct _s_nfs
 } NFS;
 
 /* List of processes. */
-PROC *plist;
+PROC *plist = NULL;
 
 /* List of processes to omit. */
-OMIT *omit;
+OMIT *omit = NULL;
 
 /* List of NFS mountes partitions. */
-NFS *nlist;
+NFS *nlist = NULL;
 
 /* Did we stop all processes ? */
-int sent_sigstop;
+int sent_sigstop = 0;
 int scripts_too = 0;
 
 /* Should pidof try to list processes in I/O wait (D) and zombie (Z) states? */
@@ -1152,19 +1152,25 @@ int main(int argc, char **argv)
 	/* lock us into memory */
 	mlockall(MCL_CURRENT | MCL_FUTURE);
 
-	/* Now stop all processes. */
-	kill(-1, SIGSTOP);
-	sent_sigstop = 1;
+        /* Get our session ID and PID to make sure we do not kill ourselves or our session. */
+	sid = (int)getsid(0);
+	pid = (int)getpid();
+
+	/* Now stop all processes, unless there are some we should omit. */
+        if (! omit)
+        {
+	    kill(-1, SIGSTOP);
+	    sent_sigstop = 1;
+        }
 
 	/* Read /proc filesystem */
 	if (readproc() < 0) {
+             if (sent_sigstop)
 		kill(-1, SIGCONT);
-		return(1);
+  	     return(1);
 	}
 
 	/* Now kill all processes except init (pid 1) and our session. */
-	sid = (int)getsid(0);
-	pid = (int)getpid();
 	for (p = plist; p; p = p->next) {
 		if (p->pid == 1 || p->pid == pid || p->sid == sid || p->kernel)
 			continue;
@@ -1179,14 +1185,15 @@ int main(int argc, char **argv)
 			/* On a match, continue with the for loop above. */
 			if (optr)
 				continue;
-		}
+		}      /* end of skipping PIDs to omit */
 
 		kill(p->pid, sig);
 		retval = 0;
 	}
 
 	/* And let them continue. */
-	kill(-1, SIGCONT);
+        if (sent_sigstop)
+	    kill(-1, SIGCONT);
 
 	/* Done. */
 	closelog();

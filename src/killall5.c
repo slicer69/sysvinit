@@ -763,6 +763,11 @@ PIDQ_HEAD *pidof(char *prog)
 				add_pid_to_q(q, p);
 				foundone++;
 			}
+                        else if ( (p->argv0) && (! strcmp(p->argv0, prog) ) )
+                        {
+                            add_pid_to_q(q, p);
+                            foundone++;
+                        }
 		}
 	}
 
@@ -826,6 +831,7 @@ PIDQ_HEAD *pidof(char *prog)
 		 * as was done in earlier versions of this program, since this
 		 * allows /aaa/foo to match /bbb/foo .
 		 */
+
 		ok |=
 			(p->argv0 && strcmp(p->argv0, prog) == 0)
 			|| (p->argv0 && s != prog && strcmp(p->argv0, s) == 0)

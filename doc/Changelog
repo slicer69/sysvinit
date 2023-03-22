@@ -2,6 +2,11 @@ sysvinit (3.07) released; urgency=low
     * Fixed killall5 so that processes in the omit list are
       not sent any signals, including SIGSTOP.
     * Fixed usage message for killall5 to be more accurate.
+    * pidof was not returning PIDs of programs which were launched
+      using a symbolic link. (ie /tmp/sleep when /tmp/sleep links to /usr/bin/sleep).
+      This is now fixed as we check both the realpath and symbolic path for processes.
+      In other words, "pidof /tmp/sleep" and "pidof /usr/bin/sleep" will return
+      the same PIDs when /tmp/sleep is a symbolic link to /usr/bin/sleep.
 
 
 sysvinit (3.06) released; urgency=low

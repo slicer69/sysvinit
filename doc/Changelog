@@ -7,6 +7,7 @@ sysvinit (3.07) released; urgency=low
       This is now fixed as we check both the realpath and symbolic path for processes.
       In other words, "pidof /tmp/sleep" and "pidof /usr/bin/sleep" will return
       the same PIDs when /tmp/sleep is a symbolic link to /usr/bin/sleep.
+    * Fixed memory initialization error in pidof. Fix provided by Markus Fischer.
 
 
 sysvinit (3.06) released; urgency=low

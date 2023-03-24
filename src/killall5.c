@@ -662,6 +662,7 @@ int readproc()
 		/* Try to stat the executable. */
 		snprintf(path, sizeof(path), "/proc/%s/exe", d->d_name);
                 p->pathname = (char *)xmalloc(PATH_MAX);
+                memset(p->pathname, 0, PATH_MAX);
  		if (readlink(path, p->pathname, PATH_MAX) == -1) {
  			p->pathname = NULL;
  		}

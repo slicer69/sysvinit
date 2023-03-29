@@ -740,8 +740,8 @@ PIDQ_HEAD *pidof(char *prog)
 		return NULL;
 
 	/* Try to stat the executable. */
+	memset(real_path, 0, sizeof(real_path));
 	if ( (prog[0] == '/') && ( realpath(prog, real_path) ) ) {
-		memset(&real_path[0], 0, sizeof(real_path));
 		dostat++;
 	}
 

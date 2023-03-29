@@ -94,7 +94,7 @@ that it returns PIDs of running programs that happen to have the same name
 as the program you're after but are actually other programs. Note 
 that the executable name of running processes is calculated with
 .BR readlink (2),
-so symbolic links to executables will also match. However, symbolic links to symbolic links will not match.  
+so symbolic links to executables will also match.
 .PP
 Zombie processes or processes in disk sleep (states Z and D, respectively)
 are ignored, as attempts to access the stats of these will sometimes fail.

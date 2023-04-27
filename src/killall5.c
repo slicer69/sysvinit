@@ -729,7 +729,7 @@ PIDQ_HEAD *pidof(char *prog)
 	PIDQ_HEAD	*q;
 	char		*s;
 	int		nfs = 0;
-	int		dostat = 0;
+	int		pathlookup = 0;
 	int		foundone = 0;
 	int		ok = 0;
 	const int	root = (getuid() == 0);
@@ -738,11 +738,8 @@ PIDQ_HEAD *pidof(char *prog)
 	if (! prog)
 		return NULL;
 
-	/* Try to stat the executable. */
-	if ( (prog[0] == '/') && ( realpath(prog, real_path) ) ) {
-		memset(&real_path[0], 0, sizeof(real_path));
-		dostat++;
-	}
+	if ( (prog[0] == '/') && ( realpath(prog, real_path) ) )
+		pathlookup++;
 
 	/* Get basename of program. */
 	if ((s = strrchr(prog, '/')) == NULL)
@@ -756,8 +753,8 @@ PIDQ_HEAD *pidof(char *prog)
 	q = (PIDQ_HEAD *)xmalloc(sizeof(PIDQ_HEAD));
 	q = init_pid_q(q);
 
-	/* First try to find a match based on dev/ino pair. */
-	if (dostat) {
+	/* First try to find a match based on path. */
+	if (pathlookup) {
 		for (p = plist; p; p = p->next) {
 			if (p->pathname && strcmp(real_path, p->pathname) == 0) {
 				add_pid_to_q(q, p);

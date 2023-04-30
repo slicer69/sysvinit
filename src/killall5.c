@@ -120,16 +120,16 @@ typedef struct _s_nfs
 } NFS;
 
 /* List of processes. */
-PROC *plist;
+PROC *plist = NULL;
 
 /* List of processes to omit. */
-OMIT *omit;
+OMIT *omit = NULL;
 
 /* List of NFS mountes partitions. */
-NFS *nlist;
+NFS *nlist = NULL;
 
 /* Did we stop all processes ? */
-int sent_sigstop;
+int sent_sigstop = 0;
 int scripts_too = 0;
 
 /* Should pidof try to list processes in I/O wait (D) and zombie (Z) states? */
@@ -662,6 +662,7 @@ int readproc()
 		/* Try to stat the executable. */
 		snprintf(path, sizeof(path), "/proc/%s/exe", d->d_name);
                 p->pathname = (char *)xmalloc(PATH_MAX);
+                memset(p->pathname, 0, PATH_MAX);
  		if (readlink(path, p->pathname, PATH_MAX) == -1) {
  			p->pathname = NULL;
  		}
@@ -739,8 +740,8 @@ PIDQ_HEAD *pidof(char *prog)
 		return NULL;
 
 	/* Try to stat the executable. */
+	memset(real_path, 0, sizeof(real_path));
 	if ( (prog[0] == '/') && ( realpath(prog, real_path) ) ) {
-		memset(&real_path[0], 0, sizeof(real_path));
 		dostat++;
 	}
 
@@ -763,6 +764,11 @@ PIDQ_HEAD *pidof(char *prog)
 				add_pid_to_q(q, p);
 				foundone++;
 			}
+                        else if ( (p->argv0) && (! strcmp(p->argv0, prog) ) )
+                        {
+                            add_pid_to_q(q, p);
+                            foundone++;
+                        }
 		}
 	}
 
@@ -826,6 +832,7 @@ PIDQ_HEAD *pidof(char *prog)
 		 * as was done in earlier versions of this program, since this
 		 * allows /aaa/foo to match /bbb/foo .
 		 */
+
 		ok |=
 			(p->argv0 && strcmp(p->argv0, prog) == 0)
 			|| (p->argv0 && s != prog && strcmp(p->argv0, s) == 0)
@@ -873,7 +880,7 @@ PIDQ_HEAD *pidof(char *prog)
 /* Give usage message and exit. */
 void usage(void)
 {
-	nsyslog(LOG_ERR, "only one argument, a signal number, allowed");
+	nsyslog(LOG_ERR, "usage: killall5 -signum [-o omitpid] [-o omitpid] ...");
 	closelog();
 	exit(1);
 }
@@ -1152,19 +1159,25 @@ int main(int argc, char **argv)
 	/* lock us into memory */
 	mlockall(MCL_CURRENT | MCL_FUTURE);
 
-	/* Now stop all processes. */
-	kill(-1, SIGSTOP);
-	sent_sigstop = 1;
+        /* Get our session ID and PID to make sure we do not kill ourselves or our session. */
+	sid = (int)getsid(0);
+	pid = (int)getpid();
+
+	/* Now stop all processes, unless there are some we should omit. */
+        if (! omit)
+        {
+	    kill(-1, SIGSTOP);
+	    sent_sigstop = 1;
+        }
 
 	/* Read /proc filesystem */
 	if (readproc() < 0) {
+             if (sent_sigstop)
 		kill(-1, SIGCONT);
-		return(1);
+  	     return(1);
 	}
 
 	/* Now kill all processes except init (pid 1) and our session. */
-	sid = (int)getsid(0);
-	pid = (int)getpid();
 	for (p = plist; p; p = p->next) {
 		if (p->pid == 1 || p->pid == pid || p->sid == sid || p->kernel)
 			continue;
@@ -1179,14 +1192,15 @@ int main(int argc, char **argv)
 			/* On a match, continue with the for loop above. */
 			if (optr)
 				continue;
-		}
+		}      /* end of skipping PIDs to omit */
 
 		kill(p->pid, sig);
 		retval = 0;
 	}
 
 	/* And let them continue. */
-	kill(-1, SIGCONT);
+        if (sent_sigstop)
+	    kill(-1, SIGCONT);
 
 	/* Done. */
 	closelog();

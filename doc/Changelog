@@ -1,3 +1,14 @@
+sysvinit (3.08) unreleased; urgency=low
+    * Floppym provided patch which causes the halt command
+      to call "shutdown -h -H" instead of "shutdown -h" when
+      halt is invoked without parameters. This forces the shutdown
+      command to set the INIT_HALT variable and assume, unless other
+      conditions apply, that the "halt" call really wants to halt the
+      machine and INIT_HALT should be set. In other words we
+      assume halt wants to halt unless told otherwise.
+      Addresses downstream Gentoo bug ID 911257.
+
+
 sysvinit (3.07) released; urgency=low
     * Fixed killall5 so that processes in the omit list are
       not sent any signals, including SIGSTOP.

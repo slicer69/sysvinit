@@ -162,8 +162,8 @@ void do_shutdown(char *fl, int should_poweroff, char *tm)
 
 	args[i++] = "shutdown";
 	args[i++] = fl;
-        if ( (! strcmp(fl, "-h") ) && (should_poweroff) )
-           args[i++] = "-P";
+        if (! strcmp(fl, "-h"))
+           args[i++] = (should_poweroff ? "-P" : "-H");
 	if (tm) {
 		args[i++] = "-t";
 		args[i++] = tm;

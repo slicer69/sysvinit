@@ -40,6 +40,7 @@ halt, reboot, poweroff \- stop the system
 .RB [ \-d ]
 .RB [ \-f ]
 .RB [ \-i ]
+.RB [ \-k ]
 .br
 .B /sbin/poweroff
 .RB [ \-n ]
@@ -85,6 +86,8 @@ Put all hard drives on the system in stand-by mode just before halt or power-off
 .IP \fB\-p\fP
 When halting the system, switch off the power. This is the default when \fBhalt\fR is
 called as \fBpoweroff\fP.
+.IP \fB\-k\fP
+Try to reboot using \fBkexec\fP, if kernel supports it.
 .\"}}}
 .\"{{{  Diagnostics
 .SH DIAGNOSTICS

@@ -47,5 +47,8 @@
 #  define BMAGIC_POWEROFF	BMAGIC_HALT
 #endif
 
+/* for kexec support */
+#define BMAGIC_KEXEC  0x45584543
+
 #define init_reboot(magic)	reboot(magic)
 

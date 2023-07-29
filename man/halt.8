@@ -26,28 +26,29 @@ halt, reboot, poweroff \- stop the system
 .\"{{{  Synopsis
 .SH SYNOPSIS
 .B /sbin/halt
-.RB [ \-n ]
-.RB [ \-w ]
 .RB [ \-d ]
 .RB [ \-f ]
-.RB [ \-i ]
-.RB [ \-p ]
 .RB [ \-h ]
+.RB [ \-i ]
+.RB [ \-n ]
+.RB [ \-p ]
+.RB [ \-w ]
 .br
 .B /sbin/reboot
-.RB [ \-n ]
-.RB [ \-w ]
 .RB [ \-d ]
 .RB [ \-f ]
 .RB [ \-i ]
+.RB [ \-k ]
+.RB [ \-n ]
+.RB [ \-w ]
 .br
 .B /sbin/poweroff
-.RB [ \-n ]
-.RB [ \-w ]
 .RB [ \-d ]
 .RB [ \-f ]
-.RB [ \-i ]
 .RB [ \-h ]
+.RB [ \-i ]
+.RB [ \-n ]
+.RB [ \-w ]
 .\"}}}
 .\"{{{  Description
 .SH DESCRIPTION
@@ -66,25 +67,27 @@ and 6, that is when the systems shutdown scripts are being run.
 .\"}}}
 .\"{{{  Options
 .SH OPTIONS
-.IP \fB\-n\fP
-Don't sync before reboot or halt. Note that the kernel and storage
-drivers may still sync.  This implies \fB\-d\fP.
-.IP \fB\-w\fP
-Don't actually reboot or halt but only write the wtmp record
-(in the \fI/var/log/wtmp\fP file).
 .IP \fB\-d\fP
 Don't write the wtmp record.
 .IP \fB\-f\fP
 Force halt or reboot, don't call \fBshutdown\fP(8).
+.IP \fB\-h\fP
+Put all hard drives on the system in stand-by mode just before halt or power-off.
 .IP \fB\-i\fP
 Shut down all network interfaces just before \fBhalt\fR or \fBreboot\fR.
 Warning: This may not work on interfaces which do not have an IP address
 and should ideally be handled by a network manager service.
-.IP \fB\-h\fP
-Put all hard drives on the system in stand-by mode just before halt or power-off.
+.IP \fB\-k\fP
+Try to reboot using \fBkexec\fP, if kernel supports it.
+.IP \fB\-n\fP
+Don't sync before reboot or halt. Note that the kernel and storage
+drivers may still sync.  This implies \fB\-d\fP.
 .IP \fB\-p\fP
 When halting the system, switch off the power. This is the default when \fBhalt\fR is
 called as \fBpoweroff\fP.
+.IP \fB\-w\fP
+Don't actually reboot or halt but only write the wtmp record
+(in the \fI/var/log/wtmp\fP file).
 .\"}}}
 .\"{{{  Diagnostics
 .SH DIAGNOSTICS

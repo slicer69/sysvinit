@@ -1,5 +1,5 @@
 sysvinit (3.08) unreleased; urgency=low
-    * Floppym provided patch which causes the halt command
+    * floppym provided patch which causes the halt command
       to call "shutdown -h -H" instead of "shutdown -h" when
       halt is invoked without parameters. This forces the shutdown
       command to set the INIT_HALT variable and assume, unless other
@@ -7,6 +7,11 @@ sysvinit (3.08) unreleased; urgency=low
       machine and INIT_HALT should be set. In other words we
       assume halt wants to halt unless told otherwise.
       Addresses downstream Gentoo bug ID 911257.
+
+    * Applied a patch from floppm which adds kexec option to the halt command.
+
+    * Updated halt documentation and help output to display parameters in
+      alphabetical order.
 
 
 sysvinit (3.07) released; urgency=low

@@ -1,4 +1,4 @@
-sysvinit (3.08) unreleased; urgency=low
+sysvinit (3.08) released; urgency=low
     * floppym provided patch which causes the halt command
       to call "shutdown -h -H" instead of "shutdown -h" when
       halt is invoked without parameters. This forces the shutdown

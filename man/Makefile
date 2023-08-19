@@ -21,8 +21,7 @@ endif
 install: all
 
 clean distclean:
-	for man in $(MANPAGES) ; do \
-	   if [ -f "$$man.orig" ] ; then mv "$$man.orig" "$$man" ; fi \
-	done
-	for lang in $(LANGUAGES) ; do rm -rf "$$lang" "$$lang.po" ; done
-
+ifdef PO4A
+	po4a $(PO4A_OPTS) --rm-translations po/po4a.cfg
+endif
+	rm -f *.po sysvinit-man.pot

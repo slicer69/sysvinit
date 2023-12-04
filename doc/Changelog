@@ -2,7 +2,8 @@ sysvinit (3.09) unreleased; urgency=low
 
     * Patch for man/Makefile to fix the clean recipe.
       Provided by Lucas Nussabaum and Mark Hindley
-
+    * Patch from kraj which allows hddown to compile
+      when musl is the C library.
 
 sysvinit (3.08) released; urgency=low
     * floppym provided patch which causes the halt command

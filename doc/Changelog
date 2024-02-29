@@ -7,6 +7,8 @@ sysvinit (3.09) unreleased; urgency=low
       to the system firmware during the restart. This is
       accomplished with the -m flag.
 
+    * Patch from kraj which allows hddown to compile
+      when musl is the C library.
 
 sysvinit (3.08) released; urgency=low
     * floppym provided patch which causes the halt command

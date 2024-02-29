@@ -17,6 +17,7 @@
  *		-i: shut down all network interfaces.
  *		-p: power down the system (if possible, otherwise halt).
  *		-k: reboot the system using kexec.
+ *              -m: allow user to pass in message to Linux kernel to enable switching partitions
  *
  *		Reboot and halt are both this program. Reboot
  *		is just a link to halt. Invoking the program
@@ -57,6 +58,10 @@
 #include <signal.h>
 #include <stdio.h>
 #include <getopt.h>
+#ifdef __linux__
+#include <linux/reboot.h>
+#include <sys/syscall.h>
+#endif
 #include "reboot.h"
 #include "runlevellog.h"
 
@@ -79,11 +84,12 @@ void usage(void)
 	fprintf(stderr, "usage: %s [-d] [-f] [-h] [-i] [-n] [-w]%s%s\n",
 		progname,
 		strcmp(progname, "halt") ? "" : " [-p]",
-		strcmp(progname, "reboot") ? "" : " [-k]");
+		strcmp(progname, "reboot") ? "" : " [-k] [-m <message>]");
 	fprintf(stderr, "\t-d: don't write a wtmp record.\n");
 	fprintf(stderr, "\t-f: force halt/reboot, don't call shutdown.\n");
 	fprintf(stderr, "\t-h: put harddisks in standby mode.\n");
 	fprintf(stderr, "\t-i: shut down all network interfaces.\n");
+	fprintf(stderr, "\t-m: pass message from user to reboot process.\n");
 	fprintf(stderr, "\t-n: don't sync before halting the system\n");
 	fprintf(stderr, "\t-w: only write a wtmp reboot record and exit.\n");
 	if (!strcmp(progname, "halt"))
@@ -199,6 +205,7 @@ int main(int argc, char **argv)
 	int do_hddown = 0;
 	int do_poweroff = 0;
 	int do_kexec = 0;
+        char *user_message = NULL;
 	int c;
 	char *tm = NULL;
 
@@ -218,7 +225,7 @@ int main(int argc, char **argv)
 	/*
 	 *	Get flags
 	 */
-	while((c = getopt(argc, argv, ":ihdfnpwkt:")) != EOF) {
+	while((c = getopt(argc, argv, ":ihdfm:npwkt:")) != EOF) {
 		switch(c) {
 			case 'n':
 				do_sync = 0;
@@ -245,6 +252,9 @@ int main(int argc, char **argv)
 			case 'k':
 				do_kexec = 1;
 				break;
+                        case 'm':
+                                user_message = optarg;
+                                break;
 			case 't':
 				tm = optarg;
 				break;
@@ -324,6 +334,14 @@ int main(int argc, char **argv)
 		if (do_kexec)
 			init_reboot(BMAGIC_KEXEC);
 
+                /* Regular reboot, but with special user message */
+                #ifdef __linux__
+                if (user_message)
+                {
+                   syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2, 
+                           LINUX_REBOOT_CMD_RESTART2, user_message);
+                }
+                #endif
 		/*
 		 *	Fall through if failed
 		 */

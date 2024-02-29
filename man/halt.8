@@ -39,6 +39,7 @@ halt, reboot, poweroff \- stop the system
 .RB [ \-f ]
 .RB [ \-i ]
 .RB [ \-k ]
+.RB [ \-m\ \<message\>]
 .RB [ \-n ]
 .RB [ \-w ]
 .br
@@ -79,6 +80,11 @@ Warning: This may not work on interfaces which do not have an IP address
 and should ideally be handled by a network manager service.
 .IP \fB\-k\fP
 Try to reboot using \fBkexec\fP, if kernel supports it.
+.IP \fB\-m\fP
+When running on a Linux system, any quoted parameter after the 
+\-m flag will be passed to the firmware to be interpreted at boot
+time. Some systems, like the Raspberry Pi, can use this to switch
+target partitions.
 .IP \fB\-n\fP
 Don't sync before reboot or halt. Note that the kernel and storage
 drivers may still sync.  This implies \fB\-d\fP.

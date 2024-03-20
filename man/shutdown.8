@@ -27,6 +27,8 @@ shutdown \- bring the system down
 .SH SYNOPSIS
 .B /sbin/shutdown
 .RB [ \-akrhPHfFncqQ ]
+.RB [ \-m
+.IR mesg ]
 .RB [ \-t
 .IR sec ]
 .I time
@@ -63,6 +65,13 @@ Don't really shutdown; only send the warning messages to everybody.
 .\"{{{  -r
 .IP \fB\-r\fP
 Reboot after shutdown.
+.\"}}}
+.\"{{{  -m
+.IP \fB\-m mesg\fP
+Specify a message on the command line. When running on a Linux system, 
+any quoted parameter after the -m flag will  be
+passed  to  the firmware to be interpreted at boot time. Some systems, like the
+Raspberry Pi, can use this to switch target partitions.
 .\"}}}
 .\"{{{  -h
 .IP \fB\-h\fP

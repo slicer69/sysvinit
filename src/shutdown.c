@@ -43,6 +43,8 @@
 #include <sys/wait.h>
 #ifdef __linux__
 #include <sys/sysmacros.h>   /* brought in my LFS patch */
+#include <linux/reboot.h>
+#include <sys/syscall.h>
 #endif
 #include <time.h>
 #include <string.h>
@@ -88,6 +90,9 @@ char *sltime = 0;	/* Sleep time			*/
 char newstate[STATELEN];	/* What are we gonna do		*/
 int doself = 0;		/* Don't use init		*/
 int got_alrm = 0;
+#ifdef __linux
+char *user_message = NULL;   /* Optional message to send at reboot */
+#endif
 
 char *clean_env[] = {
 	"HOME=/",
@@ -142,6 +147,7 @@ void usage(void)
 	"\t\t  -a:      use /etc/shutdown.allow\n"
 	"\t\t  -k:      don't really shutdown, only warn.\n"
 	"\t\t  -r:      reboot after shutdown.\n"
+	"\t\t  -m msg:  send system message msg during reboot.\n"
 	"\t\t  -h:      halt after shutdown.\n"
 	"\t\t  -P:      halt action is to turn off power.\n"
         "\t\t           can only be used along with -h flag.\n"
@@ -413,6 +419,16 @@ void fastdown()
 	}
 
 	fprintf(stderr, "Please stand by while rebooting the system.\r\n");
+        /* Regular reboot, but with special user message */
+        #ifdef __linux__
+        if (user_message)
+        {
+            syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+                    LINUX_REBOOT_CMD_RESTART2, user_message);
+        }
+        #endif
+   
+        /* Last option for reboot if nothing else was used */ 
 	init_reboot(BMAGIC_REBOOT);
 	exit(0);
 }
@@ -552,7 +568,7 @@ int main(int argc, char **argv)
         memset(when, '\0', WHEN_SIZE);
 
 	/* Process the options. */
-	while((c = getopt(argc, argv, "HPacqQkrhnfFyt:g:i:")) != EOF) {
+	while((c = getopt(argc, argv, "HPacqQkrm:hnfFyt:g:i:")) != EOF) {
   		switch(c) {
 			case 'H':
 				halttype = "HALT";
@@ -572,6 +588,10 @@ int main(int argc, char **argv)
   			case 'r': /* Automatic reboot */
 				down_level[0] = '6';
   				break;
+                        case 'm':   /* set reboot message */
+                                user_message = optarg;
+                                doself = 1;
+                                break;
   			case 'h': /* Halt after shutdown */
 				down_level[0] = '0';
   				break;

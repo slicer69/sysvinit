@@ -254,6 +254,7 @@ int main(int argc, char **argv)
 				break;
                         case 'm':
                                 user_message = optarg;
+                                do_hard = 1;
                                 break;
 			case 't':
 				tm = optarg;

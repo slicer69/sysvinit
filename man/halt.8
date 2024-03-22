@@ -84,7 +84,8 @@ Try to reboot using \fBkexec\fP, if kernel supports it.
 When running on a Linux system, any quoted parameter after the 
 \-m flag will be passed to the firmware to be interpreted at boot
 time. Some systems, like the Raspberry Pi, can use this to switch
-target partitions.
+target partitions. Please note, this parameter enables -f, forcing
+the reboot command to handle shutting down itself.
 .IP \fB\-n\fP
 Don't sync before reboot or halt. Note that the kernel and storage
 drivers may still sync.  This implies \fB\-d\fP.

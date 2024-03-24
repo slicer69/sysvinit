@@ -7,13 +7,6 @@ sysvinit (3.09) unreleased; urgency=low
       to the system firmware during the restart. This is
       accomplished with the -m flag.
 
-    * On Linux systems, allow shutdown command to pass a message
-      to the system firmware during the restart. This is
-      accomplished with the -m flag. It implies shutdown should call
-      a reboot itself, directly, rather than asking init to perform
-      the shutdown. This is usually not desired, but can be used
-      to pass parameters to the system firmware.
-
     * Patch from kraj which allows hddown to compile
       when musl is the C library.
 

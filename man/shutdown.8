@@ -27,8 +27,6 @@ shutdown \- bring the system down
 .SH SYNOPSIS
 .B /sbin/shutdown
 .RB [ \-akrhPHfFncqQ ]
-.RB [ \-m
-.IR mesg ]
 .RB [ \-t
 .IR sec ]
 .I time
@@ -66,6 +64,7 @@ Don't really shutdown; only send the warning messages to everybody.
 .IP \fB\-r\fP
 Reboot after shutdown.
 .\"}}}
+<<<<<<< HEAD
 .\"{{{  -m
 .IP \fB\-m mesg\fP
 Specify a message on the command line. When running on a Linux system, 
@@ -75,6 +74,8 @@ Raspberry Pi, can use this to switch target partitions.
 Using the \-m flag implies \-n will be used. This is usually not recommended.
 Note: The \-m flag only works when rebooting (when \-r is explicitly specified).
 .\"}}}
+=======
+>>>>>>> parent of a5da211 (On Linux systems, allow shutdown command to pass a message)
 .\"{{{  -h
 .IP \fB\-h\fP
 Halt or power off after shutdown. Usually used with the \fB-P\fP or \fB-H\fP flags,

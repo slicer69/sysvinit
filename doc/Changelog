@@ -1,3 +1,12 @@
+sysvinit (3.10) unreleased; urgency=low
+
+    *  When the user executes "machinectl stop", systemd sends SIGRTMIN+4 to PID 1 
+       in the container, and expects that to initiate a graceful shutdown (power-off).
+       SysV init now catches this signal and initiates a shutdown (shutdown -hP now).
+       - floppym provided patch to accomplish this.
+
+
+
 sysvinit (3.09) released; urgency=low
 
     * Patch for man/Makefile to fix the clean recipe.

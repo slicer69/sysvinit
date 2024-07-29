@@ -1,4 +1,4 @@
-sysvinit (3.10) unreleased; urgency=low
+sysvinit (3.10) released; urgency=low
 
     *  When the user executes "machinectl stop", systemd sends SIGRTMIN+4 to PID 1 
        in the container, and expects that to initiate a graceful shutdown (power-off).

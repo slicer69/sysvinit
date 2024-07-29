@@ -550,6 +550,7 @@ int main(int argc, char **argv)
 #ifndef __linux__	/* BSD-style ioctl needs an argument. */
 	int		on = 1;
 #endif
+        int             prev_eio = 0;
 	int		considx;
 	struct real_cons cons[MAX_CONSOLES];
 	int		num_consoles, consoles_left;
@@ -728,8 +729,15 @@ int main(int argc, char **argv)
 						if (i >= 0) {
 							m -= i;
 							p += i;
+                                                        prev_eio = 0;
 							continue;
 						}
+                                                /* Don't try to write the same data
+                                                 * again if we got EIO twice */
+                                                if ( (errno == EIO) && (prev_eio) ) {
+                                                      m = 0;
+                                                }
+                                                prev_eio = (errno == EIO);
 						/*
 						 *	Handle EIO (somebody hung
 						 *	up our filedescriptor)

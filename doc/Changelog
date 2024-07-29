@@ -5,6 +5,13 @@ sysvinit (3.10) unreleased; urgency=low
        SysV init now catches this signal and initiates a shutdown (shutdown -hP now).
        - floppym provided patch to accomplish this.
 
+    * Fix issue in bootlogd which could cause the service to enter an endless loop
+      (and use too much CPU) when it is able to open a device for writing, but not actually
+      able to write to it. This resulted in bootlogd closing and re-opening the device over
+      and over. Now bootlogd should simply fail gracefully when it cannot write to an open
+      file/device.
+
+    * Fix formatting in shutdown.8 manual page. Cleaned up whitespace and special characters.
 
 
 sysvinit (3.09) released; urgency=low

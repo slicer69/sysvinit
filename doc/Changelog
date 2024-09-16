@@ -1,3 +1,9 @@
+sysvinit (3.11) unreleased; urgency=low
+
+    * Some escape characters were included in the inittab manual page, but not displayed
+    by the "man" command because they were not (ironically) properly escaped. This has been
+    fixed.
+
 sysvinit (3.10) released; urgency=low
 
     *  When the user executes "machinectl stop", systemd sends SIGRTMIN+4 to PID 1 

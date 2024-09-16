@@ -4,6 +4,10 @@ sysvinit (3.11) unreleased; urgency=low
     by the "man" command because they were not (ironically) properly escaped. This has been
     fixed.
 
+    * Enabled chaining commands together in the inittab file. This allows the admin
+      to run commands like "task1 && task2" or "task2 || task2" from the inittab file.
+
+
 sysvinit (3.10) released; urgency=low
 
     *  When the user executes "machinectl stop", systemd sends SIGRTMIN+4 to PID 1 

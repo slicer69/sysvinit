@@ -1113,8 +1113,11 @@ pid_t spawn(CHILD *ch, int *res)
   	/* Give command line to shell */
   	args[1] = SHELL;
   	args[2] = "-c";
-  	strcpy(buf, "exec ");
+  	/* 
+        strcpy(buf, "exec ");
   	strncat(buf, proc, sizeof(buf) - strlen(buf) - 1);
+        */
+        strncpy(buf, proc, sizeof(buf) - strlen(buf) - 1);
   	args[3] = buf;
   	args[4] = NULL;
   } else {

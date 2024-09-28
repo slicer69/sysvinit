@@ -7,6 +7,8 @@ sysvinit (3.11) unreleased; urgency=low
     * Enabled chaining commands together in the inittab file. This allows the admin
       to run commands like "task1 && task2" or "task2 || task2" from the inittab file.
 
+    * Fix typoes in halt manual page. Fixes provided by Bjarni Ingi Gislason.
+
 
 sysvinit (3.10) released; urgency=low
 

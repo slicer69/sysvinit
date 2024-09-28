@@ -39,7 +39,7 @@ halt, reboot, poweroff \- stop the system
 .RB [ \-f ]
 .RB [ \-i ]
 .RB [ \-k ]
-.RB [ \-m\ \<message\>]
+.RB [ \-m\ <message> ]
 .RB [ \-n ]
 .RB [ \-w ]
 .br
@@ -59,9 +59,9 @@ power-off the system.
 .PP
 If \fBhalt\fP or \fBreboot\fP is called when the system is
 \fInot\fP in runlevel \fB0\fP or \fB6\fP, in other words when it's running
-normally, \fBshutdown\fP will be invoked instead (with the \fB-h\fP
-or \fB-r\fP flag). For more info see the \fBshutdown\fP(8)
-manpage.
+normally, \fBshutdown\fP will be invoked instead (with the \fB\-h\fP
+or \fB\-r\fP flag).
+For more info see the \fBshutdown\fP(8) manpage.
 .PP
 The rest of this manpage describes the behavior in runlevels 0
 and 6, that is when the systems shutdown scripts are being run.
@@ -73,7 +73,8 @@ Don't write the wtmp record.
 .IP \fB\-f\fP
 Force halt or reboot, don't call \fBshutdown\fP(8).
 .IP \fB\-h\fP
-Put all hard drives on the system in stand-by mode just before halt or power-off.
+Put all hard drives on the system in stand-by mode
+just before halt or power-off.
 .IP \fB\-i\fP
 Shut down all network interfaces just before \fBhalt\fR or \fBreboot\fR.
 Warning: This may not work on interfaces which do not have an IP address
@@ -81,17 +82,19 @@ and should ideally be handled by a network manager service.
 .IP \fB\-k\fP
 Try to reboot using \fBkexec\fP, if kernel supports it.
 .IP \fB\-m\fP
-When running on a Linux system, any quoted parameter after the 
-\-m flag will be passed to the firmware to be interpreted at boot
-time. Some systems, like the Raspberry Pi, can use this to switch
-target partitions. Please note, this parameter enables -f, forcing
-the reboot command to handle shutting down itself.
+When running on a Linux system, any quoted parameter after the
+\-m flag will be passed to the firmware to be interpreted at boot time.
+Some systems, like the Raspberry Pi,
+can use this to switch target partitions.
+Please note, this parameter enables \-f,
+forcing the reboot command to handle shutting down itself.
 .IP \fB\-n\fP
-Don't sync before reboot or halt. Note that the kernel and storage
-drivers may still sync.  This implies \fB\-d\fP.
+Don't sync before reboot or halt.
+Note that the kernel and storage drivers may still sync.
+This implies \fB\-d\fP.
 .IP \fB\-p\fP
-When halting the system, switch off the power. This is the default when \fBhalt\fR is
-called as \fBpoweroff\fP.
+When halting the system, switch off the power.
+This is the default when \fBhalt\fR is called as \fBpoweroff\fP.
 .IP \fB\-w\fP
 Don't actually reboot or halt but only write the wtmp record
 (in the \fI/var/log/wtmp\fP file).
@@ -103,24 +106,29 @@ If you're not the superuser, you will get the message `must be superuser'.
 .\"{{{  Notes
 .SH NOTES
 Under older \fBsysvinit\fP releases, \fBreboot\fP and \fBhalt\fP should
-never be called directly. From release 2.74 on \fBhalt\fP and \fBreboot\fP
-invoke \fBshutdown\fP(8) if the system is not in runlevel 0 or 6. This
-means that if \fBhalt\fP or \fBreboot\fP cannot find out the current
-runlevel (for example, when \fI/var/run/utmp\fP hasn't been initialized
-correctly and \fI/var/run/runlevel\fR does not exist) \fBshutdown\fP will be called, 
+never be called directly.
+From release 2.74 on,
+\fBhalt\fP and \fBreboot\fP invoke \fBshutdown\fP(8)
+if the system is not in runlevel 0 or 6.
+This means that if \fBhalt\fP or \fBreboot\fP cannot find out the current
+runlevel
+(for example, when \fI/var/run/utmp\fP hasn't been initialized correctly and
+\fI/var/run/runlevel\fR does not exist)
+\fBshutdown\fP will be called,
 which might not be what you want.
-Use the \fB-f\fP flag if you want to do a hard \fBhalt\fP or \fBreboot\fP.
+Use the \fB\-f\fP flag if you want to do a hard \fBhalt\fP or \fBreboot\fP.
 .PP
-The \fB-h\fP flag puts all hard disks in standby mode just before halt
-or power-off. Right now this is only implemented for IDE drives. A side
-effect of putting the drive in stand-by mode is that the write cache
-on the disk is flushed. This is important for IDE drives, since the
-kernel doesn't flush the write cache itself before power-off.
+The \fB\-h\fP flag puts all hard disks in standby mode just before halt
+or power-off.
+Right now this is only implemented for IDE drives.
+A side effect of putting the drive in stand-by mode is
+that the write cache on the disk is flushed.
+This is important for IDE drives,
+since the kernel doesn't flush the write cache itself before power-off.
 .PP
 The \fBhalt\fP program uses \fI/proc/ide/hd*\fR to find all IDE disk devices,
 which means that \fI/proc\fP needs to be mounted when \fBhalt\fP or
-\fBpoweroff\fP is called or the \fB-h\fP switch will do nothing.
-.PP
+\fBpoweroff\fP is called or the \fB\-h\fP switch will do nothing.
 .\"}}}
 .\"{{{  Author
 .SH AUTHOR

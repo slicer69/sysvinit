@@ -1,4 +1,4 @@
-sysvinit (3.11) unreleased; urgency=low
+sysvinit (3.11) released; urgency=low
 
     * Some escape characters were included in the inittab manual page, but not displayed
     by the "man" command because they were not (ironically) properly escaped. This has been

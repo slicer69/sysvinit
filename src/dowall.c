@@ -191,6 +191,8 @@ void wall(const char *text, int remote)
 	/* Get the time */
 	time(&t);
 	date = ctime(&t);
+        if (! date)
+           date = " ";
 	for(p = date; *p && *p != '\n'; p++)
 		;
 	*p = 0;

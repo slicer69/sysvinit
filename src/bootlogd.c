@@ -417,7 +417,9 @@ void writelog(FILE *fp, unsigned char *ptr, int len, int print_escape_characters
 			char *s;
 			time(&t);
 			s = ctime(&t);
-			fprintf(fp, "%.24s: ", s);
+			if (! s)
+                           s = " ";
+                        fprintf(fp, "%.24s: ", s);
 			dosync = 1;
 			first_run = 0;
 		}

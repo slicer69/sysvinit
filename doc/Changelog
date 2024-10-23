@@ -1,3 +1,16 @@
+sysvinit (3.12) unreleased; urgency=low
+
+    * There were instances of the ctime() function being called in multiple files without
+      checking the return value (can be NULL) and without checking the length of the
+      returned information. While there _should_ never be a case where ctime() fails
+      assuming success and length of returned string isn't ideal (or future-proof).
+      We now check the return value of ctime() in bootlogd, dowall, last, logsave, and
+      shutdown. Where no valid value is returned we supply a dummy value (usually a
+      space in place of the expected time stamp). We also no longer assume returned string
+      is at least 11-16 characters.
+
+
+
 sysvinit (3.11) released; urgency=low
 
     * Some escape characters were included in the inittab manual page, but not displayed

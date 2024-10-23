@@ -278,7 +278,18 @@ char *getbtmp()
 char *showdate()
 {
 	char *s = ctime(&lastdate);
-	s[16] = 0;
+        char *p;
+
+	if (s)
+        {
+          /* s[16] = 0; */
+          /* make sure string ends with a NULL. Do not assume string is 16 characters long. */
+          for (p = s; *p && *p != '\n'; p++) 
+             ;
+          *p = '\0';
+        }
+        else
+          s = " ";
 	return s;
 }
 
@@ -371,6 +382,7 @@ int list(struct utmp *p, time_t t, int what)
 	char		utline[UT_LINESIZE+1];
 	char		domain[256];
 	char		*s, **walk;
+        char            *my_ctime;
 	int		mins, hours, days;
 	int		r, len;
 
@@ -401,13 +413,16 @@ int list(struct utmp *p, time_t t, int what)
 	 *	Calculate times
 	 */
 	tmp = (time_t)p->ut_time;
-	strncpy(logintime, ctime(&tmp), sizeof(logintime));
+        my_ctime = ctime(&tmp);
+        if (! my_ctime)
+           my_ctime = "             ";
+	strncpy(logintime, my_ctime, sizeof(logintime));
 	logintime[sizeof(logintime)-1] = 0; /* enforce null termination */
 	if (fulltime)
-		sprintf(logouttime, "- %s", ctime(&t));
+		sprintf(logouttime, "- %s", my_ctime);
 	else {
 		logintime[16] = 0;
-		sprintf(logouttime, "- %s", ctime(&t) + 11);
+		sprintf(logouttime, "- %s", my_ctime + 11);
 		logouttime[7] = 0;
 	}
 	secs = t - p->ut_time;
@@ -638,7 +653,7 @@ int main(int argc, char **argv)
   int lastb = 0;	/* Is this 'lastb' ? */
   int extended = 0;	/* Lots of info. */
   char *altufile = NULL;/* Alternate wtmp */
-
+  char *my_ctime;
   time_t until = 0;	/* at what time to stop parsing the file */
 
   progname = mybasename(argv[0]);
@@ -959,7 +974,10 @@ int main(int argc, char **argv)
 		down = 0;
 	}
   }
-  printf("\n%s begins %s", mybasename(ufile), ctime(&begintime));
+  my_ctime = ctime(&begintime);
+  if (! my_ctime)
+     my_ctime = " ";
+  printf("\n%s begins %s", mybasename(ufile), my_ctime);
 
   fclose(fp);
 

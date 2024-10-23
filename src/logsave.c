@@ -257,6 +257,7 @@ int main(int argc, char **argv)
 {
 	int	c, pid, rc;
 	char	*outfn, **cpp;
+        char    *ctime_output;
 	int	openflags = O_CREAT|O_WRONLY|O_TRUNC;
 	int	send_flag = SEND_LOG;
 	int	do_stdin;
@@ -298,7 +299,10 @@ int main(int argc, char **argv)
 	}
 	send_output("\n", 0, send_flag);
 	t = time(0);
-	send_output(ctime(&t), 0, send_flag);
+        ctime_output = ctime(&t);
+        if (! ctime_output)
+           ctime_output = " ";
+	send_output(ctime_output, 0, send_flag);
 	send_output("\n", 0, send_flag);
 
 	if (do_stdin)
@@ -308,7 +312,10 @@ int main(int argc, char **argv)
 
 	send_output("\n", 0, send_flag);
 	t = time(0);
-	send_output(ctime(&t), 0, send_flag);
+        ctime_output = ctime(&t);
+        if (! ctime_output)
+           ctime_output = " ";
+	send_output(ctime_output, 0, send_flag);
 	send_output("----------------\n", 0, send_flag);
 
 	if (outbuf) {

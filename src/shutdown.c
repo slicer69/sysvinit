@@ -259,12 +259,15 @@ void donologin(int min)
 {
 	FILE *fp;
 	time_t t;
+        char *ctime_output;
 
 	time(&t);
 	t += 60 * min;
-
+        ctime_output = ctime(&t);
+        if (! ctime_output)
+            ctime_output = "soon";
 	if ((fp = fopen(NOLOGIN, "w")) != NULL) {
-  		fprintf(fp, "\rThe system is going down on %s\r\n", ctime(&t));
+  		fprintf(fp, "\rThe system is going down on %s\r\n", ctime_output);
   		if (message[0]) fputs(message, fp);
   		fclose(fp);
 	}

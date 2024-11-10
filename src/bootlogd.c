@@ -41,11 +41,8 @@
 #include <getopt.h>
 #include <dirent.h>
 #include <fcntl.h>
-#ifdef __linux__
+#if defined(__linux__) || defined(__GLIBC__)
 #include <pty.h>
-#endif
-
-#if defined (__linux__) || defined(__GNU__)
 #include <sys/sysmacros.h>
 #endif
 

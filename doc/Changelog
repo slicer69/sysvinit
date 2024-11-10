@@ -9,6 +9,10 @@ sysvinit (3.12) unreleased; urgency=low
       space in place of the expected time stamp). We also no longer assume returned string
       is at least 11-16 characters.
 
+    * Re-commit flexible Makefile for GoboLinux.
+
+    * Make sure pty.h and sys/sysmacros.h are included when building bootlogd on
+      systems with glibc.
 
 
 sysvinit (3.11) released; urgency=low

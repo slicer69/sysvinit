@@ -209,9 +209,9 @@ install:	all
 		for i in $(USRBIN); do \
 			$(INSTALL_EXEC) $$i $(ROOT)$(bindir)/ ; \
 		done
-		# $(INSTALL_DIR) $(ROOT)/etc/
-		$(INSTALL_DIR) $(ROOT)/etc/inittab.d
-		# $(INSTALL_EXEC) ../doc/initscript.sample $(ROOT)/etc/
+		# $(INSTALL_DIR) $(sysconfdir)/
+		$(INSTALL_DIR) $(sysconfdir)/inittab.d
+		# $(INSTALL_EXEC) ../doc/initscript.sample $(sysconfdir)/
 		ln -sf halt $(ROOT)$(base_sbindir)/reboot
 		ln -sf halt $(ROOT)$(base_sbindir)/poweroff
 		ln -sf init $(ROOT)$(base_sbindir)/telinit

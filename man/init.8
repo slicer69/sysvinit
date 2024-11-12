@@ -26,14 +26,14 @@ init, telinit \- process control initialization
 .\"{{{  Synopsis
 .SH SYNOPSIS
 .B /sbin/init
-.RB [ " -a " ]
-.RB [ " -s " ]
-.RB [ " -b " ]
+.RB [ " \-a " ]
+.RB [ " \-s " ]
+.RB [ " \-b " ]
 [ \fB\-z\fP \fIxxx\fP ]
 .RB [ " 0123456Ss " ]
 .br
 .B /sbin/init
-.RB [ " --version " ]
+.RB [ " \-\-version " ]
 .br
 .B /sbin/telinit
 [ \fB\-t\fP \fISECONDS\fP ]
@@ -52,14 +52,14 @@ from a script stored in the file \fI/etc/inittab\fR (see
 \fBinittab\fR(5)).  This file usually has entries which cause \fBinit\fR
 to spawn \fBgetty\fRs on each line that users can log in.  It also
 controls autonomous processes required by any particular system.
-.PP
+.
 .\"{{{ Runlevels
 .SH RUNLEVELS
 A \fIrunlevel\fR is a software configuration of the system which allows
 only a selected group of processes to exist.  The processes spawned by
 \fBinit\fR for each of these runlevels are defined in the
 \fI/etc/inittab\fR file.  \fBinit\fR can be in one of eight runlevels:
-\fB0\(en6\fP and \fBS\fP (a.k.a. \fBs\fP).  The runlevel is
+\fB0\(en6\fP and \fBS\fP (a.k.a., \fBs\fP).  The runlevel is
 changed by having a privileged user run \fBtelinit\fP, which sends
 appropriate signals to \fBinit\fP, telling it which runlevel to change
 to.
@@ -83,38 +83,40 @@ the administrator performs maintenance and then reboots the system.
 For more information,
 see the manpages for \fBshutdown\fP(8) and \fBinittab\fP(5).
 .PP
-Runlevels 7-9 are also valid, though not really documented. This is
-because "traditional" Unix variants don't use them.
+Runlevels 7\(en9 are also valid, though not really documented.
+This is because "traditional" Unix variants don't use them.
 .PP
 Runlevels \fIS\fP and \fIs\fP are the same.
 Internally they are aliases for the same runlevel.
 .\"}}}
-.PP
+.
 .SH BOOTING
 After \fBinit\fP is invoked as the last step of the kernel boot sequence,
 it looks for the file \fI/etc/inittab\fP to see if there is an entry of the
-type \fBinitdefault\fP (see \fBinittab\fR(5)). The \fBinitdefault\fP entry
-determines the initial runlevel of the system.  If there is no such
-entry (or no \fI/etc/inittab\fR at all), a runlevel must be
-entered at the system console.
+type \fBinitdefault\fP (see \fBinittab\fR(5)).
+The \fBinitdefault\fP entry determines the initial runlevel of the system.
+If there is no such entry
+(or no \fI/etc/inittab\fR at all),
+a runlevel must be entered at the system console.
 .PP
 Runlevel \fBS\fP or \fBs\fP initialize the system
 and do not require an \fI/etc/inittab\fP file.
 .PP
 In single user mode, \fB/sbin/sulogin\fP is invoked on \fI/dev/console\fP.
 .PP
-When entering single user mode, \fBinit\fP initializes the consoles
-\fBstty\fP settings to sane values. Clocal mode is set. Hardware
-speed and handshaking are not changed.
+When entering single user mode,
+\fBinit\fP initializes the consoles \fBstty\fP settings to sane values.
+Clocal mode is set.
+Hardware speed and handshaking are not changed.
 .PP
 When entering a multi-user mode for the first time, \fBinit\fP performs the
 \fBboot\fP and \fBbootwait\fP entries to allow file systems to be
 mounted before users can log in.  Then all entries matching the runlevel
 are processed.
 .PP
-When starting a new process, \fBinit\fP first checks whether the file
-\fI/etc/initscript\fP exists. If it does, it uses this script to
-start the process.
+When starting a new process,
+\fBinit\fP first checks whether the file \fI/etc/initscript\fP exists.
+If it does, it uses this script to start the process.
 .PP
 Each time a child terminates, \fBinit\fP records the fact and the reason
 it died in \fI/var/run/utmp\fP and \fI/var/log/wtmp\fP,
@@ -122,34 +124,37 @@ provided that these files exist.
 .SH CHANGING RUNLEVELS
 After it has spawned all of the processes specified, \fBinit\fP waits
 for one of its descendant processes to die, a powerfail signal, or until
-it is signaled by \fBtelinit\fP to change the system's runlevel.  
+it is signaled by \fBtelinit\fP to change the system's runlevel.
 When one of the above three conditions occurs, it re-examines
 the \fI/etc/inittab\fP file.  New entries can be added to this file at
 any time.  However, \fBinit\fP still waits for one of the above three
-conditions to occur.  To provide for an instantaneous response, the
-\fBtelinit Q\fP or \fBq\fP command can wake up \fBinit\fP to re-examine (reload) the
-\fI/etc/inittab\fP file.
+conditions to occur.
+To provide for an instantaneous response,
+the \fBtelinit Q\fP or \fBq\fP command can wake up \fBinit\fP to re-examine
+(reload) the \fI/etc/inittab\fP file.
 .PP
 If \fBinit\fP is not in single user mode and receives a powerfail
-signal (SIGPWR), it reads the file \fI/etc/powerstatus\fP. It then starts
-a command based on the contents of this file:
+signal (SIGPWR),
+it reads the file \fI/etc/powerstatus\fP.
+It then starts a command based on the contents of this file:
 .IP F(AIL)
-Power is failing, UPS is providing the power. Execute the \fBpowerwait\fP
-and \fBpowerfail\fP entries.
+Power is failing,
+UPS is providing the power.
+Execute the \fBpowerwait\fP and \fBpowerfail\fP entries.
 .IP O(K)
 The power has been restored, execute the \fBpowerokwait\fP entries.
 .IP L(OW)
-The power is failing and the UPS has a low battery. Execute the
-\fBpowerfailnow\fP entries.
+The power is failing and the UPS has a low battery.
+Execute the \fBpowerfailnow\fP entries.
 .PP
 If \fI/etc/powerstatus\fR doesn't exist or contains anything else then the
 letters \fBF\fP, \fBO\fP or \fBL\fP, \fBinit\fR will behave as if it has read
 the letter \fBF\fP.
 .PP
-Usage of \fBSIGPWR\fP and \fI/etc/powerstatus\fP is discouraged. Someone
-wanting to interact with \fBinit\fP should use the \fI/run/initctl\fP
-control channel - see the \fBinitctl\fR(5) manual page for more documentation
-about this.
+Usage of \fBSIGPWR\fP and \fI/etc/powerstatus\fP is discouraged.
+Someone wanting to interact with \fBinit\fP should use the \fI/run/initctl\fP
+control channel \(en
+see the \fBinitctl\fR(5) manual page for more documentation about this.
 .PP
 When \fBinit\fP is requested to change the runlevel, it sends the
 warning signal \fBSIGTERM\fP to all processes that are undefined
@@ -177,18 +182,19 @@ tell \fBinit\fP to re-examine the \fI/etc/inittab\fP file.
 .IP "\fBS\fP or \fBs\fP"
 tell \fBinit\fP to switch to single user mode.
 .IP "\fBU\fP or \fBu\fP"
-tell \fBinit\fP to re-execute itself (preserving the state). No re-examining of 
-\fI/etc/inittab\fP file happens. Runlevel should be one of
-\fBSs0123456\fP
+tell \fBinit\fP to re-execute itself (preserving the state).
+No re-examining of \fI/etc/inittab\fP file happens.
+Runlevel should be one of \fBSs0123456\fP
 otherwise request would be silently ignored.
 .PP
 \fBtelinit\fP can tell \fBinit\fP how long it should wait
-between sending processes the \fBSIGTERM\fR and \fBSIGKILL\fR signals.  The default
-is 3 seconds, but this can be changed with the \fB-t\fP option.
+between sending processes the \fBSIGTERM\fR and \fBSIGKILL\fR signals.
+The default is 3 seconds,
+but this can be changed with the \fB\-t\fP option.
 .PP
-\fBtelinit -e\fP tells \fBinit\fP to change the environment
+\fBtelinit \-e\fP tells \fBinit\fP to change the environment
 for processes it spawns.
-The argument of \fB-e\fP is either of the form \fIVAR\fP=\fIVAL\fP
+The argument of \fB\-e\fP is either of the form \fIVAR\fP=\fIVAL\fP
 which sets variable \fIVAR\fP to value \fIVAL\fP,
 or of the form \fIVAR\fP
 (without an equality sign)
@@ -199,7 +205,7 @@ privileges.
 .PP
 The \fBinit\fP binary checks if it is \fBinit\fP or \fBtelinit\fP by looking
 at its \fIprocess id\fP; the real \fBinit\fP's process id is always \fB1\fP.
-From this it follows that instead of calling \fBtelinit\fP one can also
+\&From this it follows that instead of calling \fBtelinit\fP one can also
 just use \fBinit\fP instead as a shortcut.
 .\"}}}
 .\"}}}
@@ -208,93 +214,107 @@ just use \fBinit\fP instead as a shortcut.
 .IP \fBPATH\fP
 \fI/bin:/usr/bin:/sbin:/usr/sbin\fP
 .IP \fBINIT_VERSION\fP
-As the name says. Useful to determine if a script runs directly from \fBinit\fP.
+As the name says.
+Useful to determine if a script runs directly from \fBinit\fP.
 .IP \fBRUNLEVEL\fP
 The current system runlevel.
 .IP \fBPREVLEVEL\fP
 The previous runlevel (useful after a runlevel switch).
 .IP \fBCONSOLE\fP
-The system console. This is really inherited from the kernel; however
+The system console.
+This is really inherited from the kernel; however
 if it is not set \fBinit\fP will set it to \fI/dev/console\fP by default.
 .SH BOOTFLAGS
 It is possible to pass a number of flags to \fBinit\fP from the
-boot monitor (eg. LILO or GRUB). \fBinit\fP accepts the following flags:
+boot monitor (e.g., LILO or GRUB).
+\fBinit\fP accepts the following flags:
 .TP 0.5i
-.B -s, S, single
-Single user mode boot. In this mode \fI/etc/inittab\fP is
-examined and the bootup rc scripts are usually run before
-the single user mode shell is started.
-.PP
+.B \-s, S, single
+Single user mode boot.
+In this mode \fI/etc/inittab\fP is examined and
+the bootup rc scripts are usually run before the single user mode shell is
+started.
+.
 .TP 0.5i
-.B 1-5
+.B 1\(en5
 Runlevel to boot into.
-.PP
+.
 .TP 0.5i
-.B -b, emergency
+.B \-b, emergency
 Boot directly into a single user shell without running any
 other startup scripts.
-.PP
+.
 .TP 0.5i
-.B -a, auto
+.B \-a, auto
 The LILO boot loader adds the word "auto" to the command line if it
 booted the kernel with the default command line (without user intervention).
 If this is found \fBinit\fP sets the "AUTOBOOT" environment
-variable to "yes". Note that you cannot use this for any security
-measures - of course the user could specify "auto" or \fB-a\fR on the
+variable to "yes".
+Note that you cannot use this for any security measures \(en
+of course the user could specify "auto" or \fB\-a\fR on the
 command line manually.
-.PP
+.
 .TP 0.5i
-.BI "-z " xxx
-The argument to \fB-z\fP is ignored. You can use this to expand the command
-line a bit, so that it takes some more space on the stack. \fBinit\fP
-can then manipulate the command line so that \fBps\fP(1) shows
-the current runlevel.
-.PP
+.BI "\-z " xxx
+The argument to \fB\-z\fP is ignored.
+You can use this to expand the command line a bit,
+so that it takes some more space on the stack.
+\fBinit\fP can then manipulate the command line
+so that \fBps\fP(1) shows the current runlevel.
+.
 .TP 0.5i
 .B \-\-version
 This argument, when used on its own, displays the current version of \fBinit\fP
-to the console/stdout. It is a quick way to determine which \fBinit\fP software and
-version is being used. After the version information is displayed, \fBinit\fP
-immediately exits with a return code of zero. 
-.PP
+to the console/stdout.
+It is a quick way to determine which \fBinit\fP software and
+version is being used.
+After the version information is displayed,
+\fBinit\fP immediately exits with a return code of zero.
+.
 .SH INTERFACE
 \fBinit\fP listens on a \fIfifo\fP in /dev, \fI/run/initctl\fP, for messages.
-\fBTelinit\fP uses this to communicate with \fBinit\fP. The interface is not
-very well documented or finished. Those interested should study the
-\fIinitreq.h\fP file in the \fIsrc/\fP subdirectory of the \fBinit\fP
-source code tar archive.
+\fBTelinit\fP uses this to communicate with \fBinit\fP.
+The interface is not very well documented or finished.
+Those interested should study the \fIinitreq.h\fP file in the \fIsrc/\fP
+subdirectory of the \fBinit\fP source code tar archive.
 .SH SIGNALS
 Init reacts to several signals:
 .TP 0.5i
 .B SIGHUP
 Has the same effect as \fBtelinit q\fP.
-.PP
+.
 .TP 0.5i
 .B SIGUSR1
-On receipt of this signals, \fBinit\fP closes and re-opens its control fifo,
-\fB/run/initctl\fP. Useful for bootscripts when \fI/dev\fP is remounted.
+On receipt of this signals,
+\fBinit\fP closes and re-opens its control fifo,
+\fB/run/initctl\fP.
+Useful for bootscripts when \fI/dev\fP is remounted.
 .TP 0.5i
 .B SIGUSR2
-When \fBinit\fP receives \fBSIGUSR2\fR, \fBinit\fP closes and leaves the control fifo,
-\fB/run/initctl\fP, closed. This may be used to make sure \fBinit\fP is not
-holding open any files. However, it also prevents \fBinit\fP from switching
-runlevels. Which means commands like shutdown no longer work.
+When \fBinit\fP receives \fBSIGUSR2\fR,
+\fBinit\fP closes and leaves the control fifo,
+\fB/run/initctl\fP, closed.
+This may be used to make sure \fBinit\fP is not holding open any files.
+However, it also prevents \fBinit\fP from switching runlevels.
+Which means commands like shutdown no longer work.
 The fifo can be re-opened by sending \fBinit\fP the \fBSIGUSR1\fR signal.
 .TP 0.5i
 .B SIGINT
 Normally the kernel sends this signal to \fBinit\fP when CTRL-ALT-DEL is
-pressed. It activates the \fIctrlaltdel\fP action.
+pressed.
+It activates the \fIctrlaltdel\fP action.
 .TP 0.5i
 .B SIGWINCH
 The kernel sends this signal when the \fIKeyboardSignal\fP key is hit.
 It activates the \fIkbrequest\fP action.
 \"{{{  Conforming to
 .SH CONFORMING TO
-\fBinit\fP is compatible with the System V init. It works closely
-together with the scripts in the directories
+\fBinit\fP is compatible with the System V init.
+It works closely together with the scripts in the directories
 \fI/etc/init.d\fP and \fI/etc/rc{runlevel}.d\fP.
-If your system uses this convention, there should be a \fIREADME\fP
-file in the directory \fI/etc/init.d\fP explaining how these scripts work.
+If your system uses this convention,
+there should be a \fIREADME\fP file in the directory \fI/etc/init.d\fP
+explaining how these scripts work.
 .\"}}}
 .\"{{{  Files
 .SH FILES

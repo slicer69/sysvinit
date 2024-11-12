@@ -17,6 +17,9 @@ sysvinit (3.12) unreleased; urgency=low
     * Fixed typos and syntax in manual page for init.8.
       Edits provided by : Bjarni Ingi Gislason.
 
+    * Allow setting of location of the /usr directory in src/Makefile.
+      This is handled by the usrdir variable.
+
 
 sysvinit (3.11) released; urgency=low
 

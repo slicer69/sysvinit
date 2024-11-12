@@ -79,12 +79,13 @@ endif
 INSTALL_DIR	= install -m 755 -d
 
 ROOT         ?=
+usrdir       ?= /usr
 base_bindir  ?= /bin
 base_sbindir ?= /sbin
-bindir       ?= /usr/bin
+bindir       ?= /$(usrdir)/bin
 sysconfdir   ?= /etc
-includedir   ?= /usr/include
-mandir       ?= /usr/share/man
+includedir   ?= /$(usrdir)/include
+mandir       ?= /$(usrdir)/share/man
 
 ifeq ($(WITH_SELINUX),yes)
   SELINUX_DEF	=  -DWITH_SELINUX
@@ -97,12 +98,12 @@ else
 endif
 
 # Additional libs for GNU libc.
-ifneq ($(wildcard $(ROOT)/usr/lib*/libcrypt.*),)
+ifneq ($(wildcard $(ROOT)/$(usrdir)/lib*/libcrypt.*),)
   SULOGINLIBS	+= -lcrypt
 endif
 
 # Additional libs for GNU libc / multiarch on Debian based systems.
-ifneq ($(wildcard $(ROOT)/usr/lib/*/libcrypt.*),)
+ifneq ($(wildcard $(ROOT)/$usrdir)/lib/*/libcrypt.*),)
 ifneq ($(findstring -lcrypt, $(SULOGINLIBS)), -lcrypt)
   SULOGINLIBS	+= -lcrypt
 endif

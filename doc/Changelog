@@ -20,6 +20,9 @@ sysvinit (3.12) unreleased; urgency=low
     * Allow setting of location of the /usr directory in src/Makefile.
       This is handled by the usrdir variable.
 
+    * Make sure src/Makefile uses sysconfdir (/etc by default) when installing
+      configuration files.
+
 
 sysvinit (3.11) released; urgency=low
 

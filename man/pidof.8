@@ -17,7 +17,7 @@
 .\"
 .TH PIDOF 8 "01 Sep 1998" "sysvinit " "Linux System Administrator's Manual"
 .SH NAME
-pidof - find the process ID of a running program
+pidof \- find the process ID of a running program
 .SH SYNOPSIS
 .B pidof
 .RB [ \-s ]
@@ -26,21 +26,23 @@ pidof - find the process ID of a running program
 .RB [ \-x ]
 .RB [ \-z ]
 .RB [ \-o
-.IR omitpid[,omitpid...] ]
+.IR omitpid [ \fB,\fPomitpid "...\&]]"
 .RB [ \-o
-.IR omitpid[,omitpid...]... ]
+.IR omitpid [ \fB,\fPomitpid ...]...\&]
 .RB [ \-d
 .IR sep ]
 .I program
-.RI [ program... ]
+.RI [ program "...]"
 .SH DESCRIPTION
 .B pidof
-finds the process id's (PIDs) of the named programs. It prints those
-id's on the standard output. This program is on some systems used in
-run-level change scripts, especially when the system has a
-\fISystem-V\fP like \fIrc\fP structure. In that case these scripts are
-located in \fI/etc/rc?.d\fP, where ? is the runlevel. If the system has
-a \fBstart-stop-daemon\fP(8) program that should be used instead.
+finds the process id's (PIDs) of the named programs.
+It prints those id's on the standard output.
+This program is on some systems used in run-level change scripts,
+especially when the system has a \fISystem-V\fP like \fIrc\fP structure.
+In that case these scripts are located in \fI/etc/rc?.d\fP,
+where ? is the runlevel.
+If the system has a \fBstart-stop-daemon\fP(8) program
+that should be used instead.
 .SH OPTIONS
 .IP \fB\-s\fP
 Single shot - this instructs the program to only return one \fIpid\fP.
@@ -58,25 +60,31 @@ Instead of using this option the variable
 .B PIDOF_NETFS
 may be set and exported.
 .IP \fB\-q\fP
-Do not display matched PIDs to standard out. Simply exit with
-a status of true or false to indicate whether a matching PID was found.
+Do not display matched PIDs to standard out.
+Simply exit with a status of true or false to indicate whether a matching
+PID was found.
 .IP \fB\-x\fP
 Scripts too - this causes the program to also return process id's of
 shells running the named scripts.
 .IP \fB\-z\fP
-Try to detect processes which are stuck in zombie (Z)
-status. Usually these processes are skipped as trying to deal with them can cause
-pidof or related tools to hang. Note: In the past pidof would ignore processes
-in the uninterruptable state (D), unless the \fB-z\fP flag was specified. This is no
-longer the case. The \fBpidof\fP program will find and report processes in the D state
-whether \fB-z\fP is specified or not.
-.IP "-d \fIsep\fP"
-Tells \fIpidof\fP to use \fIsep\fP as an output separator if more than one PID
-is shown. The default separator is a space.
-.IP "-o \fIomitpid\fP"
-Tells \fIpidof\fP to omit processes with that process id. The special
-pid \fB%PPID\fP can be used to name the parent process of the \fBpidof\fP
-program, in other words the calling shell or shell script.
+Try to detect processes which are stuck in zombie (Z) status.
+Usually these processes are skipped
+as trying to deal with them can cause pidof or related tools to hang.
+Note: In the past pidof would ignore processes in the uninterruptable state
+(D),
+unless the \fB\-z\fP flag was specified.
+This is no longer the case.
+The \fBpidof\fP program will find and report processes in the D state
+whether \fB\-z\fP is specified or not.
+.IP "\-d \fIsep\fP"
+Tells \fIpidof\fP to use \fIsep\fP as an output separator
+if more than one PID is shown.
+The default separator is a space.
+.IP "\-o \fIomitpid\fP"
+Tells \fIpidof\fP to omit processes with that process id.
+The special pid \fB%PPID\fP can be used to name the parent process of the
+\fBpidof\fP program,
+in other words the calling shell or shell script.
 .SH "EXIT STATUS"
 .TP
 .B 0
@@ -89,17 +97,22 @@ No program was found with the requested name.
 the program behaves according to the name under which it is called.
 .PP
 When \fBpidof\fP is invoked with a full pathname to the program it
-should find the pid of, it is reasonably safe. Otherwise it is possible
+should find the pid of,
+it is reasonably safe.
+Otherwise it is possible
 that it returns PIDs of running programs that happen to have the same name
-as the program you're after but are actually other programs. Note 
-that the executable name of running processes is calculated with
+as the program you're after but are actually other programs.
+Note that the executable name of running processes is calculated with
 .BR readlink (2),
 so symbolic links to executables will also match.
 .PP
-Zombie processes or processes in disk sleep (states Z and D, respectively)
-are ignored, as attempts to access the stats of these will sometimes fail.
-The \fB\-z\fP flag (see above) tells \fBpidof\fP to try to detect these sleeping and zombie
-processes, at the risk of failing or hanging.
+Zombie processes or processes in disk sleep
+(states Z and D, respectively)
+are ignored,
+as attempts to access the stats of these will sometimes fail.
+The \fB\-z\fP flag (see above) tells \fBpidof\fP to try to detect these
+sleeping and zombie processes,
+at the risk of failing or hanging.
 
 .SH SEE ALSO
 .BR shutdown (8),

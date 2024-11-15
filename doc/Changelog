@@ -23,6 +23,9 @@ sysvinit (3.12) unreleased; urgency=low
     * Make sure src/Makefile uses sysconfdir (/etc by default) when installing
       configuration files.
 
+    * Fix typos and syntax in pidof manual page.
+
+
 
 sysvinit (3.11) released; urgency=low
 

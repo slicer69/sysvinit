@@ -1,4 +1,4 @@
-sysvinit (3.12) unreleased; urgency=low
+sysvinit (3.12) released; urgency=low
 
     * There were instances of the ctime() function being called in multiple files without
       checking the return value (can be NULL) and without checking the length of the

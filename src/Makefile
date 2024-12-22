@@ -103,7 +103,7 @@ ifneq ($(wildcard $(ROOT)/$(usrdir)/lib*/libcrypt.*),)
 endif
 
 # Additional libs for GNU libc / multiarch on Debian based systems.
-ifneq ($(wildcard $(ROOT)/$usrdir)/lib/*/libcrypt.*),)
+ifneq ($(wildcard $(ROOT)/$(usrdir)/lib/*/libcrypt.*),)
 ifneq ($(findstring -lcrypt, $(SULOGINLIBS)), -lcrypt)
   SULOGINLIBS	+= -lcrypt
 endif

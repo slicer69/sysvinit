@@ -223,21 +223,24 @@ install:	all
 		$(INSTALL_DIR) $(ROOT)$(includedir)/
 		$(INSTALL_DATA) initreq.h $(ROOT)$(includedir)/
 		for lang in  '' $(patsubst ../man/po/%.po,%,$(wildcard ../man/po/??.po)); do \
-			$(INSTALL_DIR) $(ROOT)$(mandir)/man1/$$lang; \
-			$(INSTALL_DIR) $(ROOT)$(mandir)/man5/$$lang; \
-			$(INSTALL_DIR) $(ROOT)$(mandir)/man8/$$lang; \
+			$(INSTALL_DIR) $(ROOT)$(mandir)/$$lang/man1; \
+			$(INSTALL_DIR) $(ROOT)$(mandir)/$$lang/man5; \
+			$(INSTALL_DIR) $(ROOT)$(mandir)/$$lang/man8; \
 		done
 		for man in $(MAN1) $(subst ../man/,,$(foreach man,$(MAN1),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(mandir)/man1/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(mandir)/man1/$$man ; \
+			install_target=$(ROOT)$(mandir)/$${man%$${man##*/}}man1/$${man##*/} ; \
+			$(INSTALL_DATA) ../man/$$man $$install_target ; \
+			sed -i "1{ $(MANDB); }" $$install_target ; \
 		done
 		for man in $(MAN5) $(subst ../man/,,$(foreach man,$(MAN5),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(mandir)/man5/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(mandir)/man5/$$man ; \
+			install_target=$(ROOT)$(mandir)/$${man%$${man##*/}}man5/$${man##*/} ; \
+			$(INSTALL_DATA) ../man/$$man $$install_target ; \
+			sed -i "1{ $(MANDB); }" $$install_target ; \
 		done
 		for man in $(MAN8) $(subst ../man/,,$(foreach man,$(MAN8),$(wildcard ../man/??/$(man)))); do \
-			$(INSTALL_DATA) ../man/$$man $(ROOT)$(mandir)/man8/$$man; \
-			sed -i "1{ $(MANDB); }" $(ROOT)$(mandir)/man8/$$man ; \
+			install_target=$(ROOT)$(mandir)/$${man%$${man##*/}}man8/$${man##*/} ; \
+			$(INSTALL_DATA) ../man/$$man $$install_target ; \
+			sed -i "1{ $(MANDB); }" $$install_target ; \
 		done
 ifeq ($(ROOT),)
 		#

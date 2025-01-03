@@ -1,4 +1,4 @@
-sysvinit (3.13) unreleased; urgency=low
+sysvinit (3.13) released; urgency=low
 
     * Adjusted manual page install location. Patch provided
       by Mark Hindley.

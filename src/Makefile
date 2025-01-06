@@ -76,9 +76,9 @@ else
   INSTALL_EXEC	= install -m 755
   INSTALL_DATA	= install -m 644
 endif
-INSTALL_DIR	= install -m 755 -d
+INSTALL_DIR	= install -m 755 -d 
 
-ROOT         ?=
+ROOT         ?= $(DESTDIR)
 usrdir       ?= /usr
 base_bindir  ?= /bin
 base_sbindir ?= /sbin

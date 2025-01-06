@@ -1,3 +1,8 @@
+sysvinit (3.14) unreleased; urgency=low
+
+    * Re-introduced DESTDIR flag in src/Makefile to assist building on Arch.
+
+
 sysvinit (3.13) released; urgency=low
 
     * Adjusted manual page install location. Patch provided

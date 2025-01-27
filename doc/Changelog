@@ -2,6 +2,9 @@ sysvinit (3.14) unreleased; urgency=low
 
     * Re-introduced DESTDIR flag in src/Makefile to assist building on Arch.
     * Fixed typo in init.8 manual page.
+    * Expand process length in inittab to allow a command line 255 characters
+      (up from 127). Expand child process structure to accomidate 255
+      and some buffer room for newline/NULL.
 
 
 sysvinit (3.13) released; urgency=low

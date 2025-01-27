@@ -87,6 +87,11 @@ void wall(const char *text, int remote);
 #define POWERFAILNOW           14
 #define KBREQUEST               15
 
+#define INITTAB_ID 8
+#define RUNLEVEL_LENGTH 12
+#define ACTION_LENGTH 33
+#define PROCESS_LENGTH 512
+
 /* Information about a process in the in-core inittab */
 typedef struct _child_ {
   int flags;			/* Status of this entry */
@@ -94,10 +99,10 @@ typedef struct _child_ {
   int pid;			/* Pid of this process */
   time_t tm;			/* When respawned last */
   int count;			/* Times respawned in the last 2 minutes */
-  char id[8];			/* Inittab id (must be unique) */
-  char rlevel[12];		/* run levels */
+  char id[INITTAB_ID];		/* Inittab id (must be unique) */
+  char rlevel[RUNLEVEL_LENGTH];	/* run levels */
   int action;			/* what to do (see list below) */
-  char process[128];		/* The command line */
+  char process[PROCESS_LENGTH];	/* The command line */
   struct _child_ *new;		/* New entry (after inittab re-read) */
   struct _child_ *next;		/* For the linked list */
 } CHILD;

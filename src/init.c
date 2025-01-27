@@ -13,7 +13,7 @@
 Version information is not placed in the top-level Makefile by default
 */
 #ifndef VERSION
-#define VERSION "3.10"
+#define VERSION "3.14"
 #endif
 /*
  *		This file is part of the sysvinit suite,
@@ -1580,11 +1580,11 @@ void read_inittab(void)
 	if (id && strlen(id) > sizeof(utproto.ut_id))
 		sprintf(err, "id field too long (max %d characters)",
 			(int)sizeof(utproto.ut_id));
-	if (rlevel && strlen(rlevel) > 11)
+	if (rlevel && strlen(rlevel) > (RUNLEVEL_LENGTH - 1))
 		strcpy(err, "rlevel field too long (max 11 characters)");
-	if (process && strlen(process) > 127)
-		strcpy(err, "process field too long (max 127 characters)");
-	if (action && strlen(action) > 32)
+	if (process && strlen(process) > (PROCESS_LENGTH / 2))
+ 	     snprintf(err, 63, "process field too long (max %d characters)", PROCESS_LENGTH / 2);
+	if (action && strlen(action) > (ACTION_LENGTH - 1))
 		strcpy(err, "action field too long");
 	if (err[0] != 0) {
 		initlog(L_VB, "%s[%d]: %s", INITTAB, lineNo, err);
@@ -1629,7 +1629,7 @@ void read_inittab(void)
 	 */
 	ch->action = actionNo;
 	strncpy(ch->id, id, sizeof(utproto.ut_id) + 1); /* Hack for different libs. */
-	strncpy(ch->process, process, sizeof(ch->process) - 1);
+	strncpy(ch->process, process, PROCESS_LENGTH - 2);
 	if (rlevel[0]) {
 		for(f = 0; f < (int)sizeof(rlevel) - 1 && rlevel[f]; f++) {
 			ch->rlevel[f] = rlevel[f];

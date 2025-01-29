@@ -1450,6 +1450,7 @@ void read_inittab(void)
 {
   FILE		*fp;			/* The INITTAB file */
   FILE		*fp_tab;		/* The INITTABD files */
+  char          *file_status;           /* Are we at the end of the file? */
   CHILD		*ch, *old, *i;		/* Pointers to CHILD structure */
   CHILD		*head = NULL;		/* Head of linked list */
 #ifdef INITLVL
@@ -1492,11 +1493,12 @@ void read_inittab(void)
   if( (tabdir = opendir(INITTABD))==NULL)
 	  initlog(L_VB, "No inittab.d directory found");
 
-  while(done!=1) {
+  while(done != 1) {
 	/*
 	 *	Add single user shell entry at the end.
 	 */
-	if(done == -1) {
+        memset(buf, '\0', sizeof(buf));
+	if (done == -1) {
 		if (fp == NULL || fgets(buf, sizeof(buf), fp) == NULL) {
 			done = 0;
 			/*
@@ -1509,7 +1511,17 @@ void read_inittab(void)
 			else
 				continue;
 		}
-	} /* end if( done==-1) */
+                /* We have read a line, clear the file to the
+                   end of the line if the buffer is full. */
+                else
+                {
+                   if ( (! strchr(buf, '\n') ) ||
+                        ( strlen(buf) >= sizeof(buf) ) )
+                   {
+                        get_void(fp);
+                   }
+                }
+	} /* end if( done == -1) */
 	else if ( done == 0 ){
 		/* parse /etc/inittab.d and read all .tab files */
 		if(tabdir!=NULL){
@@ -1531,10 +1543,22 @@ void read_inittab(void)
 				if ((fp_tab = fopen(f_name, "r")) == NULL)
 					continue;
 				/* read the file while the line contain comment */
-				while( fgets(buf, sizeof(buf), fp_tab) != NULL) {
+                                memset(buf, '\0', sizeof(buf));
+                                file_status = fgets(buf, sizeof(buf), fp_tab);
+				while( file_status != NULL) {
+                                        printf("Got line: %s\n", buf);
 					for(p = buf; *p == ' ' || *p == '\t'; p++);
 					if (*p != '#' && *p != '\n')
 						break;
+                                        /* If the buffer is full, make sure we move ahead
+                                           in the file to clear the line. */
+                                        if ( (! strchr(buf, '\n') ) || 
+                                             ( strlen(buf) >= sizeof(buf) ) )
+                                        {
+                                            get_void(fp_tab);
+                                        }
+                                        memset(buf, '\0', sizeof(buf));
+                                        file_status = fgets(buf, sizeof(buf), fp_tab);
 				}
 				fclose(fp_tab);
 				/* do some checks */

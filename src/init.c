@@ -1042,7 +1042,7 @@ static
 pid_t spawn(CHILD *ch, int *res)
 {
   char *args[16];		/* Argv array */
-  char buf[136];		/* Line buffer */
+  char buf[PROCESS_LENGTH * 2];	/* Line buffer */
   int f, st;			/* Scratch variables */
   char *ptr;			/* Ditto */
   time_t t;			/* System time */
@@ -1053,7 +1053,7 @@ pid_t spawn(CHILD *ch, int *res)
   struct sigaction sa;
 
   *res = -1;
-  buf[sizeof(buf) - 1] = 0;
+  buf[sizeof(buf) - 1] = '\0';
 
   /* Skip '+' if it's there */
   if (proc[0] == '+') proc++;
@@ -1472,6 +1472,7 @@ void read_inittab(void)
   DIR 		*tabdir=NULL;		/* the INITTAB.D dir */
   struct dirent *file_entry;		/* inittab.d entry */
   char 		f_name[272];		/* size d_name + strlen /etc/inittad.d/ */
+  int           skip_this_line = FALSE; /* Is there something wrong with this config file? */
 
 #if DEBUG
   if (newFamily != NULL) {
@@ -1494,6 +1495,7 @@ void read_inittab(void)
 	  initlog(L_VB, "No inittab.d directory found");
 
   while(done != 1) {
+        skip_this_line = FALSE;
 	/*
 	 *	Add single user shell entry at the end.
 	 */
@@ -1519,6 +1521,7 @@ void read_inittab(void)
                         ( strlen(buf) >= sizeof(buf) ) )
                    {
                         get_void(fp);
+                        skip_this_line = TRUE;
                    }
                 }
 	} /* end if( done == -1) */
@@ -1556,6 +1559,7 @@ void read_inittab(void)
                                              ( strlen(buf) >= sizeof(buf) ) )
                                         {
                                             get_void(fp_tab);
+                                            skip_this_line = TRUE;
                                         }
                                         memset(buf, '\0', sizeof(buf));
                                         file_status = fgets(buf, sizeof(buf), fp_tab);
@@ -1582,6 +1586,13 @@ void read_inittab(void)
 	for(p = buf; *p == ' ' || *p == '\t'; p++)
 		;
 	if (*p == '#' || *p == '\n') continue;
+
+        /* There was something wrong with this line, skip adding it to our rules. */
+        if (skip_this_line)
+        {
+	   initlog(L_VB, "Error detected in %s line %d. Possibly too long.", INITTAB, lineNo);
+           continue;
+        }
 
 	/*
 	 *	Decode the fields

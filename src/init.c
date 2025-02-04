@@ -1590,7 +1590,7 @@ void read_inittab(void)
         /* There was something wrong with this line, skip adding it to our rules. */
         if (skip_this_line)
         {
-	   initlog(L_VB, "Error detected in %s line %d. Possibly too long.", INITTAB, lineNo);
+	   initlog(L_VB, "Error detected in %s at line %d. Possibly too long.", INITTAB, lineNo);
            continue;
         }
 

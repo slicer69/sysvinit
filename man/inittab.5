@@ -66,8 +66,8 @@ a `+' character,
 .B init 
 will not do utmp and wtmp accounting for that process.  This is needed for 
 gettys that insist on doing their own utmp/wtmp housekeeping.  This is also 
-a historic bug. The length of this field is limited to 255 characters. Anything
-beyond 255 will result in a log warning and the process command line being
+a historic bug. The length of this field is limited to 253 characters. Anything
+beyond 253 will result in a log warning and the process command line being
 skipped/ignored.
 
 Please note that including certain characters in the process field will result

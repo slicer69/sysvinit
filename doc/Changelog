@@ -7,6 +7,8 @@ sysvinit (3.14) unreleased; urgency=low
       and some buffer room for newline/NULL.
     * Clear buffer when reading long lines from inittab, avoids garbage left
       over from old lines with long commands or comments.
+    * Drop lines which are too long from inttab conf and log warning rather
+      than truncate.
 
 
 sysvinit (3.13) released; urgency=low

@@ -1518,7 +1518,7 @@ void read_inittab(void)
                 else
                 {
                    if ( (! strchr(buf, '\n') ) ||
-                        ( strlen(buf) >= sizeof(buf) - 1 ) )
+                        ( strlen(buf) >= sizeof(buf) ) )
                    {
                         get_void(fp);
                         skip_this_line = TRUE;
@@ -1556,7 +1556,7 @@ void read_inittab(void)
                                         /* If the buffer is full, make sure we move ahead
                                            in the file to clear the line. */
                                         if ( (! strchr(buf, '\n') ) || 
-                                             ( strlen(buf) >= sizeof(buf) - 1 ) )
+                                             ( strlen(buf) >= sizeof(buf)) )
                                         {
                                             get_void(fp_tab);
                                             skip_this_line = TRUE;

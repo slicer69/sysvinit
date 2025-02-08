@@ -1,4 +1,4 @@
-sysvinit (3.14) unreleased; urgency=low
+sysvinit (3.14) released; urgency=medium
 
     * Re-introduced DESTDIR flag in src/Makefile to assist building on Arch.
     * Fixed typo in init.8 manual page.

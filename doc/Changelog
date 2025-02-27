@@ -1,3 +1,9 @@
+sysvinit (3.15) unreleased; urgency=low
+
+    * Patched manual page for runlevel command. This cleans up formatting and whitespace.
+      Patch provided by Bjarni Ingi Gislason.
+     
+
 sysvinit (3.14) released; urgency=medium
 
     * Re-introduced DESTDIR flag in src/Makefile to assist building on Arch.

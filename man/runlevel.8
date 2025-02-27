@@ -17,20 +17,21 @@
 .\"
 .TH RUNLEVEL 8 "May 27, 1997" "sysvinit " "Linux System Administrator's Manual"
 .SH NAME
-runlevel - find the previous and current system runlevel
+runlevel \- find the previous and current system runlevel
 .SH SYNOPSIS
-.B runlevel 
+.B runlevel
 .RI [ utmp ]
 .SH DESCRIPTION
 .B runlevel
 reads the system
 .I utmp
-file (typically 
+file (typically
 .IR /var/run/utmp )
 to locate the runlevel record, and then
-prints the previous and current system runlevel on its standard output, 
-separated by a single space. If there is no previous system
-runlevel, the letter \fBN\fP will be printed instead.
+prints the previous and current system runlevel on its standard output,
+separated by a single space.
+If there is no previous system runlevel,
+the letter \fBN\fP will be printed instead.
 .PP
 If no
 .I utmp
@@ -42,13 +43,13 @@ prints the word \fBunknown\fP and exits with an error.
 .PP
 .B Runlevel
 can be used in \fIrc\fP scripts as a substitute for the System-V
-\fBwho -r\fP command. 
+\fBwho \-r\fP command.
 However, in newer versions of \fBinit\fP(8) this information
 is also available in the environment variables \fBRUNLEVEL\fP and
 \fBPREVLEVEL\fP.
 .SH OPTIONS
 .\"{{{ utmp
-.IP \fIutmp\fP 
+.IP \fIutmp\fP
 The name of the \fIutmp\fP file to read.
 .\"}}}
 .SH SEE ALSO

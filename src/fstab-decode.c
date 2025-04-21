@@ -36,11 +36,11 @@ decode(char *s)
 			*dest = *src++;
 		else {
 			static const struct repl {
-				char orig[4];
 				size_t len;
+				char orig[4];
 				char new;
 			} repls[] = {
-#define R(X, Y) { X, sizeof(X) - 1, Y }
+#define R(X, Y) { sizeof(X) - 1, X, Y }
 				R("\\", '\\'),
 				R("011", '\t'),
 				R("012", '\n'),

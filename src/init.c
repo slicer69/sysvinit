@@ -1381,9 +1381,10 @@ void check_kernel_console()
 		char* p = buf;
            if ( strstr(p, "init.autocon=1") )
            {
+        size_t console_len = strlen("console=");
 		while ((p = strstr(p, "console="))) {    
 			char* e;
-			p += strlen("console=");
+			p += console_len;
 			for (e = p; *e; ++e) {
 				switch (*e) {
 					case '-' ... '9':
@@ -1494,6 +1495,7 @@ void read_inittab(void)
   if( (tabdir = opendir(INITTABD))==NULL)
 	  initlog(L_VB, "No inittab.d directory found");
 
+  size_t fentry_name = strlen(file_entry->d_name);
   while(done != 1) {
         skip_this_line = FALSE;
 	/*
@@ -1532,7 +1534,7 @@ void read_inittab(void)
 				/* ignore files not like *.tab */
 				if (!strcmp(file_entry->d_name, ".") || !strcmp(file_entry->d_name, ".."))
 					continue;
-				if (strlen(file_entry->d_name) < 5 || strcmp(file_entry->d_name + strlen(file_entry->d_name) - 4, ".tab"))
+				if (fentry_name < 5 || strcmp(file_entry->d_name + strlen(file_entry->d_name) - 4, ".tab"))
 					continue;
 				/*
 				 * initialize filename

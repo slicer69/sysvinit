@@ -221,10 +221,11 @@ void wall(const char *text, int remote)
 
 	setutent();
 
+	size_t path_dev_len = strlen(_PATH_DEV);
 	while ((utmp = getutent()) != NULL) {
 		if(utmp->ut_type != USER_PROCESS ||
 		   utmp->ut_user[0] == 0) continue;
-		if (strncmp(utmp->ut_line, _PATH_DEV, strlen(_PATH_DEV)) == 0) {
+		if (strncmp(utmp->ut_line, _PATH_DEV, path_dev_len) == 0) {
 			term[0] = 0;
 			strncat(term, utmp->ut_line, sizeof(term)-1);
 		} else

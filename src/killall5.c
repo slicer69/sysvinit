@@ -286,19 +286,18 @@ void init_nfs(void)
 	if ((mnt = setmntent("/proc/mounts", "r")) == (FILE*)0)
 		return;
 
+	size_t nlen = strlen(ent->mnt_dir);
 	while ((ent = getmntent(mnt))) {
 		NFS *p;
 
 		for (p = nlist; p; p = p->next) {
 			SHADOW * restrict s;
-			size_t nlen;
 
 			if (strcmp(ent->mnt_dir, p->name) == 0)
 				continue;
 			if (strncmp(ent->mnt_dir, p->name, p->nlen) != 0)
 				continue;
 
-			nlen = strlen(ent->mnt_dir);
 			xmemalign((void*)&s, sizeof(void*), alignof(SHADOW)+(nlen+1));
 			s->name = ((char*)s)+alignof(SHADOW);
 			s->nlen = nlen;
@@ -788,15 +787,15 @@ PIDQ_HEAD *pidof(char *prog)
 	}
 
 	/* If we didn't find a match based on dev/ino, try the name. */
+	int len = strlen(prog);
 	if (!foundone) for (p = plist; p; p = p->next) {
 		if (prog[0] == '/') {
 			if (!p->pathname) {
 				if (root)
 					continue;
-				goto fallback; 
+				goto fallback;
 			}
 			if (strcmp(prog, p->pathname)) {
-				int len = strlen(prog);
 				if (strncmp(prog, p->pathname, len))
 				{
 					if (scripts_too)

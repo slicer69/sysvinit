@@ -39,37 +39,37 @@
 #include "oldutmp.h"
 
 struct utmp
-oldtonew(struct oldutmp src)
+oldtonew(const struct oldutmp *src)
 {
         struct utmp dest;
 
 	memset(&dest, 0, sizeof dest);
-	dest.ut_type = src.ut_type;
-	dest.ut_pid  = src.ut_pid;
-	dest.ut_time = src.ut_oldtime;
-	dest.ut_addr = src.ut_oldaddr;
-	strncpy(dest.ut_id,   src.ut_id,   4);
-	strncpy(dest.ut_line, src.ut_line, OLD_LINESIZE);
-	strncpy(dest.ut_user, src.ut_user, OLD_NAMESIZE);
-	strncpy(dest.ut_host, src.ut_host, OLD_HOSTSIZE);
+	dest.ut_type = src->ut_type;
+	dest.ut_pid  = src->ut_pid;
+	dest.ut_time = src->ut_oldtime;
+	dest.ut_addr = src->ut_oldaddr;
+	strncpy(dest.ut_id,   src->ut_id,   4);
+	strncpy(dest.ut_line, src->ut_line, OLD_LINESIZE);
+	strncpy(dest.ut_user, src->ut_user, OLD_NAMESIZE);
+	strncpy(dest.ut_host, src->ut_host, OLD_HOSTSIZE);
 
         return dest;
 }
 
 struct oldutmp
-newtoold(struct utmp src)
+newtoold(const struct utmp *src)
 {
         struct oldutmp dest;
 
 	memset(&dest, 0, sizeof dest);
-	dest.ut_type    = src.ut_type;
-	dest.ut_pid     = src.ut_pid;
-	dest.ut_oldtime = src.ut_time;
-	dest.ut_oldaddr = src.ut_addr;
-	strncpy(dest.ut_id,   src.ut_id,   4);
-	strncpy(dest.ut_line, src.ut_line, OLD_LINESIZE);
-	strncpy(dest.ut_user, src.ut_user, OLD_NAMESIZE);
-	strncpy(dest.ut_host, src.ut_host, OLD_HOSTSIZE);
+	dest.ut_type    = src->ut_type;
+	dest.ut_pid     = src->ut_pid;
+	dest.ut_oldtime = src->ut_time;
+	dest.ut_oldaddr = src->ut_addr;
+	strncpy(dest.ut_id,   src->ut_id,   4);
+	strncpy(dest.ut_line, src->ut_line, OLD_LINESIZE);
+	strncpy(dest.ut_user, src->ut_user, OLD_NAMESIZE);
+	strncpy(dest.ut_host, src->ut_host, OLD_HOSTSIZE);
 
         return dest;
 }
@@ -168,7 +168,7 @@ dump(FILE *fp, int forever, int oldfmt)
 	do {
 		if (oldfmt)
 			while (fread(&uto, sizeof uto, 1, fp) == 1)
-				print_utline(oldtonew(uto));
+				print_utline(oldtonew(&uto));
 		else
 			while (fread(&ut, sizeof ut, 1, fp) == 1)
 				print_utline(ut);
@@ -242,7 +242,7 @@ undump(FILE *fp, int forever, int oldfmt)
                 ut.ut_time = strtotime(s_time);
 
                 if (oldfmt) {
-                        uto = newtoold(ut);
+                        uto = newtoold(&ut);
                         fwrite(&uto, sizeof(uto), 1, stdout);
                 } else
                         fwrite(&ut, sizeof(ut), 1, stdout);

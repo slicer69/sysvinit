@@ -1381,9 +1381,10 @@ void check_kernel_console()
 		char* p = buf;
            if ( strstr(p, "init.autocon=1") )
            {
+                size_t console_length = strlen("console=");
 		while ((p = strstr(p, "console="))) {    
 			char* e;
-			p += strlen("console=");
+			p += console_length;
 			for (e = p; *e; ++e) {
 				switch (*e) {
 					case '-' ... '9':
